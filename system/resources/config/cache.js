@@ -64,7 +64,7 @@ module.exports = class Cache {
                 configCache = Object.fromEntries(configCache)
                 configCache = JSON.stringify(configCache)
 
-                fs.writeFileSync(path.join(__dirname, "json", 'config.json'), configCache, function (err) {
+                fs.writeFileSync(path.join(__dirname, "json", 'config.json'), configCache, {flag: "w"}, function (err) {
                     if (err) {
                         this.client.log.error(err, true)
                     }
@@ -91,7 +91,7 @@ module.exports = class Cache {
                 configCache = JSON.stringify(configCache)
 
 
-                fs.writeFileSync(path.join(__dirname, "json", 'blacklist.json'), configCache, function (err) {
+                fs.writeFileSync(path.join(__dirname, "json", 'blacklist.json'), configCache, {flag: "w"}, function (err) {
                     if (err) {
                         this.client.log.error(err, true)
                     }
