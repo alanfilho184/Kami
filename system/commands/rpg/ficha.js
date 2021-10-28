@@ -431,6 +431,8 @@ module.exports = class ficha {
                                                     .catch(err => client.log.error(err, true))
                                             }
                                             else {
+                                                nomeRpg = nomeRpg.normalize("NFD").replace(/[^\w\s]/gi, '')
+                                                
                                                 client.db.query(`insert into fichas (id, nomerpg, ${atb}) values ('${msg.author.id}', '${nomeRpg}', :valor)`, {
                                                     replacements: { valor: valor },
                                                     type: QueryTypes.INSERT
