@@ -96,6 +96,7 @@ module.exports = {
             log.info(msg.author.tag + " - DM" + " | " + msg.content)
         }
 
+        console.log(cooldown)
         cooldownU = cooldown.get(msg.author.id);
         if (cooldownU) {
             remaining = cooldownU - moment().valueOf();
@@ -107,7 +108,17 @@ module.exports = {
             occurencies.set(msg.author.id, occurencies.get(msg.author.id) + 1 || 1)
 
             if (occurencies.get(msg.author.id) == 1) {
-                msg.reply(client.tl({ local: msg.lang + "as-cooldown", valor: remaining }))
+                if (!msg.slash) {
+                    msg.reply(client.tl({ local: msg.lang + "as-cooldown", valor: remaining }))
+                }
+                else {
+                    msg.pureReply({ content: client.tl({ local: msg.lang + "as-cooldown", valor: remaining }), ephemeral: true })
+                }
+            }
+
+            if (remaining < 0) {
+                cooldown.clear()
+                occurencies.clear()
             }
 
             setTimeout(function () {
@@ -176,7 +187,7 @@ module.exports = {
                                 .setLabel(client.tl({ local: msg.lang + "botI-f2V" }))
                                 .setURL("https://discord.com/invite/9rqCkFB")
 
-                            msg.channel.send({ content: `<@!${msg.author.id}>\n`+client.tl({ local: msg.lang + "onMsg-slash" }), components: [{ type: 1, components: [btLink, btSup, btInfo] }] })
+                            msg.channel.send({ content: `<@!${msg.author.id}>\n` + client.tl({ local: msg.lang + "onMsg-slash" }), components: [{ type: 1, components: [btLink, btSup, btInfo] }] })
                             uPcmd[msg.author.id] = true
                         }
 
@@ -243,7 +254,7 @@ module.exports = {
                                 .setLabel(client.tl({ local: msg.lang + "botI-f2V" }))
                                 .setURL("https://discord.com/invite/9rqCkFB")
 
-                            msg.channel.send({ content: `<@!${msg.author.id}>\n`+client.tl({ local: msg.lang + "onMsg-slash" }), components: [{ type: 1, components: [btLink, btSup, btInfo] }] })
+                            msg.channel.send({ content: `<@!${msg.author.id}>\n` + client.tl({ local: msg.lang + "onMsg-slash" }), components: [{ type: 1, components: [btLink, btSup, btInfo] }] })
                             uPcmd[msg.author.id] = true
                         }
 
