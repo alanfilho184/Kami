@@ -34,29 +34,29 @@ module.exports = class insanidade {
             descEn: 'Sends a insanity to a character, temporary or permanent.',
             aliases: ["ins", "insan", "insanity", "insanidade_config"],
             helpPt: {
-                title: "<:dadosAjuda:766790214030852137> " + "$prefix$" + "insanidade (ins)", desc: `
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "insanidade (ins)", desc: `
     Gere um distúrbio psicológico aleatório para seu personagem 
 
 Você pode escolher entre 2 tipos: _**temporario**_ e _**permanente**_
 
-Ex: **${"$prefix$"}insanidade temporaria**
-Ex²: **${"$prefix$"}insanidade permanente**
+Ex: **${"/"}insanidade temporaria**
+Ex²: **${"/"}insanidade permanente**
 
 Você pode deixar esse comando secreto, assim, o bot sempre irá enviar o resultado na sua DM
-Ex: **${"$prefix$"}config**
+Ex: **${"/"}config**
 Esse comando irá desativar e ativar os comandos de insanidade secreta`},
 
             helpEn: {
-                title: "<:dadosAjuda:766790214030852137> " + "$prefix$" + "insanity (ins)", desc: `
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "insanidade (ins)", desc: `
     Generate a random psychological disorder for your character
 
     You can choose between 2 types: _**temporary**_ and _**permanent**_
     
-    Ex: **${"$prefix$"}insanity temporary**
-    Ex²: **${"$prefix$"}insanity permanent**
+    Ex: **${"/"}insanidade temporaria**
+    Ex²: **${"/"}insanidade permanente**
     
     You can make this command secret, so the bot will always send the result in your DM
-    Ex: **${"$prefix$"}config**
+    Ex: **${"/"}config**
     This command will deactivate and activate the secret insanity commands`},
             run: this.execute
         }

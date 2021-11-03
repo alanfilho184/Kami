@@ -15,63 +15,63 @@ module.exports = class ficha {
             descEn: 'Create/edit a sheet.',
             aliases: ["f", "sheet", "s"],
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "ficha (f)", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "ficha (f)", desc: `
             Este comando serve para a criação de fichas de múltiplos sistemas de RPG.
         
             _Formato do comando:_
-            **${"$prefix$"}ficha <nome_da_ficha> <atributo> <valor>**
+            **${"/"}ficha <nome_da_ficha> <atributo> <valor>**
         
-            Ex: **${"$prefix$"}ficha RPG_Kami nome Kami**
+            Ex: **${"/"}ficha RPG_Kami nome Kami**
             
             Para excluir algo da sua ficha:
-            **${"$prefix$"}ficha <nome_da_ficha> <atributo> excluir**
+            **${"/"}ficha <nome_da_ficha> <atributo> excluir**
             
-            <:avisoAjuda:766826097051828235> Você pode ver a lista completa com todos os atributos em:\n**${"$prefix$"}ajuda atributos**
+            <:avisoAjuda:766826097051828235> Você pode ver a lista completa com todos os atributos em:\n**${"/"}ajuda atributos**
             
             Para adicionar uma imagem na sua ficha:
-            **${"$prefix$"}ficha <nome_da_ficha> imagem <url_da_imagem>**
+            **${"/"}ficha <nome_da_ficha> imagem <url_da_imagem>**
             Ou
             **${"$prefix$"}ficha <nome_da_ficha> imagem (imagem em anexo)**
             
             Caso tenha muitas fichas criadas você pode definir uma ficha padrão:
-            **${"$prefix$"}config**
+            **${"/"}config**
         
             Para adicionar vários atributos ao mesmo tempo em uma ficha basta utilizar o atributo **multi**
         
             _Formato do comando:_
-            **${"$prefix$"}ficha <nome_da_ficha> multi <atributo>: <valor> | <atributo2>: <valor>**
+            **${"/"}ficha <nome_da_ficha> multi <atributo>: <valor> | <atributo2>: <valor>**
         
-            Ex: **${"$prefix$"}ficha RPG_Kami multi nome: Kami RPG BOT | sanidade: 1**
+            Ex: **${"/"}ficha RPG_Kami multi nome: Kami RPG BOT | sanidade: 1**
             `},
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "sheet (s)", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "ficha (s)", desc: `
             This command is used to create sheets of multiple RPG systems.
         
             _Format of the command:_
-            **${"$prefix$"}sheet <sheet_name> <attribute> <value>**
+            **${"/"}ficha <sheet_name> <attribute> <value>**
         
-            Ex: **${"$prefix$"}sheet RPG_Kami name Kami**
+            Ex: **${"/"}ficha RPG_Kami name Kami**
             
             To delete something from your sheet:
-            **${"$prefix$"}sheet <sheet_name> <attribute> delete**
+            **${"/"}ficha <sheet_name> <attribute> delete**
             
-            <:avisoAjuda:766826097051828235> You can see the complete list with all the attributes in:\n**${"$prefix$"}help attributes**
+            <:avisoAjuda:766826097051828235> You can see the complete list with all the attributes in:\n**${"/"}ajuda**
             
             To add an image to your sheet:
-            **${"$prefix$"}sheet <sheet_name> image <url_of_image>**
+            **${"/"}ficha <sheet_name> image <url_of_image>**
             Or
-            **${"$prefix$"}sheet <sheet_name> image (attached image)**
+            **${"$prefix$"}ficha <sheet_name> image (attached image)**
         
             If you have many sheets created you can set a default sheet:
-            **${"$prefix$"}config**
+            **${"/"}config**
         
             To add multiple attributes at the same time to a sheet, just use the **multi** attribute
         
             _Format of the command:_
-            **${"$prefix$"}sheet <sheet_name> multi <attribute>: <value> | <attribute2>: <value>**
+            **${"/"}ficha <sheet_name> multi <attribute>: <value> | <attribute2>: <value>**
         
-            Ex: **${"$prefix$"}sheet RPG_Kami multi name: Kami RPG BOT | sanity: 1**
+            Ex: **${"/"}ficha RPG_Kami multi name: Kami RPG BOT | sanity: 1**
             
             `},
             run: this.execute
@@ -251,13 +251,25 @@ module.exports = class ficha {
                 if (x != vals.length - 1) { colunas[2] += "," }
             }
 
-            colunas[1] += `, id, nomerpg)`
-            colunas[2] += `,'${msg.author.id}', '${nomeRpg}')`
+            try { nomeRpg = nomeRpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
+
+            const ficha = await client.cache.getFicha(msg.author.id, nomeRpg)
+            if (ficha) {
+                colunas[1] += `, id, nomerpg)`
+                colunas[2] += `,'${msg.author.id}', '${nomeRpg}')`
+            }
+            else {
+                const senha = client.utils.gerarSenha()
+
+                colunas[1] += `, id, nomerpg, senha)`
+                colunas[2] += `,'${msg.author.id}', '${nomeRpg}', '${senha}')`
+            }
+
 
         }
 
         if (!atb) { return client.commands.get("enviar").run(client, msg) }
-        if (!valor) { return client.commands.get("enviaratributo").run(client, msg, "ficha")}
+        if (!valor) { return client.commands.get("enviaratributo").run(client, msg, "ficha") }
 
         if (atb == "extras") {
             if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") {
@@ -431,9 +443,10 @@ module.exports = class ficha {
                                                     .catch(err => client.log.error(err, true))
                                             }
                                             else {
-                                                nomeRpg = nomeRpg.normalize("NFD").replace(/[^\w\s]/gi, '')
-                                                
-                                                client.db.query(`insert into fichas (id, nomerpg, ${atb}) values ('${msg.author.id}', '${nomeRpg}', :valor)`, {
+                                                try { nomeRpg = nomeRpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
+                                                const senha = client.utils.gerarSenha()
+
+                                                client.db.query(`insert into fichas (id, nomerpg, ${atb}, senha) values ('${msg.author.id}', '${nomeRpg}', :valor, '${senha}')`, {
                                                     replacements: { valor: valor },
                                                     type: QueryTypes.INSERT
                                                 })

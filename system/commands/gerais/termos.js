@@ -13,15 +13,15 @@ module.exports = class termos {
             descEn: 'Sends the link to see the BOT\'s Terms Of Use.',
             aliases: ["terms", "tos"],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "termos", desc: `Esse comando mostra o link para que você possa ver os Termos de Uso do Kami
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "termos", desc: `Esse comando mostra o link para que você possa ver os Termos de Uso do Kami
                 
-                Ex: **${"$prefix$"}votar**`
+                Ex: **${"/"}termos**`
             },
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "terms", desc: `This command shows you the link so you can see the Terms of Use of Kami
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "termos", desc: `This command shows you the link so you can see the Terms of Use of Kami
             
-                Ex: **${"$prefix$"}terms**`
+                Ex: **${"/"}termos**`
             },
             run: this.execute
         }

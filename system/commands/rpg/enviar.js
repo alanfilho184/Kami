@@ -17,40 +17,40 @@ module.exports = class enviar {
             descEn: 'Sends a sheet already as a Discord\'s embed.',
             aliases: ["send"],
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "enviar", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "enviar", desc: `
             Este comando serve para receber a sua ficha como embed do Discord
         
             _Formato do comando:_
-            **${"$prefix$"}enviar <nome_da_ficha>**
+            **${"/"}enviar <nome_da_ficha>**
             
-            Ex: **${"$prefix$"}enviar RPG_Kami**
+            Ex: **${"/"}enviar RPG_Kami**
             
-            Para enviar uma ficha que atualiza automaticamente ao utilizar o comando $prefix$ficha, basta utlizar:
-            **${"$prefix$"}enviar <nome_da_ficha> irt**
+            Para enviar uma ficha que atualiza automaticamente ao utilizar o comando /ficha, basta utlizar:
+            **${"/"}enviar <nome_da_ficha> irt**
         
-            Ex: **${"$prefix$"}enviar RPG_Kami irt**
+            Ex: **${"/"}enviar RPG_Kami irt**
         
             **Essa ainda é uma função que está em fase de testes, problemas podem ocorrer. Atualmente está limitado a 5 fichas IRT por usuário.
-            Para desativar o IRT basta utilizar os botões na ficha ou utilizar **$prefix$apagar <nome_da_ficha> irt**
+            Para desativar o IRT basta utilizar os botões na ficha
             `
             },
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "send", desc: `
-            This command is used to receive your sheet as a discord message. If you have only one sheet created you can use only **${"$prefix$"}send**.
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "send", desc: `
+            This command is used to receive your sheet as a discord message. If you have only one sheet created you can use only **${"/"}send**.
         
             _Format of the command:_
-            **${"$prefix$"}send <sheet_name>**
+            **${"/"}enviar <sheet_name>**
         
-            Ex: ${"$prefix$"}send RPG_Kami
+            Ex: ${"/"}enviar RPG_Kami
 
-            To send a sheet that automatically updates when using the $prefix$sheet command, simply utlize:
-            **${"$prefix$"}send <sheet_name> irt**
+            To send a sheet that automatically updates when using the /sheet command, simply utlize:
+            **${"/"}enviar <sheet_name> irt**
         
-            Ex: **${"$prefix$"}send RPG_Kami irt**
+            Ex: **${"/"}enviar RPG_Kami irt**
         
             **This is still a function that is in testing phase, problems may occur. It is currently limited to 5 IRT sheets per user.
-            To disable IRT just use the buttons on the sheet or use **prefix$delete <sheet_name> irt**.
+            To disable IRT just use the buttons on the sheet
             `
 
 

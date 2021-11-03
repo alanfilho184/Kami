@@ -37,49 +37,49 @@ module.exports = class roll {
             descEn: 'Rolls a dice or an attribute.',
             aliases: ["r", "dado", "dice", "roll_atributo", "roll_config"],
             helpPt: {
-                title: "<:dadosAjuda:766790214030852137> " + "$prefix$" + "roll (r)", desc: `
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "roll (r)", desc: `
             Role qualquer dado que quiser
         
             _Formato do comando:_
-            **${"$prefix$"}roll <quantidade_de_dados>d<tamanho_do_dado>**
+            **${"/"}roll <quantidade_de_dados>d<tamanho_do_dado>**
         
-            Ex: **${"$prefix$"}roll 3d10**
+            Ex: **${"/"}roll 3d10**
             
             Você pode usar bônus nos dados (" + ", " - ", " * ", " / ")
-            Ex: **${"$prefix$"}roll d20+5**
+            Ex: **${"/"}roll d20+5**
         
             Você também pode rolar vários dados diferentes ao mesmo tempo
-            Ex: **${"$prefix$"}roll 3d6+2d4+1d10-3**
+            Ex: **${"/"}roll 3d6+2d4+1d10-3**
             
             Se você tiver uma ficha no bot pode rolar um dado direto da ficha
-            Ex: **${"$prefix$"}roll destreza RPG_Kami**
+            Ex: **${"/"}roll destreza RPG_Kami**
             <:avisoAjuda:766826097051828235> _O calculo do resultado é feito baseado nas regras do sistema **Call Of Cthulhu**_
             
             Você pode deixar esse comando secreto, assim, o bot sempre irá enviar o resultado na sua DM
-            Ex: **${"$prefix$"}config**
+            Ex: **${"/"}config**
             Esse comando irá desativar e ativar os dados secretos`},
 
             helpEn: {
-                title: "<:dadosAjuda:766790214030852137> " + "$prefix$" + "roll (r)", desc: `
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "roll (r)", desc: `
             Roll any dice you want
         
             _Format of the command:_
-            **${"$prefix$"}roll <quantity_of_dices>d<size_of_dice>**
+            **${"/"}roll <quantity_of_dices>d<size_of_dice>**
             
-            Ex: **${"$prefix$"}roll 3d10**
+            Ex: **${"/"}roll 3d10**
             
             You can use a bonus on the dice. (" + ", " - ", " * ", " / ")
-            Ex: **${"$prefix$"}roll d20+5**
+            Ex: **${"/"}roll d20+5**
         
             You can also roll several different dices at the same time
-            Ex: **${"$prefix$"}roll 3d6+2d4+1d10-3**
+            Ex: **${"/"}roll 3d6+2d4+1d10-3**
             
             If you have a sheet in the bot you can roll a dice direct from the sheet
-            Ex: **${"$prefix$"}roll dexterity RPG_Kami**
+            Ex: **${"/"}roll dexterity RPG_Kami**
             <:avisoAjuda:766826097051828235> _The calculation of the result is made based on the rules of system **Call Of Cthulhu**_
             
             You can make this command secret, so the bot will always send the result in your DM
-            Ex: **${"$prefix$"}config**
+            Ex: **${"/"}config**
             This command will deactivate and activate the secret dices`},
             run: this.execute,
             rollNumber: this.rollNumber,

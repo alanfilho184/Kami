@@ -29,21 +29,21 @@ module.exports = class enviar_txt {
             descEn: 'Sends a sheet as a .txt file.',
             aliases: ["sendtxt"],
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "enviar_txt", desc: `Este comando serve para receber a sua ficha como um arquivo .txt
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "enviartxt", desc: `Este comando serve para receber a sua ficha como um arquivo .txt
         
             _Formato do comando:_
-            **${"$prefix$"}enviar_txt <nome_da_ficha>**
+            **${"/"}enviartxt <nome_da_ficha>**
             
-            Ex: **${"$prefix$"}enviar_txt RPG_Kami**`
+            Ex: **${"/"}enviartxt RPG_Kami**`
             },
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "send_txt", desc: `This command is used to receive your sheet as a .txt file
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "enviartxt", desc: `This command is used to receive your sheet as a .txt file
         
             _Format of the command:_
-            **${"$prefix$"}send_txt <sheet_name>**
+            **${"/"}enviartxt <sheet_name>**
             
-            Ex: **${"$prefix$"}send_txt RPG_Kami**`
+            Ex: **${"/"}enviartxt RPG_Kami**`
             },
             run: this.execute,
             create: this.create

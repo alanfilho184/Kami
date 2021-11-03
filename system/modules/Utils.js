@@ -1,6 +1,7 @@
 const setLang = require("../resources/scripts/lang").setLang
 const stringSimilarity = require('string-similarity');
 const { aliases } = require("../resources/texts/pt")
+const CryptoJS = require("crypto-js");
 var roll = require("roll")
 roll = new roll()
 
@@ -217,8 +218,8 @@ module.exports = class Utils {
         }
     }
 
-    replaceAll(str, find, replace) {
-        return str.replace(new RegExp(find, 'g'), replace);
+    replaceAll(string, search, replace) {
+        return string.split(search).join(replace);
     }
 
     indexOf(arr, val) {
@@ -227,6 +228,11 @@ module.exports = class Utils {
             if (arr[i] === val)
                 indexes.push(i);
         return indexes;
+    }
+
+    gerarSenha() {
+        const senha = CryptoJS.AES.encrypt(Date.now().toString(), this.client.settings.fKey)
+        return senha.toString().slice(33, 43)
     }
 
 }

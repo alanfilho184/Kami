@@ -13,17 +13,17 @@ module.exports = class listar {
             descEn: 'Shows the name of all the sheets you have in the BOT.',
             aliases: ["listar", "list", "verfichas"],
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "listar", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "listar", desc: `
     Este comando serve para ver o nome de todas as fichas que você criou
 
-Ex: **${"$prefix$"}listar**`
+Ex: **${"/"}listar**`
             },
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "list", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "listar", desc: `
     This command is to see the name of all the sheets you have created
 
-    Ex: **${"$prefix$"}list**`
+    Ex: **${"/"}listar**`
             },
             run: this.execute,
             api: this.api

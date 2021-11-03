@@ -17,31 +17,31 @@ module.exports = class apagar {
             descEn: 'Deletes a sheet that has already been created.',
             aliases: ["apagar", "delete"],
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "apagar", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "apagar", desc: `
     Este comando serve para caso não for mais utilizar a ficha, poder apagá-la
 
 _Formato do comando:_
-**${"$prefix$"}apagar <nome_da_ficha>**
+**${"/"}apagar <nome_da_ficha>**
 
-Ex: **${"$prefix$"}apagar RPG_Kami**
+Ex: **${"/"}apagar RPG_Kami**
 
 Você também pode usar este comando pra desativar fichas IRT
 
-Ex: **${"$prefix$"}apagar RPG_Kami irt**
+Ex: **${"/"}apagar RPG_Kami irt**
 `},
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "delete", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "apagar", desc: `
     This command is used in case of the sheet is not used anymore, to be able to delete it
 
     _Format of the command:_
-    **${"$prefix$"}delete <sheet_name>**
+    **${"/"}apagar <sheet_name>**
 
-    Ex: **${"$prefix$"}delete RPG_Kami**
+    Ex: **${"/"}apagar RPG_Kami**
 
     You can also use this command to deactivate IRT sheets
 
-    Ex: **${"$prefix$"}delete RPG_Kami irt**
+    Ex: **${"/"}apagar RPG_Kami irt**
     `},
             run: this.execute
         }

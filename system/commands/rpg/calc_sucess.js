@@ -15,23 +15,23 @@ module.exports = class sucesso {
             descEn: 'Calculates the sucess of an attribute.',
             aliases: ["sucessos", "sucess"],
             helpPt: {
-                title: "<:dadosAjuda:766790214030852137> " + "$prefix$" + "sucesso", desc: `
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "sucesso", desc: `
             Este comando serve para calcular o sucesso do seu dado baseado nas regras do sistema **Call of Cthulhu**
         
         _Formato do comando:_
-        **${"$prefix$"}sucesso <valor>**
+        **${"/"}sucesso <valor>**
         
-        Ex: **${"$prefix$"}sucesso 55**`
+        Ex: **${"/"}sucesso 55**`
             },
 
             helpEn: {
-                title: "<:dadosAjuda:766790214030852137> " + "$prefix$" + "sucess", desc: `
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "sucesso", desc: `
             This command is used to calculate the success of your dice based on the rules of system **Call of Cthulhu**
         
         _Format of the command:_
-        **${"$prefix$"}sucess <value>**
+        **${"/"}sucesso <value>**
         
-        Ex: ${"$prefix$"}sucess 55`
+        Ex: ${"/"}sucesso 55`
             },
             run: this.execute
         }

@@ -84,11 +84,9 @@ module.exports = class Translate {
             ["pt-efd-uSF", `Não achei nenhuma ficha sua para poder enviar, tente criar uma nova agora ${prefix}ajuda ficha`],
             ["pt-efd-bF", "Essa é uma função que ainda está em beta fechada, em breve, será liberada a todos"],
             ["pt-efd-irtMF", "Você já possui o limite (5) de fichas IRT ativas"],
-
             ["pt-efd-fCE", `Tem um problema com essa ficha. Você ainda pode ver a ficha utilizando \`/enviartxt\``],
             ["pt-efd-fE", `No campo "${arguments['0'].cmd[0]}", o ${arguments['0'].cmd[1]} do campo é maior do que o Discord permite enviar (${arguments['0'].cmd[2]} caracteres)`],
             ["pt-efd-fE2", `Um das seções (embeds) da ficha, excede o limite total de caracteres do Discord (6000 caracteres por embed)`],
-
             ["pt-ea-nArg", `Você precisa me dizer pelo menos qual o atributo quer que eu envie, você pode ver a lista completa de atributos em ${prefix}ajuda atributos`],
             ["pt-ea-embedTi", "Ficha: "],
             ["pt-ea-atbSV", `O atributo "${arguments['0'].atb}" não tem nenhum valor salvo na ficha "${arguments['0'].nomeRpg}"`],
@@ -158,41 +156,17 @@ module.exports = class Translate {
             ["pt-onMsg-btSlashInfo", `Mais informações sobre a mudança`],
             ["pt-onGCreate-saudacao", `Olá humano lendo isso, obrigado por me adicionar no seu servidor, que tal dar uma olhada no **${prefix}ajuda**? Eu ainda estou em desenvolvimento se por um acaso acontecer algum problema, primeiro verifique as minhas permissões, caso o problema persistir, avise no **${prefix}sugestão**. If you prefer my commands in En-Us you can select this in ${prefix}language`],
             ["pt-onGCreate-saudacao2", `Olá humano lendo isso, obrigado por me adicionar no seu servidor, que tal dar uma olhada no **${prefix}ajuda**? Eu ainda estou em desenvolvimento se por um acaso acontecer algum problema, primeiro verifique as minhas permissões, caso o problema persistir, avise no **${prefix}sugestão**. If you prefer my commands in En-Us you can select this in ${prefix}language`],
-            // }
-            // ajuda.js {
+            
             ["pt-ajuda-main", `Aqui você pode ver a lista completa de comandos disponíveis!
     
-            O prefixo do BOT é \`${prefix}\` ou \`/\`
+            O prefixo do BOT é \`/\`. O prefixo \`${prefix}\` será descontinuado em breve.
             
-            <:cmdAjuda:766790214265733130> _Comandos do BOT:_
-            
-            <:dadosAjuda:766790214030852137> _Dado:_
-            ㅤㅤ**roll (r)** - Rola um dado
-            ㅤㅤ**insanidade (ins)** - Enviar uma insanidade aleatória
-            ㅤㅤ**sucesso** - Calcula o sucesso de um dado (Call Of Cthulhu)
-            <:fichaAjuda:766790214550814770> _Ficha:_
-            ㅤㅤ**ficha (f)** - Cria e Edita uma ficha
-            ㅤㅤ**atributos** - Lista todos os atributos
-            ㅤㅤ**listar** - Mostra o nome das suas fichas
-            ㅤㅤ**renomear** - Renomeia uma ficha
-            ㅤㅤ**apagar** - Apaga uma ficha
-            ㅤㅤ**enviar** - Envia sua ficha como embed
-            ㅤㅤ**enviar_txt** - Enviar sua ficha como .txt
-            ㅤㅤ**enviar_atributo (enviar_atb)** - Envia 1 atributo da sua ficha
-            <:outrosAjuda:766790214110019586> _Outros:_
-            ㅤㅤ**sugestão (bug, suporte)** - Envia uma mensagem para o BOT
-            ㅤㅤ**botinfo** - Mostra informações sobre o BOT
-            ㅤㅤ**linguagem** - Altera o idioma do BOT
-            ㅤㅤ**votar** - Envia o link para votar no BOT
-            ㅤㅤ**convite** - Envia o link para adicionar o BOT
-            ㅤㅤ**ping** - Mostra o ping do BOT
-            ㅤㅤ**termos** - Envia o link para ler os Termos de Uso do BOT
-            ㅤㅤ**config** - Configurações do usuário
+            Clique no menu abaixo para visualizar uma lista com os comandos disponíveis. Se ainda precisar de mais ajuda ou se tiver algum problema entre no meu servidor de suporte.
              
-            É recomendado ler os termos de uso do BOT
+            É recomendado ler os termos de uso do BOT.
              `],
-            ["pt-ajuda-btTermos", "Termos de Uso"],
 
+            ["pt-ajuda-btTermos", "Termos de Uso"],
             ["pt-ajuda-atributos", `
             \nO atributo **extras** serve para adicionar atributos customizados a sua ficha
     
@@ -204,7 +178,6 @@ module.exports = class Translate {
             <:avisoAjuda:766826097051828235> **Este formato de comando só é válido para o atributos Extras**
     
             `],
-
             ["pt-ajuda-tMain", "Meus Comandos"],
             ["pt-ajuda-tAtributos", "Atualmente os atributos possíveis são:"],
             ["pt-ajuda-mPH", "Selecione um comando para visualizar"],
@@ -279,6 +252,21 @@ module.exports = class Translate {
             ["pt-config-btDesIS", "Desativar insanidade secreta"],
             ["pt-config-btActIS", "Ativar insanidade secreta"],
             ["pt-config-btF", "Finalizar"],
+            ["pt-verF-dm/", `<@${arguments[0].msg.author.id}>, este comando só pode ser executado via DM ou \`\/\`!`],
+            ["pt-verF-nFE", `Não achei nenhuma ficha deste usuário com o nome "${arguments[0].nomeRpg}"`],
+            ["pt-verF-sI", `Senha incorreta para a ficha "${arguments[0].nomeRpg}"`],
+            ["pt-verF-nArg", `Precisa de ajuda com o comando? tente usar ${prefix}ajuda!`],
+            ["pt-verF-nArg1", `Você precisa informar o nome da ficha que deseja visualizar!`],
+            ["pt-verF-nArg2", `Você precisa informar a senha da ficha que deseja visualizar!`],
+            ["pt-verF-nUE", "Não encontrei nenhum usuário com este ID"],
+            ["pt-verF-nFUE", `Não encontrei nenhuma ficha do usuário "${arguments[0].cmd}" com o nome "${arguments[0].nomeRpg}" `],
+            ["pt-verS-dm/", `Este comando só pode ser executado via DM ou \`\/\`!`],
+            ["pt-verS-nFC", "Você não possuí nenhuma ficha criada"],
+            ["pt-verS-embedTi", "Senha$ da$ sua$ ficha$:"],
+            ["pt-rS-dm/", `Este comando só pode ser executado via DM ou \`\/\`!`],
+            ["pt-rS-nArg", `Você precisa informar o nome da ficha que deseja resetar a senha!`],
+            ["pt-rS-nFE", `Não achei nenhuma ficha com o nome "${arguments[0].nomeRpg}"`],
+            ["pt-rS-sR", `Sua senha foi resetada com sucesso, a nova senha de ficha "${arguments[0].nomeRpg}" é: **${arguments[0].cmd}**`],
 
             // Fim da parte PT-BR
 
@@ -417,37 +405,13 @@ module.exports = class Translate {
             ["en-onMsg-btSlashInfo", `More information about the change`],
             ["en-onGCreate-saudacao", `Hello human reading this, thanks for adding me to your server, how about taking a look at ** ${prefix} help **? I'm still in development if by any chance a problem happens, first check my permissions, if the problem persists, let me know at **${prefix}suggestion**. Se você preferir os meus comandos em Pt-Br, você pode selecionar isso em ${prefix}linguagem`],
             ["en-onGCreate-saudacao2", `Hello human reading this, thanks for adding me to your server, how about taking a look at **${prefix}help**? I'm still in development if by any chance a problem happens, first check my permissions, if the problem persists, let me know at **${prefix}suggestion**. Se você preferir os meus comandos em Pt-Br, você pode selecionar isso em ${prefix}linguagem`],
-            ["en-ajuda-main", `
-            Here you can see the complete list of available commands!
+            ["en-ajuda-main", `Here you can see the full list of available commands!
     
-            The prefix of the BOT is \`${prefix}\` or \`/\`
+            The BOT prefix is \`/\`. The prefix \`${prefix}\`  will be discontinued soon.
             
-            <:cmdAjuda:766790214265733130> _Commands of the BOT:_
-            
-            <:dadosAjuda:766790214030852137> _Dice:_
-            ㅤㅤ**roll (r)** - Roll a dice
-            ㅤㅤ**insanity (ins)** - Send a random insanity
-            ㅤㅤ**sucess** - Calculates the success of a dice (Call Of Cthulhu)
-            <:fichaAjuda:766790214550814770> _Sheet:_
-            ㅤㅤ**sheet (s)** - Creates and edit a sheet
-            ㅤㅤ**attributes** - List all attributes
-            ㅤㅤ**list** - Shows the name of your sheets
-            ㅤㅤ**rename** - Ranames a sheet
-            ㅤㅤ**delete** - Deletes a sheet
-            ㅤㅤ**send** - Sends your sheet as embed
-            ㅤㅤ**send_txt** - Sends your sheet as .txt
-            ㅤㅤ**send_attribute (send_atb)** - Sends only 1 attribute from your sheet
-            <:outrosAjuda:766790214110019586> _Others:_
-            ㅤㅤ**suggestion (bug, support)** - Sends a message to the BOT
-            ㅤㅤ**botinfo** - Shows information about the BOT
-            ㅤㅤ**language** - Change de language of the BOT
-            ㅤㅤ**vote** - Sends the link to vote for the BOT
-            ㅤㅤ**invite** - Sends the link to add the BOT
-            ㅤㅤ**ping** - Displays the BOT's ping
-            ㅤㅤ**terms** - Send the link to read the Terms Of Use of the BOT
-            ㅤㅤ**config** - User's config
+            Click on the menu below to see a list of available commands. If you still need more help or have any problems join my support server.
              
-            It is recommended to read BOT's Terms of Use. You can use ${prefix}terms any time.
+            It is recommended that you read the BOT's terms of use.
              `],
             ["en-ajuda-btTermos", "Terms of Use"],
 
@@ -537,6 +501,22 @@ module.exports = class Translate {
             ["en-config-btDesIS", "Disable secret insanity"],
             ["en-config-btActIS", "Enable secret insanity"],
             ["en-config-btF", "Finish"],
+            ["en-verF-dm/", `<@${arguments[0].msg.author.id}>, this command can only be executed via DM or \`\/\`!`],
+            ["en-verF-nFE", `I could not find any sheet for this user with the name "${arguments[0].nomeRpg}"`],
+            ["en-verF-sI", `Incorrect password for sheet "${arguments[0].nomeRpg}"`],
+            ["en-verF-nArg", `Need help with command? try using ${prefix}help`],
+            ["en-verF-nArg1", `You must enter the name of the sheet you want to view!`],
+            ["en-verF-nArg2", `You must enter the password of the sheet you want to view!`],
+            ["en-verF-nUE", "I could not find any user with this ID"],
+            ["en-verF-nFUE", `I could not find any sheet of user "${arguments[0].cmd}" with the name "${arguments[0].nomeRpg}" `],
+            ["en-verS-dm/", `This command can only be executed via DM or \`\/\`!`],
+            ["en-verS-nFC", "You don't have any sheet created"],
+            ["en-verS-embedTi", "Password$ for your$ token$:"],
+            ["en-rS-dm/", `This command can only be executed via DM or \`\/\`!`],
+            ["en-rS-nArg", `You must enter the name of the sheet you wish to reset the password!`],
+            ["en-rS-nFE", `I couldn't find any sheet with the name "${arguments[0].nomeRpg}"`],
+            ["en-rS-sR", `Your password was successfully reset, the new password of "${arguments[0].nomeRpg}" is: **${arguments[0].cmd}**`],
+
             //Fim da Parte EN-US
         ])
 

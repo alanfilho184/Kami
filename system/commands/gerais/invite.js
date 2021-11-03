@@ -13,15 +13,15 @@ module.exports = class invite {
             descEn: 'Sends the link to add the BOT.',
             aliases: ["invite", "link"],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "convite", desc: `Esse comando mostra o link para que você possa convidar o BOT para outros servidores
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "convite", desc: `Esse comando mostra o link para que você possa convidar o BOT para outros servidores
                 
-                Ex: **${"$prefix$"}convite**`
+                Ex: **${"/"}convite**`
             },
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "invite", desc: `This command shows you the link so you can invite the BOT to other guilds
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "convite", desc: `This command shows you the link so you can invite the BOT to other guilds
             
-                Ex: **${"$prefix$"}invite**`
+                Ex: **${"/"}convite**`
             },
             run: this.execute
         }

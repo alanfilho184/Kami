@@ -13,23 +13,23 @@ module.exports = class enviar_atb {
             descEn: 'Sends only 1 attribute of a sheet already created.',
             aliases: ["enviaratb", "sendatb", "sendatributte"],
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "enviar_atributo", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "enviaratributo", desc: `
             Este comando serve para receber somente um atributo da sua ficha em forma de embed do Discord
         
             _Formato do comando:_
-            **${"$prefix$"}enviar_atributo <atributo> <nome_da_ficha>**
+            **${"/"}enviaratributo <atributo> <nome_da_ficha>**
             
-            Ex: **${"$prefix$"}enviar_atributo sanidade RPG_Kami**`
+            Ex: **${"/"}enviaratributo sanidade RPG_Kami**`
             },
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "send_attribute", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "enviaratributo", desc: `
             This command is used to receive only one attribute from your sheet as a Discord embed
         
             _Format of the command:_
-            **${"$prefix$"}send_attribute <attribute> <sheet_name>**
+            **${"/"}enviaratributo <attribute> <sheet_name>**
             
-            Ex: **${"$prefix$"}send_attribute sanity RPG_Kami**`
+            Ex: **${"/"}enviaratributo sanity RPG_Kami**`
             },
             run: this.execute
         }

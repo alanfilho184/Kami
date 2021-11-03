@@ -18,15 +18,15 @@ module.exports = class botinfo {
             descEn: 'Show technical information and links related with the BOT.',
             aliases: ["bi"],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "botinfo", desc: `Este comando serve para ver informações do bot, como links relacionados ao bot, uso de recursos e quantidade de usuários
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "botinfo", desc: `Este comando serve para ver informações do bot, como links relacionados ao bot, uso de recursos e quantidade de usuários
         
-            Ex: **${"$prefix$"}botinfo**`
+            Ex: **${"/"}botinfo**`
             },
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "botinfo", desc: `This command is used to see bot information, such as links related to the bot, resource usage and amount of users
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "botinfo", desc: `This command is used to see bot information, such as links related to the bot, resource usage and amount of users
         
-            Ex: **${"$prefix$"}botinfo**`
+            Ex: **${"/"}botinfo**`
             },
             run: this.execute
         }

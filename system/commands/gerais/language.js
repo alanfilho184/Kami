@@ -16,20 +16,20 @@ module.exports = class lang {
             descEn: 'Changes the BOT\' language.',
             aliases: ['linguagem', 'language'],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "linguagem", desc: `
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "linguagem", desc: `
             Esse comando serve para que você possa escolher em qual linguagem prefere utilizar os comandos, basta utiliza-ló e reagir no idioma que preferir
         
-            Ex: **${"$prefix$"}linguagem**
+            Ex: **${"/"}linguagem**
         
             Atualmente, os idiomas disponíveis são:
             🇧🇷 PT-BR,
             🇺🇸 EN-US`},
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "language", desc: `
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "linguagem", desc: `
             This command is for you to choose in which language you prefer to use the commands, just use it and react in the language you prefer
         
-            Ex: **${"$prefix$"}language**
+            Ex: **${"/"}linguagem**
         
             Currently, the available languages are:
             🇧🇷 PT-BR,

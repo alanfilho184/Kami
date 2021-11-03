@@ -13,15 +13,15 @@ module.exports = class vote {
             descEn: 'Sends the link to vote on the BOT.',
             aliases: ["Vote"],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "votar", desc: `Esse comando mostra o link para que você possa votar no BOT no site Bestlist
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "votar", desc: `Esse comando mostra o link para que você possa votar no BOT no site Bestlist
                 
-                Ex: **${"$prefix$"}votar**`
+                Ex: **${"/"}votar**`
             },
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "vote", desc: `This command shows you the link so you can vote for the BOT on the Bestlist website
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "votar", desc: `This command shows you the link so you can vote for the BOT on the Bestlist website
             
-                Ex: **${"$prefix$"}vote**`
+                Ex: **${"/"}votar**`
             },
             run: this.execute
         }

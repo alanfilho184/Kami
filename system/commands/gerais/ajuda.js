@@ -17,15 +17,15 @@ module.exports = class ajuda {
             descEn: 'Show a complete list with the BOT\'s commands.',
             aliases: ["help", "comandos", "commands", "atributos", "attributes", "socorro", "sos"],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "ajuda", desc: `Esse comando mostra uma lista com todos os outros comandos do BOT
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "ajuda", desc: `Esse comando mostra uma lista com todos os outros comandos do BOT
                 
-                Ex: **${"$prefix$"}ajuda**`
+                Ex: **${"/"}ajuda**`
             },
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "help", desc: `This command shows a list with all the others commands of the BOT
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "ajuda", desc: `This command shows a list with all the others commands of the BOT
             
-                Ex: **${"$prefix$"}help**`
+                Ex: **${"/"}ajuda**`
             },
             run: this.execute
         }

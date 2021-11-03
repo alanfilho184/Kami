@@ -15,15 +15,15 @@ module.exports = class ping {
             descEn: 'Shows the BOT\'s response times.',
             aliases: ['ping'],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "ping", desc: `Esse comando serve para verificar o tempo de resposta de diversos locais do BOT
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "ping", desc: `Esse comando serve para verificar o tempo de resposta de diversos locais do BOT
                 
-                Ex: **${"$prefix$"}ping**`
+                Ex: **${"/"}ping**`
             },
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "ping", desc: `This command is used to check the response time of several locations of the BOT
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "ping", desc: `This command is used to check the response time of several locations of the BOT
             
-                Ex: **${"$prefix$"}ping**`
+                Ex: **${"/"}ping**`
             },
             run: this.execute
         };

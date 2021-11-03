@@ -13,21 +13,21 @@ module.exports = class renomear {
             descEn: 'Rename a sheet you already have created on the BOT\'s.',
             aliases: ["renomear", "rename"],
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "renomear", desc: `Com esse comando você pode alterar o nome de uma ficha sua já criada
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "renomear", desc: `Com esse comando você pode alterar o nome de uma ficha sua já criada
 
     _Formato do comando:_
-    **${"$prefix$"}renomear <nomeAntigo> <nomeNovo>**
+    **${"/"}renomear <nomeAntigo> <nomeNovo>**
 
-    Ex: **${"$prefix$"}renomar RPG_Kami Novo_RPG_Kami**`
+    Ex: **${"/"}renomar RPG_Kami Novo_RPG_Kami**`
             },
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "$prefix$" + "rename", desc: `
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "renomear", desc: `
     With this command you can change the name of a sheet of yours already created
 
     _Format of the command:_
-    **${"$prefix$"}rename <nameOld> <nameNew>**
-    Ex: **${"$prefix$"}rename RPG_Kami RPG_Kami2**`
+    **${"/"}renomear <nameOld> <nameNew>**
+    Ex: **${"/"}renomear RPG_Kami RPG_Kami2**`
             },
             run: this.execute
         }

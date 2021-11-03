@@ -15,15 +15,15 @@ module.exports = class config {
             descEn: 'Configuration of some BOT\'s commands.',
             aliases: ["configuração"],
             helpPt: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "config", desc: `Esse comando mostra opções de diversos comandos
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "config", desc: `Esse comando mostra opções de diversos comandos
                 
-                Ex: **${"$prefix$"}config**`
+                Ex: **${"/"}config**`
             },
 
             helpEn: {
-                title: "<:outrosAjuda:766790214110019586> " + "$prefix$" + "invite", desc: `This command shows options of many commands
+                title: "<:outrosAjuda:766790214110019586> " + "/" + "config", desc: `This command shows options of many commands
             
-                Ex: **${"$prefix$"}config**`
+                Ex: **${"/"}config**`
             },
             run: this.execute
         }
