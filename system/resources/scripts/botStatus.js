@@ -6,11 +6,12 @@ const pidusage = require("pidusage")
 const DBInfo = new Object()
 
 var info = {
-    serverCount: 62,
-    userCount: 3384,
-    fichasCount: 106,
+    serverCount: 130,
+    userCount: 6049,
+    fichasCount: 1195,
     commandsToday: 0,
-    commandsTotal: 4246,
+    commandsTotal: 29971,
+    oldInfo: true
 }
 
 module.exports = class botStatus {
@@ -79,6 +80,7 @@ module.exports = class botStatus {
             ping: client.ws.ping,
             dbSize: dbSize,
             dbPing: DBInfo.ping,
+            oldInfo: false
         }
 
         table

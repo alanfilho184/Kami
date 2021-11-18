@@ -96,7 +96,6 @@ module.exports = {
             log.info(msg.author.tag + " - DM" + " | " + msg.content)
         }
 
-        console.log(cooldown)
         cooldownU = cooldown.get(msg.author.id);
         if (cooldownU) {
             remaining = cooldownU - moment().valueOf();

@@ -25,7 +25,7 @@ module.exports = class MenuClient extends Client {
         this.setCache()
         this.setTl()
         this.startup()
-        //this.startAPI() 
+        this.startAPI()
 
     }
 
@@ -123,9 +123,15 @@ module.exports = class MenuClient extends Client {
         this.log = logs.log
 
         process.on("uncaughtException", (err) => {
+            if (err == "TypeError: Cannot read property 'send' of null") {
+                process.exit(1)
+            }
             logs.log.error(err, true)
         })
         process.on("unhandledRejection", (err) => {
+            if (err == "TypeError: Cannot read property 'send' of null") {
+                process.exit(1)
+            }
             logs.log.error(err, true)
         })
 
@@ -174,6 +180,7 @@ module.exports = class MenuClient extends Client {
 
         this.botStatus = BS
 
+        setTimeout(() => BS.updateBS(this), 10000)
         setInterval(() => {
             BS.updateBS(this)
         }, toMs.parse("1 minuto"))
@@ -181,12 +188,9 @@ module.exports = class MenuClient extends Client {
         logs.log.start("Recursos gerais")
     }
 
-    // startAPI() {
-    //     require("./API.js").api(this)
-    //     setTimeout(() => {
-    //         require("./API.js").api(this)
-    //     }, toMs.parse("1 hora"))
-    // }
+    startAPI() {
+        require("./api/app.js").api(this)
+    }
 
     async login(token = this.token) {
         super.login(token)
