@@ -11,6 +11,7 @@ var info = {
     fichasCount: 1195,
     commandsToday: 0,
     commandsTotal: 29971,
+    inviteLink: "https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=388160&scope=bot%20applications.commands",
     oldInfo: true
 }
 
@@ -80,6 +81,7 @@ module.exports = class botStatus {
             ping: client.ws.ping,
             dbSize: dbSize,
             dbPing: DBInfo.ping,
+            inviteLink: `https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=${client.settings.permissions}&scope=bot%20applications.commands`,
             oldInfo: false
         }
 
