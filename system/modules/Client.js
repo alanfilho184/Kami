@@ -25,7 +25,7 @@ module.exports = class MenuClient extends Client {
         this.setCache()
         this.setTl()
         this.startup()
-        this.startAPI()
+        if (options.prefix == "k!") { this.startAPI() }
 
     }
 
@@ -189,7 +189,18 @@ module.exports = class MenuClient extends Client {
     }
 
     startAPI() {
-        require("./api/app.js").api(this)
+        const api = require("./API")
+        const API = new api(this)
+
+        setTimeout(() => {
+            API.postBotinfo()
+            API.postCommands()
+        }, toMs.parse("30 segundos"))
+
+        setInterval(() => {
+            API.postBotinfo()
+            API.postCommands()
+        }, toMs.parse("30 minutos"))
     }
 
     async login(token = this.token) {
