@@ -151,8 +151,10 @@ module.exports = class Translate {
             ["pt-onMsg-sPerm", "Você precisa ter permissões de administrador, gerenciar canais ou de gerenciar servidor para poder alterar a minha língua"],
             ["pt-onMsg-cmdDsbDesc", `Este comando está desabilitado temporariamente\n\nMotivo: ${arguments[0].cmd}`],
             ["pt-onMsg-cmdDsbTi", "Comando Desabilitado"],
-            ["pt-onMsg-slash", `O Discord decidiu que em alguns meses, os BOT's irão precisar de uma permissão especial para receber o conteúdo das mensagens, devido a isso, todos os comandos do BOT serão migrados para ** \`\ / \`\ ** e comandos por mensagens comuns deixarão de funcionar. Em caso de os comandos ** \`\ / \`\ ** do BOT não estarem disponíveis em seu servidor, remova o BOT do servidor e adicione novamente utilizando o link abaixo.`],
-            ["pt-onMsg-btSlash", `Link para adicionar o BOT`],
+            ["pt-onMsg-slash", `Como vem sendo avisado à algum tempo, o BOT irá parar de aceitar comandos via mensagem, somente comandos ** \`\ / \`\ ** estarão disponíveis. Está mudança entrará em vigor a partir da próxima atualização do BOT, que deve acontecer nas próximas semanas.
+\nPara ajuda utilizando comandos ** \`\ / \`\ ** Utilize o comando ** \`\/ajuda\`\ **, acesse o primeiro link abaixo ou entre no meu Discord de suporte.
+            `],
+            ["pt-onMsg-btSlash", `Tutoriais do Kami`],
             ["pt-onMsg-btSlashInfo", `Mais informações sobre a mudança`],
             ["pt-onGCreate-saudacao", `Olá humano lendo isso, obrigado por me adicionar no seu servidor, que tal dar uma olhada no **${prefix}ajuda**? Eu ainda estou em desenvolvimento se por um acaso acontecer algum problema, primeiro verifique as minhas permissões, caso o problema persistir, avise no **${prefix}sugestão**. If you prefer my commands in En-Us you can select this in ${prefix}language`],
             ["pt-onGCreate-saudacao2", `Olá humano lendo isso, obrigado por me adicionar no seu servidor, que tal dar uma olhada no **${prefix}ajuda**? Eu ainda estou em desenvolvimento se por um acaso acontecer algum problema, primeiro verifique as minhas permissões, caso o problema persistir, avise no **${prefix}sugestão**. If you prefer my commands in En-Us you can select this in ${prefix}language`],
@@ -267,7 +269,6 @@ module.exports = class Translate {
             ["pt-rS-nArg", `Você precisa informar o nome da ficha que deseja resetar a senha!`],
             ["pt-rS-nFE", `Não achei nenhuma ficha com o nome "${arguments[0].nomeRpg}"`],
             ["pt-rS-sR", `Sua senha foi resetada com sucesso, a nova senha de ficha "${arguments[0].nomeRpg}" é: **${arguments[0].cmd}**`],
-
             // Fim da parte PT-BR
 
             // Inicio da parte EN-US
@@ -331,11 +332,9 @@ module.exports = class Translate {
             ["en-efd-uSF", `I couldn't find any of your sheets to send, try create a new one now ${prefix}help sheet`],
             ["en-efd-bF", "This is a function that is still in beta closed, will soon be released to all users"],
             ["en-efd-irtMF", "You already have the limit (5) of IRT sheets active"],
-
             ["en-efd-fCE", `There is a problem with this sheet. You can still view the sheet using \`/enviartxt\``],
             ["en-efd-fE", `In the field "${arguments['0'].cmd[0]}", the ${arguments['0'].cmd[1]} of the field is larger than the Discord allows to send (${arguments['0'].cmd[2]} characters)`],
             ["en-efd-fE2", `One of the sections (embeds) of the sheet, exceeds Discord's total character limit (6000 characters per embed)`],
-
             ["en-ea-nArg", `You need to tell me at least which attribute you want me to send, you can see the complete list of attributes in ${prefix}help attributes`],
             ["en-ea-uSF", `I couldn't find any of your sheets to send a attribute, try create a new one now ${prefix}help sheet`],
             ["en-ea-embedTi", "Sheet: "],
@@ -400,8 +399,10 @@ module.exports = class Translate {
             ["en-onMsg-sPerm", "You need to have administrator, manage channels or manage server permissions to change my language"],
             ["en-onMsg-cmdDsbDesc", `This command is temporarily disabled\n\n Reason: ${arguments[0].cmd}`],
             ["en-onMsg-cmdDsbTi", "Command Disabled"],
-            ["en-onMsg-slash", `Discord has decided that in a few months, BOTs will need special permission to receive message content, due to this, all BOT commands will be migrated to ** \`\ / \`\ ** and regular message commands will no longer work. In case the BOT's ** \`\ / \`\ ** commands are not available on your server, remove the BOT from the server and add it again using the link below.`],
-            ["en-onMsg-btSlash", `Link to add the BOT`],
+            ["en-onMsg-slash", `As we have been warning for some time, the BOT will stop accepting commands via message, only ** \`\ / \`\ ** commands will be available. This change will take effect with the next BOT update, which should happen in the next few weeks.
+            \nFor help using ** \`\ / \`\ ** commands, use the ** \`\ /ajuda \`\ ** command, go to the first link below or join my Discord Support Server.
+            `],
+            ["en-onMsg-btSlash", `Kami's Tutorials`],
             ["en-onMsg-btSlashInfo", `More information about the change`],
             ["en-onGCreate-saudacao", `Hello human reading this, thanks for adding me to your server, how about taking a look at ** ${prefix} help **? I'm still in development if by any chance a problem happens, first check my permissions, if the problem persists, let me know at **${prefix}suggestion**. Se você preferir os meus comandos em Pt-Br, você pode selecionar isso em ${prefix}linguagem`],
             ["en-onGCreate-saudacao2", `Hello human reading this, thanks for adding me to your server, how about taking a look at **${prefix}help**? I'm still in development if by any chance a problem happens, first check my permissions, if the problem persists, let me know at **${prefix}suggestion**. Se você preferir os meus comandos em Pt-Br, você pode selecionar isso em ${prefix}linguagem`],

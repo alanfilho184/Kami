@@ -37,7 +37,7 @@ module.exports = class termos {
         const bTermos = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: msg.lang + "termos-embedFT" }))
-            .setURL(msg.lang == "pt-" ? "https://kamibot.netlify.app/termos" : "https://kamibot.netlify.app/terms")
+            .setURL(`https://kamibot.vercel.app/short/termos/${msg.lang.replace("-", "")}`)
 
 
         msg.reply({ embeds: [termEmbed], components: [{ type: 1, components: [bTermos] }] })

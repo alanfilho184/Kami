@@ -46,7 +46,7 @@ module.exports = class ajuda {
         const bTermos = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: msg.lang + "ajuda-btTermos" }))
-            .setURL(msg.lang == "pt-" ? "https://kamibot.netlify.app/termos" : "https://kamibot.netlify.app/terms")
+            .setURL(`https://kamibot.vercel.app/short/termos/${msg.lang.replace("-", "")}`)
 
         const bSup = new client.Discord.MessageButton()
             .setStyle(5)

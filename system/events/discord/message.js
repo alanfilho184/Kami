@@ -106,6 +106,11 @@ module.exports = {
 
             occurencies.set(msg.author.id, occurencies.get(msg.author.id) + 1 || 1)
 
+            if (remaining < 0) {
+                cooldown.clear()
+                occurencies.clear()
+            }
+
             if (occurencies.get(msg.author.id) == 1) {
                 if (!msg.slash) {
                     msg.reply(client.tl({ local: msg.lang + "as-cooldown", valor: remaining }))
@@ -113,11 +118,6 @@ module.exports = {
                 else {
                     msg.pureReply({ content: client.tl({ local: msg.lang + "as-cooldown", valor: remaining }), ephemeral: true })
                 }
-            }
-
-            if (remaining < 0) {
-                cooldown.clear()
-                occurencies.clear()
             }
 
             setTimeout(function () {
@@ -168,7 +168,7 @@ module.exports = {
                             const btLink = new client.Discord.MessageButton()
                                 .setStyle(5)
                                 .setLabel(client.tl({ local: msg.lang + "onMsg-btSlash" }))
-                                .setURL(`https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=${client.settings.permissions}&scope=bot%20applications.commands`)
+                                .setURL(`https://kamibot.vercel.app/tutoriais`)
 
                             const btInfo = new client.Discord.MessageButton()
                                 .setStyle(5)
@@ -235,8 +235,8 @@ module.exports = {
                             const btLink = new client.Discord.MessageButton()
                                 .setStyle(5)
                                 .setLabel(client.tl({ local: msg.lang + "onMsg-btSlash" }))
-                                .setURL(`https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=${client.settings.permissions}&scope=bot%20applications.commands`)
-
+                                .setURL(`https://kamibot.vercel.app/tutoriais`)
+                                
                             const btInfo = new client.Discord.MessageButton()
                                 .setStyle(5)
                                 .setLabel(client.tl({ local: msg.lang + "onMsg-btSlashInfo" }))
