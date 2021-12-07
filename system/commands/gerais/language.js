@@ -4,17 +4,15 @@ const setLang = require("../../resources/scripts/lang").setLang
 module.exports = class lang {
     constructor() {
         return {
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL', 'ADD_REACTIONS', 'MANAGE_MESSAGES'],
-                user: [],
-                owner: false,
-            },
+            ownerOnly: false,
             name: "linguagem",
-            cat: "Linguagem",
-            catEn: "Language",
+            fName: "Linguagem",
+            fNameEn: "Language",
             desc: 'Altera o idioma do BOT.',
             descEn: 'Changes the BOT\' language.',
-            aliases: ['linguagem', 'language'],
+            args: [],
+            options: [],
+            type: 1,
             helpPt: {
                 title: "<:outrosAjuda:766790214110019586> " + "/" + "linguagem", desc: `
             Esse comando serve para que você possa escolher em qual linguagem prefere utilizar os comandos, basta utiliza-ló e reagir no idioma que preferir
@@ -38,11 +36,13 @@ module.exports = class lang {
         }
     }
 
-    async execute(client, msg) {
-        if (msg.channel.type == "DM") {
-            const lEmbedDm = new client.Discord.MessageEmbed()
-            lEmbedDm.setTitle(`Escolha que línguagem prefere usar meus comandos | Choose which language you prefer use my commands`)
-            lEmbedDm.setDescription(`
+    execute(client, int) {
+        int.deferReply({ ephemeral: true })
+            .then(async () => {
+                if (int.guildId == null) {
+                    const lEmbedDm = new client.Discord.MessageEmbed()
+                    lEmbedDm.setTitle(`Escolha que línguagem prefere usar meus comandos | Choose which language you prefer use my commands`)
+                    lEmbedDm.setDescription(`
         Reaja na língua que preferir, lembrando que a linguaguem original é Pt-Br
         React in the language you prefer, remembering that the original language is Pt-Br
 
@@ -51,142 +51,136 @@ module.exports = class lang {
     
         **Mais línguas disponíveis em breve**
         **More languages available soon**`)
-            lEmbedDm.setColor(client.settings.color)
+                    lEmbedDm.setColor(client.settings.color)
 
-            async function react(msg) {
+                    const uniqueID = `${Date.now()}`
 
-                const uniqueID = `${Date.now()}`
+                    const bPT = new client.Discord.MessageButton()
+                        .setStyle(2)
+                        .setLabel("PT-BR")
+                        .setEmoji('🇧🇷')
+                        .setCustomId("pt|" + uniqueID)
 
-                const bPT = new client.Discord.MessageButton()
-                    .setStyle(2)
-                    .setLabel("PT-BR")
-                    .setEmoji('🇧🇷')
-                    .setCustomId("pt|" + uniqueID)
+                    const bEN = new client.Discord.MessageButton()
+                        .setStyle(2)
+                        .setLabel("EN-US")
+                        .setEmoji('🇺🇸')
+                        .setCustomId("en|" + uniqueID)
 
-                const bEN = new client.Discord.MessageButton()
-                    .setStyle(2)
-                    .setLabel("EN-US")
-                    .setEmoji('🇺🇸')
-                    .setCustomId("en|" + uniqueID)
+                    const bCanc = new client.Discord.MessageButton()
+                        .setStyle(4)
+                        .setLabel("Cancelar | Cancel")
+                        .setCustomId("canc|" + uniqueID)
 
-                const bCanc = new client.Discord.MessageButton()
-                    .setStyle(4)
-                    .setLabel("Cancelar | Cancel")
-                    .setCustomId("canc|" + uniqueID)
 
-                msg.author.send({ embeds: [lEmbedDm], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
-                    .then(botmsg => {
+                    int.editReply({ embeds: [lEmbedDm], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
+                        .then(botmsg => {
+                            console.log(botmsg)
 
-                        const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === msg.author.id
+                            const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
 
-                        botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })
-                            .then(interaction => {
-                                const choice = interaction.customId.split("|")[0]
+                            botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })
+                                .then(interaction => {
+                                    const choice = interaction.customId.split("|")[0]
 
-                                if (choice == "pt") {
-                                    setLang(client, msg, "user", "pt-")
-                                    botmsg.edit({ content: client.tl({ local: `pt-eL-brDm` }), embeds: [], components: [] })
-                                    return "pt-"
-                                }
-                                else if (choice == "en") {
-                                    setLang(client, msg, "user", "en-")
-                                    botmsg.edit({ content: client.tl({ local: `en-eL-enDm` }), embeds: [], components: [] })
-                                    return "en-"
-                                }
-                                else if (choice == "canc") {
-                                    botmsg.edit({ content: `Ok, nada foi selecionado | Ok, nothing was selected`, embeds: [], components: [] })
+                                    if (choice == "pt") {
+                                        setLang(client, int, "user", "pt-")
+                                        botmsg.edit({ content: client.tl({ local: `pt-eL-brDm` }), embeds: [], components: [] })
+                                        return "pt-"
+                                    }
+                                    else if (choice == "en") {
+                                        setLang(client, int, "user", "en-")
+                                        botmsg.edit({ content: client.tl({ local: `en-eL-enDm` }), embeds: [], components: [] })
+                                        return "en-"
+                                    }
+                                    else if (choice == "canc") {
+                                        botmsg.edit({ content: `Ok, nada foi selecionado | Ok, nothing was selected`, embeds: [], components: [] })
 
-                                    return
-                                }
-                            })
-                            // .catch(err => {
-                            //     if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                            //         return botmsg.edit({ content: client.tl({ local: msg.lang + "eL-sR", msg: msg }), embeds: [], components: [] })
-                            //     }
-                            //     else {
-                            //         client.log.error(err, true)
-                            //         return
-                            //     }
-                            // })
-                    })
+                                        return
+                                    }
+                                })
+                                .catch(err => {
+                                    if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                                        return botmsg.edit({ content: client.tl({ local: int.lang + "eL-sR", msg: int }), embeds: [], components: [] })
+                                    }
+                                    else {
+                                        client.log.error(err, true)
+                                        return
+                                    }
+                                })
+                        })
 
-            }
-
-            react(msg)
-        }
-        if (msg.channel.type == "GUILD_TEXT") {
-
-            if (msg.author.id != client.settings.owner) {
-                if (!msg.member.permissions.has("ADMINISTRATOR") || !msg.member.permissions.has("MANAGE_CHANNELS") || !msg.member.permissions.has("MANAGE_GUILD")) {
-                    return msg.reply(client.tl({ local: msg.lang + "onMsg-sPerm" }))
                 }
-            }
-            const lEmbed = new client.Discord.MessageEmbed()
+                else {
 
-            var server = msg.guild
+                    if (int.user.id != client.settings.owner) {
+                        if (!int.member.permissions.has("ADMINISTRATOR") || !int.member.permissions.has("MANAGE_CHANNELS") || !int.member.permissions.has("MANAGE_GUILD")) {
+                            return int.reply(client.tl({ local: int.lang + "onMsg-sPerm" }))
+                        }
+                    }
+                    const lEmbed = new client.Discord.MessageEmbed()
 
-            lEmbed.setTitle(client.tl({ local: msg.lang + "eL-embedTi", msg: msg }))
-            lEmbed.setDescription(client.tl({ local: msg.lang + "eL-embedDesc", msg: msg }))
-            lEmbed.setColor(client.settings.color)
+                    var server = int.member.guild
 
-            async function react(msg) {
-                const uniqueID = `${Date.now()}`
+                    lEmbed.setTitle(client.tl({ local: int.lang + "eL-embedTi", msg: int }))
+                    lEmbed.setDescription(client.tl({ local: int.lang + "eL-embedDesc", msg: int }))
+                    lEmbed.setColor(client.settings.color)
 
-                const bPT = new client.Discord.MessageButton()
-                    .setStyle(2)
-                    .setLabel("PT-BR")
-                    .setEmoji('🇧🇷')
-                    .setDisabled(msg.lang == "pt-")
-                    .setCustomId("pt|" + uniqueID)
+                    const uniqueID = `${Date.now()}`
 
-                const bEN = new client.Discord.MessageButton()
-                    .setStyle(2)
-                    .setLabel("EN-US")
-                    .setEmoji('🇺🇸')
-                    .setDisabled(msg.lang == "en-")
-                    .setCustomId("en|" + uniqueID)
+                    const bPT = new client.Discord.MessageButton()
+                        .setStyle(2)
+                        .setLabel("PT-BR")
+                        .setEmoji('🇧🇷')
+                        .setDisabled(int.lang == "pt-")
+                        .setCustomId("pt|" + uniqueID)
 
-                const bCanc = new client.Discord.MessageButton()
-                    .setStyle(4)
-                    .setLabel(client.tl({ local: msg.lang + "bt-canc" }))
-                    .setCustomId("canc|" + uniqueID)
+                    const bEN = new client.Discord.MessageButton()
+                        .setStyle(2)
+                        .setLabel("EN-US")
+                        .setEmoji('🇺🇸')
+                        .setDisabled(int.lang == "en-")
+                        .setCustomId("en|" + uniqueID)
+
+                    const bCanc = new client.Discord.MessageButton()
+                        .setStyle(4)
+                        .setLabel(client.tl({ local: int.lang + "bt-canc" }))
+                        .setCustomId("canc|" + uniqueID)
 
 
-                msg.reply({ embeds: [lEmbed], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
-                    .then(botmsg => {
+                    int.editReply({ embeds: [lEmbed], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
+                        .then(botmsg => {
 
-                        const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === msg.author.id
+                            const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
 
-                        botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })
-                            .then(interaction => {
-                                const choice = interaction.customId.split("|")[0]
+                            botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })
+                                .then(interaction => {
+                                    const choice = interaction.customId.split("|")[0]
 
-                                if (choice == "pt") {
-                                    setLang(client, msg, "server", "pt-")
-                                    return botmsg.edit({ content: client.tl({ local: "pt-eL-br", msg: msg }), embeds: [], components: [] })
-                                }
-                                else if (choice == "en") {
-                                    setLang(client, msg, "server", "en-")
-                                    return botmsg.edit({ content: client.tl({ local: "en-eL-en", msg: msg }), embeds: [], components: [] })
-                                }
-                                else if (choice == "canc") {
-                                    return botmsg.edit({ content: client.tl({ local: msg.lang + "eL-cancel", msg: msg }), embeds: [], components: [] })
-                                }
-                            })
-                            .catch(err => {
-                                if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                    return botmsg.edit({ content: client.tl({ local: msg.lang + "eL-sR", msg: msg }), embeds: [], components: [] })
-                                }
-                                else {
-                                    client.log.error(err, true)
-                                    return
-                                }
-                            })
-                    })
+                                    if (choice == "pt") {
+                                        setLang(client, int, "server", "pt-")
+                                        return botmsg.edit({ content: client.tl({ local: "pt-eL-br", msg: int }), embeds: [], components: [] })
+                                    }
+                                    else if (choice == "en") {
+                                        setLang(client, int, "server", "en-")
+                                        return botmsg.edit({ content: client.tl({ local: "en-eL-en", msg: int }), embeds: [], components: [] })
+                                    }
+                                    else if (choice == "canc") {
+                                        return botmsg.edit({ content: client.tl({ local: int.lang + "eL-cancel", msg: int }), embeds: [], components: [] })
+                                    }
+                                })
+                                .catch(err => {
+                                    if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                                        return botint.edit({ content: client.tl({ local: int.lang + "eL-sR", msg: int }), embeds: [], components: [] })
+                                    }
+                                    else {
+                                        client.log.error(err, true)
+                                        return
+                                    }
+                                })
+                        })
 
-            }
-
-            react(msg)
-        }
+                }
+            })
     }
 }

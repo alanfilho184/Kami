@@ -1,19 +1,17 @@
-const moment = require("moment-timezone")
+const time = require('luxon').DateTime;
 
 module.exports = class ping {
     constructor() {
         return {
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-                user: [],
-                owner: false,
-            },
+            ownerOnly: false,
             name: 'ping',
-            cat: 'Ping',
-            catEn: 'Ping',
+            fName: 'Ping',
+            fNameEn: 'Ping',
             desc: 'Mostra os tempos de resposta do BOT.',
             descEn: 'Shows the BOT\'s response times.',
-            aliases: ['ping'],
+            args: [],
+            options: [],
+            type: 1,
             helpPt: {
                 title: "<:outrosAjuda:766790214110019586> " + "/" + "ping", desc: `Esse comando serve para verificar o tempo de resposta de diversos locais do BOT
                 
@@ -29,25 +27,26 @@ module.exports = class ping {
         };
     }
 
-    async execute(client, msg) {
-        const botMsg = await msg.reply({ content: "<a:loading:772142378563534888> " + client.tl({ local: msg.lang + "botI-gI" }), ephemeral: true })
+    execute(client, int) {
+        int.deferReply()
+            .then(async () => {
 
-        var dbPing = moment().valueOf()
-        await client.db.query("select 1")
-            .then(() => {
-                dbPing = moment().valueOf() - dbPing
+                var dbPing = time.now().ts
+                await client.db.query("select 1")
+                    .then(() => {
+                        dbPing = time.now().ts - dbPing
+                    })
+
+
+                const pingEmbed = new client.Discord.MessageEmbed()
+                    .setColor(client.settings.color)
+                    .setFooter(`${time.now().year} © Kami`, client.user.displayAvatarURL())
+                    .addField("BOT:", "`" + Math.round(int.ping) + " ms`", true)
+                    .addField("API:", "`" + Math.round(client.ws.ping) + " ms`", true)
+                    .addField("DB: ", "`" + Math.round(dbPing) + " ms`", true)
+                    .setTitle("Ping:")
+
+                int.editReply({ content: null, embeds: [pingEmbed] })
             })
-
-        const pingEmbed = new client.Discord.MessageEmbed()
-            .setColor(client.settings.color)
-            .setFooter(`${moment().year()} © Kami`, client.user.displayAvatarURL())
-            .addField("BOT:", "`" + Math.round(msg.ping) + " ms`", true)
-            .addField("API:", "`" + Math.round(client.ws.ping) + " ms`", true)
-            .addField("DB: ", "`" + Math.round(dbPing) + " ms`", true)
-            .setTitle("Ping:")
-
-        botMsg.edit({ content: null, embeds: [pingEmbed] })
-
     }
-
 }

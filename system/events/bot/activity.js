@@ -11,26 +11,16 @@ var typeStatus = "WATCHING"
 var timeChange = 10000
 var act = ""
 
-var firstS = true
-
 module.exports = {
     name: "activity",
+    type: "bot",
     execute: (client, toDo) => {
-        if(firstS){
-            client.user.setPresence({
-                status: "dnd",
-                activity: {
-                    name: "BOT iniciando, aguarde",
-                    type: "PLAYING",
-                }
-            })
-        }
         function run() {
             if(act != ""){clearInterval(act)}
             var x = 0
             act = setInterval(() => {
                 if (x == acts.length){x = 0}
-                let textStatus = acts[x] //Math.floor(Math.random() * acts.length)
+                let textStatus = acts[x]
                 client.user.setPresence({
                     status: status,
                     activities: [{

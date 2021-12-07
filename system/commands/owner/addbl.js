@@ -2,53 +2,38 @@ const toMs = require("milliseconds-parser")()
 
 
 module.exports = class addbl {
-    constructor(){
-        return{
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-                user: [],
-                owner: true,
-            },
+    constructor() {
+        return {
+            ownerOnly: true,
             name: "addbl",
-            cat: "addbl",
+            fName: "addbl",
             desc: 'Altera a blacklist.',
-            aliases: ['addbl', 'blacklist', 'bl'],
+            args: [
+                { name: "id", desc: "ID do usuário.", type: "STRING", required: true },
+                { name: "bans", desc: "Quantidade de bans.", type: "STRING", required: true },
+                { name: "banatual", desc: "Ban atual.", type: "STRING", required: true },
+                { name: "duracaoban", desc: "Duração do ban. Ex: '1 semana'", type: "STRING", required: true },
+            ],
+            options: [],
+            type: 1,
             run: this.execute
         }
     }
 
-    async execute(client, msg) {
-        args = client.utils.args(msg)
+    execute(client, int) {
+        int.deferReply({ ephemeral: true })
+            .then(() => {
+                const args = client.utils.argsString(int)
 
-        const banid = msg.mentions.members.first() || args[0]
+                const banid = args.get("id")
+                const bans = args.get("bans")
+                const banAtual = args.get("banAtual")
+                const duracaoBan = args.get("duracaoBan")
 
-        if (!banid) {
-            return msg.reply("id indefinido, não esquece <id> <bans> <tempBan | permaBan> <número tipo>")
-        }
-
-        var bans = args[1]
-
-        if(!bans){
-            return msg.reply("bans indefinido, não esquece <id> <bans> <tempBan | permaBan> <número tipo>")
-        }
-
-        var banAtual = args[2]
-
-        if(!banAtual){
-            return msg.reply("banAtual indefinido, não esquece <id> <bans> <tempBan | permaBan> <número tipo>")
-        }
-
-        var duracaoBan = toMs.parse(`${args[3]} ${args[4]}`)
-
-        if(!duracaoBan){
-            return msg.reply("duracão indefinida, não esquece <id> <bans> <tempBan | permaBan> <número tipo>")
-        }
-
-
-        client.cache.updateBl(banid, {bans: bans, banAtual: banAtual, duracaoBan: duracaoBan})
-            .then(bl => {
-                return msg.reply(bl)
+                client.cache.updateBl(banid, { bans: bans, banAtual: banAtual, duracaoBan: toMs.parse(duracaoBan) })
+                    .then(bl => {
+                        return int.editReply(bl)
+                    })
             })
-
     }
 }

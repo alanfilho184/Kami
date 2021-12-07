@@ -5,15 +5,15 @@ function sleep(ms) {
 module.exports = {
     name: "updtFicha",
     type: "bot",
-    execute: async (client, msg, info) => {
+    execute: async (client, int, info) => {
         const nomeRpg = info.nomeRpg
-        const user = msg.author.id
+        const user = int.user.id
 
-        client.cache.getIrt(msg.author.id, nomeRpg)
+        client.cache.getIrt(int.user.id, nomeRpg)
             .then(async irt => {
 
                 const fichaUser = await client.cache.getFicha(user, nomeRpg)
-                const reply = client.commands.get("enviar").create(client, msg, nomeRpg, fichaUser, "irtUpdt")
+                const reply = client.commands.get("enviar").create(client, int, nomeRpg, fichaUser, "irtUpdt")
                 const embedsArray = Object.values(reply)
 
                 for (m in irt) {
@@ -36,7 +36,7 @@ module.exports = {
                             client.log.error(err, true)
                             client.log.error(`Info erro IRT:`)
                             client.log.warn(irt)
-                            client.log.warn(msg)
+                            client.log.warn(int)
                         }
                     }
                     await sleep(4000)

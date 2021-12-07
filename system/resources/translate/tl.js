@@ -20,8 +20,8 @@ module.exports = class Translate {
         arguments['0'].qdados = !arguments['0'].qdados ? "null" : arguments['0'].qdados
         arguments['0'].op = !arguments['0'].op ? "null" : arguments['0'].op
         arguments['0'].bdados = !arguments['0'].bdados ? "null" : arguments['0'].bdados
-        arguments['0'].msg = !arguments['0'].msg ? { author: { id: "null", username: "null" }, guild: { name: "null" } } : arguments['0'].msg
-        arguments['0'].msg.guild.name = !arguments['0'].msg.guild.name ? "null" : arguments['0'].msg.guild.name
+        arguments['0'].msg = !arguments['0'].msg ? { user: { id: "null", username: "null" }, member: { guild: { name: "null" } } } : arguments['0'].msg
+        arguments['0'].msg.member.guild.name = !arguments['0'].msg.member.guild.name ? "null" : arguments['0'].msg.member.guild.name
 
 
         const linguas = new Map([
@@ -50,7 +50,7 @@ module.exports = class Translate {
             ["pt-cef-anIn", "Você precisa anexar um arquivo de imagem ou gif, qualquer outro tipo de arquivo não irá funcionar"],
             ["pt-cef-inUrl", "Você precisa anexar uma imagem ou colocar um link para que eu possa adicionar a sua ficha"],
             ["pt-cef-nVUrl", `"${arguments['0'].valor}" não é um URL válido, por que você não envia a imagem na minha DM e copia o link?`],
-            ["pt-cef-nVExt", `Esse link não possue uma extensão de arquivo válida para imagem, as extensões válidas são .png, .jpg, .jpeg e .gif`],
+            ["pt-cef-nVExt", `Esse link não possui uma extensão de arquivo válida para imagem, as extensões válidas são .png, .jpg, .jpeg e .gif`],
             ["pt-cef-nVVal", `O valor de nenhum atributo pode ser vazio, se você não quer ele é só não colocar ele na sua ficha`],
             ["pt-cef-nAVal", "É necessário utilizar nesse comando, um atributo, para que possa adicionar algo a sua ficha"],
             ["pt-cef-updtFicha", `Ok, adicionei ${arguments['0'].atributo} como "${arguments['0'].valor}" na ficha "${arguments['0'].nomeRpg}"`],
@@ -136,17 +136,17 @@ module.exports = class Translate {
             ["pt-ddb-rcUS", `Ok, agora este servidor não possuí mais um canal para rolar dados sem utilizar o prefixo`],
             ["pt-ddb-rcSP", `Você não possuí a permissão de Gereciar Canais ou Gerenciar Servidor neste servidor, não é possível utilizar esta função`],
             ["pt-ddb-rcGO", `Esta função só pode ser utilizada em servidores`],
-            ["pt-onMsg-mPerms", `Oi, eu acabei de perceber que algumas permissões estão faltando no meu cargo no servidor "${arguments['0'].msg.guild}", assim, alguns comandos podem não funcionar corretamente, as permissões que estão faltando são: \n\n${arguments['0'].valor}`],
+            ["pt-onMsg-mPerms", `Oi, eu acabei de perceber que algumas permissões estão faltando no meu cargo no servidor "${arguments['0'].msg.member.guild}", assim, alguns comandos podem não funcionar corretamente, as permissões que estão faltando são: \n\n${arguments['0'].valor}`],
             ["pt-onMsg-mPermsTxt", `Oi, eu acabei de perceber que algumas permissões estão faltando no meu cargo neste servidor, assim, alguns comandos podem não funcionar corretamente, as permissões que estão faltando são: \n\n${arguments['0'].valor}`],
-            ["pt-onMsg-ping", `Oi ${arguments['0'].msg.author.username}, meu prefixo é ` + "**`" + prefix + "`**," + ` se precisar de ajuda é só enviar ` + "**`" + `${prefix}ajuda` + "`** aqui mesmo ou na minha DM"],
+            ["pt-onMsg-ping", `Oi ${arguments['0'].msg.user.username}, meu prefixo é ` + "**`" + prefix + "`**," + ` se precisar de ajuda é só enviar ` + "**`" + `${prefix}ajuda` + "`** aqui mesmo ou na minha DM"],
             ["pt-onMsg-nArgDado", `Precisa de ajuda com o comando? tente usar ${prefix}ajuda roll`],
-            ["pt-onMsg-dadoInv", `Ok, ${arguments['0'].msg.author.username} agora seus dados são vísiveis somente para você`],
-            ["pt-onMsg-dadoInv2", `Ok, ${arguments['0'].msg.author.username} agora seus dados são vísiveis somente para você`],
-            ["pt-onMsg-dadoVi", `Ok, ${arguments['0'].msg.author.username} agora seus dados são vísiveis para todos`],
+            ["pt-onMsg-dadoInv", `Ok, ${arguments['0'].msg.user.username} agora seus dados são vísiveis somente para você`],
+            ["pt-onMsg-dadoInv2", `Ok, ${arguments['0'].msg.user.username} agora seus dados são vísiveis somente para você`],
+            ["pt-onMsg-dadoVi", `Ok, ${arguments['0'].msg.user.username} agora seus dados são vísiveis para todos`],
             ["pt-onMsg-cmdBarrado", `Desculpe, somente pessoal autorizado pode usar esse comando`],
-            ["pt-onMsg-insInv", `Ok, ${arguments['0'].msg.author.username} agora seus comandos de insanidade são vísiveis somente para você`],
-            ["pt-onMsg-insInv2", `Ok, ${arguments['0'].msg.author.username} agora seus comandos de insanidade são vísiveis somente para você`],
-            ["pt-onMsg-insVi", `Ok, ${arguments['0'].msg.author.username} agora seus comandos de insanidade são vísiveis para todos`],
+            ["pt-onMsg-insInv", `Ok, ${arguments['0'].msg.user.username} agora seus comandos de insanidade são vísiveis somente para você`],
+            ["pt-onMsg-insInv2", `Ok, ${arguments['0'].msg.user.username} agora seus comandos de insanidade são vísiveis somente para você`],
+            ["pt-onMsg-insVi", `Ok, ${arguments['0'].msg.user.username} agora seus comandos de insanidade são vísiveis para todos`],
             ["pt-onMsg-cmdBarrado2", "Somente pessoal autorizado pode usar esse comando"],
             ["pt-onMsg-sPerm", "Você precisa ter permissões de administrador, gerenciar canais ou de gerenciar servidor para poder alterar a minha língua"],
             ["pt-onMsg-cmdDsbDesc", `Este comando está desabilitado temporariamente\n\nMotivo: ${arguments[0].cmd}`],
@@ -158,12 +158,14 @@ module.exports = class Translate {
             ["pt-onMsg-btSlashInfo", `Mais informações sobre a mudança`],
             ["pt-onGCreate-saudacao", `Olá humano lendo isso, obrigado por me adicionar no seu servidor, que tal dar uma olhada no **${prefix}ajuda**? Eu ainda estou em desenvolvimento se por um acaso acontecer algum problema, primeiro verifique as minhas permissões, caso o problema persistir, avise no **${prefix}sugestão**. If you prefer my commands in En-Us you can select this in ${prefix}language`],
             ["pt-onGCreate-saudacao2", `Olá humano lendo isso, obrigado por me adicionar no seu servidor, que tal dar uma olhada no **${prefix}ajuda**? Eu ainda estou em desenvolvimento se por um acaso acontecer algum problema, primeiro verifique as minhas permissões, caso o problema persistir, avise no **${prefix}sugestão**. If you prefer my commands in En-Us you can select this in ${prefix}language`],
-            
+
             ["pt-ajuda-main", `Aqui você pode ver a lista completa de comandos disponíveis!
     
-            O prefixo do BOT é \`/\`. O prefixo \`${prefix}\` será descontinuado em breve.
+            O prefixo do BOT é \`/\`. O prefixo \`${prefix}\` foi descontinuado.
             
             Clique no menu abaixo para visualizar uma lista com os comandos disponíveis. Se ainda precisar de mais ajuda ou se tiver algum problema entre no meu servidor de suporte.
+
+            Você também pode ver algumas funções em mais detalhes nos [Tutoriais no site do Kami](https://kamibot.vercel.app/tutoriais)! (Mais tutoriais ainda serão adicionados)
              
             É recomendado ler os termos de uso do BOT.
              `],
@@ -254,7 +256,7 @@ module.exports = class Translate {
             ["pt-config-btDesIS", "Desativar insanidade secreta"],
             ["pt-config-btActIS", "Ativar insanidade secreta"],
             ["pt-config-btF", "Finalizar"],
-            ["pt-verF-dm/", `<@${arguments[0].msg.author.id}>, este comando só pode ser executado via DM ou \`\/\`!`],
+            ["pt-verF-dm/", `<@${arguments[0].msg.user.id}>, este comando só pode ser executado via DM ou \`\/\`!`],
             ["pt-verF-nFE", `Não achei nenhuma ficha deste usuário com o nome "${arguments[0].nomeRpg}"`],
             ["pt-verF-sI", `Senha incorreta para a ficha "${arguments[0].nomeRpg}"`],
             ["pt-verF-nArg", `Precisa de ajuda com o comando? tente usar ${prefix}ajuda!`],
@@ -269,6 +271,11 @@ module.exports = class Translate {
             ["pt-rS-nArg", `Você precisa informar o nome da ficha que deseja resetar a senha!`],
             ["pt-rS-nFE", `Não achei nenhuma ficha com o nome "${arguments[0].nomeRpg}"`],
             ["pt-rS-sR", `Sua senha foi resetada com sucesso, a nova senha de ficha "${arguments[0].nomeRpg}" é: **${arguments[0].cmd}**`],
+            ["pt-addI-iNE", "Não encontrei nenhum arquivo nesta mensagem com uma extensão de imagem válida (png, jpg, jpeg, gif, gifV)"],
+            ["pt-addI-mPH", "Selecione uma ficha"],
+            ["pt-addI-eTi", "Adicionando esta imagem a uma de suas fichas"],
+            ["pt-addI-eDesc", "Ok, quer adicionar esta imagem a qual ficha? Basta selecionar no menu abaixo."],
+            ["pt-addI-iAdd", "Imagem adicionada com sucesso"],
             // Fim da parte PT-BR
 
             // Inicio da parte EN-US
@@ -384,17 +391,17 @@ module.exports = class Translate {
             ["en-ddb-rcUS", `Ok, now this server no longer has a channel to roll dices without using the prefix`],
             ["en-ddb-rcSP", `You do not have the Manage Channels or Manage Guild permission on this server, you cannot use this function`],
             ["en-ddb-rcGO", `This function can only be used on guilds`],
-            ["en-onMsg-mPerms", `Hi, I just realized that some permissions are missing in my role on guild "${arguments['0'].msg.guild.name}", so some commands may not work properly, the missing permissions are: \n\n${arguments['0'].valor}`],
+            ["en-onMsg-mPerms", `Hi, I just realized that some permissions are missing in my role on guild "${arguments['0'].msg.member.guild.name}", so some commands may not work properly, the missing permissions are: \n\n${arguments['0'].valor}`],
             ["en-onMsg-mPermsTxt", `Hi, I just realized that some permissions are missing in my role on this guild, so some commands may not work properly, the missing permissions are: \n\n${arguments['0'].valor}`],
-            ["en-onMsg-ping", `Hello ${arguments['0'].msg.author.username}, my prefix is ` + "**`" + prefix + "`**," + ` if you need help just send ` + "**`" + `${prefix}help` + "`*** right here or in my DM`"],
+            ["en-onMsg-ping", `Hello ${arguments['0'].msg.user.username}, my prefix is ` + "**`" + prefix + "`**," + ` if you need help just send ` + "**`" + `${prefix}help` + "`*** right here or in my DM`"],
             ["en-onMsg-nArgDado", `Need help with the command? try using ${prefix}help roll`],
-            ["en-onMsg-dadoInv", `Ok, ${arguments['0'].msg.author.username} now your dices are visible only to you`],
-            ["en-onMsg-dadoInv2", `Ok, ${arguments['0'].msg.author.username} now your dices are visible only to you`],
-            ["en-onMsg-dadoVi", `Ok, ${arguments['0'].msg.author.username} now your dices are visible to everyone`],
+            ["en-onMsg-dadoInv", `Ok, ${arguments['0'].msg.user.username} now your dices are visible only to you`],
+            ["en-onMsg-dadoInv2", `Ok, ${arguments['0'].msg.user.username} now your dices are visible only to you`],
+            ["en-onMsg-dadoVi", `Ok, ${arguments['0'].msg.user.username} now your dices are visible to everyone`],
             ["en-onMsg-cmdBarrado", `Sorry, only authorized people can use this command`],
-            ["en-onMsg-insInv", `Ok, ${arguments['0'].msg.author.username} now your insanity commands are visible only to you`],
-            ["en-onMsg-insInv2", `Ok, ${arguments['0'].msg.author.username} now your insanity commands are visible only to you`],
-            ["en-onMsg-insVi", `Ok, ${arguments['0'].msg.author.username} now your insanity commands are visible to everyone`],
+            ["en-onMsg-insInv", `Ok, ${arguments['0'].msg.user.username} now your insanity commands are visible only to you`],
+            ["en-onMsg-insInv2", `Ok, ${arguments['0'].msg.user.username} now your insanity commands are visible only to you`],
+            ["en-onMsg-insVi", `Ok, ${arguments['0'].msg.user.username} now your insanity commands are visible to everyone`],
             ["en-onMsg-cmdBarrado2", `Sorry, only authorized people can use this command`],
             ["en-onMsg-sPerm", "You need to have administrator, manage channels or manage server permissions to change my language"],
             ["en-onMsg-cmdDsbDesc", `This command is temporarily disabled\n\n Reason: ${arguments[0].cmd}`],
@@ -411,6 +418,8 @@ module.exports = class Translate {
             The BOT prefix is \`/\`. The prefix \`${prefix}\`  will be discontinued soon.
             
             Click on the menu below to see a list of available commands. If you still need more help or have any problems join my support server.
+
+            You also can see some functions in more detais on [Kami's Tutorials](https://kamibot.vercel.app/tutoriais)! (More tutorials will be added)
              
             It is recommended that you read the BOT's terms of use.
              `],
@@ -502,7 +511,7 @@ module.exports = class Translate {
             ["en-config-btDesIS", "Disable secret insanity"],
             ["en-config-btActIS", "Enable secret insanity"],
             ["en-config-btF", "Finish"],
-            ["en-verF-dm/", `<@${arguments[0].msg.author.id}>, this command can only be executed via DM or \`\/\`!`],
+            ["en-verF-dm/", `<@${arguments[0].msg.user.id}>, this command can only be executed via DM or \`\/\`!`],
             ["en-verF-nFE", `I could not find any sheet for this user with the name "${arguments[0].nomeRpg}"`],
             ["en-verF-sI", `Incorrect password for sheet "${arguments[0].nomeRpg}"`],
             ["en-verF-nArg", `Need help with command? try using ${prefix}help`],
@@ -517,6 +526,11 @@ module.exports = class Translate {
             ["en-rS-nArg", `You must enter the name of the sheet you wish to reset the password!`],
             ["en-rS-nFE", `I couldn't find any sheet with the name "${arguments[0].nomeRpg}"`],
             ["en-rS-sR", `Your password was successfully reset, the new password of "${arguments[0].nomeRpg}" is: **${arguments[0].cmd}**`],
+            ["en-addI-iNE", "I could not find any attachment in this message with a valid image extension (png, jpg, jpeg, gif, gifV)"],
+            ["en-addI-mPH", "Select a sheet"],
+            ["en-addI-eTi", "Adding this image to one of your sheets"],
+            ["en-addI-eDesc", "Ok, you want to add this image to which sheet? Just select from the menu below."],
+            ["en-addI-iAdd", "Image added successfully"],
 
             //Fim da Parte EN-US
         ])

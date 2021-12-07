@@ -1,17 +1,15 @@
 module.exports = class vote {
     constructor() {
         return {
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-                user: [],
-                owner: false,
-            },
+            ownerOnly: false,
             name: "votar",
-            cat: "Votar",
-            catEn: "Vote",
+            fName: "Votar",
+            fNameEn: "Vote",
             desc: 'Envia o link para votar no BOT.',
             descEn: 'Sends the link to vote on the BOT.',
-            aliases: ["Vote"],
+            args: [],
+            options: [],
+            type: 1,
             helpPt: {
                 title: "<:outrosAjuda:766790214110019586> " + "/" + "votar", desc: `Esse comando mostra o link para que você possa votar no BOT no site Bestlist
                 
@@ -27,18 +25,21 @@ module.exports = class vote {
         }
     }
 
-    execute(client, msg) {
-        const voteEmbed = new client.Discord.MessageEmbed()
-            .setDescription(client.tl({ local: msg.lang + "vote-embedDesc" }))
-            .setFooter(client.resources[msg.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
-            .setTimestamp()
-            .setColor(client.settings.color)
+    execute(client, int) {
+        int.deferReply()
+            .then(() => {
+                const voteEmbed = new client.Discord.MessageEmbed()
+                    .setDescription(client.tl({ local: int.lang + "vote-embedDesc" }))
+                    .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+                    .setTimestamp()
+                    .setColor(client.settings.color)
 
-        const bVote = new client.Discord.MessageButton()
-            .setStyle(5)
-            .setLabel(client.tl({ local: msg.lang + "vote-embedFT" }))
-            .setURL("https://botsparadiscord.com.br/bots/716053210179043409")
+                const bVote = new client.Discord.MessageButton()
+                    .setStyle(5)
+                    .setLabel(client.tl({ local: int.lang + "vote-embedFT" }))
+                    .setURL("https://botsparadiscord.com.br/bots/716053210179043409")
 
-        msg.reply({ embeds: [voteEmbed], components: [{ type: 1, components: [bVote] }] })
+                int.editReply({ embeds: [voteEmbed], components: [{ type: 1, components: [bVote] }] })
+            })
     }
 }

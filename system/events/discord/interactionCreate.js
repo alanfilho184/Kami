@@ -1,62 +1,70 @@
-const moment = require("moment-timezone")
-const toMs = require("milliseconds-parser")()
+const time = require("luxon").DateTime;
+var firstS = true
+
+var blacklist = new Object()
+
+const cmdConfig = new Object({
+    disableCmds: new Array(),
+    reason: new Object()
+})
 
 module.exports = {
     name: "interactionCreate",
     type: "djs",
-    execute: async (client, interaction) => {
-        if ((interaction.type == 'MESSAGE_COMPONENT')) { return client.emit("componentHandler", interaction) }
-        if (!interaction.isCommand()) { return }
+    execute: async (client, int) => {
+        if (firstS) { client.emit("blacklist"); firstS = false }
+        if ((int.isMessageComponent())) { return client.emit("componentHandler", int) }
+        if ((int.isContextMenu())) { return client.emit("contextMenuHandler", int) }
+        if (!int.isCommand()) { return }
 
-        interaction.author = interaction.user
+        int.ping = time.now().ts - int.createdTimestamp
+        int.lang = client.utils.getLang(int)
 
-        interaction.content = `${interaction.commandName} ${interaction.options._hoistedOptions.length > 0 ? interaction.options._hoistedOptions.map(i => i.value).join(' ') : ''}`.trim()
-
-        interaction.slash = true
-
-        const channel = client.channels.cache.get(interaction.channel.id)
-
-        interaction.channel = channel
-
-        interaction.pureReply = interaction.reply
-
-        let response = false
-
-        interaction.reply = async (x) => {
-
-            x.allowedMentions = { repliedUser: false }
-
-            if (x.mention) x.allowedMentions = { repliedUser: true }
-
-            if (!response) {
-
-                response = true
-                try {
-                    await interaction.deferReply()
-                } catch {
-
+        try {
+            if (blacklist[int.user.id].banAtual) {
+                if (blacklist[int.user.id].duracaoBan <= moment().valueOf()) {
+                    var banUser = blacklist[int.user.id]
+                    client.cache.updateBl(int.user.id, { bans: banUser.bans, banAtual: null, duracaoBan: null })
                 }
-
-                return interaction.editReply(x)
-            } else {
-                const message = await interaction.fetchReply();
-
-                x.reply = { messageReference: message.id }
-
-                return await client.channels.cache.get(interaction.channel.id).send(x)
+                else {
+                    return
+                }
             }
         }
+        catch (err) {
+            if (err == "TypeError: Cannot read property 'duracaoBan' of undefined") return
+        }
 
-        interaction.delete = async function () {
-            return await client.api
-                .webhooks(client.user.id, interaction.token)
-                .messages['@original'].delete();
-        };
+        const cmd = client.commands.get(int.commandName)
 
-        interaction.slash = true
-        interaction.ping = moment().valueOf() - interaction.createdTimestamp
-        interaction.lang = client.utils.getLang(interaction)
-
-        client.emit("messageCreate", interaction)
+        if (cmd.ownerOnly && int.user.id != client.settings.owner) {
+            return int.reply({ content: client.tl({ local: int.lang + "onMsg-cmdBarrado" }), ephemeral: true })
+        }
+        else {
+            if (cmdConfig.disableCmds.includes(cmd.name)) {
+                const disableEmbed = new client.Discord.MessageEmbed()
+                    .setTitle(client.tl({ local: int.lang + "onMsg-cmdDsbTi" }))
+                    .setColor(client.settings.color)
+                    .setDescription(client.tl({ local: int.lang + "onMsg-cmdDsbDesc", cmd: cmdConfig.reason[cmd.name][int.lang] }))
+                    .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+                    .setTimestamp()
+                return int.reply({ embeds: [disableEmbed], ephemeral: true })
+            }
+            else {
+                cmd.run(client, int)
+                client.emit("cmd", int, cmd.name)
+                const args = client.utils.argsString(int)
+                client.log.info(`Comando: ${cmd.name} executado por ${int.user.tag}(${int.user.id}) ${args ? `- Args: ${args}` : ``}`)
+            }
+        }
+    },
+    blacklist: (client) => {
+        blacklist = client.cache.getBl()
+        client.log.warn("blacklist atualizada no evento Interaction")
+        return
+    },
+    disableCmd: (client, info) => {
+        cmdConfig.disableCmds = info.disable.cmds
+        cmdConfig.reason = info.disable.reason
     }
 }
