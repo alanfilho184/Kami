@@ -126,13 +126,13 @@ module.exports = class enviar_atb {
                             atributoEmbed.setImage(valor)
                         }
                         if (atributo.toLowerCase() == "extras") {
-                            atbExtras = valor
+                            var atbExtras = valor
 
-                            atbs = atbExtras.split("|")
+                            var atbs = atbExtras.split("|")
 
                             for (x in atbs) {
                                 atb = atbs[x].split(":")[0]
-                                val = atbs[x].split(":")[1]
+                                var val = atbs[x].split(":")[1]
 
                                 try { atb = atb.replace(" ", "") } catch { }
                                 try { val = val.replace(/ .$/, '') } catch { }
