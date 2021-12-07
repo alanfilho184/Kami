@@ -1,6 +1,5 @@
 module.exports = {
     name: "irtStart",
-    type: "bot",
     execute: (client, irtU) => {
         client.db.query(`insert into irt (id, nomerpg, msgid, chid) values ('${irtU["id"]}', '${irtU["nomeRpg"]}', '${irtU["msgid"]}', '${irtU["chid"]}')`)
 

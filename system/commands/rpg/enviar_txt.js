@@ -17,17 +17,17 @@ const br = (str, limit) => {
 module.exports = class enviar_txt {
     constructor() {
         return {
-            ownerOnly: false,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL', 'ATTACH_FILES'],
+                user: [],
+                owner: false,
+            },
             name: "enviartxt",
-            fName: "Enviar TXT",
-            fNameEn: "Send TXT",
+            cat: "Enviar TXT",
+            catEn: "Send TXT",
             desc: 'Envia a ficha como um arquivo .txt.',
             descEn: 'Sends a sheet as a .txt file.',
-            args: [
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true },
-            ],
-            options: [],
-            type: 1,
+            aliases: ["sendtxt"],
             helpPt: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "enviartxt", desc: `Este comando serve para receber a sua ficha como um arquivo .txt
         
@@ -49,87 +49,84 @@ module.exports = class enviar_txt {
             create: this.create
         }
     }
-    execute(client, int) {
-        int.deferReply()
-            .then(async () => {
-                const args = client.utils.args(int)
+    async execute(client, msg) {
+        const args = client.utils.args(msg)
 
-                const atributos = client.resources[int.lang.replace("-", "")].atributos
+        const atributos = client.resources[msg.lang.replace("-", "")].atributos
 
-                const beta = client.whitelist.get("beta")
-                const premium = client.whitelist.get("premium")
+        const beta = client.whitelist.get("beta")
+        const premium = client.whitelist.get("premium")
 
-                var nomeRpg = args.get("nome_da_ficha")
+        var nomeRpg = args[0]
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+        try { nomeRpg = nomeRpg.replace("'", '') } catch { }
 
-                if (!nomeRpg) {
-                    try {
-                        var fichasUser = client.cache.get(int.user.id).fPadrao
-                        nomeRpg = fichasUser
-                    }
-                    catch (err) { fichasUser = undefined }
+        if (!nomeRpg) {
+            try {
+                var fichasUser = client.cache.get(msg.author.id).fPadrao
+                nomeRpg = fichasUser
+            }
+            catch (err) { fichasUser = undefined }
 
-                    if (!fichasUser) {
-                        const fichasUser = new Array()
-                        var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
+            if (!fichasUser) {
+                const fichasUser = new Array()
+                var result = await client.db.query(`select nomerpg from fichas where id = '${msg.author.id}'`)
 
-                        for (x in result[0]) {
-                            fichasUser.push(result[0][x].nomerpg)
-                        }
-                        if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
-                        else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
-                        else { return int.editReply(client.tl({ local: int.lang + "eft-uSF" })) }
-                    }
-
+                for (x in result[0]) {
+                    fichasUser.push(result[0][x].nomerpg)
                 }
+                if (fichasUser.length > 1) { return msg.reply(client.tl({ local: msg.lang + "eft-mFichas", fichasUser: fichasUser })) }
+                else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
+                else { return msg.reply(client.tl({ local: msg.lang + "eft-uSF" })) }
+            }
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+        }
 
-                client.cache.getFicha(int.user.id, nomeRpg)
-                    .then(async r => {
-                        if (r) {
-                            var fichaUser = r
+        try { nomeRpg = nomeRpg.replace("'", '') } catch { }
 
-                            for (x in atributos) {
-                                if (fichaUser[atributos[x]] == undefined) {
-                                    fichaUser[atributos[x]] = "-"
-                                }
-                            }
+        client.cache.getFicha(msg.author.id, nomeRpg)
+            .then(async r => {
+                if (r) {
+                    var fichaUser = r
 
-                            if (fichaUser["imagem"] == "-" || fichaUser["imagem"] == null) {
-                                fichaUser["imagem"] = ""
-                            }
+                    for (x in atributos) {
+                        if (fichaUser[atributos[x]] == undefined) {
+                            fichaUser[atributos[x]] = "-"
+                        }
+                    }
 
-                            var fichaTXT = this.create(client, int, nomeRpg, fichaUser)
-                            fs.writeFile(client.tl({ local: int.lang + "eft-fN" }) + nomeRpg + "-" + int.user.id + '.txt', fichaTXT, function (err) {
+                    if (fichaUser["imagem"] == "-" || fichaUser["imagem"] == null) {
+                        fichaUser["imagem"] = ""
+                    }
+
+                    var fichaTXT = this.create(client, msg, nomeRpg, fichaUser)
+                    fs.writeFile(client.tl({ local: msg.lang + "eft-fN" }) + nomeRpg + "-" + msg.author.id + '.txt', fichaTXT, function (err) {
+                        if (err) throw err;
+                    })
+
+                    var txt = `${client.tl({ local: msg.lang + "eft-fN" })}${nomeRpg + "-" + msg.author.id}.txt`
+                    msg.reply({ content: `${client.tl({ local: msg.lang + "eft-pEF" })}\n`, files: [txt] })
+                        .then(() => {
+                            fs.unlink(client.tl({ local: msg.lang + "eft-fN" }) + nomeRpg + "-" + msg.author.id + '.txt', function (err) {
                                 if (err) throw err;
                             })
+                        })
+                }
+                else {
+                    return msg.reply(client.tl({ local: msg.lang + "eft-nFE", nomeRpg: nomeRpg }))
+                }
 
-                            var txt = `${client.tl({ local: int.lang + "eft-fN" })}${nomeRpg + "-" + int.user.id}.txt`
-                            int.editReply({ content: `${client.tl({ local: int.lang + "eft-pEF" })}\n`, files: [txt] })
-                                .then(() => {
-                                    fs.unlink(client.tl({ local: int.lang + "eft-fN" }) + nomeRpg + "-" + int.user.id + '.txt', function (err) {
-                                        if (err) throw err;
-                                    })
-                                })
-                        }
-                        else {
-                            return int.editReply(client.tl({ local: int.lang + "eft-nFE", nomeRpg: nomeRpg }))
-                        }
-
-                    })
             })
     }
-    create(client, int, nomeRpg, fichaUser) {
+    create(client, msg, nomeRpg, fichaUser) {
         const atributosS1 = client.resources["pt"].atributosStatus
         const atributosI1 = client.resources["pt"].atributosI1
         const atributosI2 = client.resources["pt"].atributosI2
-        const atributosS1F = client.resources[int.lang.replace("-", "")].atributosStatusF
-        const atributosIF1 = client.resources[int.lang.replace("-", "")].atributosIF1
-        const atributosIF2 = client.resources[int.lang.replace("-", "")].atributosIF2
+        const atributosS1F = client.resources[msg.lang.replace("-", "")].atributosStatusF
+        const atributosIF1 = client.resources[msg.lang.replace("-", "")].atributosIF1
+        const atributosIF2 = client.resources[msg.lang.replace("-", "")].atributosIF2
 
-        var fichaTXT = client.tl({ local: int.lang + "txt-h1" })
+        var fichaTXT = client.tl({ local: msg.lang + "txt-h1" })
 
         var z;
         var atb
@@ -152,7 +149,7 @@ module.exports = class enviar_txt {
             }
         }
 
-        fichaTXT += client.tl({ local: int.lang + "txt-h2" })
+        fichaTXT += client.tl({ local: msg.lang + "txt-h2" })
 
         var x;
         var fields = 1
@@ -178,7 +175,7 @@ module.exports = class enviar_txt {
             }
         }
         if (fichaUser['extras'] != "-" && fichaUser['extras'] != "- " && fichaUser['extras'] != undefined && fichaUser['extras'] != null && fichaUser['extras'] != "") {
-            fichaTXT += client.tl({ local: int.lang + "txt-h3" })
+            fichaTXT += client.tl({ local: msg.lang + "txt-h3" })
             var atbExtras = fichaUser['extras']
 
             var atbs = atbExtras.split("|")
@@ -201,7 +198,7 @@ module.exports = class enviar_txt {
         }
 
         if (fichaUser['descricao'] != "-" && fichaUser['descricao'] != "- " && fichaUser['descricao'] != undefined && fichaUser['descricao'] != null) {
-            fichaTXT += client.tl({ local: int.lang + "txt-h4" })
+            fichaTXT += client.tl({ local: msg.lang + "txt-h4" })
             fichaTXT += `${br(fichaUser['descricao'], 90)}`
         }
 

@@ -20,7 +20,7 @@ const atributos = ["name", "height", "age", "weight", "career", "skills", "equip
     "initiative", "intimidation", "intuition", "ladding", "getinformation", "wisdom", "level", "divinity", "dislocation", "trend", "bodytobody", "rangedattacks",
     "weapons", "armor", "shield", "raceskills", "classskills", "talents", "money", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature",
     "persuasion", "prestidigitation", "religion", "armorclass", "contacts", "cuteness", "endurance", "race", "defense", "shield", "appearance", "theft", "guile", "manualskills", "military",
-    "navy", "abilities"]
+    "navy"]
 
 function returnAtb(){
     return ["name", "height", "age", "weight", "career", "skills", "equipment", "constitution", "disposition", "strength", "dexterity", "luck", "acrobatics",
@@ -30,7 +30,7 @@ function returnAtb(){
     "initiative", "intimidation", "intuition", "ladding", "getinformation", "wisdom", "level", "divinity", "dislocation", "trend", "bodytobody", "rangedattacks",
     "weapons", "armor", "shield", "raceskills", "classskills", "talents", "money", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature",
     "persuasion", "prestidigitation", "religion", "armorclass", "contacts", "cuteness", "endurance", "race", "defense", "shield", "appearance", "theft", "guile", "manualskills", "military",
-    "navy", "abilities"]
+    "navy"]
 }
 
 const atributosF = ["Name", "Height", "Age", "Weight", "Career", "Skills", "Equipment", "Constitution", "Disposition", "Strength", "Dexterity", "Luck", "Acrobatics",
@@ -40,15 +40,15 @@ const atributosF = ["Name", "Height", "Age", "Weight", "Career", "Skills", "Equi
     "Initiative", "Intimidation", "Intuition", "Ladding", "Get Information", "Wisdom", "Level", "Divinity", "Dislocation", "Trend", "Body to body", "Ranged Attacks",
     "Weapons", "Armor", "Shield", "Race Skills", "Class Skills", "Talents", "Money", "Idioms", "Arcanism", "Bluff", "History", "Dealing With Animals", "Nature",
     "Persuasion", "Prestidigitation", "Religion", "Armor Class", "Contacts", "Cuteness", "Endurance", "Race", "Defense", "Shield", "Appearance", "Theft", "Guile", "Manual Skills", "Military",
-    "Navy", "Abilities"]
+    "Navy"]
 
 const atributosI1 = ["name", "Age", "Height", "weight", "class", "race", "sanity", "life", "level", "money", "religion", "divinity"]
 
 const atributosIF1 = ["Name", "Age", "Height", "Weight", "Class", "Race", "Sanity", "Life", "Level", "Money", "Religion", "Divinity"]
 
-const atributosI2 = ["career", "skills", "defects", "equipments", "talents", "classskills", "raceskills", "manualskills", "abilities"]
+const atributosI2 = ["career", "skills", "defects", "equipments", "talents", "classskills", "raceskills", "manualskills"]
 
-const atributosIF2 = ["Career", "Skills", "Defects", "Equipments", "Talentos", "Class Skills", "Race Skills", "Manual Skills", "Abilities"]
+const atributosIF2 = ["Career", "Skills", "Defects", "Equipments", "Talentos", "Class Skills", "Race Skills", "Manual Skills"]
 
 const atributosStatus = ["disposition", "dexterity", "acrobatics", "insight", "agility", "stealth", "survival", "magic", "languages", "erudition", "medicine", "occultism",
     "politics", "strength", "luck", "intelligence", "charisma", "knowledge", "perception", "will", "sciences", "investigation", "occupation", "fight", "fireweapons", "meleeweapons",
@@ -65,9 +65,11 @@ const atributosStatusF = ["Disposition", "Dexterity", "Acrobatics", "Insight", "
     "Endurance", "Defense", "Shield", "Appearance", "Theft", "Guile", "Military","Navy"]
 
     function footer() {
+        //• Executado em: ${moment().tz("America/Fortaleza").format("DD/MM/YYYY | HH:mm:ss ")} (GMT -3)
+        // if (msg.lang == "pt-") { return `${new Date().getFullYear()} © Kami` }
+        // else { return `${new Date().getFullYear()} © Kami`}
         return `${new Date().getFullYear()} © Kami`
     }
-    
 function secret() {
     const secret = ["Secret command, only the most intelligent will know the result", "Things are happening without anyone knowing 👀", "I have the slight impression that someone is going to be in trouble soon", "Trust me, you better not know the result at all",
         "Gosh, I'm even pitying you after the dice that fell here", "Or, this result here will be valid for whom? Just to give my condolences"]

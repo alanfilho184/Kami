@@ -13,7 +13,5 @@ module.exports = {
     webhookToken: process.env.webhookToken,
     backup: process.env.backup,
     color: process.env.embedColor,
-    fKey: process.env.fKey,
-    clientId: process.env.clientId,
-    deploy: process.env.deploy,
+    fKey: process.env.fKey
 }

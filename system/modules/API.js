@@ -24,18 +24,15 @@ module.exports = class API {
         const comandos = new Object()
 
         this.client.commands.map(c => {
-            if (!c.ownerOnly) {
+            if (!c.perm.owner) {
                 comandos[c.name] = {
                     name: c.name,
                     description: c.desc,
-                    cat: c.fName,
+                    cat: c.cat,
                     help: c.helpPt,
-                    type: c.type,
                 }
             }
         })
-
-        console.log(comandos)
 
         axios.post(`${process.env.apiUrl}/comandos`, comandos, {
             headers: {

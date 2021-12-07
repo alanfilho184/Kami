@@ -1,24 +1,38 @@
+const permAliases = ["perm", "permanente", "permanent"]
+const tempAliases = ["temp", "temporario", "temporary", "temporaria"]
+
+function secret(client, msg) {
+    var userConfig = client.cache.get(msg.author.id)
+
+    try {
+        if (userConfig.insan == "true") {
+            return true
+        }
+        if (userConfig.insan == "false" || userConfig.insan == null) {
+            return false
+        }
+    }
+    catch (err) {
+        if (err == "TypeError: Cannot read property 'insan' of undefined") {
+            return false
+        }
+    }
+}
+
 module.exports = class insanidade {
     constructor() {
         return {
-            ownerOnly: false,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+                user: [],
+                owner: false,
+            },
             name: "insanidade",
-            fName: "Insanidade",
-            fNameEn: "Insanity",
+            cat: "Insanidade",
+            catEn: "Insanity",
             desc: 'Envia uma insanidade para um personagem, temporaria ou permanente.',
             descEn: 'Sends a insanity to a character, temporary or permanent.',
-            args: [],
-            options: [{
-                name: "tipo",
-                required: true,
-                type: "STRING",
-                desc: "Opções para o comando.",
-                choices: [
-                    { name: "Temporária", return: "temporaria" },
-                    { name: "Permanente", return: "permanente" }
-                ],
-            }],
-            type: 1,
+            aliases: ["ins", "insan", "insanity", "insanidade_config"],
             helpPt: {
                 title: "<:dadosAjuda:766790214030852137> " + "/" + "insanidade (ins)", desc: `
     Gere um distúrbio psicológico aleatório para seu personagem 
@@ -47,104 +61,109 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
             run: this.execute
         }
     }
-    execute(client, int) {
-        const args = client.utils.args(int)
+    execute(client, msg) {
+        const args = client.utils.args(msg)
 
-        var userConfig = client.cache.get(int.user.id)
-        var secret
+        if (!args[0]) return msg.reply(client.tl({ local: msg.lang + "ins-nArg" }))
 
-        try {
-            if (userConfig.insan == "true") {
-                secret = true
-            }
-            if (userConfig.insan == "false" || userConfig.insan == null) {
-                secret = false
-            }
-        }
-        catch (err) {
-            if (err == "TypeError: Cannot read property 'insan' of undefined") {
-                secret = false
-            }
-        }
+        var secretInsan = secret(client, msg)
 
-        int.deferReply({ ephemeral: secret })
-            .then(() => {
+        if (secretInsan && !msg.slash) msg.delete()
 
-                if (args.size == 0) return int.editReply(client.tl({ local: int.lang + "ins-nArg" }))
+        const inTemp = client.resources[msg.lang.replace("-", "")].inTemp
+        const inPerm = client.resources[msg.lang.replace("-", "")].inPerm
+        const footer = client.resources[msg.lang.replace("-", "")].footer()
 
-                const inTemp = client.resources[int.lang.replace("-", "")].inTemp
-                const inPerm = client.resources[int.lang.replace("-", "")].inPerm
-                const footer = client.resources[int.lang.replace("-", "")].footer()
+        if (permAliases.includes(args[0])) {
+            var qPerm = inPerm.length
 
-                if (args.get("tipo") == "temporaria") {
-                    var qPerm = inPerm.length
+            var result = client.utils.dice(qPerm)
 
-                    var result = client.utils.dice(qPerm)
+            const insPerm = new client.Discord.MessageEmbed()
+                .setTitle(client.tl({ local: msg.lang + "ins-embedPermTi" }))
+                .setFooter(footer, client.user.displayAvatarURL())
+                .setColor(client.settings.color)
+                .setTimestamp()
 
-                    const insPerm = new client.Discord.MessageEmbed()
-                        .setTitle(client.tl({ local: int.lang + "ins-embedPermTi" }))
-                        .setFooter(footer, client.user.displayAvatarURL())
-                        .setColor(client.settings.color)
-                        .setTimestamp()
+            if (result == qPerm - 1) {
+                var result1 = client.utils.dice(qPerm - 1)
+                var result2 = client.utils.dice(qPerm - 1)
 
-                    if (result == qPerm - 1) {
-                        var result1 = client.utils.dice(qPerm - 1)
-                        var result2 = client.utils.dice(qPerm - 1)
-
-                        if (result1 == result2) {
-                            while (result1 == result2) {
-                                result2 = client.utils.dice(qPerm - 1)
-                            }
-                        }
-
-                        insPerm.setDescription(`${client.tl({ local: int.lang + "ins-embedPermDesc2inPt1" })} **${inPerm[result1 - 1]}** ${client.tl({ local: int.lang + "ins-embedPermDesc2inPt2" })} **${inPerm[result2 - 1]}**`)
-
+                if (result1 == result2) {
+                    while (result1 == result2) {
+                        result2 = client.utils.dice(qPerm - 1)
                     }
-                    else if (result == qPerm) {
-                        var allDif = false
-                        var result1 = client.utils.dice(qPerm)
-                        var result2 = client.utils.dice(qPerm)
-                        var result3 = client.utils.dice(qPerm)
-
-                        while (allDif == false) {
-                            if (result1 == result2) {
-                                result2 = client.utils.dice(qPerm - 1)
-                            }
-                            if (result1 == result3) {
-                                result3 = client.utils.dice(qPerm - 1)
-                            }
-                            if (result2 == result3) {
-                                result3 = client.utils.dice(qPerm - 1)
-                            }
-                            if (result1 != result2 && result1 != result3 && result2 != result3) {
-                                allDif = true
-                            }
-                        }
-
-                        insPerm.setDescription(`${client.tl({ local: int.lang + "ins-embedPermDesc3in" })} **${inPerm[result1 - 1]}**, **${inPerm[result2 - 1]}** ${client.tl({ local: int.lang + "ins-embedPermDesc2inPt2" })} **${inPerm[result3 - 1]}**`)
-
-                    }
-                    else {
-                        insPerm.setDescription(`${client.tl({ local: int.lang + "ins-embedPermDesc" })} **${inPerm[client.utils.dice(qPerm) - 1]}**`)
-                    }
-
-                    return int.editReply({ embeds: [insPerm] })
                 }
 
-                if (args.get("tipo") == "permanente") {
-                    var qTemp = inTemp.length
-                    var result = client.utils.dice(qTemp)
+                insPerm.setDescription(`${client.tl({ local: msg.lang + "ins-embedPermDesc2inPt1" })} **${inPerm[result1 - 1]}** ${client.tl({ local: msg.lang + "ins-embedPermDesc2inPt2" })} **${inPerm[result2 - 1]}**`)
 
-                    const insTemp = new client.Discord.MessageEmbed()
-                        .setTitle(client.tl({ local: int.lang + "ins-embedTempTi" }))
-                        .setColor(client.settings.color)
-                        .setDescription(`${client.tl({ local: int.lang + "ins-embedTempDesc" })} **${inTemp[result - 1]}**`)
-                        .setFooter(footer, client.user.displayAvatarURL())
-                        .setTimestamp()
+            }
+            else if (result == qPerm) {
+                var allDif = false
+                var result1 = client.utils.dice(qPerm)
+                var result2 = client.utils.dice(qPerm)
+                var result3 = client.utils.dice(qPerm)
 
-                    return int.editReply({ embeds: [insTemp] })
-
+                while (allDif == false) {
+                    if (result1 == result2) {
+                        result2 = client.utils.dice(qPerm - 1)
+                    }
+                    if (result1 == result3) {
+                        result3 = client.utils.dice(qPerm - 1)
+                    }
+                    if (result2 == result3) {
+                        result3 = client.utils.dice(qPerm - 1)
+                    }
+                    if (result1 != result2 && result1 != result3 && result2 != result3) {
+                        allDif = true
+                    }
                 }
-            })
+
+                insPerm.setDescription(`${client.tl({ local: msg.lang + "ins-embedPermDesc3in" })} **${inPerm[result1 - 1]}**, **${inPerm[result2 - 1]}** ${client.tl({ local: msg.lang + "ins-embedPermDesc2inPt2" })} **${inPerm[result3 - 1]}**`)
+
+            }
+            else {
+                insPerm.setDescription(`${client.tl({ local: msg.lang + "ins-embedPermDesc" })} **${inPerm[client.utils.dice(qPerm) - 1]}**`)
+            }
+
+            if (secretInsan) {
+                if (msg.slash) {
+                    msg.pureReply({ embeds: [insPerm], ephemeral: true })
+                }
+                else {
+                    msg.author.send({ embeds: [insPerm] })
+                }
+            }
+            else {
+                msg.reply({ embeds: [insPerm] })
+            }
+            return
+        }
+
+        if (tempAliases.includes(args[0])) {
+            var qTemp = inTemp.length
+            var result = client.utils.dice(qTemp)
+
+            const insTemp = new client.Discord.MessageEmbed()
+                .setTitle(client.tl({ local: msg.lang + "ins-embedTempTi" }))
+                .setColor(client.settings.color)
+                .setDescription(`${client.tl({ local: msg.lang + "ins-embedTempDesc" })} **${inTemp[result - 1]}**`)
+                .setFooter(footer, client.user.displayAvatarURL())
+                .setTimestamp()
+
+            if (secretInsan) {
+                if (msg.slash) {
+                    msg.pureReply({ embeds: [insTemp], ephemeral: true })
+                }
+                else {
+                    msg.author.send({ embeds: [insTemp] })
+                }
+            }
+            else {
+                msg.reply({ embeds: [insTemp] })
+            }
+
+            return
+        }
     }
 }

@@ -26,7 +26,8 @@ module.exports = class botStatus {
     }
 
     async getDB() {
-        var dbSize = await this.client.db.query(`SELECT pg_database_size('${this.client.settings.dbName}');`)
+       var dbSize = await this.client.db.query(`SELECT pg_database_size('${this.client.settings.dbName}');`)
+
 
         var ping = moment().valueOf()
         var dbFichas = await this.client.db.query(`select nomerpg from fichas`)
@@ -61,6 +62,8 @@ module.exports = class botStatus {
             + (hours > 0 ? hours == 1 ? hours + " hora " : hours + " horas " : "")
             + (minutes > 0 ? minutes == 1 ? minutes + " minuto " : minutes + " minutos " : "")
 
+
+
         const table = new ac("Kami")
 
         const stats = await pidusage(process.pid)
@@ -87,7 +90,7 @@ module.exports = class botStatus {
             .addRow(`Uso de RAM`, `${ram.toFixed(2)} MB`)
             .addRow(`RAM Total`, `${(os.totalmem() / 1024 - os.freemem() / 1024).toFixed(1)} GB / ${(os.totalmem() / 1024).toFixed(1)} GB`)
             .addRow("Ping", `API: ${Math.round(client.ws.ping)} ms - ` + `DB: ${Math.round(DBInfo.ping)} ms`)
-            .addRow("Uso do DB", (dbSize / 1e+6).toFixed(1) + " MB")
+            .addRow("Uso do DB", (dbSize/1e+6).toFixed(1) + " MB")
             .addRow("Fichas Criadas", `${qFichas} Fichas`)
             .addRow("Fichas no Cache", `${client.cache.evalSync("fichas.length()")}`)
             .addRow("Fichas IRT no Cache", `${client.cache.evalSync("irt.length()")}`)
@@ -112,14 +115,14 @@ module.exports = class botStatus {
             var statusMsg = await client.channels.fetch("772970777787236352")
             await statusMsg.messages.fetch("772971275903303721")
                 .then(msg => {
-                    msg.edit({ embeds: [botStatus] })
+                    msg.edit({embeds:[botStatus]})
                 })
         }
         else {
             var statusMsg = await client.channels.fetch("784542287329886239")
             statusMsg.messages.fetch("784543009982644245")
                 .then(msg => {
-                    msg.edit({ embeds: [botStatus] })
+                    msg.edit({embeds:[botStatus]})
                 })
         }
 

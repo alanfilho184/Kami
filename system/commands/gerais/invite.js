@@ -1,15 +1,17 @@
 module.exports = class invite {
     constructor() {
         return {
-            ownerOnly: false,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+                user: [],
+                owner: false,
+            },
             name: "convite",
-            fName: "Convite",
-            fNameEn: "Invite",
+            cat: "Convite",
+            catEn: "Invite",
             desc: 'Envia o link para adicionar o BOT.',
             descEn: 'Sends the link to add the BOT.',
-            args: [],
-            options: [],
-            type: 1,
+            aliases: ["invite", "link"],
             helpPt: {
                 title: "<:outrosAjuda:766790214110019586> " + "/" + "convite", desc: `Esse comando mostra o link para que você possa convidar o BOT para outros servidores
                 
@@ -25,21 +27,18 @@ module.exports = class invite {
         }
     }
 
-    execute(client, int) {
-        int.deferReply()
-            .then(() => {
-                const inviteEmbed = new client.Discord.MessageEmbed()
-                    .setDescription(client.tl({ local: int.lang + "inv-embedDesc" }))
-                    .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
-                    .setTimestamp()
-                    .setColor(client.settings.color)
+    execute(client, msg) {
+        const inviteEmbed = new client.Discord.MessageEmbed()
+            .setDescription(client.tl({ local: msg.lang + "inv-embedDesc" }))
+            .setFooter(client.resources[msg.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+            .setTimestamp()
+            .setColor(client.settings.color)
 
-                const bInv = new client.Discord.MessageButton()
-                    .setStyle(5)
-                    .setLabel(client.tl({ local: int.lang + "inv-embedFT" }))
-                    .setURL(`https://kamibot.vercel.app/short/convite`)
+        const bInv = new client.Discord.MessageButton()
+            .setStyle(5)
+            .setLabel(client.tl({ local: msg.lang + "inv-embedFT" }))
+            .setURL(`https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=${client.settings.permissions}&scope=bot%20applications.commands`)
 
-                int.editReply({ embeds: [inviteEmbed], components: [{ type: 1, components: [bInv] }] })
-            })
+        msg.reply({ embeds: [inviteEmbed], components: [{type: 1, components: [bInv]}] })
     }
 }

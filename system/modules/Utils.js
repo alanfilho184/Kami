@@ -8,34 +8,21 @@ roll = new roll()
 module.exports = class Utils {
 
     constructor(options = {}) {
+
         this.options = options
         this.client = options.client
+
     }
 
-    args(int) {
-        const args = new Map()
-        int.options._hoistedOptions.forEach(arg => {
-            args.set(arg.name, arg.value)
-        })
-
-        return args
+    args(msg) {
+        const args = msg.content.slice(this.client.prefix.length).trim().split(/ +/g);
+        args.shift();
+        return args;
     }
 
-    argsString(int) {
-        var args = ""
-        for (var x in int.options._hoistedOptions) {
-            args += int.options._hoistedOptions[x].name + ": " + int.options._hoistedOptions[x].value
-            if(x < int.options._hoistedOptions.length-1) {
-                args += " | "
-            }
-        }
-
-        return args
-    }
-
-    getLang(int) {
-        if (int.guildId != null) {
-            var info = this.client.cache.get(int.guildId)
+    getLang(msg) {
+        if (msg.channel.type == "GUILD_TEXT") {
+            var info = this.client.cache.get(msg.guild.id)
 
             try { var Lang = info.lang }
             catch (err) {
@@ -45,13 +32,13 @@ module.exports = class Utils {
             }
 
             if (!Lang) {
-                var Lang = setLang(this.client, int, "server")
+                var Lang = setLang(this.client, msg, "server")
                 return Lang
             }
             return Lang
         }
         else {
-            var info = this.client.cache.get(int.user.id)
+            var info = this.client.cache.get(msg.author.id)
 
             try { var Lang = info.lang }
             catch (err) {
@@ -61,7 +48,7 @@ module.exports = class Utils {
             }
 
             if (!Lang) {
-                setLang(this.client, int, "user")
+                setLang(this.client, msg, "user")
                 return undefined
             }
             return Lang
@@ -81,6 +68,34 @@ module.exports = class Utils {
             nI = nI + 1
         }
         return nI
+    }
+
+    matchAliase(userCmd) {
+        var base = 0.2495
+
+        userCmd = userCmd.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, '')
+
+        const result = stringSimilarity.findBestMatch(userCmd, aliases)
+        const target = result.bestMatch.target
+        const rating = result.bestMatch.rating
+
+        var x = 0
+
+        while (x < userCmd.length) {
+            base += 0.04962
+            x++
+        }
+
+        if (base > 0.7) {
+            base = 0.7
+        }
+
+        if (rating >= base) {
+            return target
+        }
+        else {
+            return `Nenhuma combinação igual ou acima de ${base} encontrada | ` + target + ": " + rating
+        }
     }
 
     objToMap(obj) {

@@ -3,19 +3,17 @@
 module.exports = class ver_ficha {
     constructor() {
         return {
-            ownerOnly: false,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+                user: [],
+                owner: false,
+            },
             name: "verficha",
-            fName: "Ver ficha",
-            fNameEn: "View sheet",
+            cat: "Ver ficha",
+            catEn: "View sheet",
             desc: 'Visualiza uma ficha de outro usuário.',
             descEn: 'View another user sheet\`s',
-            args: [
-                { name: "usuario", desc: "Usuário que deseja visualizar a ficha.", type: "USER", required: true },
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja visualizar.", type: "STRING", required: true },
-                { name: "senha_da_ficha", desc: "Senha da ficha que deseja visualizar.", type: "STRING", required: true }
-            ],
-            options: [],
-            type: 1,
+            aliases: ["vf", "vs", "ver", "view"],
             helpPt: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "verficha", desc: `Com esse comando você pode visualizar uma ficha de outro usuário
                 
@@ -26,6 +24,7 @@ module.exports = class ver_ficha {
             
                 Ex: **/verficha <@!716053210179043409> RPG_Kami xxxxxxxxxx**`
             },
+
             helpEn: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "verficha", desc: `With this command you can view a sheet owned by another user.
                 
@@ -39,38 +38,81 @@ module.exports = class ver_ficha {
             run: this.execute
         }
     }
-    execute(client, int) {
-
-        int.deferReply({ ephemeral: true })
-            .then(() => {
-                const args = client.utils.args(int)
-
-                const user = args.get("usuario")
-                const nomeRpg = args.get("nome_da_ficha")
-                const senha = args.get("senha_da_ficha")
-
-                client.cache.getFicha(user, nomeRpg)
+    execute(client, msg) {
+        if (msg.channel.type != "DM" && msg.slash == false) {
+            msg.delete()
+            return msg.channel.send({content: client.tl({local: msg.lang+"verF-dm/", msg: msg})})
+        }
+        else {
+            const args = client.utils.args(msg)
+            if (msg.slash == true) {
+                client.cache.getFicha(args[0], args[1])
                     .then(ficha => {
                         if (ficha == undefined) {
-                            return int.editReply({ content: client.tl({ local: int.lang + "verF-nFE", nomeRpg: nomeRpg }), ephemeral: true })
+                            return msg.pureReply({content: client.tl({local: msg.lang+"verF-nFE", nomeRpg: args[1]}), ephemeral: true})
                         }
                         else {
-                            if (ficha.senha != senha) {
-                                return int.editReply({ content: client.tl({ local: int.lang + "verF-sI", nomeRpg: nomeRpg }), ephemeral: true })
+                            if (ficha.senha != args[2]) {
+                                return msg.pureReply({content: client.tl({local: msg.lang+"verF-sI", nomeRpg: args[1]}), ephemeral: true})
                             }
                             else {
-                                client.users.fetch(user)
+                                client.users.fetch(args[0])
                                     .then(fProp => {
-                                        var infoProp = int
-                                        infoProp.user = fProp
-                                        const reply = client.commands.get("enviar").create(client, infoProp, nomeRpg, ficha, false)
+                                        var infoProp = msg
+                                        infoProp.author = fProp
+                                        const reply = client.commands.get("enviar").create(client, infoProp, args[1], ficha, false)
                                         const embedsArray = Object.values(reply)
 
-                                        return int.editReply({ embeds: embedsArray, ephemeral: true })
+                                        return msg.pureReply({ embeds: embedsArray, ephemeral: true })
                                     })
                             }
                         }
                     })
-            })
+            }
+            else {
+                if (args[0] == undefined) {
+                    return msg.reply({content: client.tl({local: msg.lang+"verF-nArg"})})
+                }
+                if (args[1] == undefined) {
+                    return msg.reply({content: client.tl({local: msg.lang+"verF-nArg1"})})
+                }
+                if (args[2] == undefined) {
+                    return msg.reply({content: client.tl({local: msg.lang+"verF-nArg2"})})
+                }
+
+                client.users.fetch(args[0])
+                    .then(fProp => {
+
+                        if (fProp == undefined) {
+                            return msg.reply({content: client.tl({local: msg.lang+"verF-nUE"})})
+                        }
+                        else {
+                            client.cache.getFicha(fProp.id, args[1])
+                                .then(ficha => {
+                                    if (ficha == undefined) {
+                                        return msg.reply({content: client.tl({local: msg.lang+"verF-nFUE", cmd: fProp.tag, nomeRpg: args[1]})})
+                                    }
+                                    else {
+                                        if (ficha.senha != args[2]) {
+                                            return msg.reply({content: client.tl({local: msg.lang+"verF-sI", nomeRpg: args[1]})})
+                                        }
+                                        else {
+                                            var infoProp = msg
+                                            infoProp.author = fProp
+                                            const reply = client.commands.get("enviar").create(client, infoProp, args[1], ficha, false)
+                                            const embedsArray = Object.values(reply)
+
+                                            return msg.reply({ embeds: embedsArray })
+                                        }
+                                    }
+                                })
+                        }
+                    })
+                    .catch(err => {
+                        return msg.reply({content: client.tl({local: msg.lang+"verF-nUE"})})
+                    })
+            }
+        }
+
     }
 }

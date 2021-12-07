@@ -1,15 +1,17 @@
 module.exports = class ver_senha {
     constructor() {
         return {
-            ownerOnly: false,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+                user: [],
+                owner: false,
+            },
             name: "versenha",
-            fName: "Ver senha",
-            fNameEn: "View password",
+            cat: "Ver senha",
+            catEn: "View password",
             desc: 'Visualize a senha de suas fichas.',
             descEn: 'View the password for your sheets.',
-            args: [],
-            options: [],
-            type: 1,
+            aliases: ["viewpassword"],
             helpPt: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "versenha", desc: `Com esse comando você pode ver a senha de suas fichas
 
@@ -20,6 +22,7 @@ module.exports = class ver_senha {
             
                 Ex: **/versenha**`
             },
+
             helpEn: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "versenha", desc: `With this command you can see the password for your sheets.
 
@@ -33,40 +36,46 @@ module.exports = class ver_senha {
             run: this.execute
         }
     }
-    execute(client, int) {
-        int.deferReply({ ephemeral: true })
-            .then(() => {
-                client.db.query(`select nomerpg, senha from fichas where id = '${int.user.id}'`)
-                    .then(result => {
-                        if (result[0].size == 0) {
-                            return int.editReply({ content: client.tl({ local: int.lang + "verS-nFC" }) })
-                        }
+    execute(client, msg) {
+        if (msg.channel.type != "DM" && msg.slash == false) {
+            return msg.reply({ content: client.tl({ local: msg.lang + "verS-dm/" }) })
+        }
+        else {
+            client.db.query(`select nomerpg, senha from fichas where id = '${msg.author.id}'`)
+                .then(result => {
+                    if (result[0].size == 0) {
+                        return msg.reply({ content: client.tl({ local: msg.lang + "verS-nFC" }) })
+                    }
 
-                        const fichas = new Map()
-                        result[0].map(f => fichas.set(f.nomerpg, f.senha))
+                    const fichas = new Map()
+                    result[0].map(f => fichas.set(f.nomerpg, f.senha))
 
-                        var embedTi = client.tl({ local: int.lang + "verS-embedTi" })
-                        if (fichas.size > 1) {
-                            embedTi = client.utils.replaceAll(embedTi, "$", "s")
-                        }
-                        else {
-                            embedTi = client.utils.replaceAll(embedTi, "$", "")
-                        }
+                    var embedTi = client.tl({ local: msg.lang + "verS-embedTi" })
+                    if (fichas.size > 1) {
+                        embedTi = client.utils.replaceAll(embedTi, "$", "s")
+                    }
+                    else {
+                        embedTi = client.utils.replaceAll(embedTi, "$", "")
+                    }
 
-                        const embedSenhas = new client.Discord.MessageEmbed()
-                            .setTitle(embedTi)
-                            .setColor(client.settings.color)
-                            .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
-                            .setTimestamp()
+                    const embedSenhas = new client.Discord.MessageEmbed()
+                        .setTitle(embedTi)
+                        .setColor(client.settings.color)
+                        .setFooter(client.resources[msg.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+                        .setTimestamp()
 
-                        fichas.forEach((senha, nomerpg) => {
-                            embedSenhas.addField(nomerpg + ":", senha, true)
-                        })
-
-
-                        return int.editReply({ embeds: [embedSenhas] })
-
+                    fichas.forEach((senha, nomerpg) => {
+                        embedSenhas.addField(nomerpg + ":", senha, true)
                     })
-            })
+
+                    if (msg.slash == true) {
+                        return msg.pureReply({ embeds: [embedSenhas], ephemeral: true })
+                    }
+                    else {
+                        return msg.reply({ embeds: [embedSenhas] })
+                    }
+                })
+        }
+
     }
 }

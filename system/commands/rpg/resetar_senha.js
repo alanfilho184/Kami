@@ -3,17 +3,17 @@
 module.exports = class resetar_senha {
     constructor() {
         return {
-            ownerOnly: false,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+                user: [],
+                owner: false,
+            },
             name: "resetarsenha",
-            fName: "Resetar senha",
-            fNameEn: "Reset password",
+            cat: "Resetar senha",
+            catEn: "Reset password",
             desc: 'Resete a senha de uma ficha sua já criada.',
             descEn: 'Reset the password for a sheet you have already created.',
-            args: [
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja resetar a senha.", type: "STRING", required: true },
-            ],
-            options: [],
-            type: 1,
+            aliases: ["resetpassword", "reset", "rp", "rs"],
             helpPt: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "resetarsenha", desc: `Com esse comando você pode resetar a senha de uma ficha sua já criada
 
@@ -34,30 +34,36 @@ module.exports = class resetar_senha {
             run: this.execute
         }
     }
-    execute(client, int) {
-        int.deferReply({ ephemeral: true })
-            .then(() => {
-                const args = client.utils.args(int)
-                const nomeRpg = args.get("nome_da_ficha")
+    execute(client, msg) {
+        if (msg.channel.type != "DM" && msg.slash == false) {
+            return msg.reply({ content: client.tl({ local: msg.lang + "rS-dm/" }) })
+        }
+        else {
+            const args = client.utils.args(msg)
+            if (args.length == 0) {
+                return msg.reply({ content: client.tl({ local: msg.lang + "rS-nArg" }) })
+            }
+            else {
+                client.db.query(`select id, nomerpg, senha from fichas where id = '${msg.author.id}' and nomerpg = '${args[0]}' `)
+                    .then(r => {
+                        if (r[0].length == 0) {
+                            return msg.reply({ content: client.tl({ local: msg.lang + "rS-nFE", nomeRpg: args[0] }) })
+                        }
+                        else {
+                            const novaSenha = client.utils.gerarSenha()
+                            client.db.query(`update fichas set senha = '${novaSenha}' where id = '${msg.author.id}' and nomerpg = '${args[0]}' `)
+                                .then(r => {
+                                    if (msg.slash == true) {
+                                        return msg.pureReply({ content: client.tl({ local: msg.lang + "rS-sR", nomeRpg: args[0], cmd: novaSenha }), ephemeral: true })
+                                    }
+                                    else {
+                                        return msg.reply({ content: client.tl({ local: msg.lang + "rS-sR", nomeRpg: args[0], cmd: novaSenha }) })
+                                    }
+                                })
+                        }
+                    })
+            }
 
-                if (args.size == 0) {
-                    return int.editReply({ content: client.tl({ local: int.lang + "rS-nArg" }) })
-                }
-                else {
-                    client.db.query(`select id, nomerpg, senha from fichas where id = '${int.user.id}' and nomerpg = '${nomeRpg}' `)
-                        .then(r => {
-                            if (r[0].length == 0) {
-                                return int.editReply({ content: client.tl({ local: int.lang + "rS-nFE", nomeRpg: nomeRpg }) })
-                            }
-                            else {
-                                const novaSenha = client.utils.gerarSenha()
-                                client.cache.updateFicha(int.user.id, nomeRpg, "senha", novaSenha)
-                                    .then(r => {
-                                        return int.editReply({ content: client.tl({ local: int.lang + "rS-sR", nomeRpg: nomeRpg, cmd: novaSenha }) })
-                                    })
-                            }
-                        })
-                }
-            })
+        }
     }
 }

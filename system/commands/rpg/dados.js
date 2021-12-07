@@ -1,20 +1,41 @@
+const setAliases = ["config", "configurar"]
+
 const { ToInteger } = require("es-abstract");
+
+function secretTest(client, msg) {
+    if (msg.channel.type == "DM") { return false }
+
+    var userConfig = client.cache.get(msg.author.id)
+
+    try {
+        if (userConfig.roll == "true") {
+            return true
+        }
+        if (userConfig.roll == "false" || userConfig.roll == null) {
+            return false
+        }
+    }
+    catch (err) {
+        if (err == "TypeError: Cannot read property 'roll' of undefined") {
+            return false
+        }
+    }
+}
 
 module.exports = class roll {
     constructor() {
         return {
-            ownerOnly: false,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+                user: [],
+                owner: false,
+            },
             name: "roll",
-            fName: "Roll",
-            fNameEn: "Roll",
+            cat: "Roll",
+            catEn: "Roll",
             desc: 'Rola um dado ou um atributo.',
             descEn: 'Rolls a dice or an attribute.',
-            args: [
-                { name: "dado_ou_atributo", desc: "Dado ou atributo que deseja rolar.", type: "STRING", required: true },
-                { name: "nome_da_ficha", desc: "Nome da ficha onde o atributo está", type: "STRING", required: false },
-            ],
-            options: [],
-            type: 1,
+            aliases: ["r", "dado", "dice", "roll_atributo", "roll_config"],
             helpPt: {
                 title: "<:dadosAjuda:766790214030852137> " + "/" + "roll (r)", desc: `
             Role qualquer dado que quiser
@@ -63,51 +84,39 @@ module.exports = class roll {
             run: this.execute,
             rollNumber: this.rollNumber,
             rollAtb: this.rollAtb,
+            secretRoll: this.secretRoll,
+            setRoll: this.setRoll
 
         }
     }
-    execute(client, int) {
-        var userConfig = client.cache.get(int.user.id)
-        var secret
+    execute(client, msg) {
+        var args = client.utils.args(msg)
 
-        try {
-            if (userConfig.roll == "true") {
-                secret = true
-            }
-            if (userConfig.roll == "false" || userConfig.roll == null) {
-                secret = false
-            }
+
+        if (!args[0]) { return msg.reply(client.tl({ local: msg.lang + "dados-nArgs" })) }
+
+        args[0] = args[0].toLowerCase()
+
+        //Desativado por enquanto até decidir o que fazer com a falta da message intent
+        //if (setAliases.includes(client.utils.matchAtb(args[0], setAliases))) { return this.setRoll(client, msg) }
+
+        const atributos = client.resources[msg.lang.replace("-", "")].atributos
+
+        if (atributos.includes(client.utils.matchAtb(args[0].toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos))) {
+            return this.rollAtb(client, msg)
         }
-        catch (err) {
-            if (err == "TypeError: Cannot read property 'roll' of undefined") {
-                secret = false
-            }
+        else {
+            return this.rollNumber(client, msg)
         }
 
-        int.deferReply({ ephemeral: secret })
-            .then(() => {
-                const args = client.utils.args(int)
-
-                if (args.size < 1) { return int.editReply(client.tl({ local: int.lang + "dados-nArgs" })) }
-
-                const atributos = client.resources[int.lang.replace("-", "")].atributos
-
-                if (atributos.includes(client.utils.matchAtb(args.get("dado_ou_atributo").toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos))) {
-                    return this.rollAtb(client, int)
-                }
-                else {
-                    return this.rollNumber(client, int)
-                }
-            })
     }
-    rollNumber(client, int) {
+    rollNumber(client, msg) {
         var roll = require("roll")
         roll = new roll()
-        const args = client.utils.args(int)
-        var numberDice = args.get("dado_ou_atributo")
-        const footer = client.resources[int.lang.replace("-", "")].footer
+        const args = client.utils.args(msg)
+        const footer = client.resources[msg.lang.replace("-", "")].footer
 
-        var segments = args.get("dado_ou_atributo").split(/[\+\-\*\/]/)
+        var segments = args[0].split(/[\+\-\*\/]/)
 
         var rolled = ""
         var results = new Array()
@@ -139,12 +148,13 @@ module.exports = class roll {
 
             }
 
+
             if (Number(qdados) > 10000 || Number(tdados) > 100000000 || Number(bdados) > 100000000) {
-                return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
+                return msg.reply(client.tl({ local: msg.lang + "dados-dadoInv", cmd: args[0] }))
             }
 
             if (Number(qdados) <= 0 || Number(tdados) <= 0 || Number(bdados) < 0) {
-                return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
+                return msg.reply(client.tl({ local: msg.lang + "dados-dadoInv", cmd: args[0] }))
             }
 
             charCount.push(((Number(qdados) * String(tdados).length) + String(bdados).length) * segments.length)
@@ -156,7 +166,7 @@ module.exports = class roll {
         }
 
         if (cc > 1800) {
-            return int.editReply(client.tl({ local: int.lang + "dados-rMA", cmd: numberDice }))
+            return msg.reply(client.tl({ local: msg.lang + "dados-rMA", cmd: args[0] }))
         }
 
         var title = ""
@@ -170,13 +180,13 @@ module.exports = class roll {
                     }
                 }
 
-                if (!pass) { return int.editReply(client.tl({ local: int.lang + "dados-nD" })) }
+                if (!pass) { return msg.reply(client.tl({ local: msg.lang + "dados-nD" })) }
 
-                var ops = numberDice.match(/[+*/-]/g)
+                var ops = args[0].match(/[+*/-]/g)
 
                 for (x in segments) {
                     if (Number(segments[x].replace("d", "")) > 100000000) {
-                        return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
+                        return msg.reply(client.tl({ local: msg.lang + "dados-dadoInv", cmd: args[0] }))
                     }
 
                     if (segments[x] == '') { continue }
@@ -196,7 +206,7 @@ module.exports = class roll {
                             rolled += "[ " + dice.rolled + " ] " + ops[x] + " "
                         }
 
-                        title = numberDice
+                        title = args[0]
                     }
                     else {
                         if (x == 0) {
@@ -210,7 +220,7 @@ module.exports = class roll {
                             rolled += segments[x] + " " + ops[x] + " "
                         }
                         results.push(segments[x])
-                        title = numberDice
+                        title = args[0]
                     }
                 }
 
@@ -279,12 +289,12 @@ module.exports = class roll {
                     r = r / Number(results[ops.length])
                 }
 
-                rolled = numberDice + " = " + rolled + " = " + r
+                rolled = args[0] + " = " + rolled + " = " + r
             }
             else {
                 if (segments[0].search("d") == -1) {
                     if (Number(segments[0]) > 100000000) {
-                        return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: segments[0] }))
+                        return msg.reply(client.tl({ local: msg.lang + "dados-dadoInv", cmd: segments[0] }))
                     }
                     segments[0] = "d" + segments[0]
                     var dice = roll.roll(segments[0])
@@ -292,20 +302,20 @@ module.exports = class roll {
                     rolled += dice.rolled
                     r = dice.result
 
-                    rolled = "d" + numberDice + " = " + r
-                    title = "d" + numberDice
+                    rolled = "d" + args[0] + " = " + r
+                    title = "d" + args[0]
                 }
                 else {
                     if (segments[0].split("d")[0] == "") {
                         if (Number(segments[0].split("d")[1]) > 100000000) {
-                            return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: segments[0] }))
+                            return msg.reply(client.tl({ local: msg.lang + "dados-dadoInv", cmd: segments[0] }))
                         }
                         var dice = roll.roll(segments[0])
 
                         rolled += dice.rolled
                         r = dice.result
 
-                        rolled = numberDice + " = " + r
+                        rolled = args[0] + " = " + r
                     }
                     else {
                         var dice = roll.roll(segments[0])
@@ -313,10 +323,10 @@ module.exports = class roll {
                         rolled += dice.rolled
                         r = dice.result
 
-                        rolled = numberDice + " = " + "[ " + rolled + " ]" + " = " + r
+                        rolled = args[0] + " = " + "[ " + rolled + " ]" + " = " + r
                     }
 
-                    title = numberDice
+                    title = args[0]
                 }
             }
 
@@ -325,37 +335,50 @@ module.exports = class roll {
             }
         }
         catch (err) {
-            return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
+            return msg.reply(client.tl({ local: msg.lang + "dados-dadoInv", cmd: args[0] }))
         }
 
         const rollEmbed = new client.Discord.MessageEmbed()
-            .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
+            .setTitle(msg.author.username + " " + client.tl({ local: msg.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
             .setFooter(footer(), client.user.displayAvatarURL())
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 
-        int.editReply({ embeds: [rollEmbed] })
+        if (secretTest(client, msg)) {
+
+            if (msg.slash) {
+                msg.pureReply({ embeds: [rollEmbed], ephemeral: true })
+            }
+            else {
+                msg.delete()
+                msg.author.send({ embeds: [rollEmbed] })
+            }
+        }
+        else {
+            msg.reply({ embeds: [rollEmbed] })
+        }
     }
-    async rollAtb(client, int) {
-        const args = client.utils.args(int)
+    async rollAtb(client, msg) {
+        const args = client.utils.args(msg)
         const atributosPt = client.resources["pt"].atributos
-        const atributos = client.resources[int.lang.replace("-", "")].atributos
-        const atributosF = client.resources[int.lang.replace("-", "")].atributosF
+        const atributos = client.resources[msg.lang.replace("-", "")].atributos
+        const atributosF = client.resources[msg.lang.replace("-", "")].atributosF
         const atributosS1 = client.resources["pt"].atributosStatus
         const atributosI1 = client.resources["pt"].atributosI1
         const atributosI2 = client.resources["pt"].atributosI2
-        const atributosS1F = client.resources[int.lang.replace("-", "")].atributosStatusF
-        const atributosIF1 = client.resources[int.lang.replace("-", "")].atributosIF1
-        const atributosIF2 = client.resources[int.lang.replace("-", "")].atributosIF2
-        const footer = client.resources[int.lang.replace("-", "")].footer
+        const atributosS1F = client.resources[msg.lang.replace("-", "")].atributosStatusF
+        const atributosIF1 = client.resources[msg.lang.replace("-", "")].atributosIF1
+        const atributosIF2 = client.resources[msg.lang.replace("-", "")].atributosIF2
+        const footer = client.resources[msg.lang.replace("-", "")].footer
+        const msgSecret = client.resources[msg.lang.replace("-", "")].secret()
 
         var roll = require("roll")
         roll = new roll()
 
-        var atb = args.get("dado_ou_atributo")
-        var nomeRpg = args.get("nome_da_ficha")
+        var atb = args[0]
+        var nomeRpg = args[1]
 
         try { nomeRpg = nomeRpg.replace("'", '') } catch { }
 
@@ -363,32 +386,32 @@ module.exports = class roll {
 
         if (!nomeRpg) {
             try {
-                var fichasUser = client.cache.get(int.user.id).fPadrao
+                var fichasUser = client.cache.get(msg.author.id).fPadrao
                 nomeRpg = fichasUser
             }
             catch (err) { fichasUser = undefined }
 
             if (!fichasUser) {
                 const fichasUser = new Array()
-                var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
+                var result = await client.db.query(`select nomerpg from fichas where id = '${msg.author.id}'`)
 
                 for (x in result[0]) {
                     fichasUser.push(result[0][x].nomerpg)
                 }
-                if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "ddb-mFichas", fichasUser: fichasUser })) }
+                if (fichasUser.length > 1) { return msg.reply(client.tl({ local: msg.lang + "ddb-mFichas", fichasUser: fichasUser })) }
                 else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
-                else { return int.editReply(client.tl({ local: int.lang + "ddb-uSF" })) }
+                else { return msg.reply(client.tl({ local: msg.lang + "ddb-uSF" })) }
             }
         }
 
         try { nomeRpg = nomeRpg.replace("'", '') } catch { }
 
 
-        client.cache.getFicha(int.user.id, nomeRpg)
+        client.cache.getFicha(msg.author.id, nomeRpg)
             .then(r => {
                 if (r != undefined) {
 
-                    if (int.lang == "en-") {
+                    if (msg.lang == "en-") {
                         atb = atributosPt[atributos.indexOf(atb)]
                     }
                     var valor = r[atb]
@@ -419,7 +442,7 @@ module.exports = class roll {
 
                     if (!valor) {
                         embedRoll.addField(`\u200B`, `\u200B`, true)
-                        embedRoll.addField(atributosF[atributos.indexOf(atb.toLowerCase())] + ":", client.tl({ local: int.lang + "ddb-atbSV" }), true)
+                        embedRoll.addField(atributosF[atributos.indexOf(atb.toLowerCase())] + ":", client.tl({ local: msg.lang + "ddb-atbSV" }), true)
                     }
 
                     if (atbL == "S1" && valor) {
@@ -430,27 +453,27 @@ module.exports = class roll {
                         var falha = valor
 
                         if (result > falha && result != 100) {
-                            var resultado = client.tl({ local: int.lang + "ddb-rF" })
+                            var resultado = client.tl({ local: msg.lang + "ddb-rF" })
                         }
                         else if (result <= falha && result > bom) {
-                            var resultado = client.tl({ local: int.lang + "ddb-rN" })
+                            var resultado = client.tl({ local: msg.lang + "ddb-rN" })
                         }
                         else if (result <= bom && result > extremo) {
-                            var resultado = client.tl({ local: int.lang + "ddb-rB" })
+                            var resultado = client.tl({ local: msg.lang + "ddb-rB" })
                         }
                         else if (result <= extremo && result != 1) {
-                            var resultado = client.tl({ local: int.lang + "ddb-rE" })
+                            var resultado = client.tl({ local: msg.lang + "ddb-rE" })
                         }
                         else if (result == 1) {
-                            var resultado = client.tl({ local: int.lang + "ddb-rM" })
+                            var resultado = client.tl({ local: msg.lang + "ddb-rM" })
                         }
                         else if (result == 100) {
-                            var resultado = client.tl({ local: int.lang + "ddb-rD" })
+                            var resultado = client.tl({ local: msg.lang + "ddb-rD" })
                         }
 
                         embedRoll.addField(atb + ":", valor, true)
-                        if (resultado) { embedRoll.addField(client.tl({ local: int.lang + "ddb-Result" }) + ":", resultado, true) }
-                        embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi1", atb: atb }))
+                        if (resultado) { embedRoll.addField(client.tl({ local: msg.lang + "ddb-Result" }) + ":", resultado, true) }
+                        embedRoll.setTitle(msg.author.username + " " + client.tl({ local: msg.lang + "ddb-embedTi1", atb: atb }))
 
                     }
                     else if (atbL == "I1" || atbL == "I2" && valor && valor.length <= 160) {
@@ -458,28 +481,68 @@ module.exports = class roll {
                         else {
                             embedRoll.addField(`\u200B`, `\u200B`, true)
                             embedRoll.addField(atb + ":", `${valor}`, true)
-                            embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi1", atb: atb }))
+                            embedRoll.setTitle(msg.author.username + " " + client.tl({ local: msg.lang + "ddb-embedTi1", atb: atb }))
                         }
                     }
 
-                    embedRoll.setAuthor(client.tl({ local: int.lang + "ddb-embedA" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
+                    embedRoll.setAuthor(client.tl({ local: msg.lang + "ddb-embedA" }) + nomeRpg + `. ${client.tl({ local: msg.lang + "created" })}${msg.author.tag}`)
                     if (atbL == "Ext" || atbL == "Desc") {
-                        embedRoll.setAuthor(client.tl({ local: int.lang + "ddb-errEx" }))
-                        embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi2" }))
+                        embedRoll.setAuthor(client.tl({ local: msg.lang + "ddb-errEx" }))
+                        embedRoll.setTitle(msg.author.username + " " + client.tl({ local: msg.lang + "ddb-embedTi2" }))
                     }
                     embedRoll.setFooter(footer(), client.user.displayAvatarURL())
                     embedRoll.setTimestamp()
                     embedRoll.setColor(client.settings.color)
                     embedRoll.setThumbnail(client.resources.assets.d1_100[dice.result])
 
-                    int.editReply({ embeds: [embedRoll] })
+                    if (secretTest(client, msg)) {
+
+                        if (msg.slash) {
+                            msg.pureReply({ embeds: [embedRoll], ephemeral: true })
+                        }
+                        else {
+                            msg.delete()
+                            msg.author.send({ embeds: [embedRoll] })
+                        }
+                    }
+                    else {
+                        msg.reply({ embeds: [embedRoll] })
+                    }
 
                 }
                 else {
-                    return int.editReply(client.tl({ local: int.lang + "ddb-nFE", nomeRpg: nomeRpg }))
+                    return msg.reply(client.tl({ local: msg.lang + "ddb-nFE", nomeRpg: nomeRpg }))
                 }
             })
 
 
+    }
+    setRoll(client, msg) {
+        if (msg.channel.type != "GUILD_TEXT") {
+            return msg.reply(client.tl({ local: msg.lang + "ddb-rcGO" }))
+        }
+        if (msg.author.id != client.settings.owner) {
+            if (!msg.member.hasPermission("ADMINISTRATOR") || !msg.member.hasPermission("MANAGE_CHANNELS") || !msg.member.hasPermission("MANAGE_GUILD")) {
+                return msg.reply(client.tl({ local: msg.lang + "ddb-rcSP" }))
+            }
+        }
+        var serverConfig = client.cache.get(msg.guild.id)
+
+        if (!serverConfig) {
+            userConfig = {
+                rollChannel: null
+            }
+        }
+
+        if (serverConfig.rollChannel != null) {
+            client.cache.update(msg.guild.id, null, "rollChannel", true)
+            msg.reply(client.tl({ local: msg.lang + "ddb-rcUS" }))
+        }
+        else {
+            client.cache.update(msg.guild.id, msg.channel.id, "rollChannel", true)
+            msg.reply(client.tl({ local: msg.lang + "ddb-rcS" }))
+        }
+
+        return
     }
 }

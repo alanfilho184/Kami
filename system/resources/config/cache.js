@@ -1,5 +1,6 @@
 const fs = require("fs")
 const path = require('path');
+const commandCount = new Object()
 const toMs = require("milliseconds-parser")()
 const LRU = require("./lru")
 const { QueryTypes } = require('sequelize');
@@ -13,7 +14,37 @@ function replaceAll(string, search, replace) {
     return splited
 }
 
-const commandCount = new Object()
+//const player = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
+
+// class pStatus {
+//     constructor() {
+//         return {
+//             energia: 10,
+//             lvl: 1,
+//             xp: 0,
+//             xpBase: 150,
+//             modXp: 1
+//         }
+//     }
+// }
+
+// class pMoney {
+//     constructor() {
+//         return {
+//             dinheiro: 0,
+//         }
+//     }
+// }
+
+// class inv {
+//     constructor() {
+//         return {
+//             invLimit: 108,
+//             itens: {
+//             }
+//         }
+//     }
+// }
 
 module.exports = class Cache {
     constructor(client) {
@@ -318,7 +349,7 @@ module.exports = class Cache {
             var i = irt.get(id + nomeRpg)
 
             var iU = new Array()
-            for (var x in i) {
+            for (x in i) {
                 if (i[x].msgid != msgid) {
                     iU.push(i[x])
                 }
@@ -335,6 +366,27 @@ module.exports = class Cache {
             irt.delete(id + nomeRpg)
         }
     }
+
+    // async getPlayer(id) {
+    //     const p = player.get(id)
+    //     if (p) { return p } else {
+    //         const r = await this.client.db
+    //             .select("*")
+    //             .from("player")
+    //             .where("id", id)
+    //             .queryList()
+
+    //         if (r[0] != undefined) { player.set(id, r[0]) }
+    //         return r[0]
+    //     }
+    // }
+
+    // async registerPlayer(id) {
+    //     await this.client.db
+    //         .insert("player")
+    //         .column("id", id)
+    //         .column("pStatus",)
+    // }
 
     evalSync(arg) {
         return eval(arg)

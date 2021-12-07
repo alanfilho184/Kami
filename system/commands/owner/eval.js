@@ -3,77 +3,70 @@ const { inspect } = require('util')
 module.exports = class evaluate {
     constructor() {
         return {
-            ownerOnly: true,
+            perm: {
+                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+                user: [],
+                owner: true,
+            },
             name: "eval",
-            fName: "Evaluate",
+            cat: "Evaluate",
             desc: 'Executa códigos.',
-            type: 3,
+            aliases: ['evaluate', 'ev'],
             run: this.execute
         }
     }
 
-    execute(client, int) {
-        int.deferReply({ ephemeral: true })
-            .then(async () => {
+    async execute(client, msg) {
+        if (msg.author.id == client.settings.owner) {
+            const evalEmbed = new client.Discord.MessageEmbed()
+                .setColor(client.settings.color)
 
-                if (int.user.id == client.settings.owner) {
-                    var msg = int.options._hoistedOptions[0].message
+            const args = msg.content.replace(`${client.prefix}eval `, "")
 
-                    msg.delete()
+            try {
+                var ping = Date.now()
+                var r = await eval(args)
+                ping = Date.now() - ping
 
-                    const evalEmbed = new client.Discord.MessageEmbed()
-                        .setColor(client.settings.color)
+                var code = typeof r == "string" ? r : inspect(r, { depth: 99 })
+                var result = `\`\`\`js\n${String(code).slice(0, 4000) + (code.length >= 4000 ? '...' : '')}\n\`\`\``
 
-                    const codeEmbed = new client.Discord.MessageEmbed()
-                        .setColor(client.settings.color)
-                        .setDescription("```js\n"+msg.content+"```")
-                        .setTitle("Código:")
+                var settings = client.utils.objToMap(client.settings)
+                settings.forEach((s) => { result = client.utils.replaceAll(result, s, "*") })
 
-                    try {
-                        var ping = Date.now()
-                        var r = await eval(msg.content)
-                        ping = Date.now() - ping
+                evalEmbed
+                    .setDescription(result)
+                    .setFooter(`Tempo de execução: ${ping} ms`, client.user.displayAvatarURL())
+                    .setTitle("Resultado:")
+                    .setTimestamp()
 
-                        var code = typeof r == "string" ? r : inspect(r, { depth: 99 })
-                        var result = `\`\`\`js\n${String(code).slice(0, 4000) + (code.length >= 4000 ? '...' : '')}\n\`\`\``
+                msg.reply({ embeds: [evalEmbed] })
+            }
+            catch (err) {
+                ping = Date.now() - ping
 
-                        var settings = client.utils.objToMap(client.settings)
-                        settings.forEach((s) => { result = client.utils.replaceAll(result, s, "*") })
+                client.log.error(err)
+                
+                err = inspect(err, { depth: 99 })
+                var error = `\`\`\`js\n${String(err).slice(0, 4000) + (err.length >= 4000 ? '...' : '')}\n\`\`\``
 
-                        evalEmbed
-                            .setDescription(result)
-                            .setFooter(`Tempo de execução: ${ping} ms`, client.user.displayAvatarURL())
-                            .setTitle("Resultado:")
-                            .setTimestamp()
+                var settings = client.utils.objToMap(client.settings)
+                settings.forEach((s) => { error = client.utils.replaceAll(error, s, "*") })
 
-                        int.editReply({ embeds: [codeEmbed, evalEmbed] })
-                    }
-                    catch (err) {
-                        ping = Date.now() - ping
+                evalEmbed
+                    .setDescription(error)
+                    .setFooter(`Tempo de execução: ${ping} ms`, client.user.displayAvatarURL())
+                    .setTitle("Erro:")
+                    .setTimestamp()
 
-                        client.log.error(err)
+                msg.reply({ embeds: [evalEmbed] })
+            }
 
-                        err = inspect(err, { depth: 99 })
-                        var error = `\`\`\`js\n${String(err).slice(0, 4000) + (err.length >= 4000 ? '...' : '')}\n\`\`\``
+        }
+        else {
+            return
+        }
 
-                        var settings = client.utils.objToMap(client.settings)
-                        settings.forEach((s) => { error = client.utils.replaceAll(error, s, "*") })
-
-                        evalEmbed
-                            .setDescription(error)
-                            .setFooter(`Tempo de execução: ${ping} ms`, client.user.displayAvatarURL())
-                            .setTitle("Erro:")
-                            .setTimestamp()
-
-                        int.editReply({ embeds: [codeEmbed, evalEmbed] })
-                    }
-
-                }
-                else {
-                    return int.editReply({ content: client.tl({ local: int.lang + "onMsg-cmdBarrado" }) })
-                }
-
-            })
 
     }
 }
