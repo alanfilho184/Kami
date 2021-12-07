@@ -1,5 +1,6 @@
 module.exports = {
     name: "apgFicha",
+    type: "bot",
     execute: (client, irtU, msgid) => {
         if (msgid) {
             client.db.query(`delete from irt where id = '${irtU.id}' and nomerpg = '${irtU.nomeRpg}' and msgid = '${msgid}'`)
