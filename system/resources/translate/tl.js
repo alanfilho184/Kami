@@ -151,7 +151,7 @@ module.exports = class Translate {
             ["pt-onMsg-sPerm", "Você precisa ter permissões de administrador, gerenciar canais ou de gerenciar servidor para poder alterar a minha língua"],
             ["pt-onMsg-cmdDsbDesc", `Este comando está desabilitado temporariamente\n\nMotivo: ${arguments[0].cmd}`],
             ["pt-onMsg-cmdDsbTi", "Comando Desabilitado"],
-            ["pt-onMsg-slash", `Como vem sendo avisado à algum tempo, o BOT irá parar de aceitar comandos via mensagem, somente comandos ** \`\ / \`\ ** estarão disponíveis. Está mudança entrará em vigor a partir da próxima atualização do BOT, que deve acontecer nas próximas semanas.
+            ["pt-onMsg-slash", `Como vem sendo avisado à algum tempo, o BOT finalmente parou de aceitar comandos via mensagem, somente comandos ** \`\ / \`\ ** estão disponíveis.
 \nPara ajuda utilizando comandos ** \`\ / \`\ ** Utilize o comando ** \`\/ajuda\`\ **, acesse o primeiro link abaixo ou entre no meu Discord de suporte.
             `],
             ["pt-onMsg-btSlash", `Tutoriais do Kami`],
@@ -406,7 +406,7 @@ module.exports = class Translate {
             ["en-onMsg-sPerm", "You need to have administrator, manage channels or manage server permissions to change my language"],
             ["en-onMsg-cmdDsbDesc", `This command is temporarily disabled\n\n Reason: ${arguments[0].cmd}`],
             ["en-onMsg-cmdDsbTi", "Command Disabled"],
-            ["en-onMsg-slash", `As we have been warning for some time, the BOT will stop accepting commands via message, only ** \`\ / \`\ ** commands will be available. This change will take effect with the next BOT update, which should happen in the next few weeks.
+            ["en-onMsg-slash", `As we have been warning for some time, the BOT stoped accepting commands via message, only ** \`\ / \`\ ** commands are available.
             \nFor help using ** \`\ / \`\ ** commands, use the ** \`\ /ajuda \`\ ** command, go to the first link below or join my Discord Support Server.
             `],
             ["en-onMsg-btSlash", `Kami's Tutorials`],

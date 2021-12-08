@@ -87,7 +87,7 @@ module.exports = class reloadSlash {
                     command.setDefaultPermission(true)
                     command.setName(c.name).setDescription(c.desc)
 
-                    for (x in slashs) {
+                    for (var x in slashs) {
                         if (slashs[x].name == c.name) {
                             command.id = slashs[x].id
                         }

@@ -114,7 +114,7 @@ module.exports = class ficha {
                     const fichasUser = new Array()
                     var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
 
-                    for (x in result[0]) {
+                    for (var x in result[0]) {
                         fichasUser.push(result[0][x].nomerpg)
                     }
 
@@ -138,7 +138,7 @@ module.exports = class ficha {
                     function validImageURL(url) {
                         var validUrlExt = new Map()
 
-                        for (x in imageType) {
+                        for (var x in imageType) {
                             var type = url.search(imageType[x])
                             if (type != -1) {
                                 var ext = imageType[x]
@@ -176,13 +176,13 @@ module.exports = class ficha {
                     var atbsNW = new Array()
                     var y = 0
 
-                    for (x in atbValor) {
+                    for (var x in atbValor) {
                         atbs.push(atbValor[x].split(":")[0])
                         vals.push(atbValor[x].split(":")[1].replace("'", "ʽ"))
                     }
 
-                    for (y in atbs + 1) {
-                        for (x in atbs) {
+                    for (var y in atbs + 1) {
+                        for (var x in atbs) {
                             if (vals[x][0] == " ") { vals[x] = vals[x].slice(1, 9999) }
                             if (vals[x][vals[x].length - 1] == " ") { vals[x] = vals[x].slice(0, vals[x].length - 1) }
                             atbs[x] = atbs[x].replace(" ", "")
@@ -208,7 +208,7 @@ module.exports = class ficha {
                     colunas[1] = "("
                     colunas[2] = "values("
 
-                    for (x in atbs) {
+                    for (var x in atbs) {
                         if (int.lang == "en-") {
                             atbs[x] = atributosPt[atributos.indexOf(atbs[x])]
                         }
@@ -256,7 +256,7 @@ module.exports = class ficha {
                         const atbsA = new Map()
                         const atbsN = new Map()
 
-                        for (x in atbsAtual) {
+                        for (var x in atbsAtual) {
                             var atbE = atbsAtual[x].split(":")[0]
                             var val = atbsAtual[x].split(":")[1]
 
@@ -269,7 +269,7 @@ module.exports = class ficha {
                             }
                         }
 
-                        for (x in atbsNovos) {
+                        for (var x in atbsNovos) {
                             var atbE = atbsNovos[x].split(":")[0]
                             var val = atbsNovos[x].split(":")[1]
 

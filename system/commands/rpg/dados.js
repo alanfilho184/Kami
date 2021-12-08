@@ -120,7 +120,7 @@ module.exports = class roll {
             tdados = 1,
             bdados = 0
 
-        for (x in testSize) {
+        for (var x in testSize) {
             if (testSize[x].search("d")) {
                 var size = testSize[x].split("d")
 
@@ -151,7 +151,7 @@ module.exports = class roll {
         }
 
         var cc = 0
-        for (x in charCount) {
+        for (var x in charCount) {
             cc = cc + charCount[x]
         }
 
@@ -164,7 +164,7 @@ module.exports = class roll {
         try {
             if (segments.length > 1) {
                 var pass = false
-                for (x in segments) {
+                for (var x in segments) {
                     if (segments[x].search("d") != -1) {
                         pass = true
                     }
@@ -174,7 +174,7 @@ module.exports = class roll {
 
                 var ops = numberDice.match(/[+*/-]/g)
 
-                for (x in segments) {
+                for (var x in segments) {
                     if (Number(segments[x].replace("d", "")) > 100000000) {
                         return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
                     }
@@ -246,7 +246,7 @@ module.exports = class roll {
                 // }
 
                 var r = 0
-                for (x in ops) {
+                for (var x in ops) {
                     var n = Number(results[x])
 
                     if (x == 0) { r = Number(results[0]) }
@@ -372,7 +372,7 @@ module.exports = class roll {
                 const fichasUser = new Array()
                 var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
 
-                for (x in result[0]) {
+                for (var x in result[0]) {
                     fichasUser.push(result[0][x].nomerpg)
                 }
                 if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "ddb-mFichas", fichasUser: fichasUser })) }

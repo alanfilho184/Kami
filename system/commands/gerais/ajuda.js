@@ -132,7 +132,7 @@ module.exports = class ajuda {
                                 var atributosF = "Atributos:"
                             }
 
-                            for (x in atributos) {
+                            for (var x in atributos) {
                                 if (x < atributos.length - 1) {
                                     atributosF += " " + atributos[x] + ","
                                 }

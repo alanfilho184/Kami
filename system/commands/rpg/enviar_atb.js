@@ -83,7 +83,7 @@ module.exports = class enviar_atb {
                         const fichasUser = new Array()
                         var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
 
-                        for (x in result[0]) {
+                        for (var x in result[0]) {
                             fichasUser.push(result[0][x].nomerpg)
                         }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
@@ -125,9 +125,9 @@ module.exports = class enviar_atb {
                                 if (atributo.toLowerCase() == "extras") {
                                     var atbExtras = valor
 
-                                    atbs = atbExtras.split("|")
+                                    var atbs = atbExtras.split("|")
 
-                                    for (x in atbs) {
+                                    for (var x in atbs) {
                                         atb = atbs[x].split(":")[0]
                                         val = atbs[x].split(":")[1]
 

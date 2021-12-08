@@ -11,7 +11,7 @@ module.exports = class MenuClient extends Client {
     constructor(options = {}) {
         super({
             disableMentions: 'everyone',
-            intents: 1,
+            intents: 5633,
             restTimeOffset: 0,
         })
 

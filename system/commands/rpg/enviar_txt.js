@@ -74,7 +74,7 @@ module.exports = class enviar_txt {
                         const fichasUser = new Array()
                         var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
 
-                        for (x in result[0]) {
+                        for (var x in result[0]) {
                             fichasUser.push(result[0][x].nomerpg)
                         }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
@@ -91,7 +91,7 @@ module.exports = class enviar_txt {
                         if (r) {
                             var fichaUser = r
 
-                            for (x in atributos) {
+                            for (var x in atributos) {
                                 if (fichaUser[atributos[x]] == undefined) {
                                     fichaUser[atributos[x]] = "-"
                                 }
@@ -133,7 +133,7 @@ module.exports = class enviar_txt {
 
         var z;
         var atb
-        for (z in atributosI1) {
+        for (var z in atributosI1) {
             atb = atributosI1[z]
             if (fichaUser[atb] != "-" && fichaUser[atb] != "- " && fichaUser[atb] != undefined && fichaUser[atb] != null) {
                 var valor = fichaUser[atb]
@@ -143,7 +143,7 @@ module.exports = class enviar_txt {
         }
 
         var y;
-        for (y in atributosI2) {
+        for (var y in atributosI2) {
             atb = atributosI2[y]
             if (fichaUser[atb] != "-" && fichaUser[atb] != "- " && fichaUser[atb] != undefined && fichaUser[atb] != null) {
                 valor = fichaUser[atb]
@@ -156,7 +156,7 @@ module.exports = class enviar_txt {
 
         var x;
         var fields = 1
-        for (x in atributosS1) {
+        for (var x in atributosS1) {
             atb = atributosS1[x]
             if (fichaUser[atb] != "-" && fichaUser[atb] != "- " && fichaUser[atb] != undefined && fichaUser[atb] != null) {
                 if (fields <= 24) {
@@ -183,7 +183,7 @@ module.exports = class enviar_txt {
 
             var atbs = atbExtras.split("|")
 
-            for (x in atbs) {
+            for (var x in atbs) {
                 var atb = atbs[x].split(":")[0]
                 var val = atbs[x].split(":")[1]
 

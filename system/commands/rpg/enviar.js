@@ -94,7 +94,7 @@ module.exports = class enviar {
                         const fichasUser = new Array()
                         var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
 
-                        for (x in result[0]) {
+                        for (var x in result[0]) {
                             fichasUser.push(result[0][x].nomerpg)
                         }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "efd-mFichas1", fichasUser: fichasUser })) }
@@ -322,7 +322,7 @@ module.exports = class enviar {
 
             var atbs = atbExtras.split("|")
 
-            for (x in atbs) {
+            for (var x in atbs) {
                 atb = atbs[x].split(":")[0]
                 var val = atbs[x].split(":")[1]
 
