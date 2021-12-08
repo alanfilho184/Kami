@@ -128,8 +128,8 @@ module.exports = class enviar_atb {
                                     var atbs = atbExtras.split("|")
 
                                     for (var x in atbs) {
-                                        atb = atbs[x].split(":")[0]
-                                        val = atbs[x].split(":")[1]
+                                        var atb = atbs[x].split(":")[0]
+                                        var val = atbs[x].split(":")[1]
 
                                         try { atb = atb.replace(" ", "") } catch { }
                                         try { val = val.replace(/ .$/, '') } catch { }
