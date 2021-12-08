@@ -2,32 +2,34 @@
 module.exports = class responder {
     constructor() {
         return {
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-                user: [],
-                owner: true,
-            },
+            ownerOnly: true,
             name: "responder",
-            cat: "Responder",
+            fName: "Responder",
             desc: 'Envia uma mensagem a um usuário.',
-            aliases: ["responder"],
+            args: [
+                { name: "id", desc: "ID do usuário.", type: "STRING", required: true },
+                { name: "mensagem", desc: "Mensagem para enviar.", type: "STRING", required: true },
+            ],
+            options: [],
+            type: 1,
             run: this.execute
         }
     }
 
-    execute(client, msg) {
-        if (msg.author.id == client.settings.owner) {
+    execute(client, int) {
+        int.deferReply({ ephemeral: true })
+            .then(() => {
+                const args = client.utils.argsString(int)
 
-            const id = msg.author.id
-            const cmd = msg.content.replace(`${client.prefix}responder`, "")
-            const respId = cmd.slice(1, 19)
-            const respMsg = cmd.slice(20, 9999999999999999)
+                const respId = args.get("id")
+                const respMsg = args.get("mensagem")
 
-            client.users.fetch(respId).then(user => user.send(respMsg))
-            msg.reply(`Pronto, mensagem enviada!`)
-        }
-        else {
-            msg.reply(client.tl({ local: msg.lang + "onMsg-cmdBarrado" }))
-        }
+                client.users.fetch(respId).then(user => {
+                    user.send(respMsg)
+                        .then(() => {
+                            int.editReply(`Pronto, mensagem enviada!`)
+                        })
+                })
+            })
     }
 }

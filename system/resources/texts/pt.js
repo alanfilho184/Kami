@@ -1,24 +1,3 @@
-const glob = require("glob")
-const aliases = new Array()
-//const moment = require("moment-timezone")
-
-function startup() {
-    fileCmds = glob.GlobSync("system/commands/**/*.js")
-
-    fileCmds = fileCmds.found
-
-    for (x in fileCmds) {
-        cmd = require("../../" + fileCmds[x].replace("system/", ""))
-        cmd = new cmd()
-        for (x in cmd.aliases) {
-            aliases.push(cmd.aliases[x])
-        }
-
-        if (!aliases.includes(cmd.name)) aliases.push(cmd.name)
-    }
-
-}
-
 function randomChoice(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -41,7 +20,7 @@ const atributos = ["nome", "altura", "idade", "peso", "profissao", "competencias
     "iniciativa", "intimidacao", "intuicao", "ladinagem", "obterinformacoes", "sabedoria", "nivel", "divindade", "deslocamento", "tendencia", "corpoacorpo", "ataquesadistancia",
     "armas", "armadura", "habilidadesderaca", "habilidadesdeclasse", "talentos", "dinheiro", "idiomas", "arcanismo", "blefar", "historia", "lidarcomanimais", "natureza",
     "persuasao", "prestidigitacao", "religiao", "classedaarmadura", "ligacoes", "fofura", "resistencia", "raca", "defesa", "escudo", "aparencia", "furto", "labia", "habilidadesmanuais", "militar",
-    "naval"]
+    "naval", "habilidades"]
 
 function returnAtb() {
     return ["nome", "altura", "idade", "peso", "profissao", "competencias", "equipamentos", "constituicao", "disposicao", "forca", "destreza", "sorte", "acrobacia",
@@ -51,7 +30,7 @@ function returnAtb() {
     "iniciativa", "intimidacao", "intuicao", "ladinagem", "obterinformacoes", "sabedoria", "nivel", "divindade", "deslocamento", "tendencia", "corpoacorpo", "ataquesadistancia",
     "armas", "armadura", "habilidadesderaca", "habilidadesdeclasse", "talentos", "dinheiro", "idiomas", "arcanismo", "blefar", "historia", "lidarcomanimais", "natureza",
     "persuasao", "prestidigitacao", "religiao", "classedaarmadura", "ligacoes", "fofura", "resistencia", "raca", "defesa", "escudo", "aparencia", "furto", "labia", "habilidadesmanuais", "militar",
-    "naval"]
+    "naval", "habilidades"]
 }
 
 const atributosF = ["Nome", "Altura", "Idade", "Peso", "Profissão", "Competências", "Equipamentos", "Constituição", "Disposição", "Força", "Destreza", "Sorte", "Acrobacía",
@@ -61,15 +40,15 @@ const atributosF = ["Nome", "Altura", "Idade", "Peso", "Profissão", "Competênc
     "Iniciativa", "Intimidação", "Intuição", "Ladinagem", "Obter Informações", "Sabedoria", "Nivel", "Divindade", "Desclocamento", "Tendência", "Corpo a Corpo", "Ataques a Distância",
     "Armas", "Armadura", "Habilidades de raça", "Habilidades de Classe", "Talentos", "Dinheiro", "Idiomas", "Arcanismo", "Blefar", "História", "Lidar com animais", "Natureza",
     "Persuasão", "Prestidigitação", "Religião", "Classe da Armadura", "Ligações", "Fofura", "Resistência", "Raça", "Defesa", "Escudo", "Aparência", "Furto", "Lábia", "Habilidades Manuais", "Militar",
-    "Naval"]
+    "Naval", "Habilidades"]
 
 const atributosI1 = ["nome", "idade", "altura", "peso", "classe", "raca", "sanidade", "vida", "nivel", "dinheiro", "religiao", "divindade"]
 
 const atributosIF1 = ["Nome", "Idade", "Altura", "Peso", "Classe", "Raça", "Sanidade", "Vida", "Nível", "Dinheiro", "Religião", "Divindade"]
 
-const atributosI2 = ["profissao", "competencias", "defeitos", "equipamentos", "talentos", "habilidadesdeclasse", "habilidadesderaca", "habilidadesmanuais"]
+const atributosI2 = ["profissao", "competencias", "defeitos", "equipamentos", "talentos", "habilidadesdeclasse", "habilidadesderaca", "habilidadesmanuais", "habilidades"]
 
-const atributosIF2 = ["Profissão", "Competências", "Defeitos", "Equipamentos", "Talentos", "Habilidades de classe", "Habilidades de raça", "Habilidades Manuais"]
+const atributosIF2 = ["Profissão", "Competências", "Defeitos", "Equipamentos", "Talentos", "Habilidades de classe", "Habilidades de raça", "Habilidades Manuais", "Habilidades"]
 
 const atributosStatus = ["disposicao", "destreza", "acrobacia", "perspicacia", "agilidade", "furtividade", "sobrevivencia", "magia", "linguas", "erudicao", "medicina", "ocultismo",
     "politica", "forca", "sorte", "inteligencia", "carisma", "conhecimento", "percepcao", "vontade", "ciencias", "investigacao", "oficio", "luta", "armasdefogo", "armasbrancas",
@@ -86,11 +65,9 @@ const atributosStatusF = ["Disposição", "Destreza", "Acrobacia", "Perspicacia"
     "Resistência", "Defesa", "Escudo", "Aparência", "Furto", "Lábia", "Militar", "Naval"]
 
 function footer() {
-    //• Executado em: ${moment().tz("America/Fortaleza").format("DD/MM/YYYY | HH:mm:ss ")} (GMT -3)
-    // if (msg.lang == "pt-") { return `${new Date().getFullYear()} © Kami` }
-    // else { return `${new Date().getFullYear()} © Kami`}
     return `${new Date().getFullYear()} © Kami`
 }
+
 function secret() {
     const secret = ["Comando secreto, somente os mais inteligentes saberão o resultado", "Coisas estão rolando sem ninguém saber 👀", "Tenho a leve impressão que alguém vai entrar em apúros logo logo", "Confiem em mim, é melhor vocês não saberem o resultado mesmo",
         "Nossa, eu to até com dó depois dos dados que caíram aqui", "Ou, esse resultado aqui vai valer pra quem? Só pra eu dar meus pêsames"]
@@ -131,8 +108,6 @@ const inTemp = ["Desmaia imediatamente", "Começa a gritar sem parar e fica imob
 
 
 module.exports = {
-    startup,
-    aliases,
     permissoes,
     atributos,
     atributosF,

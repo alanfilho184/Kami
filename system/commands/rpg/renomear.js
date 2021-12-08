@@ -1,17 +1,18 @@
 module.exports = class renomear {
     constructor() {
         return {
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-                user: [],
-                owner: false,
-            },
+            ownerOnly: false,
             name: "renomear",
-            cat: "Renomear",
-            catEn: "Rename",
+            fName: "Renomear",
+            fNameEn: "Rename",
             desc: 'Renomeia uma ficha que você já tenha criada no BOT.',
             descEn: 'Rename a sheet you already have created on the BOT\'s.',
-            aliases: ["renomear", "rename"],
+            args: [
+                { name: "atual_nome_da_ficha", desc: "Nome da ficha que deseja renomear.", type: "STRING", required: true },
+                { name: "novo_nome_da_ficha", desc: "Novo nome da ficha.", type: "STRING", required: true },
+            ],
+            options: [],
+            type: 1,
             helpPt: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "renomear", desc: `Com esse comando você pode alterar o nome de uma ficha sua já criada
 
@@ -32,21 +33,27 @@ module.exports = class renomear {
             run: this.execute
         }
     }
-    execute(client, msg) {
-        var args = client.utils.args(msg)
+    execute(client, int) {
+        int.deferReply()
+            .then(() => {
+                const args = client.utils.args(int)
 
-        if (!args[0]) { return msg.reply(client.tl({ local: msg.lang + "rf-nArg" })) }
-        if (!args[1]) { return msg.reply(client.tl({ local: msg.lang + "rf-nNomeRpg" })) }
+                const nomeRpgAtual = args.get("atual_nome_da_ficha")
+                var nomeRpgNovo = args.get("novo_nome_da_ficha")
 
-        client.db.query(`select * from fichas where id = '${msg.author.id}' and nomerpg = '${args[0]}'`)
-            .then(result => {
-                if (result[0] == "") { return msg.reply(client.tl({ local: msg.lang + "rf-nFE", nomeRpg: args[0] })) }
-                else {
-                    client.db.query(`update fichas set nomerpg = '${args[1]}' where id = '${msg.author.id}' and nomerpg = '${args[0]}'`)
-                        .then(() => { return msg.reply(client.tl({ local: msg.lang + "rf-fRenomeada", nomeRpg: args[0], novoNomeRpg: args[1] })) })
-                        .catch(err => { client.log.error(err, true) })
-                }
+                try { nomeRpgNovo = nomeRpgNovo.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
+                try { nomeRpgNovo = nomeRpgNovo.replace("'", '') } catch { }
+
+                client.db.query(`select * from fichas where id = '${int.user.id}' and nomerpg = '${nomeRpgAtual}'`)
+                    .then(result => {
+                        if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomeRpg: nomeRpgAtual })) }
+                        else {
+                            client.db.query(`update fichas set nomerpg = '${nomeRpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomeRpgAtual}'`)
+                                .then(() => { return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomeRpg: nomeRpgAtual, novoNomeRpg: nomeRpgNovo })) })
+                                .catch(err => { client.log.error(err, true) })
+                        }
+                    })
+                    .catch(err => client.log.error(err, true))
             })
-            .catch(err => client.log.error(err, true))
     }
 }

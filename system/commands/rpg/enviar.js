@@ -5,17 +5,27 @@ function sleep(ms) {
 module.exports = class enviar {
     constructor() {
         return {
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-                user: [],
-                owner: false,
-            },
+            ownerOnly: false,
             name: "enviar",
-            cat: "Enviar",
-            catEn: "Send",
+            fName: "Enviar",
+            fNameEn: "Send",
             desc: 'Envia uma ficha já criada em forma de embed.',
             descEn: 'Sends a sheet already as a Discord\'s embed.',
-            aliases: ["send"],
+            args: [
+                { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true },
+            ],
+            options: [
+                {
+                    name: "opções",
+                    required: false,
+                    type: "STRING",
+                    desc: "Opções para o comando.",
+                    choices: [
+                        { name: "Ativar IRT (Atualização em tempo real).", return: "irt" }
+                    ],
+                }
+            ],
+            type: 1,
             helpPt: {
                 title: "<:fichaAjuda:766790214550814770> " + "/" + "enviar", desc: `
             Este comando serve para receber a sua ficha como embed do Discord
@@ -59,180 +69,159 @@ module.exports = class enviar {
             create: this.create
         }
     }
-    async execute(client, msg) {
-        const args = client.utils.args(msg)
-        const atributos = client.resources[msg.lang.replace("-", "")].atributos
+    execute(client, int) {
+        int.deferReply()
+            .then(async () => {
+                const args = client.utils.args(int)
+                const atributos = client.resources[int.lang.replace("-", "")].atributos
 
-        const beta = client.whitelist.get("beta")
-        const premium = client.whitelist.get("premium")
+                const beta = client.whitelist.get("beta")
+                const premium = client.whitelist.get("premium")
 
-        var nomeRpg = args[0]
-        var irtUpdt = args[1]
+                var nomeRpg = args.get("nome_da_ficha")
+                var irtUpdt = args.get("opções")
 
-        try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
 
-        try {
-            if (nomeRpg.toLowerCase() == "irt") {
-                nomeRpg = undefined
-                irtUpdt = "irt"
-            }
-        }
-        catch (err) { }
-
-        if (!nomeRpg) {
-            try {
-                var fichasUser = client.cache.get(msg.author.id).fPadrao
-                nomeRpg = fichasUser
-            }
-            catch (err) { fichasUser = undefined }
-
-            if (!fichasUser) {
-                const fichasUser = new Array()
-                var result = await client.db.query(`select nomerpg from fichas where id = '${msg.author.id}'`)
-
-                for (x in result[0]) {
-                    fichasUser.push(result[0][x].nomerpg)
-                }
-                if (fichasUser.length > 1) { return msg.reply(client.tl({ local: msg.lang + "efd-mFichas1", fichasUser: fichasUser })) }
-                else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
-                else { return msg.reply(client.tl({ local: msg.lang + "efd-uSF" })) }
-            }
-
-        }
-
-        try { nomeRpg = nomeRpg.replace("'", '') } catch { }
-
-        client.cache.getFicha(msg.author.id, nomeRpg)
-            .then(async r => {
-                if (r) {
-                    var fichaUser = r
-
-                    for (x in atributos) {
-                        if (fichaUser[atributos[x]] == undefined) {
-                            fichaUser[atributos[x]] = "-"
-                        }
-                    }
-
-                    if (fichaUser["imagem"] == "-" || fichaUser["imagem"] == null) {
-                        fichaUser["imagem"] = ""
-                    }
-
-
-                    try { irtUpdt = irtUpdt.toLowerCase() } catch (err) { }
-
+                if (!nomeRpg) {
                     try {
-                        if (irtUpdt != "irt") {
-                            const reply = this.create(client, msg, nomeRpg, fichaUser)
-                            const embedsArray = Object.values(reply)
+                        var fichasUser = client.cache.get(int.user.id).fPadrao
+                        nomeRpg = fichasUser
+                    }
+                    catch (err) { fichasUser = undefined }
 
-                            msg.reply({ embeds: embedsArray }).catch(err => {
-                                if (err.name + err.message.split(/\n/)[0] == "DiscordAPIErrorInvalid Form Body") {
-                                    if (err.message.split(/\n/)[1] == "embeds: Embed size exceeds maximum size of 6000") {
-                                        if (msg.slash) {
-                                            msg.editReply(client.tl({ local: msg.lang + "efd-fCE" }) + "\n" + client.tl({ local: msg.lang + "efd-fE2" }))
-                                        }
-                                        else {
-                                            msg.reply(client.tl({ local: msg.lang + "efd-fCE" }) + "\n" + client.tl({ local: msg.lang + "efd-fE2" }))
-                                        }
-                                    }
-                                    else {
-                                        const errs = err.message.split(/\n/)
-                                        errs.shift()
+                    if (!fichasUser) {
+                        const fichasUser = new Array()
+                        var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
 
-                                        var errMsg = ""
-
-                                        errs.forEach(err => {
-                                            const local = err.match(/\d+(?=])/g)
-                                            var type = err.match(/[a-z]+(?=\:)/g)
-                                            const maxSize = err.match(/[0-9]+(?= )/g)
-
-
-                                            if (msg.lang == "pt-") {
-                                                if (type == "value") {
-                                                    type = "valor"
-                                                }
-                                                else if (type == "name") {
-                                                    type = "nome"
-                                                }
-                                            }
-
-                                            errMsg += client.tl({ local: msg.lang + "efd-fE", cmd: [embedsArray[local[0]].fields[local[1]].name.replace(/:$/, ""), type, maxSize] }) + "\n"
-                                        })
-
-
-                                        if (msg.slash) {
-                                            msg.editReply(client.tl({ local: msg.lang + "efd-fCE" }) + "\n" + errMsg)
-                                        }
-                                        else {
-                                            msg.reply(client.tl({ local: msg.lang + "efd-fCE" }) + "\n" + errMsg)
-                                        }
-                                    }
-                                }
-
-                            })
-
-                            return
+                        for (x in result[0]) {
+                            fichasUser.push(result[0][x].nomerpg)
                         }
-                        else if (true/*beta.has(`${msg.author.id}`)*/) {
-                            var infoUIRT = await client.db.query(`select nomerpg from irt where id = '${msg.author.id}'`)
-                            infoUIRT = infoUIRT[0]
+                        if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "efd-mFichas1", fichasUser: fichasUser })) }
+                        else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
+                        else { return int.editReply(client.tl({ local: int.lang + "efd-uSF" })) }
+                    }
+                }
 
-                            if (infoUIRT.length >= 5) {
-                                return msg.reply(client.tl({ local: msg.lang + "efd-irtMF" }))
+                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+
+                client.cache.getFicha(int.user.id, nomeRpg)
+                    .then(async r => {
+                        if (r) {
+                            var fichaUser = r
+
+                            for (var x in atributos) {
+                                if (fichaUser[atributos[x]] == undefined) {
+                                    fichaUser[atributos[x]] = "-"
+                                }
                             }
 
-                            var reply = this.create(client, msg, nomeRpg, fichaUser, "irtOn")
-                            const embedsArray = Object.values(reply)
-
-                            await msg.reply({ embeds: embedsArray })
-                                .then(m => {
-                                    const bDes = new client.Discord.MessageButton()
-                                        .setStyle(2)
-                                        .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
-                                        .setCustomId(`irt|des|id:${msg.author.id}|nomerpg:${nomeRpg}|msgid:${m.id}|chid:${m.channel.id}`)
-
-                                    const bApg = new client.Discord.MessageButton()
-                                        .setStyle(2)
-                                        .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
-                                        .setCustomId(`irt|apg|id:${msg.author.id}|nomerpg:${nomeRpg}|msgid:${m.id}|chid:${m.channel.id}`)
+                            if (fichaUser["imagem"] == "-" || fichaUser["imagem"] == null) {
+                                fichaUser["imagem"] = ""
+                            }
 
 
+                            try { irtUpdt = irtUpdt.toLowerCase() } catch (err) { }
 
-                                    m.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
+                            try {
+                                if (irtUpdt != "irt") {
+                                    const reply = this.create(client, int, nomeRpg, fichaUser)
+                                    const embedsArray = Object.values(reply)
 
-                                    var irtU = {
-                                        id: msg.author.id,
-                                        nomeRpg: nomeRpg,
-                                        msgid: m.id,
-                                        chid: m.channel.id
+                                    int.editReply({ embeds: embedsArray }).catch(err => {
+                                        if (err.name + err.message.split(/\n/)[0] == "DiscordAPIErrorInvalid Form Body") {
+                                            if (err.message.split(/\n/)[1] == "embeds: Embed size exceeds maximum size of 6000") {
+                                                int.editReply(client.tl({ local: int.lang + "efd-fCE" }) + "\n" + client.tl({ local: int.lang + "efd-fE2" }))
+                                            }
+                                            else {
+                                                const errs = err.message.split(/\n/)
+                                                errs.shift()
+
+                                                var errMsg = ""
+
+                                                errs.forEach(err => {
+                                                    const local = err.match(/\d+(?=])/g)
+                                                    var type = err.match(/[a-z]+(?=\:)/g)
+                                                    const maxSize = err.match(/[0-9]+(?= )/g)
+
+
+                                                    if (int.lang == "pt-") {
+                                                        if (type == "value") {
+                                                            type = "valor"
+                                                        }
+                                                        else if (type == "name") {
+                                                            type = "nome"
+                                                        }
+                                                    }
+
+                                                    errMsg += client.tl({ local: int.lang + "efd-fE", cmd: [embedsArray[local[0]].fields[local[1]].name.replace(/:$/, ""), type, maxSize] }) + "\n"
+                                                })
+
+                                                int.editReply(client.tl({ local: int.lang + "efd-fCE" }) + "\n" + errMsg)
+                                            }
+                                        }
+                                    })
+
+                                    return
+                                }
+                                else if (true/*beta.has(`${int.user.id}`)*/) {
+                                    var infoUIRT = await client.db.query(`select nomerpg from irt where id = '${int.user.id}'`)
+                                    infoUIRT = infoUIRT[0]
+
+                                    if (infoUIRT.length >= 5) {
+                                        return int.editReply(client.tl({ local: int.lang + "efd-irtMF" }))
                                     }
 
-                                    client.cache.updateIrt(irtU["id"], irtU["nomeRpg"], irtU["msgid"], irtU["chid"])
-                                    client.emit("irtStart", irtU)
-                                })
+                                    var reply = this.create(client, int, nomeRpg, fichaUser, "irtOn")
+                                    const embedsArray = Object.values(reply)
+
+                                    await int.editReply({ embeds: embedsArray })
+                                        .then(m => {
+                                            const bDes = new client.Discord.MessageButton()
+                                                .setStyle(2)
+                                                .setLabel(client.tl({ local: int.lang + "bt-desIrt" }))
+                                                .setCustomId(`irt|des|id:${int.user.id}|nomerpg:${nomeRpg}|msgid:${m.id}|chid:${m.channel.id}`)
+
+                                            const bApg = new client.Discord.MessageButton()
+                                                .setStyle(2)
+                                                .setLabel(client.tl({ local: int.lang + "bt-apgIrt" }))
+                                                .setCustomId(`irt|apg|id:${int.user.id}|nomerpg:${nomeRpg}|msgid:${m.id}|chid:${m.channel.id}`)
+
+                                            m.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
+
+                                            var irtU = {
+                                                id: int.user.id,
+                                                nomeRpg: nomeRpg,
+                                                msgid: m.id,
+                                                chid: m.channel.id
+                                            }
+
+                                            client.cache.updateIrt(irtU["id"], irtU["nomeRpg"], irtU["msgid"], irtU["chid"])
+                                            client.emit("irtStart", irtU)
+                                        })
+                                }
+                                else {
+                                    //Só utilizado se o beta estiver ativado
+                                    return int.editReply(client.tl({ local: int.lang + "efd-bF" }))
+                                }
+                            }
+                            catch (err) {
+                                client.log.warn(err)
+                                return int.editReply(client.tl({ local: int.lang + "efd-mMG" }))
+                            }
 
                         }
                         else {
-                            //Só utilizado se o beta estiver ativado
-                            return msg.reply(client.tl({ local: msg.lang + "efd-bF" }))
+                            return int.editReply(client.tl({ local: int.lang + "efd-nFE", nomeRpg: nomeRpg }))
                         }
-                    }
-                    catch (err) {
-                        client.log.warn(err)
-                        return msg.reply(client.tl({ local: msg.lang + "efd-mMG" }))
-                    }
 
-                }
-                else {
-                    return msg.reply(client.tl({ local: msg.lang + "efd-nFE", nomeRpg: nomeRpg }))
-                }
+                    })
 
+                    .catch(err => client.log.error(err, true))
             })
 
-            .catch(err => client.log.error(err, true))
-
     }
-    create(client, msg, nomeRpg, fichaUser, irt) {
+    create(client, int, nomeRpg, fichaUser, irt) {
         if (irt == "irtUpdt") {
             var usedInf = false
         }
@@ -242,18 +231,18 @@ module.exports = class enviar {
         var usedE = false
         var usedD = false
 
-        // msg.lang = "pt-"
+        // int.lang = "pt-"
 
         const atributosS1 = client.resources["pt"].atributosStatus
         const atributosI1 = client.resources["pt"].atributosI1
         const atributosI2 = client.resources["pt"].atributosI2
-        const atributosS1F = client.resources[msg.lang.replace("-", "")].atributosStatusF
-        const atributosIF1 = client.resources[msg.lang.replace("-", "")].atributosIF1
-        const atributosIF2 = client.resources[msg.lang.replace("-", "")].atributosIF2
+        const atributosS1F = client.resources[int.lang.replace("-", "")].atributosStatusF
+        const atributosIF1 = client.resources[int.lang.replace("-", "")].atributosIF1
+        const atributosIF2 = client.resources[int.lang.replace("-", "")].atributosIF2
 
         const info_perso = new client.Discord.MessageEmbed()
         info_perso.setColor(client.settings.color)
-        info_perso.setAuthor(client.tl({ local: msg.lang + "ef-infAuthor" }) + nomeRpg + `. ${client.tl({ local: msg.lang + "created" })}${msg.author.tag}`)
+        info_perso.setAuthor(client.tl({ local: int.lang + "ef-infAuthor" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
         info_perso.setThumbnail(fichaUser["imagem"])
         const status_perso = new client.Discord.MessageEmbed()
         const status_perso2 = new client.Discord.MessageEmbed()
@@ -265,9 +254,9 @@ module.exports = class enviar {
         status_perso2.setColor(client.settings.color)
         status_perso3.setColor(client.settings.color)
         desc_perso.setColor(client.settings.color)
-        status_perso.setTitle(client.tl({ local: msg.lang + "ef-stpTi" }))
+        status_perso.setTitle(client.tl({ local: int.lang + "ef-stpTi" }))
         extras_perso.setColor(client.settings.color)
-        extras_perso.setTitle(client.tl({ local: msg.lang + "ef-extPersoTi" }))
+        extras_perso.setTitle(client.tl({ local: int.lang + "ef-extPersoTi" }))
 
         status_perso.setTitle("Embed ainda não utilizado")
         status_perso2.setTitle("Embed ainda não utilizado")
@@ -281,8 +270,8 @@ module.exports = class enviar {
                 var valor = fichaUser[atb]
                 atb = atributosIF1[z]
                 info_perso.addFields({ name: `${atb}:`, value: `${valor}`, inline: true })
-                info_perso.setTitle(client.tl({ local: msg.lang + "ef-infoPersoTi" }))
-                //info_perso.setFooter(footer(msg))
+                info_perso.setTitle(client.tl({ local: int.lang + "ef-infoPersoTi" }))
+                //info_perso.setFooter(footer(int))
 
                 if (irt == "irtUpdt") {
                     usedInf = true
@@ -296,7 +285,7 @@ module.exports = class enviar {
                 var valor = fichaUser[atb]
                 atb = atributosIF2[y]
                 info_perso.addFields({ name: `${atb}:`, value: `${valor}` })
-                info_perso.setTitle(client.tl({ local: msg.lang + "ef-infoPersoTi" }))
+                info_perso.setTitle(client.tl({ local: int.lang + "ef-infoPersoTi" }))
             }
         }
 
@@ -308,7 +297,7 @@ module.exports = class enviar {
                     var valor = fichaUser[atb]
                     atb = atributosS1F[x]
                     status_perso.addFields({ name: `${atb}:`, value: `${valor}`, inline: true })
-                    status_perso.setTitle(client.tl({ local: msg.lang + "ef-stpTi" }))
+                    status_perso.setTitle(client.tl({ local: int.lang + "ef-stpTi" }))
                     usedS1 = true
                 }
                 if (fields > 24 && fields <= 48) {
@@ -346,18 +335,18 @@ module.exports = class enviar {
                 }
 
                 if (x == 25) {
-                    msg.reply(client.tl({ local: msg.lang + "ef-eLE" }))
+                    int.editReply(client.tl({ local: int.lang + "ef-eLE" }))
                     break
                 }
             }
-            extras_perso.setTitle(client.tl({ local: msg.lang + "ef-extPersoTi" }))
+            extras_perso.setTitle(client.tl({ local: int.lang + "ef-extPersoTi" }))
 
             usedE = true
         }
 
         if (fichaUser['descricao'] != "-" && fichaUser['descricao'] != "" && fichaUser['descricao'] != undefined && fichaUser['descricao'] != null) {
             desc_perso.setColor(client.settings.color)
-            desc_perso.setTitle(client.tl({ local: msg.lang + "ef-descPerso" }))
+            desc_perso.setTitle(client.tl({ local: int.lang + "ef-descPerso" }))
             desc_perso.setDescription(`${fichaUser['descricao']}`)
             usedD = true
         }
@@ -367,6 +356,7 @@ module.exports = class enviar {
         if (irt != "irtUpdt") {
             reply["Inf"] = info_perso
         }
+
         else if (usedInf == true) {
             reply["Inf"] = info_perso
         }
@@ -382,6 +372,7 @@ module.exports = class enviar {
         if (usedS3 == true) {
             reply["S3"] = status_perso3
         }
+
         if (usedE == true) {
             reply["Ext"] = extras_perso
         }

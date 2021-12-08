@@ -1,4 +1,4 @@
-const moment = require("moment-timezone")
+const time = require("luxon").DateTime
 const ac = require("ascii-table")
 const pidusage = require("pidusage")
 const os = require("os-utils")
@@ -6,17 +6,15 @@ const os = require("os-utils")
 module.exports = class botinfo {
     constructor() {
         return {
-            perm: {
-                bot: ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-                user: [],
-                owner: false,
-            },
+            ownerOnly: false,
             name: "botinfo",
-            cat: "Botinfo",
-            catEn: "Botinfo",
+            fName: "Botinfo",
+            fNameEn: "Botinfo",
             desc: 'Mostra informações técnicas e links sobre o BOT.',
             descEn: 'Show technical information and links related with the BOT.',
-            aliases: ["bi"],
+            args: [],
+            options: [],
+            type: 1,
             helpPt: {
                 title: "<:outrosAjuda:766790214110019586> " + "/" + "botinfo", desc: `Este comando serve para ver informações do bot, como links relacionados ao bot, uso de recursos e quantidade de usuários
         
@@ -32,19 +30,18 @@ module.exports = class botinfo {
         }
     }
 
-    async execute(client, msg) {
-        const botMsg = await msg.reply({ content: "<a:loading:772142378563534888> " + client.tl({ local: msg.lang + "botI-gI" }) })
-
+    async execute(client, int) {
+        await int.deferReply()
         var count = 0
 
         client.guilds.cache.map(guild => { count += guild.memberCount })
 
         const table = new ac("Kami Info")
 
-        var dbPing = moment().valueOf()
+        var dbPing = time.now().toMillis()
         await client.db.query("select 1")
             .then(() => {
-                dbPing = moment().valueOf() - dbPing
+                dbPing = time.now().toMillis() - dbPing
             })
 
         const owner = await client.users.fetch(client.settings.owner)
@@ -67,18 +64,18 @@ module.exports = class botinfo {
             + (seconds > 0 ? seconds == 1 ? seconds + " segundo " : seconds + " segundos " : "")
 
         table
-            .addRow(`${client.tl({ local: msg.lang + "botI-fStatusT1" })}`, `${stats.cpu.toFixed(2)} %`)
-            .addRow(`${client.tl({ local: msg.lang + "botI-fStatusT2" })}`, `${ram.toFixed(2)} MB`)
-            .addRow(`${client.tl({ local: msg.lang + "botI-fStatusRT" })}`, `${(os.totalmem() / 1024 - os.freemem() / 1024).toFixed(1)} GB / ${(os.totalmem() / 1024).toFixed(1)} GB`)
-            .addRow("Ping", `BOT: ${Math.round(msg.ping)} ms - ` + `API: ${Math.round(client.ws.ping)} ms - ` + `DB: ${Math.round(dbPing)} ms`)
-            .addRow(`${client.tl({ local: msg.lang + "botI-fStatusT4" })}`, `${client.guilds.cache.size}`)
-            .addRow(`${client.tl({ local: msg.lang + "botI-fStatusT5" })}`, `${count}`)
-            .addRow(`${client.tl({ local: msg.lang + "botI-fCmd" })}`, `${client.tl({ local: msg.lang + "botI-cmdAI" })} ${commands.today} - Total: ${commands.total}`)
-            .addRow(`${client.tl({ local: msg.lang + "botI-uptime" })}`, botuptime)
+            .addRow(`${client.tl({ local: int.lang + "botI-fStatusT1" })}`, `${stats.cpu.toFixed(2)} %`)
+            .addRow(`${client.tl({ local: int.lang + "botI-fStatusT2" })}`, `${ram.toFixed(2)} MB`)
+            .addRow(`${client.tl({ local: int.lang + "botI-fStatusRT" })}`, `${(os.totalmem() / 1024 - os.freemem() / 1024).toFixed(1)} GB / ${(os.totalmem() / 1024).toFixed(1)} GB`)
+            .addRow("Ping", `BOT: ${Math.round(int.ping)} ms - ` + `API: ${Math.round(client.ws.ping)} ms - ` + `DB: ${Math.round(dbPing)} ms`)
+            .addRow(`${client.tl({ local: int.lang + "botI-fStatusT4" })}`, `${client.guilds.cache.size}`)
+            .addRow(`${client.tl({ local: int.lang + "botI-fStatusT5" })}`, `${count}`)
+            .addRow(`${client.tl({ local: int.lang + "botI-fCmd" })}`, `${client.tl({ local: int.lang + "botI-cmdAI" })} ${commands.today} - Total: ${commands.total}`)
+            .addRow(`${client.tl({ local: int.lang + "botI-uptime" })}`, botuptime)
 
 
         const botIEmbed = new client.Discord.MessageEmbed()
-        botIEmbed.setTitle(client.tl({ local: msg.lang + "botI-fAu" }) + owner.tag)
+        botIEmbed.setTitle(client.tl({ local: int.lang + "botI-fAu" }) + owner.tag)
         botIEmbed.setColor(client.settings.color)
         botIEmbed.setDescription("```\n" + table.toString() + "```")
         botIEmbed.setTimestamp(Date.now())
@@ -87,24 +84,19 @@ module.exports = class botinfo {
 
         const bSup = new client.Discord.MessageButton()
             .setStyle(5)
-            .setLabel(client.tl({ local: msg.lang + "botI-f2V" }))
+            .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
             .setURL("https://discord.com/invite/9rqCkFB")
 
         const bVote = new client.Discord.MessageButton()
             .setStyle(5)
-            .setLabel(client.tl({ local: msg.lang + "botI-f3V" }))
+            .setLabel(client.tl({ local: int.lang + "botI-f3V" }))
             .setURL("https://botsparadiscord.com.br/bots/716053210179043409")
 
         const bInv = new client.Discord.MessageButton()
             .setStyle(5)
-            .setLabel(client.tl({ local: msg.lang + "botI-f4V" }))
-            .setURL(`https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=${client.settings.permissions}&scope=bot%20applications.commands`)
+            .setLabel(client.tl({ local: int.lang + "botI-f4V" }))
+            .setURL(`https://kamibot.vercel.app/short/convite`)
 
-
-
-        botMsg.edit({ content: null, embeds: [botIEmbed], components: [{ type: 1, components: [bSup, bVote, bInv] }] })
-
-
-
+        int.editReply({ content: null, embeds: [botIEmbed], components: [{ type: 1, components: [bSup, bVote, bInv] }] })
     }
 }

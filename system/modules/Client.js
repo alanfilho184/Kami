@@ -1,9 +1,8 @@
-const { Client, Intents } = require('discord.js');
+const { Client } = require('discord.js');
 const Discord = require('discord.js');
-const glob = require("glob")
+const glob = require("fast-glob")
 const logs = require("../resources/scripts/logs.js")
 const toMs = require("milliseconds-parser")()
-const moment = require("moment-timezone")
 const fs = require("fs");
 
 module.exports = class MenuClient extends Client {
@@ -11,8 +10,7 @@ module.exports = class MenuClient extends Client {
     constructor(options = {}) {
         super({
             disableMentions: 'everyone',
-            intents: 13825,
-            partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+            intents: 1,
             restTimeOffset: 0,
         })
 
@@ -25,13 +23,11 @@ module.exports = class MenuClient extends Client {
         this.setCache()
         this.setTl()
         this.startup()
-        if (options.prefix == "k!") { this.startAPI() }
+        this.startAPI()
 
     }
 
     validate(options) {
-
-        if (!options.token) throw ('Token not found in settings')
         if (!options.prefix) throw ('Prefix not found in settings')
 
         this.token = options.token
@@ -45,16 +41,17 @@ module.exports = class MenuClient extends Client {
         this.commands = new Discord.Collection()
 
         try {
-            var commands = glob.GlobSync("**/commands/**/*.js")
+            var commands = glob.sync(["**/commands/**/*.js", "!node_modules", "!events"])
 
-            commands = commands.found
             commands.forEach(cmd => {
                 if (cmd.startsWith("system/commands/")) {
                     var cmdFunction = require("../../" + cmd)
 
                     var info = new cmdFunction()
 
-                    this.commands.set(info.name, info)
+                    if (info.name != "coletar") {
+                        this.commands.set(info.name, info)
+                    }
                 }
             })
         }
@@ -63,22 +60,23 @@ module.exports = class MenuClient extends Client {
         }
 
         logs.log.start("Comandos")
-
     }
 
     loadEvents() {
-        var events = glob.GlobSync("**/events/**/*.js")
-        events = events.found
+        var events = glob.sync(["**/events/**/*.js", "!node_modules", "!commands"])
+
         events.forEach(event => {
             let eventFunction = require("../../" + event)
 
             this.on(eventFunction.name, (...args) => { eventFunction.execute(this, ...args) })
-            if (eventFunction.name == "messageCreate") {
+            if (eventFunction.name == "interactionCreate") {
                 this.on("blacklist", (...args) => { eventFunction.blacklist(this, ...args) })
                 this.on("varUpdate", (...args) => { eventFunction.disableCmd(this, ...args) })
             }
+            else if (eventFunction.name == "messageCreate") {
+                this.on("blacklist", (...args) => { eventFunction.blacklist(this, ...args) })
+            }
             logs.log.start("Evento: " + eventFunction.name)
-
         })
     }
 
@@ -167,12 +165,13 @@ module.exports = class MenuClient extends Client {
     }
 
     startup() {
-        require("../resources/texts/pt").startup()
         this.resources = {
             pt: require("../resources/texts/pt"),
             en: require("../resources/texts/en"),
             assets: require("../resources/assets/assets")
         }
+
+        this.resources.footer = this.resources.pt.footer
 
         const botStatus = require("../resources/scripts/botStatus")
 
@@ -189,18 +188,23 @@ module.exports = class MenuClient extends Client {
     }
 
     startAPI() {
-        const api = require("./API")
-        const API = new api(this)
+        require("./api/app").api(this)
 
-        setTimeout(() => {
-            API.postBotinfo()
-            API.postCommands()
-        }, toMs.parse("30 segundos"))
+        if (this.settings.deploy == "production") {
 
-        setInterval(() => {
-            API.postBotinfo()
-            API.postCommands()
-        }, toMs.parse("30 minutos"))
+            const postApi = require("./postInfo")
+            const API = new postApi(this)
+
+            setTimeout(() => {
+                API.postBotinfo()
+                API.postCommands()
+            }, toMs.parse("30 segundos"))
+
+            setInterval(() => {
+                API.postBotinfo()
+                API.postCommands()
+            }, toMs.parse("30 minutos"))
+        }
     }
 
     async login(token = this.token) {
