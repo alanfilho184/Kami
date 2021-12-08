@@ -23,7 +23,7 @@ module.exports = class addbl {
     execute(client, int) {
         int.deferReply({ ephemeral: true })
             .then(() => {
-                const args = client.utils.argsString(int)
+                const args = client.utils.args(int)
 
                 const banid = args.get("id")
                 const bans = args.get("bans")

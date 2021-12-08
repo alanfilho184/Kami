@@ -38,7 +38,7 @@ module.exports = class enviar_atb {
     execute(client, int) {
         int.deferReply()
             .then(async () => {
-                var args = client.utils.args(int)
+                const args = client.utils.args(int)
 
                 const atributosPt = client.resources["pt"].atributos
                 const atributos = client.resources[int.lang.replace("-", "")].atributos
@@ -52,25 +52,8 @@ module.exports = class enviar_atb {
 
                 try { nomeRpg = nomeRpg.replace("'", '') } catch { }
 
-                try {
-                    var testAtb = nomeRpg.toLowerCase()
-                    testAtb = testAtb.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, '');
-                    const r = await client.cache.getFicha(int.user.id, nomeRpg)
-
-                    if (r[0] == "") { testAtb = client.utils.matchAtb(testAtb, atributos) }
-                }
-                catch (err) { }
-
-                if (atributos.includes(testAtb)) {
-                    atb = testAtb
-                    try { nomeRpg = client.cache.get(int.user.id).fPadrao } catch (err) { nomeRpg = undefined }
-                }
-
-                try {
-                    atb = client.utils.matchAtb(atb, atributos)
-                    if (!atributos.includes(atb)) { return int.editReply(client.tl({ local: int.lang + "cef-atbNE", atributo: atb })) }
-                }
-                catch (err) { }
+                atb = client.utils.matchAtb(atb, atributos)
+                if (!atributos.includes(atb)) { return int.editReply(client.tl({ local: int.lang + "cef-atbNE", atributo: atb })) }
 
                 if (!nomeRpg) {
                     try {
@@ -92,77 +75,69 @@ module.exports = class enviar_atb {
                     }
                 }
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                const fichaUser = await client.cache.getFicha(int.user.id, nomeRpg)
+                if (fichaUser) {
+                    if (int.lang == "en-") {
+                        atb = atributosPt[atributos.indexOf(atb)]
+                    }
 
-                client.cache.getFicha(int.user.id, nomeRpg)
-                    .then(async r => {
-                        if (r) {
-                            var fichaUser = r
+                    if (fichaUser[atb]) {
+                        var valor = fichaUser[atb]
 
-                            if (int.lang == "en-") {
-                                atb = atributosPt[atributos.indexOf(atb)]
-                            }
+                        atb = atributosF[atributosPt.indexOf(atb)]
 
-                            if (fichaUser[atb]) {
+                        var atributo = atb
 
-                                var valor = fichaUser[atb]
+                        const atributoEmbed = new client.Discord.MessageEmbed()
+                            .setColor(client.settings.color)
+                            .setAuthor(client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
+                            .setFooter(footer, client.user.displayAvatarURL())
+                            .setTimestamp()
+                            .setTitle(atb + ":")
 
-                                atb = atributosF[atributosPt.indexOf(atb)]
-
-                                var atributo = atb
-
-                                const atributoEmbed = new client.Discord.MessageEmbed()
-                                atributoEmbed.setColor(client.settings.color)
-                                atributoEmbed.setAuthor(client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
-                                atributoEmbed.setFooter(footer, client.user.displayAvatarURL())
-                                atributoEmbed.setTimestamp()
-
-                                atributoEmbed.setTitle(atb + ":")
-
-                                if (atributo.toLowerCase() == "imagem") {
-                                    atributoEmbed.setImage(valor)
-                                }
-                                if (atributo.toLowerCase() == "extras") {
-                                    var atbExtras = valor
-
-                                    var atbs = atbExtras.split("|")
-
-                                    for (var x in atbs) {
-                                        var atb = atbs[x].split(":")[0]
-                                        var val = atbs[x].split(":")[1]
-
-                                        try { atb = atb.replace(" ", "") } catch { }
-                                        try { val = val.replace(/ .$/, '') } catch { }
-                                        try { val = val.replace(/ (.+)/, '') } catch { }
-
-                                        if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "") {
-                                            atributoEmbed.addFields({ name: atb + ":", value: val, inline: true })
-                                        }
-                                        else { }
-
-                                        if (x == 25) {
-                                            int.editReply(client.tl({ local: int.lang + "ef-eLE" }))
-                                            break
-                                        }
-                                    }
-                                }
-                                if (atributo.toLowerCase() != "imagem" && atributo.toLowerCase() != "extras") {
-                                    atributoEmbed.setDescription(`**_${valor}_**`)
-                                }
-
-                                int.editReply({ embeds: [atributoEmbed] })
-
-                            }
-                            else {
-                                return int.editReply(client.tl({ local: int.lang + "ea-atbSV", nomeRpg: nomeRpg, atb: atb }))
-                            }
-
+                        if (atributo.toLowerCase() == "imagem") {
+                            atributoEmbed.setImage(valor)
                         }
-                        else {
-                            return int.editReply(client.tl({ local: int.lang + "ea-nFE", nomeRpg: nomeRpg }))
+                        if (atributo.toLowerCase() == "extras") {
+                            var atbExtras = valor
+
+                            var atbs = atbExtras.split("|")
+
+                            for (var x in atbs) {
+                                var atb = atbs[x].split(":")[0]
+                                var val = atbs[x].split(":")[1]
+
+                                try { atb = atb.replace(" ", "") } catch { }
+                                try { val = val.replace(/ .$/, '') } catch { }
+                                try { val = val.replace(/ (.+)/, '') } catch { }
+
+                                if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "") {
+                                    atributoEmbed.addFields({ name: atb + ":", value: val, inline: true })
+                                }
+                                else { }
+
+                                if (x == 25) {
+                                    int.editReply(client.tl({ local: int.lang + "ef-eLE" }))
+                                    break
+                                }
+                            }
+                        }
+                        if (atributo.toLowerCase() != "imagem" && atributo.toLowerCase() != "extras") {
+                            atributoEmbed.setDescription(`**_${valor}_**`)
                         }
 
-                    })
+                        int.editReply({ embeds: [atributoEmbed] })
+
+                    }
+                    else {
+                        return int.editReply(client.tl({ local: int.lang + "ea-atbSV", nomeRpg: nomeRpg, atb: atb }))
+                    }
+                }
+                else {
+                    return int.editReply(client.tl({ local: int.lang + "ea-nFE", nomeRpg: nomeRpg }))
+                }
+
             })
+
     }
 }

@@ -190,14 +190,11 @@ module.exports = class enviar_txt {
                 atb = atb.replace(" ", "")
                 val = val.replace(/ /, '')
 
-
-
                 if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "") {
                     fichaTXT += br(`${atb}: ` + `${val}`, 90) + "\n"
                 }
                 else { }
             }
-
         }
 
         if (fichaUser['descricao'] != "-" && fichaUser['descricao'] != "- " && fichaUser['descricao'] != undefined && fichaUser['descricao'] != null) {

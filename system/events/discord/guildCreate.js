@@ -16,7 +16,7 @@ module.exports = {
             { name: "Servidor:", value: "Nome: " + guild.name + "\nID: " + guild.id + "\n Quantidade de usuários: " + guild.memberCount },
             { name: "Dono:", value: owner[0].tag + "\nID: " + owner[0].id },
         )
-        gCreateEmbed.setFooter(`Adicionado em: ${time.now({ zone: "America/Fortaleza" }).toFormat("dd/MM/y | HH:mm:ss ")} (GMT -3)`)
+        gCreateEmbed.setFooter(`Adicionado em: ${time.now().setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ")} (GMT -3)`)
         gCreateEmbed.setColor(client.settings.color)
 
         client.log.embed(gCreateEmbed)

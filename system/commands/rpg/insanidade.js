@@ -76,7 +76,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
                 const inPerm = client.resources[int.lang.replace("-", "")].inPerm
                 const footer = client.resources[int.lang.replace("-", "")].footer()
 
-                if (args.get("tipo") == "temporaria") {
+                if (args.get("tipo") == "permanente") {
                     var qPerm = inPerm.length
 
                     var result = client.utils.dice(qPerm)
@@ -131,7 +131,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
                     return int.editReply({ embeds: [insPerm] })
                 }
 
-                if (args.get("tipo") == "permanente") {
+                if (args.get("tipo") == "temporaria") {
                     var qTemp = inTemp.length
                     var result = client.utils.dice(qTemp)
 

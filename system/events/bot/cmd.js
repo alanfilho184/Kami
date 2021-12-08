@@ -24,7 +24,7 @@ module.exports = {
             .setAuthor(`${int.user.tag} - ${int.user.id}`, int.user.displayAvatarURL())
             .setDescription("**Args:**\n" + "`" + args + "`")
             .addField("Idioma: ", "`" + idioma + "`", true)
-            .setFooter("Executado em: " + time.now(int.createdTimestamp, { zone: "America/Fortaleza" }).toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)")
+            .setFooter("Executado em: " + time.now(int.createdTimestamp).setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)")
             .setColor(client.settings.color)
 
         if (int.guildId != null) {
