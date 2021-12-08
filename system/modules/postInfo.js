@@ -35,8 +35,6 @@ module.exports = class API {
             }
         })
 
-        console.log(comandos)
-
         axios.post(`${process.env.apiUrl}/comandos`, comandos, {
             headers: {
                 "Authorization": process.env.apiToken,

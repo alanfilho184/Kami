@@ -137,7 +137,7 @@ module.exports = class MenuClient extends Client {
             fs.writeFileSync("log.txt", logs.logTxt())
 
             this.channels.fetch(this.settings.log).then(async (c) => {
-                await c.send({ content: `Log completo - ${moment().tz("America/Fortaleza").format("DD/MM/YYYY | HH:mm:ss")}`, files: ["log.txt"] })
+                await c.send({ content: `Log completo - ${time.now({zone: "America/Fortaleza"}).toFormat("dd/MM/y | HH:mm:ss ")}`, files: ["log.txt"] })
                 process.exit(0)
             })
 

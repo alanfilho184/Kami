@@ -75,8 +75,6 @@ module.exports = class lang {
 
                     int.editReply({ embeds: [lEmbedDm], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
                         .then(botmsg => {
-                            console.log(botmsg)
-
                             const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
 
                             botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })

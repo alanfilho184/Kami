@@ -157,7 +157,7 @@ module.exports = class reloadSlash {
                     )
 
                 } catch (error) {
-                    console.error(error);
+                    client.log.error(error, true)
                 }
 
                 try {
@@ -185,7 +185,7 @@ module.exports = class reloadSlash {
                         })
 
                 } catch (error) {
-                    console.error(error);
+                    cclient.log.error(error, true)
                 }
 
                 int.editReply("Slash commands recarregados")
