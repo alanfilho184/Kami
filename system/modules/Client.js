@@ -11,7 +11,7 @@ module.exports = class MenuClient extends Client {
     constructor(options = {}) {
         super({
             disableMentions: 'everyone',
-            intents: 5633,
+            intents: 13825,
             restTimeOffset: 0,
         })
 
@@ -77,6 +77,9 @@ module.exports = class MenuClient extends Client {
             else if (eventFunction.name == "messageCreate") {
                 this.on("blacklist", (...args) => { eventFunction.blacklist(this, ...args) })
             }
+            else if (eventFunction.name == "componentHandler") {
+                this.on("passInt", (...args) => { eventFunction.passInt(this, ...args) })
+            }
             logs.log.start("Evento: " + eventFunction.name)
         })
     }
@@ -138,7 +141,7 @@ module.exports = class MenuClient extends Client {
             fs.writeFileSync("log.txt", logs.logTxt())
 
             this.channels.fetch(this.settings.log).then(async (c) => {
-                await c.send({ content: `Log completo - ${time.now({zone: "America/Fortaleza"}).toFormat("dd/MM/y | HH:mm:ss ")}`, files: ["log.txt"] })
+                await c.send({ content: `Log completo - ${time.now({ zone: "America/Fortaleza" }).toFormat("dd/MM/y | HH:mm:ss ")}`, files: ["log.txt"] })
                 process.exit(0)
             })
 

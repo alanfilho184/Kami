@@ -28,6 +28,9 @@ module.exports = class config {
     execute(client, int) {
         int.deferReply({ ephemeral: true })
             .then(async () => {
+                if(int.guildId == null){
+                    return int.editReply("Este comando não está disponível em DM's por enquanto.")
+                }
                 var repeat = true
                 var botmsg
 
@@ -116,7 +119,7 @@ module.exports = class config {
                                     }
                                 }
                                 else if (choice == "done") {
-                                    botmsg.edit({ content: null, components: [] })
+                                    int.editReply({ content: null, components: [] })
                                     repeat = false
                                     return
                                 }
@@ -134,7 +137,7 @@ module.exports = class config {
                         })
                         .catch(err => {
                             if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                botmsg.edit({ content: null, components: [] })
+                                int.editReply({ content: null, components: [] })
                             }
                             else {
                                 client.log.error(err, true)

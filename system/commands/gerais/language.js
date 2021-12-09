@@ -37,7 +37,7 @@ module.exports = class lang {
     }
 
     execute(client, int) {
-        int.deferReply({ ephemeral: true })
+        int.deferReply({ ephemeral: false })
             .then(async () => {
                 if (int.guildId == null) {
                     const lEmbedDm = new client.Discord.MessageEmbed()
@@ -53,64 +53,30 @@ module.exports = class lang {
         **More languages available soon**`)
                     lEmbedDm.setColor(client.settings.color)
 
-                    const uniqueID = `${Date.now()}`
-
                     const bPT = new client.Discord.MessageButton()
                         .setStyle(2)
                         .setLabel("PT-BR")
                         .setEmoji('🇧🇷')
-                        .setCustomId("pt|" + uniqueID)
+                        .setCustomId(`lang|pt|intid:${int.id}|userid:${int.user.id}`)
 
                     const bEN = new client.Discord.MessageButton()
                         .setStyle(2)
                         .setLabel("EN-US")
                         .setEmoji('🇺🇸')
-                        .setCustomId("en|" + uniqueID)
+                        .setCustomId(`lang|en|intid:${int.id}|userid:${int.user.id}`)
 
                     const bCanc = new client.Discord.MessageButton()
                         .setStyle(4)
                         .setLabel("Cancelar | Cancel")
-                        .setCustomId("canc|" + uniqueID)
+                        .setCustomId(`lang|canc|intid:${int.id}|userid:${int.user.id}`)
 
 
                     int.editReply({ embeds: [lEmbedDm], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
-                        .then(botmsg => {
-                            const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
 
-                            botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })
-                                .then(interaction => {
-                                    const choice = interaction.customId.split("|")[0]
-
-                                    if (choice == "pt") {
-                                        setLang(client, int, "user", "pt-")
-                                        botmsg.edit({ content: client.tl({ local: `pt-eL-brDm` }), embeds: [], components: [] })
-                                        return "pt-"
-                                    }
-                                    else if (choice == "en") {
-                                        setLang(client, int, "user", "en-")
-                                        botmsg.edit({ content: client.tl({ local: `en-eL-enDm` }), embeds: [], components: [] })
-                                        return "en-"
-                                    }
-                                    else if (choice == "canc") {
-                                        botmsg.edit({ content: `Ok, nada foi selecionado | Ok, nothing was selected`, embeds: [], components: [] })
-
-                                        return
-                                    }
-                                })
-                                .catch(err => {
-                                    if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                        return botmsg.edit({ content: client.tl({ local: int.lang + "eL-sR", msg: int }), embeds: [], components: [] })
-                                    }
-                                    else {
-                                        client.log.error(err, true)
-                                        return
-                                    }
-                                })
-                        })
+                    client.emit("passInt", { intid: int.id, int: int })
 
                 }
                 else {
-
                     if (int.user.id != client.settings.owner) {
                         if (!int.member.permissions.has("ADMINISTRATOR") || !int.member.permissions.has("MANAGE_CHANNELS") || !int.member.permissions.has("MANAGE_GUILD")) {
                             return int.reply(client.tl({ local: int.lang + "onMsg-sPerm" }))
@@ -148,7 +114,6 @@ module.exports = class lang {
 
                     int.editReply({ embeds: [lEmbed], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
                         .then(botmsg => {
-
                             const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
 
                             botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })
@@ -157,19 +122,19 @@ module.exports = class lang {
 
                                     if (choice == "pt") {
                                         setLang(client, int, "server", "pt-")
-                                        return botmsg.edit({ content: client.tl({ local: "pt-eL-br", msg: int }), embeds: [], components: [] })
+                                        return int.editReply({ content: client.tl({ local: "pt-eL-br", msg: int }), embeds: [], components: [] })
                                     }
                                     else if (choice == "en") {
                                         setLang(client, int, "server", "en-")
-                                        return botmsg.edit({ content: client.tl({ local: "en-eL-en", msg: int }), embeds: [], components: [] })
+                                        return int.editReply({ content: client.tl({ local: "en-eL-en", msg: int }), embeds: [], components: [] })
                                     }
                                     else if (choice == "canc") {
-                                        return botmsg.edit({ content: client.tl({ local: int.lang + "eL-cancel", msg: int }), embeds: [], components: [] })
+                                        return int.editReply({ content: client.tl({ local: int.lang + "eL-cancel", msg: int }), embeds: [], components: [] })
                                     }
                                 })
                                 .catch(err => {
                                     if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                        return botint.edit({ content: client.tl({ local: int.lang + "eL-sR", msg: int }), embeds: [], components: [] })
+                                        return int.editReply({ content: client.tl({ local: int.lang + "eL-sR", msg: int }), embeds: [], components: [] })
                                     }
                                     else {
                                         client.log.error(err, true)
