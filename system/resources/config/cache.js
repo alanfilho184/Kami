@@ -26,7 +26,7 @@ module.exports = class Cache {
 
                 result = Array.from(result[0].entries())
 
-                for (x of result) {
+                for (var x of result) {
                     configCache.set(x[1].userid || x[1].serverid, { lang: replaceAll(x[1].lang, " ", ""), roll: x[1].roll, insan: x[1].insan, fPadrao: x[1].fpadrao, rollChannel: x[1].rollchannel })
                 }
 
@@ -52,7 +52,7 @@ module.exports = class Cache {
 
                 result = Array.from(result[0].entries())
 
-                for (x of result) {
+                for (var x of result) {
                     configCache.set(x[1].userid, { bans: x[1].bans, banAtual: x[1].banatual, duracaoBan: x[1].duracaoban })
                 }
 
@@ -229,7 +229,7 @@ module.exports = class Cache {
                 .then(r => {
                     if (fichas.has(id + nomeRpg)) {
                         var f = fichas.get(id + nomeRpg)
-                        for (x in atb) {
+                        for (var x in atb) {
                             f[atb[x]] = valor[x]
                         }
                         fichas.set(id + nomeRpg, f)
