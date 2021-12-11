@@ -53,8 +53,7 @@ module.exports = class ajuda {
             .setURL("https://discord.com/invite/9rqCkFB")
 
         var repeat = true
-        var botFmsg = await int.editReply({ embeds: [mainHelp], components: [{ type: 1, components: [bTermos, bSup] }] })
-        var botmsg = ""
+        await int.editReply({ embeds: [mainHelp], components: [{ type: 1, components: [bTermos, bSup] }] })
 
         var help = mainHelp
         var choice = ""
@@ -81,12 +80,9 @@ module.exports = class ajuda {
                 }
             })
 
-            if (botmsg == "") {
-                botmsg = await botFmsg.edit({ embeds: [help], components: [{ type: 1, components: [bTermos, bSup] }, { type: 1, components: [menu] }] })
-            }
-            else {
-                botmsg = await botmsg.edit({ embeds: [help], components: [{ type: 1, components: [bTermos, bSup] }, { type: 1, components: [menu] }] })
-            }
+            var botmsg = await int.editReply({ embeds: [help], components: [{ type: 1, components: [bTermos, bSup] }, { type: 1, components: [menu] }] })
+
+            if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
 
             var filter = (interaction) => interaction.user.id === int.user.id && interaction.customId === uniqueID
             await botmsg.awaitMessageComponent({ filter, time: 120000 })
@@ -156,11 +152,10 @@ module.exports = class ajuda {
                             return
                         }
                     }
-
                 })
                 .catch(err => {
                     if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                        botmsg.edit({ content: null, components: [{ type: 1, components: [bTermos, bSup] }] })
+                        int.editReply({ content: null, components: [{ type: 1, components: [bTermos, bSup] }] })
                     }
                     else {
                         client.log.error(err, true)

@@ -80,8 +80,9 @@ module.exports = class MenuClient extends Client {
             else if (eventFunction.name == "componentHandler") {
                 this.on("passInt", (...args) => { eventFunction.passInt(this, ...args) })
             }
-            logs.log.start("Evento: " + eventFunction.name)
         })
+        
+        logs.log.start("Eventos")
     }
 
     setUtils() {

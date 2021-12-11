@@ -114,8 +114,8 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                 .setCustomId("canc|" + uniqueID)
 
                             int.editReply({ content: client.tl({ local: int.lang + "af-cEF", nomeRpg: nomeRpg }), components: [{ type: 1, components: [bConf, bCanc] }] })
-                                .then(botmsg => {
-
+                                .then(async botmsg => {
+                                    if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
                                     const filter = (interaction) => interaction.user.id === int.user.id && interaction.customId.split("|")[1] === uniqueID
                                     botmsg.awaitMessageComponent({ filter, time: 30000 })
                                         .then(interaction => {
@@ -128,7 +128,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                     .then(() => {
                                                         client.cache.deleteFicha(int.user.id, nomeRpg)
 
-                                                        botmsg.edit({ content: client.tl({ local: int.lang + "af-fApg", nomeRpg: nomeRpg }), components: [] })
+                                                        int.editReply({ content: client.tl({ local: int.lang + "af-fApg", nomeRpg: nomeRpg }), components: [] })
                                                             .then(async function () {
                                                                 client.cache.getIrt(int.user.id, nomeRpg)
                                                                     .then(infoUIRT => {
@@ -140,12 +140,12 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                     })
                                             }
                                             else if (choice == "canc") {
-                                                botmsg.edit({ content: client.tl({ local: int.lang + "af-fM", nomeRpg: nomeRpg }), components: [] })
+                                                int.editReply({ content: client.tl({ local: int.lang + "af-fM", nomeRpg: nomeRpg }), components: [] })
                                             }
                                         })
                                         .catch(err => {
                                             if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                                return botmsg.edit({ content: client.tl({ local: int.lang + "af-sConfirm", nomeRpg: nomeRpg }), components: [] })
+                                                return int.editReply({ content: client.tl({ local: int.lang + "af-sConfirm", nomeRpg: nomeRpg }), components: [] })
                                             }
                                             else {
                                                 client.log.error(err, true)

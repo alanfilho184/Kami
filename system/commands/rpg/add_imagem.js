@@ -33,7 +33,7 @@ module.exports = class adicionar_imagem {
 
                 How to use:
                 Step 1 - Right click on a message that has an image.
-                Step 2 - Select \`Apps\` and then \`Add Image to Tab\`.
+                Step 2 - Select \`Apps\` and then \`Add imagem à ficha\`.
                 Step 3 - Select the tab you want to add the image to from the drop-down menu that appears.
 
                 There, the image will be added to your sheet.
@@ -49,7 +49,7 @@ module.exports = class adicionar_imagem {
                 const attach = Array.from(msg.attachments.values())[0]
 
                 if (!attach || !imageType.includes(attach.contentType.split("/")[1])) {
-                    int.editReply(client.tl({local: int.lang + "addI-iNE"}))
+                    int.editReply(client.tl({ local: int.lang + "addI-iNE" }))
                     return
                 }
                 else {
@@ -58,21 +58,23 @@ module.exports = class adicionar_imagem {
                     const uniqueID = `${Date.now()}`
                     const menu = new client.Discord.MessageSelectMenu()
                         .setCustomId("addImg|" + uniqueID)
-                        .setPlaceholder(client.tl({local: int.lang + "addI-mPH"}))
+                        .setPlaceholder(client.tl({ local: int.lang + "addI-mPH" }))
 
                     fichas.forEach(f => {
                         menu.addOptions({ label: f, value: f })
                     })
 
                     const embed = new client.Discord.MessageEmbed()
-                        .setTitle(client.tl({local: int.lang + "addI-eTi"}))
-                        .setDescription(client.tl({local: int.lang + "addI-eDesc"}))
+                        .setTitle(client.tl({ local: int.lang + "addI-eTi" }))
+                        .setDescription(client.tl({ local: int.lang + "addI-eDesc" }))
                         .setImage(attach.url)
                         .setColor(client.settings.color)
                         .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                         .setTimestamp()
 
-                    const botmsg = await int.editReply({ embeds: [embed], components: [{ type: 1, components: [menu] }] })
+                    var botmsg = await int.editReply({ embeds: [embed], components: [{ type: 1, components: [menu] }] })
+
+                    if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
 
                     var filter = (interaction) => interaction.user.id === int.user.id && interaction.customId.split("|")[1] === uniqueID
                     botmsg.awaitMessageComponent({ filter, time: 60000 })
@@ -89,7 +91,7 @@ module.exports = class adicionar_imagem {
                                         client.emit("updtFicha", int, { id: int.user.id, nomeRpg: nomeRpg, irt: infoUIRT })
                                     }
 
-                                    return int.editReply({ content: client.tl({local: int.lang + "addI-iAdd"}), embeds: [], components: [] })
+                                    return int.editReply({ content: client.tl({ local: int.lang + "addI-iAdd" }), embeds: [], components: [] })
                                 })
                         })
                 }

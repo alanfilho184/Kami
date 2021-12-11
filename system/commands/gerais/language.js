@@ -39,7 +39,7 @@ module.exports = class lang {
     execute(client, int) {
         int.deferReply({ ephemeral: false })
             .then(async () => {
-                if (int.guildId == null) {
+                if (!int.inGuild()) {
                     const lEmbedDm = new client.Discord.MessageEmbed()
                     lEmbedDm.setTitle(`Escolha que línguagem prefere usar meus comandos | Choose which language you prefer use my commands`)
                     lEmbedDm.setDescription(`
@@ -53,28 +53,63 @@ module.exports = class lang {
         **More languages available soon**`)
                     lEmbedDm.setColor(client.settings.color)
 
+                    const uniqueID = `${Date.now()}`
+
                     const bPT = new client.Discord.MessageButton()
                         .setStyle(2)
                         .setLabel("PT-BR")
                         .setEmoji('🇧🇷')
-                        .setCustomId(`lang|pt|intid:${int.id}|userid:${int.user.id}`)
+                        .setCustomId("pt|" + uniqueID)
 
                     const bEN = new client.Discord.MessageButton()
                         .setStyle(2)
                         .setLabel("EN-US")
                         .setEmoji('🇺🇸')
-                        .setCustomId(`lang|en|intid:${int.id}|userid:${int.user.id}`)
+                        .setCustomId("en|" + uniqueID)
 
                     const bCanc = new client.Discord.MessageButton()
                         .setStyle(4)
                         .setLabel("Cancelar | Cancel")
-                        .setCustomId(`lang|canc|intid:${int.id}|userid:${int.user.id}`)
+                        .setCustomId("canc|" + uniqueID)
 
 
                     int.editReply({ embeds: [lEmbedDm], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
+                        .then(async () => {
+                            const botmsg = await client.channels.fetch(int.channelId)
+                            const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
 
-                    client.emit("passInt", { intid: int.id, int: int })
+                            botmsg.awaitMessageComponent({ filter, time: toMs.parse("2 minutos") })
+                                .then(interaction => {
+                                    interaction.deferUpdate()
+                                    const choice = interaction.customId.split("|")[0]
 
+                                    if (choice == "pt") {
+                                        setLang(client, int, "user", "pt-")
+                                        int.editReply({ content: client.tl({ local: `pt-eL-brDm` }), embeds: [], components: [] })
+                                        return "pt-"
+                                    }
+                                    else if (choice == "en") {
+                                        setLang(client, int, "user", "en-")
+                                        int.editReply({ content: client.tl({ local: `en-eL-enDm` }), embeds: [], components: [] })
+                                        return "en-"
+                                    }
+                                    else if (choice == "canc") {
+                                        int.editReply({ content: `Ok, nada foi selecionado | Ok, nothing was selected`, embeds: [], components: [] })
+
+                                        return
+                                    }
+                                })
+                                .catch(err => {
+                                    if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                                        return int.editReply({ content: client.tl({ local: int.lang + "eL-sR", msg: int }), embeds: [], components: [] })
+                                    }
+                                    else {
+                                        client.log.error(err, true)
+                                        return
+                                    }
+                                })
+
+                        })
                 }
                 else {
                     if (int.user.id != client.settings.owner) {

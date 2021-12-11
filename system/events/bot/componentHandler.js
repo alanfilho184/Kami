@@ -1,4 +1,3 @@
-const setLang = require("../../resources/scripts/lang").setLang
 const passedInts = new Map()
 
 module.exports = {
@@ -189,39 +188,6 @@ module.exports = {
                                 })
                         })
                 }
-            case "lang":
-                const testLang = /(^[a-zA-z]*)|((pt)|(en)|(canc))|intid:([0-9]*)|userid:([0-9]*)/g
-
-                const langInfo = comp.customId.match(testLang)
-                langInfo.shift()
-
-                if (langInfo[2].split(":")[1] == comp.user.id) {
-                    comp.deferUpdate()
-
-                    const int = passedInts.get(langInfo[1].split(":")[1])
-
-                    if (langInfo[0] == "pt") {
-                        setLang(client, comp, "user", "pt-")
-                        int.editReply({ content: client.tl({ local: `pt-eL-brDm` }), embeds: [], components: [] })
-                        passedInts.delete(langInfo[1].split(":")[1])
-                        return
-                    }
-                    else if (langInfo[0] == "en") {
-                        setLang(client, comp, "user", "en-")
-                        int.editReply({ content: client.tl({ local: `en-eL-enDm` }), embeds: [], components: [] })
-                        passedInts.delete(langInfo[1].split(":")[1])
-                        return
-                    }
-                    else if (langInfo[0] == "canc") {
-                        int.editReply({ content: `Ok, nada foi selecionado | Ok, nothing was selected`, embeds: [], components: [] })
-                        passedInts.delete(langInfo[1].split(":")[1])
-                        return
-                    }
-                }
-                else {
-                    return
-                }
-
         }
     },
     passInt: (client, info) => {

@@ -28,9 +28,6 @@ module.exports = class config {
     execute(client, int) {
         int.deferReply({ ephemeral: true })
             .then(async () => {
-                if(int.guildId == null){
-                    return int.editReply("Este comando não está disponível em DM's por enquanto.")
-                }
                 var repeat = true
                 var botmsg
 
@@ -89,6 +86,8 @@ module.exports = class config {
                     if (fichas.length > 0) { menuComp.push({ type: 1, components: [menu] }) }
 
                     botmsg = await int.editReply({ content: null, embeds: [gui], components: menuComp })
+
+                    if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
 
                     var filter = (interaction) => interaction.user.id === int.user.id && interaction.customId.split("|")[1] === uniqueID
                     await botmsg.awaitMessageComponent({ filter, time: 60000 })

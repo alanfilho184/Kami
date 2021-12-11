@@ -103,7 +103,6 @@ module.exports = class ficha {
 
                 try { nomeRpg = nomeRpg.replace("'", '') } catch { }
 
-
                 try {
                     atb = client.utils.matchAtb(atb, atributos)
                     if (!atributos.includes(atb)) { return int.editReply(client.tl({ local: int.lang + "cef-atbNE", atributo: atb })) }
@@ -384,7 +383,8 @@ module.exports = class ficha {
 
 
                                 int.editReply({ content: client.tl({ local: int.lang + "cef-cCNF", nomeRpg: nomeRpg }), components: [{ type: 1, components: [bConf, bCanc] }] })
-                                    .then(botmsg => {
+                                    .then(async botmsg => {
+                                        if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
                                         const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
 
                                         botmsg.awaitMessageComponent({ filter, time: 30000 })
@@ -403,7 +403,7 @@ module.exports = class ficha {
                                                                 else {
                                                                     msgToSend = client.tl({ local: int.lang + "cef-updtMulti", nomeRpg: nomeRpg, atributo: atbs, valor: vals })
                                                                 }
-                                                                botmsg.edit({ content: msgToSend, components: [] })
+                                                                int.editReply({ content: msgToSend, components: [] })
                                                                     .then(async function () {
                                                                         var infoUIRT = await client.cache.getIrt(int.user.id, nomeRpg)
 
@@ -423,18 +423,18 @@ module.exports = class ficha {
                                                             type: QueryTypes.INSERT
                                                         })
                                                             .then(r => {
-                                                                return botmsg.edit({ content: client.tl({ local: int.lang + "cef-adcFicha", nomeRpg: nomeRpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }), components: [] })
+                                                                return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomeRpg: nomeRpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }), components: [] })
                                                             })
                                                             .catch(err => client.log.error(err, true))
                                                     }
                                                 }
                                                 else if (choice == "canc") {
-                                                    return botmsg.edit({ content: client.tl({ local: int.lang + "cef-cancelReact" }), components: [] })
+                                                    return int.editReply({ content: client.tl({ local: int.lang + "cef-cancelReact" }), components: [] })
                                                 }
                                             })
                                             .catch(err => {
                                                 if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                                    return botmsg.edit({ content: client.tl({ local: int.lang + "cef-sConfirm" }), components: [] })
+                                                    return int.editReply({ content: client.tl({ local: int.lang + "cef-sConfirm" }), components: [] })
                                                 }
                                                 else {
                                                     client.log.error(err, true)
