@@ -31,7 +31,7 @@ module.exports = class button_roll {
                 const beta = client.whitelist.get("beta")
 
                 if (!beta.has(int.user.id)) {
-                    int.editReply({ content: "Este comando está em beta fechado, em breve será liberado a todos." })
+                    return int.editReply({ content: "Este comando está em beta fechado, em breve será liberado a todos." })
                 }
 
                 const args = client.utils.args(int)
