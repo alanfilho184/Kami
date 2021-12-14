@@ -1,5 +1,3 @@
-// Em Desenvolvimento 
-
 module.exports = class resetar_senha {
     constructor() {
         return {

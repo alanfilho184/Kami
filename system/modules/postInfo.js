@@ -25,12 +25,14 @@ module.exports = class API {
 
         this.client.commands.map(c => {
             if (!c.ownerOnly) {
-                comandos[c.name] = {
-                    name: c.name,
-                    description: c.desc,
-                    cat: c.fName,
-                    help: c.helpPt,
-                    type: c.type,
+                if (c.name != "buttonroll") {
+                    comandos[c.name] = {
+                        name: c.name,
+                        description: c.desc,
+                        cat: c.fName,
+                        help: c.helpPt,
+                        type: c.type,
+                    }
                 }
             }
         })

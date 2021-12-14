@@ -1,3 +1,4 @@
+const time = require("luxon").DateTime;
 const passedInts = new Map()
 
 module.exports = {
@@ -6,6 +7,9 @@ module.exports = {
     execute: async (client, comp) => {
         const regEx = /(^[a-zA-z]*)/g
         const func = comp.customId.match(regEx)
+
+        comp.ping = time.now().ts - comp.createdTimestamp
+        comp.lang = client.utils.getLang(comp)
 
         switch (func[0]) {
             case "irt":
@@ -188,6 +192,13 @@ module.exports = {
                                 })
                         })
                 }
+            case "buttonRoll":
+                comp.deferUpdate()
+                    .then(() => {
+                        const rollInfo = comp.customId.split("|")[1]
+
+                        client.commands.get("buttonroll").roll(client, comp, rollInfo)
+                    })
         }
     },
     passInt: (client, info) => {

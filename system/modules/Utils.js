@@ -1,6 +1,5 @@
 const setLang = require("../resources/scripts/lang").setLang
 const stringSimilarity = require('string-similarity');
-const { aliases } = require("../resources/texts/pt")
 const CryptoJS = require("crypto-js");
 var roll = require("roll")
 roll = new roll()

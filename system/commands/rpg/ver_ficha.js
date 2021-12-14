@@ -1,5 +1,3 @@
-// Em Desenvolvimento 
-
 module.exports = class ver_ficha {
     constructor() {
         return {

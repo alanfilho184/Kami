@@ -71,6 +71,7 @@ module.exports = class ajuda {
             client.commands.forEach(cmd => {
                 if (cmd.ownerOnly) { return }
                 if (cmd.name == choice) { return }
+                if(cmd.name == "buttonroll") { return }
 
                 if (int.lang == "pt-") {
                     menu.addOptions({ label: cmd.fName, value: cmd.name, description: cmd.desc })
