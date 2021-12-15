@@ -16,35 +16,35 @@ permissoes = new Map([
 const atributos = ["name", "height", "age", "weight", "career", "skills", "equipment", "constitution", "disposition", "strength", "dexterity", "luck", "acrobatics",
     "intelligence", "insight", "charisma", "agility", "knowledge", "stealth", "perception", "survival", "will", "magic", "sanity", "languages", "sciences", "erudition",
     "investigation", "medicine", "mythsofcthulhu", "occultism", "occupation", "politics", "description", "image", "defects", "fight", "meleeweapons", "fireweapons", "fatigue", "memory",
-    "lucidity", "extras", "life", "search", "hear", "class", "trainanimals", "athletics", "actuation", "ride", "healing", "diplomacy", "deception", "identifyspells",
+    "lucidity", "extras", "health", "search", "hear", "class", "trainanimals", "athletics", "actuation", "ride", "healing", "diplomacy", "deception", "identifyspells",
     "initiative", "intimidation", "intuition", "ladding", "getinformation", "wisdom", "level", "divinity", "dislocation", "trend", "bodytobody", "rangedattacks",
-    "weapons", "armor", "shield", "raceskills", "classskills", "talents", "money", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature",
+    "weapons", "shield", "raceskills", "classskills", "talents", "money", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature",
     "persuasion", "prestidigitation", "religion", "armorclass", "contacts", "cuteness", "endurance", "race", "defense", "shield", "appearance", "theft", "guile", "manualskills", "military",
-    "navy", "abilities"]
+    "navy", "abilities", "resilience", "war", "gambling", "piloting", "reflexes", "nobility", "aim", "mana"]
 
-function returnAtb(){
+function returnAtb() {
     return ["name", "height", "age", "weight", "career", "skills", "equipment", "constitution", "disposition", "strength", "dexterity", "luck", "acrobatics",
-    "intelligence", "insight", "charisma", "agility", "knowledge", "stealth", "perception", "survival", "will", "magic", "sanity", "languages", "sciences", "erudition",
-    "investigation", "medicine", "mythsofcthulhu", "occultism", "occupation", "politics", "description", "image", "defects", "fight", "meleeweapons", "fireweapons", "fatigue", "memory",
-    "lucidity", "extras", "life", "search", "hear", "class", "trainanimals", "athletics", "actuation", "ride", "healing", "diplomacy", "deception", "identifyspells",
-    "initiative", "intimidation", "intuition", "ladding", "getinformation", "wisdom", "level", "divinity", "dislocation", "trend", "bodytobody", "rangedattacks",
-    "weapons", "armor", "shield", "raceskills", "classskills", "talents", "money", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature",
-    "persuasion", "prestidigitation", "religion", "armorclass", "contacts", "cuteness", "endurance", "race", "defense", "shield", "appearance", "theft", "guile", "manualskills", "military",
-    "navy", "abilities"]
+        "intelligence", "insight", "charisma", "agility", "knowledge", "stealth", "perception", "survival", "will", "magic", "sanity", "languages", "sciences", "erudition",
+        "investigation", "medicine", "mythsofcthulhu", "occultism", "occupation", "politics", "description", "image", "defects", "fight", "meleeweapons", "fireweapons", "fatigue", "memory",
+        "lucidity", "extras", "health", "search", "hear", "class", "trainanimals", "athletics", "actuation", "ride", "healing", "diplomacy", "deception", "identifyspells",
+        "initiative", "intimidation", "intuition", "ladding", "getinformation", "wisdom", "level", "divinity", "dislocation", "trend", "bodytobody", "rangedattacks",
+        "weapons", "shield", "raceskills", "classskills", "talents", "money", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature",
+        "persuasion", "prestidigitation", "religion", "armorclass", "contacts", "cuteness", "endurance", "race", "defense", "shield", "appearance", "theft", "guile", "manualskills", "military",
+        "navy", "abilities", "resilience", "war", "gambling", "piloting", "reflexes", "nobility", "aim", "mana"]
 }
 
 const atributosF = ["Name", "Height", "Age", "Weight", "Career", "Skills", "Equipment", "Constitution", "Disposition", "Strength", "Dexterity", "Luck", "Acrobatics",
     "Intelligence", "Insight", "Charisma", "Agility", "Knowledge", "Stealth", "Perception", "Survival", "Will", "Magic", "Sanity", "Languages", "Sciences", "Erudition",
     "Investigation", "Medicine", "Mysths Of Cthulhu", "Occultism", "Occupation", "Politics", "Description", "Image", "Defects", "Fight", "Melee Weapons", "Fire Weapons", "Fatigue", "Memory",
-    "Lucidity", "Extras", "Life", "Search", "Hear", "Class", "Train Animals", "Athletics", "Actuation", "Ride", "Healing", "Diplomacy", "Decption", "Identify Spells",
+    "Lucidity", "Extras", "Health", "Search", "Hear", "Class", "Train Animals", "Athletics", "Actuation", "Ride", "Healing", "Diplomacy", "Decption", "Identify Spells",
     "Initiative", "Intimidation", "Intuition", "Ladding", "Get Information", "Wisdom", "Level", "Divinity", "Dislocation", "Trend", "Body to body", "Ranged Attacks",
-    "Weapons", "Armor", "Shield", "Race Skills", "Class Skills", "Talents", "Money", "Idioms", "Arcanism", "Bluff", "History", "Dealing With Animals", "Nature",
+    "Weapons", "Shield", "Race Skills", "Class Skills", "Talents", "Money", "Idioms", "Arcanism", "Bluff", "History", "Dealing With Animals", "Nature",
     "Persuasion", "Prestidigitation", "Religion", "Armor Class", "Contacts", "Cuteness", "Endurance", "Race", "Defense", "Shield", "Appearance", "Theft", "Guile", "Manual Skills", "Military",
-    "Navy", "Abilities"]
+    "Navy", "Abilities", "Resilience", "War", "Gambling", "Piloting", "Reflexes", "Nobility", "Aim", "Mana"]
 
-const atributosI1 = ["name", "Age", "Height", "weight", "class", "race", "sanity", "life", "level", "money", "religion", "divinity"]
+const atributosI1 = ["name", "Age", "Height", "weight", "class", "race", "sanity", "health", "level", "mana", "money", "religion", "divinity"]
 
-const atributosIF1 = ["Name", "Age", "Height", "Weight", "Class", "Race", "Sanity", "Life", "Level", "Money", "Religion", "Divinity"]
+const atributosIF1 = ["Name", "Age", "Height", "Weight", "Class", "Race", "Sanity", "Health", "Mana", "Level", "Money", "Religion", "Divinity"]
 
 const atributosI2 = ["career", "skills", "defects", "equipments", "talents", "classskills", "raceskills", "manualskills", "abilities"]
 
@@ -54,25 +54,18 @@ const atributosStatus = ["disposition", "dexterity", "acrobatics", "insight", "a
     "politics", "strength", "luck", "intelligence", "charisma", "knowledge", "perception", "will", "sciences", "investigation", "occupation", "fight", "fireweapons", "meleeweapons",
     "mythsofcthulhu", "fatigue", "lucidity", "memory", "search", "hear", "constitution", "trainanimals", "athlectics", "actuation", "ride", "healing", "diplomacy", "deception",
     "identifyspells", "initiative", "intimidation", "intuition", "ladding", "getinformation", "wisdom", "dislocation", "trend", "bodytobody", "rangedattacks", "weapons",
-    "armor", "shield", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature", "persuasion", "prestidigitation", "armorclass", "contacts", "cuteness", "endurance",
-    "defense", "shield", "appearance", "theft", "guile", "military", "navy"]
+    "shield", "idioms", "arcanism", "bluff", "history", "dealingwithanimals", "nature", "persuasion", "prestidigitation", "armorclass", "contacts", "cuteness", "endurance",
+    "defense", "shield", "appearance", "theft", "guile", "military", "navy", "resilience", "war", "gambling", "piloting", "reflexes", "nobility", "aim"]
 
 const atributosStatusF = ["Disposition", "Dexterity", "Acrobatics", "Insight", "Agility", "Stealth", "Survival", "Magic", "Languages", "Erudition", "Medicine", "Occultism",
     "Politics", "Strength", "Luck", "Intelligence", "Charisma", "Knowledge", "Perception", "Will", "Sciences", "Investigation", "Occupation", "Fight", "Fire Weapons", "Melee Weapons",
     "Mysths Of Cthulhu", "Fatigue", "Lucidity", "Memory", "Search", "Hear", "Constitution", "Train Animals", "Athlectics", "Actuation", "Ride", "Healing", "Diplomacy", "Deception",
     "Identify Spells", "Initiative", "Intimidation", "Intuition", "Ladding", "Get Information", "Wisdom", "Dislocation", "Trend", "Body to Body", "Ranged Attacks",
-    "Weapons", "Armor", "Shield", "Idioms", "Arcanism", "Bluff", "History", "Dealing With Animals", "Nature", "Persuasion", "Prestidigitation", "Armor Class", "Contacts", "Cuteness", 
-    "Endurance", "Defense", "Shield", "Appearance", "Theft", "Guile", "Military","Navy"]
+    "Weapons", "Shield", "Idioms", "Arcanism", "Bluff", "History", "Dealing With Animals", "Nature", "Persuasion", "Prestidigitation", "Armor Class", "Contacts", "Cuteness",
+    "Endurance", "Defense", "Shield", "Appearance", "Theft", "Guile", "Military", "Navy", "Abilities", "Resilience", "War", "Gambling", "Piloting", "Reflexes", "Nobility", "Aim"]
 
-    function footer() {
-        return `${new Date().getFullYear()} © Kami`
-    }
-    
-function secret() {
-    const secret = ["Secret command, only the most intelligent will know the result", "Things are happening without anyone knowing 👀", "I have the slight impression that someone is going to be in trouble soon", "Trust me, you better not know the result at all",
-        "Gosh, I'm even pitying you after the dice that fell here", "Or, this result here will be valid for whom? Just to give my condolences"]
-
-    return randomChoice(secret)
+function footer() {
+    return `${new Date().getFullYear()} © Kami`
 }
 
 const inPerm = ["Nightmares", "Panic attacks", "Deliriums", "Body tremors", "Furious access", "Catatonia", "Blindness", "Schizophrenia", "Psychosis",
@@ -118,7 +111,6 @@ module.exports = {
     atributosStatus,
     atributosStatusF,
     footer,
-    secret,
     inPerm,
     inTemp,
     returnAtb

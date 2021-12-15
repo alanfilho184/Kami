@@ -20,7 +20,7 @@ const atributos = ["nome", "altura", "idade", "peso", "profissao", "competencias
     "iniciativa", "intimidacao", "intuicao", "ladinagem", "obterinformacoes", "sabedoria", "nivel", "divindade", "deslocamento", "tendencia", "corpoacorpo", "ataquesadistancia",
     "armas", "armadura", "habilidadesderaca", "habilidadesdeclasse", "talentos", "dinheiro", "idiomas", "arcanismo", "blefar", "historia", "lidarcomanimais", "natureza",
     "persuasao", "prestidigitacao", "religiao", "classedaarmadura", "ligacoes", "fofura", "resistencia", "raca", "defesa", "escudo", "aparencia", "furto", "labia", "habilidadesmanuais", "militar",
-    "naval", "habilidades"]
+    "naval", "habilidades", "fortitude", "guerra", "jogatina", "pilotagem", "reflexos", "nobreza", "pontaria", "mana"]
 
 function returnAtb() {
     return ["nome", "altura", "idade", "peso", "profissao", "competencias", "equipamentos", "constituicao", "disposicao", "forca", "destreza", "sorte", "acrobacia",
@@ -30,7 +30,7 @@ function returnAtb() {
     "iniciativa", "intimidacao", "intuicao", "ladinagem", "obterinformacoes", "sabedoria", "nivel", "divindade", "deslocamento", "tendencia", "corpoacorpo", "ataquesadistancia",
     "armas", "armadura", "habilidadesderaca", "habilidadesdeclasse", "talentos", "dinheiro", "idiomas", "arcanismo", "blefar", "historia", "lidarcomanimais", "natureza",
     "persuasao", "prestidigitacao", "religiao", "classedaarmadura", "ligacoes", "fofura", "resistencia", "raca", "defesa", "escudo", "aparencia", "furto", "labia", "habilidadesmanuais", "militar",
-    "naval", "habilidades"]
+    "naval", "habilidades", "fortitude", "guerra", "jogatina", "pilotagem", "reflexos", "nobreza", "pontaria", "mana"]
 }
 
 const atributosF = ["Nome", "Altura", "Idade", "Peso", "Profissão", "Competências", "Equipamentos", "Constituição", "Disposição", "Força", "Destreza", "Sorte", "Acrobacía",
@@ -40,11 +40,11 @@ const atributosF = ["Nome", "Altura", "Idade", "Peso", "Profissão", "Competênc
     "Iniciativa", "Intimidação", "Intuição", "Ladinagem", "Obter Informações", "Sabedoria", "Nivel", "Divindade", "Desclocamento", "Tendência", "Corpo a Corpo", "Ataques a Distância",
     "Armas", "Armadura", "Habilidades de raça", "Habilidades de Classe", "Talentos", "Dinheiro", "Idiomas", "Arcanismo", "Blefar", "História", "Lidar com animais", "Natureza",
     "Persuasão", "Prestidigitação", "Religião", "Classe da Armadura", "Ligações", "Fofura", "Resistência", "Raça", "Defesa", "Escudo", "Aparência", "Furto", "Lábia", "Habilidades Manuais", "Militar",
-    "Naval", "Habilidades"]
+    "Naval", "Habilidades", "Fortitude", "Guerra", "Jogatina", "Pilotagem", "Reflexos", "Nobreza", "Pontaria", "Mana"]
 
-const atributosI1 = ["nome", "idade", "altura", "peso", "classe", "raca", "sanidade", "vida", "nivel", "dinheiro", "religiao", "divindade"]
+const atributosI1 = ["nome", "idade", "altura", "peso", "classe", "raca", "sanidade", "vida", "mana", "nivel", "dinheiro", "religiao", "divindade"]
 
-const atributosIF1 = ["Nome", "Idade", "Altura", "Peso", "Classe", "Raça", "Sanidade", "Vida", "Nível", "Dinheiro", "Religião", "Divindade"]
+const atributosIF1 = ["Nome", "Idade", "Altura", "Peso", "Classe", "Raça", "Sanidade", "Vida", "Mana", "Nível", "Dinheiro", "Religião", "Divindade"]
 
 const atributosI2 = ["profissao", "competencias", "defeitos", "equipamentos", "talentos", "habilidadesdeclasse", "habilidadesderaca", "habilidadesmanuais", "habilidades"]
 
@@ -55,24 +55,17 @@ const atributosStatus = ["disposicao", "destreza", "acrobacia", "perspicacia", "
     "mitosdocthulhu", "fadiga", "lucidez", "memoria", "encontrar", "escutar", "constituicao", "adestraranimais", "atletismo", "atuacao", "cavalgar", "cura", "diplomacia", "enganacao",
     "identificarmagias", "iniciativa", "intimidacao", "intuicao", "ladinagem", "obterinformacoes", "sabedoria", "deslocamento", "tendencia", "corpoacorpo", "ataquesadistancia", "armas",
     "armadura", "idiomas", "arcanismo", "blefar", "historia", "lidarcomanimais", "natureza", "persuasao", "prestidigitacao", "classedaarmadura", "ligacoes", "fofura", "resistencia",
-    "defesa", "escudo", "aparencia", "furto", "labia", "militar", "naval"]
+    "defesa", "escudo", "aparencia", "furto", "labia", "militar", "naval", "fortitude", "guerra", "jogatina", "pilotagem", "reflexos", "nobreza", "pontaria"]
 
 const atributosStatusF = ["Disposição", "Destreza", "Acrobacia", "Perspicacia", "Agilidade", "Furtividade", "Sobrevivência", "Magia", "Línguas", "Erudição", "Medicina", "Ocultismo",
     "Política", "Força", "Sorte", "Inteligência", "Carisma", "Conhecimento", "Percepção", "Vontade", "Ciências", "Investigação", "Ofício", "Luta", "Armas de fogo", "Armas Brancas",
     "Mitos do Cthulhu", "Fadiga", "Lucidez", "Memória", "Encontrar", "Escutar", "Constiuição", "Adestrar animais", "Atletismo", "Atuação", "Cavalgar", "Cura", "Diplomacia", "Enganação",
     "Identificar Magias", "Iniciativa", "Intimidação", "Intuição", "Ladinagem", "Obter Informações", "Sabedoria", "Desclocamento", "Tendência", "Corpo a Corpo", "Ataques a Distância",
     "Armas", "Armadura", "Idiomas", "Arcanismo", "Blefar", "História", "Lidar com animais", "Natureza", "Persuasão", "Prestidigitação", "Classe da Armadura", "Ligações", "Fofura",
-    "Resistência", "Defesa", "Escudo", "Aparência", "Furto", "Lábia", "Militar", "Naval"]
+    "Resistência", "Defesa", "Escudo", "Aparência", "Furto", "Lábia", "Militar", "Naval", "Fortitude", "Guerra", "Jogatina", "Pilotagem", "Reflexos", "Nobreza", "Pontaria"]
 
 function footer() {
     return `${new Date().getFullYear()} © Kami`
-}
-
-function secret() {
-    const secret = ["Comando secreto, somente os mais inteligentes saberão o resultado", "Coisas estão rolando sem ninguém saber 👀", "Tenho a leve impressão que alguém vai entrar em apúros logo logo", "Confiem em mim, é melhor vocês não saberem o resultado mesmo",
-        "Nossa, eu to até com dó depois dos dados que caíram aqui", "Ou, esse resultado aqui vai valer pra quem? Só pra eu dar meus pêsames"]
-
-    return randomChoice(secret)
 }
 
 const inPerm = ["Pesadelos", "Ataques de pânico", "Delírios", "Tremores corporais", "Acessos de fúria", "Catatonia", "Cegueira", "Esquizofrenia", "Psicose",
@@ -118,7 +111,6 @@ module.exports = {
     atributosStatus,
     atributosStatusF,
     footer,
-    secret,
     inPerm,
     inTemp,
     returnAtb

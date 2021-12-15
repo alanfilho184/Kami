@@ -19,7 +19,7 @@ module.exports = class responder {
     execute(client, int) {
         int.deferReply({ ephemeral: true })
             .then(() => {
-                const args = client.utils.argsString(int)
+                const args = client.utils.args(int)
 
                 const respId = args.get("id")
                 const respMsg = args.get("mensagem")
