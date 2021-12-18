@@ -73,7 +73,7 @@ module.exports = class enviar {
         int.deferReply()
             .then(async () => {
                 const args = client.utils.args(int)
-                const atributos = client.resources[int.lang.replace("-", "")].atributos
+                const atributos = client.resources[int.lang].atributos
 
                 const beta = client.whitelist.get("beta")
                 const premium = client.whitelist.get("premium")
@@ -233,12 +233,12 @@ module.exports = class enviar {
 
         // int.lang = "pt-"
 
-        const atributosS1 = client.resources["pt"].atributosStatus
-        const atributosI1 = client.resources["pt"].atributosI1
-        const atributosI2 = client.resources["pt"].atributosI2
-        const atributosS1F = client.resources[int.lang.replace("-", "")].atributosStatusF
-        const atributosIF1 = client.resources[int.lang.replace("-", "")].atributosIF1
-        const atributosIF2 = client.resources[int.lang.replace("-", "")].atributosIF2
+        const atributosS1 = client.resources["pt-"].atributosStatus
+        const atributosI1 = client.resources["pt-"].atributosI1
+        const atributosI2 = client.resources["pt-"].atributosI2
+        const atributosS1F = client.resources[int.lang].atributosStatusF
+        const atributosIF1 = client.resources[int.lang].atributosIF1
+        const atributosIF2 = client.resources[int.lang].atributosIF2
 
         const info_perso = new client.Discord.MessageEmbed()
         info_perso.setColor(client.settings.color)
@@ -271,7 +271,6 @@ module.exports = class enviar {
                 atb = atributosIF1[z]
                 info_perso.addFields({ name: `${atb}:`, value: `${valor}`, inline: true })
                 info_perso.setTitle(client.tl({ local: int.lang + "ef-infoPersoTi" }))
-                //info_perso.setFooter(footer(int))
 
                 if (irt == "irtUpdt") {
                     usedInf = true

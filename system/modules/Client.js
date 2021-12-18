@@ -171,12 +171,12 @@ module.exports = class MenuClient extends Client {
 
     startup() {
         this.resources = {
-            pt: require("../resources/texts/pt"),
-            en: require("../resources/texts/en"),
+            "pt-": require("../resources/texts/pt"),
+            "en-": require("../resources/texts/en"),
             assets: require("../resources/assets/assets")
         }
 
-        this.resources.footer = this.resources.pt.footer
+        this.resources.footer = this.resources["pt-"].footer
 
         const botStatus = require("../resources/scripts/botStatus")
 

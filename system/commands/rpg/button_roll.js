@@ -8,7 +8,7 @@ module.exports = class button_roll {
             name: "buttonroll",
             fName: "Button Roll",
             fNameEn: "Button Roll",
-            desc: 'Cria uma mensagem com botões customizados para rolar dados.',
+            desc: 'Cria uma mensagem com botões para rolar dados.',
             descEn: 'Create a message with custom buttons to roll dices.',
             args: [
                 { name: "dados", desc: "Dados que devem ser criados botões, no máximo 25, separados por \"|\" e sem espaços", type: "STRING", required: true },
@@ -16,10 +16,26 @@ module.exports = class button_roll {
             options: [],
             type: 1,
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "/" + "Button Roll", desc: ``
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "buttonroll", desc: `
+                Este comando serve para criar uma mensagem que possuí até 25 botões para rolar dados com mais facilidade.
+                
+                Formato do comando:
+                **/buttonroll <dados>**
+
+                Ex:
+                **/buttonroll \`dados: 1d12 | 1d20 | 1d100 | 3d10+5 | 3d6+2d8\`**
+                `
             },
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "/" + "Button Roll", desc: ``
+                title: "<:dadosAjuda:766790214030852137> " + "/" + "buttonroll", desc: `
+                This command is for creating a message that has up to 25 buttons to roll dices more easily.
+                
+                Command format:
+                **/buttonroll <dados>**
+
+                Ex:
+                **/buttonroll \`dados: 1d12 | 1d20 | 1d100 | 3d10+5 | 3d6+2d8\`**
+                `
             },
             run: this.execute,
             roll: this.roll
@@ -28,17 +44,12 @@ module.exports = class button_roll {
     execute(client, int) {
         int.deferReply()
             .then(() => {
-                const beta = client.whitelist.get("beta")
-
-                if (!beta.has(int.user.id)) {
-                    return int.editReply({ content: "Este comando está em beta fechado, em breve será liberado a todos." })
-                }
-
                 const args = client.utils.args(int)
                 const dados = args.get("dados").split("|")
+                var stop = false
 
                 if (dados.length > 25) {
-                    return int.editReply("O máximo de dados que você pode adiconar é 25.")
+                    return int.editReply({ content: client.tl({ local: int.lang + "btR-mS" }) })
                 }
 
                 const buttons = new Array()
@@ -82,11 +93,11 @@ module.exports = class button_roll {
                         }
 
                         if (Number(qdados) > 10000 || Number(tdados) > 100000000 || Number(bdados) > 100000000) {
-                            return console.log("[ERROR] Dice size too big")
+                            return int.editReply({ content: client.tl({ local: int.lang + "btR-tDadoMA", cmd: numberDice }) })
                         }
 
                         if (Number(qdados) <= 0 || Number(tdados) <= 0 || Number(bdados) < 0) {
-                            return console.log("[ERROR] Dice size too small")
+                            return int.editReply({ content: client.tl({ local: int.lang + "btR-tDadoMB", cmd: numberDice }) })
                         }
 
                         charCount.push(((Number(qdados) * String(tdados).length) + String(bdados).length) * segments.length)
@@ -98,7 +109,7 @@ module.exports = class button_roll {
                     }
 
                     if (cc > 1800) {
-                        return console.log("[ERROR] Message too long")
+                        return int.editReply({ content: client.tl({ local: int.lang + "btR-msgMG", cmd: numberDice }) })
                     }
 
                     var title = ""
@@ -112,13 +123,13 @@ module.exports = class button_roll {
                                 }
                             }
 
-                            if (!pass) { return console.log("[ERROR] Invalid dice format") }
+                            if (!pass) { return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: numberDice }) }) }
 
                             var ops = numberDice.match(/[+*/-]/g)
 
                             for (var x in segments) {
                                 if (Number(segments[x].replace("d", "")) > 100000000) {
-                                    return console.log("[ERROR] Dice size too big")
+                                    return int.editReply({ content: client.tl({ local: int.lang + "btR-tDadoMA", cmd: numberDice }) })
                                 }
 
                                 if (segments[x] == '') { continue }
@@ -195,7 +206,7 @@ module.exports = class button_roll {
                         else {
                             if (segments[0].search("d") == -1) {
                                 if (Number(segments[0]) > 100000000) {
-                                    return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: segments[0] }))
+                                    return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: segments[0] }) })
                                 }
                                 segments[0] = "d" + segments[0]
                                 var dice = roll.roll(segments[0])
@@ -209,7 +220,7 @@ module.exports = class button_roll {
                             else {
                                 if (segments[0].split("d")[0] == "") {
                                     if (Number(segments[0].split("d")[1]) > 100000000) {
-                                        return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: segments[0] }))
+                                        return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: segments[0] }) })
                                     }
                                     var dice = roll.roll(segments[0])
 
@@ -232,28 +243,29 @@ module.exports = class button_roll {
                         }
 
                         if (`${r}` == "NaN") {
-                            throw new Error("Type error: Resultado do dado não foi um número")
+                            return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: segments[0] }) })
                         }
                     }
                     catch (err) {
-                        return console.log(err)
+                        stop = true
+                        return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: segments[0] }) })
                     }
 
                     const button = new client.Discord.MessageButton()
                         .setStyle(1)
-                        .setLabel(numberDice)
-                        .setCustomId(`buttonRoll|${numberDice}`)
+                        .setLabel(title)
+                        .setCustomId(`buttonRoll|${title}`)
 
                     buttons.push(button)
                 })
 
+                if (stop) { return }
+
                 const embed = new client.Discord.MessageEmbed()
                     .setColor(client.settings.color)
-                    .setTitle("Clique para rolar")
-                    .setDescription(`Clique em um dos dados e sua rolagem será enviada neste chat.
-            Se a rolagem secreta estivar ativada, somente você poderá visualizar o resultado.
-            `)
-                    .setFooter(`${client.user.username} ©`, client.user.avatarURL())
+                    .setTitle(client.tl({ local: int.lang + "btR-eTi" }))
+                    .setDescription(client.tl({ local: int.lang + "btR-eDesc" }))
+                    .setFooter(client.resources.footer(), client.user.avatarURL())
                     .setTimestamp()
 
                 const componentsArray = new Array()
@@ -298,13 +310,11 @@ module.exports = class button_roll {
                     }
                 }
 
-                console.log(componentsArray)
                 int.editReply({ embeds: [embed], components: componentsArray })
             })
     }
     roll(client, int, dice) {
         var numberDice = dice
-        const footer = client.resources[int.lang.replace("-", "")].footer
 
         var segments = dice.split(/[\+\-\*\/]/)
 
@@ -448,16 +458,18 @@ module.exports = class button_roll {
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
-            .setFooter(footer(), client.user.displayAvatarURL())
+            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 
         const backButton = new client.Discord.MessageButton()
             .setStyle(5)
-            .setLabel("Voltar aos botões")
+            .setLabel(client.tl({ local: int.lang + "btR-backBt", cmd: numberDice }))
             .setURL(`https://discord.com/channels/${int.message.guildId}/${int.message.channelId}/${int.message.id}`)
 
-        int.followUp({ embeds: [rollEmbed], components: [{ type: 1, components: [backButton] }] })
+        const secret = client.utils.secretRoll(client.cache.get(int.user.id))
+
+        int.followUp({ embeds: [rollEmbed], components: [{ type: 1, components: [backButton] }], ephemeral: secret })
     }
 
 }

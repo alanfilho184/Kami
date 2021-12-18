@@ -24,7 +24,7 @@ module.exports = class Utils {
         var args = ""
         for (var x in int.options._hoistedOptions) {
             args += int.options._hoistedOptions[x].name + ": " + int.options._hoistedOptions[x].value
-            if(x < int.options._hoistedOptions.length-1) {
+            if (x < int.options._hoistedOptions.length - 1) {
                 args += " | "
             }
         }
@@ -131,77 +131,6 @@ module.exports = class Utils {
         }
     }
 
-    verifyVote(msg) {
-        var lang = String()
-
-        try {
-            lang = this.client.cache.get(msg.embeds[0].footer.text.split(' ')[0]).lang
-        }
-        catch (err) {
-            lang = "pt-"
-        }
-
-        if (lang == null) { lang = "pt-" }
-
-        const user = {
-            id: msg.embeds[0].footer.text.split(' ')[0],
-            lang: lang
-        }
-
-        try {
-            this.client.users.fetch(user.id).then(u => {
-                const voteEmbed = new this.client.Discord.MessageEmbed()
-                    .setTitle(this.client.tl({ local: user.lang + "util-voteTi" }))
-                    .setDescription(this.client.tl({ local: user.lang + "util-voteDesc", valor: u.username }))
-                    .setFooter(this.client.resources[user.lang.replace("-", "")].footer(), this.client.user.displayAvatarURL())
-                    .setTimestamp()
-                    .setColor(this.client.settings.color)
-
-                this.client.log.info(`${u.tag} - ${u.id} votou no BOT`, true)
-                u.send({ embeds: [voteEmbed] })
-            })
-        }
-        catch (err) { }
-    }
-
-    verifyRoll(msg) {
-        if (msg.author.bot || msg.channel.type != "GUILD_TEXT") { return }
-        const guildInfo = this.client.cache.get(msg.guild.id)
-        try {
-            if (guildInfo.rollChannel == msg.channel.id) {
-                if (!msg.content.startsWith(this.client.prefix)) {
-                    const args = msg.content.trim().split(/ +/g);
-                    const atributosPt = this.client.resources.pt.atributos
-                    const atributosEn = this.client.resources.en.atributos
-                    if (atributosPt.includes(this.matchAtb(args[0].toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributosPt, 0.356))) {
-                        return true
-                    }
-                    if (atributosEn.includes(this.matchAtb(args[0].toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributosEn, 0.356))) {
-                        return true
-                    }
-                    try {
-                        const r = roll.roll(msg.content)
-                        if (typeof (r.result) == "number") {
-                            return true
-                        }
-                    }
-                    catch (err) {
-                        return false
-                    }
-                }
-                else {
-                    return false
-                }
-            }
-            else {
-                return false
-            }
-        }
-        catch (err) {
-            return false
-        }
-    }
-
     replaceAll(string, search, replace) {
         return string.split(search).join(replace);
     }
@@ -217,6 +146,46 @@ module.exports = class Utils {
     gerarSenha() {
         const senha = CryptoJS.AES.encrypt(Date.now().toString(), this.client.settings.fKey)
         return senha.toString().slice(33, 43)
+    }
+
+    secretRoll(userConfig) {
+        var secret
+
+        try {
+            if (userConfig.roll == "true") {
+                secret = true
+            }
+            if (userConfig.roll == "false" || userConfig.roll == null) {
+                secret = false
+            }
+        }
+        catch (err) {
+            if (err == "TypeError: Cannot read property 'roll' of undefined") {
+                secret = false
+            }
+        }
+
+        return secret
+    }
+
+    secretInsan(userConfig){
+        var secret
+
+        try {
+            if (userConfig.insan == "true") {
+                secret = true
+            }
+            if (userConfig.insan == "false" || userConfig.insan == null) {
+                secret = false
+            }
+        }
+        catch (err) {
+            if (err == "TypeError: Cannot read property 'insan' of undefined") {
+                secret = false
+            }
+        }
+
+        return secret
     }
 
 }

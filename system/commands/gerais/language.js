@@ -52,6 +52,8 @@ module.exports = class lang {
         **Mais línguas disponíveis em breve**
         **More languages available soon**`)
                     lEmbedDm.setColor(client.settings.color)
+                    lEmbedDm.setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    lEmbedDm.setTimestamp()
 
                     const uniqueID = `${Date.now()}`
 
@@ -124,6 +126,7 @@ module.exports = class lang {
                     lEmbed.setTitle(client.tl({ local: int.lang + "eL-embedTi", msg: int }))
                     lEmbed.setDescription(client.tl({ local: int.lang + "eL-embedDesc", msg: int }))
                     lEmbed.setColor(client.settings.color)
+                    lEmbed.setFooter(client.resources.footer(), client.user.displayAvatarURL())
 
                     const uniqueID = `${Date.now()}`
 

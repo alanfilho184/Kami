@@ -86,9 +86,9 @@ module.exports = class ficha {
 
                 const args = client.utils.args(int)
 
-                const atributosPt = client.resources["pt"].atributos
-                const atributos = client.resources[int.lang.replace("-", "")].returnAtb()
-                const atributosF = client.resources[int.lang.replace("-", "")].atributosF
+                const atributosPt = client.resources["pt-"].atributos
+                const atributos = client.resources[int.lang].returnAtb()
+                const atributosF = client.resources[int.lang].atributosF
 
                 atributos.push("multi")
 

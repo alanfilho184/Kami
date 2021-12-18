@@ -50,7 +50,7 @@ Ex: **${"/"}listar**`
                         }
 
                         fichasU.setColor(client.settings.color)
-                        fichasU.setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+                        fichasU.setFooter(client.resources.footer(), client.user.displayAvatarURL())
                         fichasU.setTimestamp()
                         return int.editReply({ embeds: [fichasU] })
 

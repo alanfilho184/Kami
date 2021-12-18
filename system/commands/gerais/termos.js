@@ -29,14 +29,14 @@ module.exports = class termos {
         int.deferReply()
         const termEmbed = new client.Discord.MessageEmbed()
             .setDescription(client.tl({ local: int.lang + "termos-embedDesc" }))
-            .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
             .setTimestamp()
             .setColor(client.settings.color)
 
         const bTermos = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "termos-embedFT" }))
-            .setURL(`https://kamibot.vercel.app/short/termos/${int.lang.replace("-", "")}`)
+            .setURL(`https://kamibot.vercel.app/short/termos/${int.lang}`)
 
 
         int.editReply({ embeds: [termEmbed], components: [{ type: 1, components: [bTermos] }] })

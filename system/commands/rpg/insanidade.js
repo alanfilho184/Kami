@@ -50,22 +50,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
     execute(client, int) {
         const args = client.utils.args(int)
 
-        var userConfig = client.cache.get(int.user.id)
-        var secret
-
-        try {
-            if (userConfig.insan == "true") {
-                secret = true
-            }
-            if (userConfig.insan == "false" || userConfig.insan == null) {
-                secret = false
-            }
-        }
-        catch (err) {
-            if (err == "TypeError: Cannot read property 'insan' of undefined") {
-                secret = false
-            }
-        }
+        const secret = client.utils.secretInsan(client.cache.get(int.user.id))
 
         int.deferReply({ ephemeral: secret })
             .then(() => {
@@ -74,7 +59,6 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
 
                 const inTemp = client.resources[int.lang.replace("-", "")].inTemp
                 const inPerm = client.resources[int.lang.replace("-", "")].inPerm
-                const footer = client.resources[int.lang.replace("-", "")].footer()
 
                 if (args.get("tipo") == "permanente") {
                     var qPerm = inPerm.length
@@ -83,7 +67,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
 
                     const insPerm = new client.Discord.MessageEmbed()
                         .setTitle(client.tl({ local: int.lang + "ins-embedPermTi" }))
-                        .setFooter(footer, client.user.displayAvatarURL())
+                        .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                         .setColor(client.settings.color)
                         .setTimestamp()
 
@@ -139,7 +123,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
                         .setTitle(client.tl({ local: int.lang + "ins-embedTempTi" }))
                         .setColor(client.settings.color)
                         .setDescription(`${client.tl({ local: int.lang + "ins-embedTempDesc" })} **${inTemp[result - 1]}**`)
-                        .setFooter(footer, client.user.displayAvatarURL())
+                        .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                         .setTimestamp()
 
                     return int.editReply({ embeds: [insTemp] })

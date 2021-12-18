@@ -40,11 +40,12 @@ module.exports = class ping {
 
                 const pingEmbed = new client.Discord.MessageEmbed()
                     .setColor(client.settings.color)
-                    .setFooter(`${time.now().year} © Kami`, client.user.displayAvatarURL())
+                    .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                     .addField("BOT:", "`" + Math.round(int.ping) + " ms`", true)
                     .addField("API:", "`" + Math.round(client.ws.ping) + " ms`", true)
                     .addField("DB: ", "`" + Math.round(dbPing) + " ms`", true)
                     .setTitle("Ping:")
+                    .setTimestamp()
 
                 int.editReply({ content: null, embeds: [pingEmbed] })
             })

@@ -48,7 +48,7 @@ module.exports = class config {
                             { name: client.tl({ local: int.lang + "config-guiF3" }), value: `${userConfig.fPadrao ? userConfig.fPadrao : client.tl({ local: int.lang + "config-guiSFP" })}`, inline: true }
                         )
                         .setColor(client.settings.color)
-                        .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+                        .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                         .setTimestamp()
 
                     const uniqueID = `${Date.now()}`

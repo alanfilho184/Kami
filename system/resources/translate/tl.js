@@ -276,6 +276,14 @@ module.exports = class Translate {
             ["pt-addI-eTi", "Adicionando esta imagem a uma de suas fichas"],
             ["pt-addI-eDesc", "Ok, quer adicionar esta imagem a qual ficha? Basta selecionar no menu abaixo."],
             ["pt-addI-iAdd", "Imagem adicionada com sucesso"],
+            ["pt-btR-mS", "O máximo de dados que você pode adicionar numa única mensagem é 25"],
+            ["pt-btR-tDadoMA", `O dado "${arguments[0].cmd}" é grande demais`],
+            ["pt-btR-tDadoMB", `O dado "${arguments[0].cmd}" não pode ter valores menores que 0`], 
+            ["pt-btR-msgMG", `O dado "${arguments[0].cmd}" teria um resultado grande demais`],
+            ["pt-btR-dInv", `O dado "${arguments[0].cmd}" não é válido`],
+            ["pt-btR-eTi", `Clique em um dos botões abaixo para rolar um dado`],
+            ["pt-btR-eDesc", `A rolagem será enviada neste canal\n\nEste comando é afetado pela rolagem secreta, se ativada somente você poderá ver o resultado`],
+            ["pt-btR-backBt", "Voltar aos botões"],
             // Fim da parte PT-BR
 
             // Inicio da parte EN-US
@@ -531,6 +539,14 @@ module.exports = class Translate {
             ["en-addI-eTi", "Adding this image to one of your sheets"],
             ["en-addI-eDesc", "Ok, you want to add this image to which sheet? Just select from the menu below."],
             ["en-addI-iAdd", "Image added successfully"],
+            ["en-btR-mS", "The maximum amount of dices you can add in a single message is 25"],
+            ["en-btR-tDadoMA", `The dice "${arguments[0].cmd}" is too big`],
+            ["en-btR-tDadoMB", `The dice "${arguments[0].cmd}" cannot have values less than 0`], 
+            ["en-btR-msgMG", `The dice "${arguments[0].cmd}" would have a result that is too big`],
+            ["en-btR-dInv", `The dice "${arguments[0].cmd}" is not valid`],
+            ["en-btR-eTi", `Click one of the buttons below to roll a dice`],
+            ["en-btR-eDesc", `The roll will be sent on this channel\n\nThis command is affected by secret roll, if enabled only you can see the result`],
+            ["en-btR-backBt", "Back to the buttons"],
 
             //Fim da Parte EN-US
         ])

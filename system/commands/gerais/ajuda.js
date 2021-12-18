@@ -32,20 +32,18 @@ module.exports = class ajuda {
     async execute(client, int) {
         await int.deferReply()
 
-        const footer = client.resources[int.lang.replace("-", "")].footer
-
         const mainHelp = new client.Discord.MessageEmbed()
             .setTitle(client.tl({ local: int.lang + "ajuda-tMain" }))
             .setColor(client.settings.color)
             .setDescription(client.tl({ local: int.lang + "ajuda-main" }))
-            .setFooter(footer(), client.user.displayAvatarURL())
+            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
             .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
             .setTimestamp()
 
         const bTermos = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btTermos" }))
-            .setURL(`https://kamibot.vercel.app/short/termos/${int.lang.replace("-", "")}`)
+            .setURL(`https://kamibot.vercel.app/short/termos/${int.lang}`)
 
         const bSup = new client.Discord.MessageButton()
             .setStyle(5)
@@ -59,7 +57,6 @@ module.exports = class ajuda {
         var choice = ""
 
         while (repeat) {
-
             const uniqueID = `helpMenu|${Date.now()}`
             const menu = new client.Discord.MessageSelectMenu()
                 .setCustomId(uniqueID)
@@ -71,7 +68,6 @@ module.exports = class ajuda {
             client.commands.forEach(cmd => {
                 if (cmd.ownerOnly) { return }
                 if (cmd.name == choice) { return }
-                if(cmd.name == "buttonroll") { return }
 
                 if (int.lang == "pt-") {
                     menu.addOptions({ label: cmd.fName, value: cmd.name, description: cmd.desc })
@@ -101,7 +97,7 @@ module.exports = class ajuda {
                                 .setTitle(replaceAll(cmd.helpPt.title, "$prefix$", client.prefix))
                                 .setColor(client.settings.color)
                                 .setDescription(replaceAll(cmd.helpPt.desc, "$prefix$", client.prefix))
-                                .setFooter(footer(), client.user.displayAvatarURL())
+                                .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
                             return
@@ -112,7 +108,7 @@ module.exports = class ajuda {
                                 .setTitle(replaceAll(cmd.helpEn.title, "$prefix$", client.prefix))
                                 .setColor(client.settings.color)
                                 .setDescription(replaceAll(cmd.helpEn.desc, "$prefix$", client.prefix))
-                                .setFooter(footer(), client.user.displayAvatarURL())
+                                .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
                             return
@@ -120,7 +116,7 @@ module.exports = class ajuda {
                     }
                     catch {
                         if (interaction.values[0] == "atributos") {
-                            const atributos = client.resources[int.lang.replace("-", "")].atributos
+                            const atributos = client.resources[int.lang].atributos
 
                             if (int.lang == "en-") {
                                 var atributosF = "Attributes:"
@@ -142,7 +138,7 @@ module.exports = class ajuda {
                                 .setDescription("**" + atributosF + "**" + client.tl({ local: int.lang + "ajuda-atributos" }))
                                 .setColor(client.settings.color)
                                 .setTitle("<:fichaAjuda:766790214550814770> " + client.tl({ local: int.lang + "ajuda-tAtributos" }))
-                                .setFooter(footer(), client.user.displayAvatarURL())
+                                .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
 

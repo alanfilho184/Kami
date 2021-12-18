@@ -40,10 +40,9 @@ module.exports = class enviar_atb {
             .then(async () => {
                 const args = client.utils.args(int)
 
-                const atributosPt = client.resources["pt"].atributos
-                const atributos = client.resources[int.lang.replace("-", "")].atributos
-                const atributosF = client.resources[int.lang.replace("-", "")].atributosF
-                const footer = client.resources[int.lang.replace("-", "")].footer()
+                const atributosPt = client.resources["pt-"].atributos
+                const atributos = client.resources[int.lang].atributos
+                const atributosF = client.resources[int.lang].atributosF
 
                 if (args.size == 0) { return int.editReply(client.tl({ local: int.lang + "cef-nArg" })) }
 
@@ -91,7 +90,7 @@ module.exports = class enviar_atb {
                         const atributoEmbed = new client.Discord.MessageEmbed()
                             .setColor(client.settings.color)
                             .setAuthor(client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
-                            .setFooter(footer, client.user.displayAvatarURL())
+                            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
                             .setTimestamp()
                             .setTitle(atb + ":")
 

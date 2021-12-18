@@ -67,22 +67,7 @@ module.exports = class roll {
         }
     }
     execute(client, int) {
-        var userConfig = client.cache.get(int.user.id)
-        var secret
-
-        try {
-            if (userConfig.roll == "true") {
-                secret = true
-            }
-            if (userConfig.roll == "false" || userConfig.roll == null) {
-                secret = false
-            }
-        }
-        catch (err) {
-            if (err == "TypeError: Cannot read property 'roll' of undefined") {
-                secret = false
-            }
-        }
+        const secret = client.utils.secretRoll(client.cache.get(int.user.id))
 
         int.deferReply({ ephemeral: secret })
             .then(() => {
@@ -105,7 +90,6 @@ module.exports = class roll {
         roll = new roll()
         const args = client.utils.args(int)
         var numberDice = args.get("dado_ou_atributo")
-        const footer = client.resources[int.lang.replace("-", "")].footer
 
         var segments = args.get("dado_ou_atributo").split(/[\+\-\*\/]/)
 
@@ -332,7 +316,7 @@ module.exports = class roll {
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
-            .setFooter(footer(), client.user.displayAvatarURL())
+            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 
@@ -340,16 +324,15 @@ module.exports = class roll {
     }
     async rollAtb(client, int) {
         const args = client.utils.args(int)
-        const atributosPt = client.resources["pt"].atributos
+        const atributosPt = client.resources["pt-"].atributos
         const atributos = client.resources[int.lang.replace("-", "")].atributos
         const atributosF = client.resources[int.lang.replace("-", "")].atributosF
-        const atributosS1 = client.resources["pt"].atributosStatus
-        const atributosI1 = client.resources["pt"].atributosI1
-        const atributosI2 = client.resources["pt"].atributosI2
+        const atributosS1 = client.resources["pt-"].atributosStatus
+        const atributosI1 = client.resources["pt-"].atributosI1
+        const atributosI2 = client.resources["pt-"].atributosI2
         const atributosS1F = client.resources[int.lang.replace("-", "")].atributosStatusF
         const atributosIF1 = client.resources[int.lang.replace("-", "")].atributosIF1
         const atributosIF2 = client.resources[int.lang.replace("-", "")].atributosIF2
-        const footer = client.resources[int.lang.replace("-", "")].footer
 
         var roll = require("roll")
         roll = new roll()
@@ -467,7 +450,7 @@ module.exports = class roll {
                         embedRoll.setAuthor(client.tl({ local: int.lang + "ddb-errEx" }))
                         embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi2" }))
                     }
-                    embedRoll.setFooter(footer(), client.user.displayAvatarURL())
+                    embedRoll.setFooter(client.resources.footer(), client.user.displayAvatarURL())
                     embedRoll.setTimestamp()
                     embedRoll.setColor(client.settings.color)
                     embedRoll.setThumbnail(client.resources.assets.d1_100[dice.result])

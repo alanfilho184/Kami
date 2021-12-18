@@ -94,6 +94,14 @@ module.exports = class adicionar_imagem {
                                     return int.editReply({ content: client.tl({ local: int.lang + "addI-iAdd" }), embeds: [], components: [] })
                                 })
                         })
+                        .catch(err => {
+                            if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                                int.editReply({ components: [] })
+                            }
+                            else{
+                                client.logs.error(err, true)
+                            }
+                        })
                 }
             })
     }

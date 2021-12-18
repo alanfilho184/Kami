@@ -46,8 +46,6 @@ module.exports = class sucesso {
 
                 if (valor.length > 20) return int.editReply(client.tl({ local: int.lang + "cs-mA" }))
 
-                const footer = client.resources[int.lang.replace("-", "")].footer(client, int)
-
                 var valorO = valor
                 valor = Number(valor)
 
@@ -79,7 +77,7 @@ module.exports = class sucesso {
 
         ${client.tl({ local: int.lang + "cs-embedDescFal" })} **${falha}**
     `)
-                    sucessos.setFooter(footer, client.user.displayAvatarURL())
+                    sucessos.setFooter(client.resources.footer(), client.user.displayAvatarURL())
                     sucessos.setTimestamp()
                     int.editReply({ embeds: [sucessos] })
                 }
