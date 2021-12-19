@@ -75,7 +75,7 @@ module.exports = class roll {
 
                 if (args.size < 1) { return int.editReply(client.tl({ local: int.lang + "dados-nArgs" })) }
 
-                const atributos = client.resources[int.lang.replace("-", "")].atributos
+                const atributos = client.resources[int.lang].atributos
 
                 if (atributos.includes(client.utils.matchAtb(args.get("dado_ou_atributo").toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos))) {
                     return this.rollAtb(client, int)
@@ -325,14 +325,14 @@ module.exports = class roll {
     async rollAtb(client, int) {
         const args = client.utils.args(int)
         const atributosPt = client.resources["pt-"].atributos
-        const atributos = client.resources[int.lang.replace("-", "")].atributos
-        const atributosF = client.resources[int.lang.replace("-", "")].atributosF
+        const atributos = client.resources[int.lang].atributos
+        const atributosF = client.resources[int.lang].atributosF
         const atributosS1 = client.resources["pt-"].atributosStatus
         const atributosI1 = client.resources["pt-"].atributosI1
         const atributosI2 = client.resources["pt-"].atributosI2
-        const atributosS1F = client.resources[int.lang.replace("-", "")].atributosStatusF
-        const atributosIF1 = client.resources[int.lang.replace("-", "")].atributosIF1
-        const atributosIF2 = client.resources[int.lang.replace("-", "")].atributosIF2
+        const atributosS1F = client.resources[int.lang].atributosStatusF
+        const atributosIF1 = client.resources[int.lang].atributosIF1
+        const atributosIF2 = client.resources[int.lang].atributosIF2
 
         var roll = require("roll")
         roll = new roll()
