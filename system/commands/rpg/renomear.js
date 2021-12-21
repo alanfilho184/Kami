@@ -34,7 +34,8 @@ module.exports = class renomear {
         }
     }
     execute(client, int) {
-        int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+        int.deferReply({ephemeral: secret})
             .then(() => {
                 const args = client.utils.args(int)
 

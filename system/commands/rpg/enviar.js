@@ -70,7 +70,8 @@ module.exports = class enviar {
         }
     }
     execute(client, int) {
-        int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "enviar")
+        int.deferReply({ephemeral: secret})
             .then(async () => {
                 const args = client.utils.args(int)
                 const atributos = client.resources[int.lang].atributos

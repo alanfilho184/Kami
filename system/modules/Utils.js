@@ -148,39 +148,19 @@ module.exports = class Utils {
         return senha.toString().slice(33, 43)
     }
 
-    secretRoll(userConfig) {
+    secret(userConfig, local) {
         var secret
 
         try {
-            if (userConfig.roll == "true") {
+            if (userConfig[local] == "true") {
                 secret = true
             }
-            if (userConfig.roll == "false" || userConfig.roll == null) {
+            if (userConfig[local] == "false" || userConfig[local] == null) {
                 secret = false
             }
         }
         catch (err) {
-            if (err == "TypeError: Cannot read property 'roll' of undefined") {
-                secret = false
-            }
-        }
-
-        return secret
-    }
-
-    secretInsan(userConfig){
-        var secret
-
-        try {
-            if (userConfig.insan == "true") {
-                secret = true
-            }
-            if (userConfig.insan == "false" || userConfig.insan == null) {
-                secret = false
-            }
-        }
-        catch (err) {
-            if (err == "TypeError: Cannot read property 'insan' of undefined") {
+            if (err == `TypeError: Cannot read property '${local}' of undefined`) {
                 secret = false
             }
         }

@@ -81,7 +81,9 @@ module.exports = class ficha {
     }
 
     execute(client, int) {
-        int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+
+        int.deferReply({ ephemeral: secret })
             .then(async () => {
 
                 const args = client.utils.args(int)
@@ -91,9 +93,6 @@ module.exports = class ficha {
                 const atributosF = client.resources[int.lang].atributosF
 
                 atributos.push("multi")
-
-                const beta = client.whitelist.get("beta")
-                const premium = client.whitelist.get("premium")
 
                 if (args.size == 0) { return int.editReply(client.tl({ local: int.lang + "cef-nArg" })) }
 

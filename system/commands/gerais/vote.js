@@ -26,7 +26,8 @@ module.exports = class vote {
     }
 
     execute(client, int) {
-        int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
+        int.deferReply({ ephemeral: secret })
             .then(() => {
                 const voteEmbed = new client.Discord.MessageEmbed()
                     .setDescription(client.tl({ local: int.lang + "vote-embedDesc" }))

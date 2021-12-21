@@ -130,12 +130,15 @@ module.exports = class MenuClient extends Client {
                 process.exit(1)
             }
             logs.log.error(err, true)
+            this.emit("err", err, true)
         })
+
         process.on("unhandledRejection", (err) => {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
             logs.log.error(err, true)
+            this.emit("err", err, true)
         })
 
         process.on("SIGTERM", (signal) => {

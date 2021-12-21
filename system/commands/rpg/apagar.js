@@ -54,11 +54,11 @@ Ex: **${"/"}apagar RPG_Kami irt**
         }
     }
     execute(client, int) {
-        int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+        int.deferReply({ephemeral: secret})
             .then(() => {
                 const args = client.utils.args(int)
                 const beta = client.whitelist.get("beta")
-                const premium = client.whitelist.get("premium")
 
                 if (args.size == 0) { return int.editReply(client.tl({ local: int.lang + "af-sNomeRpg" })) }
 

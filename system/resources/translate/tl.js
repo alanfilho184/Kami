@@ -243,18 +243,35 @@ module.exports = class Translate {
             ["pt-int-sDM", "Atualmente, slash commands na DM não são suportados, você ainda pode utilizar os comandos com prefixo sem problemas."],
             ["pt-int-nAddC", "Eu não possúo as permissões necessárias para executar slash commands neste servidor, para resolver este problema, basta readicionar o Kami no servidor utilizando este link:"],
             ["pt-config-guiTi", "Configurações do usuário:"],
-            ["pt-config-guiF1", "Rolagem secreta:"],
-            ["pt-config-guiF2", "Insanidade secreta:"],
-            ["pt-config-guiF3", "Ficha padrão:"],
+            ["pt-config-guiSepS", "Comandos secretos:"],
+            ["pt-config-guiSepO", "Outras funções:"],
+            ["pt-config-guiF1", "Rolagem:"],
+            ["pt-config-guiF2", "Insanidade:"],
+            ["pt-config-guiF3", "Comandos gerais:"],
+            ["pt-config-guiF4", "Criar/Editar ficha:"],
+            ["pt-config-guiF5", "Comandos de enviar ficha:"],
+            ["pt-config-guiF6", "Ficha padrão:"],
             ["pt-config-guiAct", "✅ Ativado"],
             ["pt-config-guiDes", "❌ Desativado"],
             ["pt-config-guiSFP", "Sem ficha padrão"],
             ["pt-config-menuPH", "Selecione uma ficha"],
             ["pt-config-menuEFP", "Excluir ficha padrão"],
+
             ["pt-config-btDesRS", "Desativar rolagem secreta"],
             ["pt-config-btActRS", "Ativar rolagem secreta"],
+
             ["pt-config-btDesIS", "Desativar insanidade secreta"],
             ["pt-config-btActIS", "Ativar insanidade secreta"],
+
+            ["pt-config-btDesG", "Desativar comandos gerais secretos"],
+            ["pt-config-btActG", "Ativar comandos gerais secretos"],
+
+            ["pt-config-btDesF", "Desativar criar/editar ficha secreto"],
+            ["pt-config-btActF", "Ativar criar/editar ficha secreto"],
+
+            ["pt-config-btDesE", "Desativar enviar ficha secreto"],
+            ["pt-config-btActE", "Ativar enviar ficha secreto"],
+
             ["pt-config-btF", "Finalizar"],
             ["pt-verF-dm/", `<@${arguments[0].msg.user.id}>, este comando só pode ser executado via DM ou \`\/\`!`],
             ["pt-verF-nFE", `Não achei nenhuma ficha deste usuário com o nome "${arguments[0].nomeRpg}"`],
@@ -284,6 +301,7 @@ module.exports = class Translate {
             ["pt-btR-eTi", `Clique em um dos botões abaixo para rolar um dado`],
             ["pt-btR-eDesc", `A rolagem será enviada neste canal\n\nEste comando é afetado pela rolagem secreta, se ativada somente você poderá ver o resultado`],
             ["pt-btR-backBt", "Voltar aos botões"],
+            ["pt-intCreate-onErr", "Algo deu errado quando você tentou utilizar esse comando, um log de erro foi salvo e em breve o erro será corrigido"],
             // Fim da parte PT-BR
 
             // Inicio da parte EN-US
@@ -547,6 +565,7 @@ module.exports = class Translate {
             ["en-btR-eTi", `Click one of the buttons below to roll a dice`],
             ["en-btR-eDesc", `The roll will be sent on this channel\n\nThis command is affected by secret roll, if enabled only you can see the result`],
             ["en-btR-backBt", "Back to the buttons"],
+            ["en-intCreate-onErr", "Something went wrong when you tried to use this command, an error log was saved and soon the error will be fixed"],
 
             //Fim da Parte EN-US
         ])

@@ -31,7 +31,9 @@ module.exports = class botinfo {
     }
 
     async execute(client, int) {
-        await int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
+        await int.deferReply({ephemeral: secret})
+        a
         var count = 0
 
         client.guilds.cache.map(guild => { count += guild.memberCount })

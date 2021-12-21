@@ -27,13 +27,16 @@ module.exports = class Cache {
                 result = Array.from(result[0].entries())
 
                 for (var x of result) {
-                    configCache.set(x[1].userid || x[1].serverid, { lang: replaceAll(x[1].lang, " ", ""), roll: x[1].roll, insan: x[1].insan, fPadrao: x[1].fpadrao, rollChannel: x[1].rollchannel })
+                    configCache.set(x[1].userid || x[1].serverid, {
+                        lang: replaceAll(x[1].lang, " ", ""), fPadrao: x[1].fpadrao, roll: x[1].roll, insan: x[1].insan,
+                        geral: x[1].geral, ficha: x[1].ficha, enviar: x[1].enviar
+                    })
                 }
 
                 configCache = Object.fromEntries(configCache)
                 configCache = JSON.stringify(configCache)
 
-                fs.writeFileSync(path.join(__dirname, "json", 'config.json'), configCache, {flag: "w"}, function (err) {
+                fs.writeFileSync(path.join(__dirname, "json", 'config.json'), configCache, { flag: "w" }, function (err) {
                     if (err) {
                         this.client.log.error(err, true)
                     }
@@ -60,7 +63,7 @@ module.exports = class Cache {
                 configCache = JSON.stringify(configCache)
 
 
-                fs.writeFileSync(path.join(__dirname, "json", 'blacklist.json'), configCache, {flag: "w"}, function (err) {
+                fs.writeFileSync(path.join(__dirname, "json", 'blacklist.json'), configCache, { flag: "w" }, function (err) {
                     if (err) {
                         this.client.log.error(err, true)
                     }
@@ -132,10 +135,12 @@ module.exports = class Cache {
         if (novo && uInfo == undefined) {
             uInfo = new Object({
                 lang: null,
+                fPadrao: null,
                 roll: null,
                 insan: null,
-                fPadrao: null,
-                rollChannel: null,
+                geral: null,
+                ficha: null,
+                enviar: null
             })
         }
 
@@ -156,28 +161,24 @@ module.exports = class Cache {
             info = `'${info}'`
         }
 
-        if (novo && server && local != "rollChannel") {
+        if (novo && server) {
             await this.client.db.query(`insert into config (serverid, lang) values('${id}', ${info})`)
                 .catch(err => this.client.log.error(err, true))
-        } else if (novo && server && local == "rollChannel") {
-            await this.client.db.query(`insert into config (serverid, rollchannel) values('${id}', ${info})`)
-                .catch(err => this.client.log.error(err, true))
-        } else if (novo && !server) {
+        } 
+        else if (novo && !server) {
             await this.client.db.query(`insert into config (userid, ${local}) values('${id}', ${info})`)
                 .catch(err => this.client.log.error(err, true))
-        } else if (!novo && server && local != "rollChannel") {
+        } 
+        else if (!novo && server) {
             await this.client.db.query(`update config set lang = ${info} where serverid = '${id}'`)
                 .catch(err => this.client.log.error(err, true))
-        } else if (!novo && server && local == "rollChannel") {
-            await this.client.db.query(`update config set rollchannel = ${info} where serverid = '${id}'`)
-                .catch(err => this.client.log.error(err, true))
-        } else {
+        } 
+        else {
             await this.client.db.query(`update config set ${local} = ${info} where userid = '${id}'`)
                 .catch(err => this.client.log.error(err, true))
         }
 
         return "atualizado"
-
     }
 
     async updateBl(id, info) {
@@ -220,7 +221,6 @@ module.exports = class Cache {
         commandCount.total++
         commandCount.today++
         await this.client.db.query(`update info set commandcount = ${commandCount.total}`)
-
     }
 
     async updateFicha(id, nomeRpg, atb, valor, custom_sql) {

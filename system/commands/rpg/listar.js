@@ -28,7 +28,8 @@ Ex: **${"/"}listar**`
         }
     }
     execute(client, int) {
-        int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+        int.deferReply({ephemeral: secret})
             .then(() => {
                 client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
                     .then(result => {

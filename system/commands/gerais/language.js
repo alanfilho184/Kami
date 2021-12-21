@@ -37,7 +37,8 @@ module.exports = class lang {
     }
 
     execute(client, int) {
-        int.deferReply({ ephemeral: false })
+        const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
+        int.deferReply({ ephemeral: secret})
             .then(async () => {
                 if (!int.inGuild()) {
                     const lEmbedDm = new client.Discord.MessageEmbed()

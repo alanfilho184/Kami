@@ -67,7 +67,7 @@ module.exports = class roll {
         }
     }
     execute(client, int) {
-        const secret = client.utils.secretRoll(client.cache.get(int.user.id))
+        const secret = client.utils.secretRoll(client.cache.get(int.user.id), "roll")
 
         int.deferReply({ ephemeral: secret })
             .then(() => {

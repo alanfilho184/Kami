@@ -28,7 +28,8 @@ module.exports = class ping {
     }
 
     execute(client, int) {
-        int.deferReply()
+        const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
+        int.deferReply({ephemeral: secret})
             .then(async () => {
 
                 var dbPing = time.now().ts
