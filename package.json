@@ -1,6 +1,6 @@
 {
   "name": "kami",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Um BOT para Discord com foco em ajudar em mesas de RPG online, tendo suas principais funções criar fichas e rolar dados.",
   "main": "index.js",
   "scripts": {
