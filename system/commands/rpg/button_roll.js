@@ -467,7 +467,7 @@ module.exports = class button_roll {
             .setLabel(client.tl({ local: int.lang + "btR-backBt", cmd: numberDice }))
             .setURL(`https://discord.com/channels/${int.message.guildId}/${int.message.channelId}/${int.message.id}`)
 
-        const secret = client.utils.secretRoll(client.cache.get(int.user.id))
+        const secret = client.utils.secret(client.cache.get(int.user.id), "roll")
 
         int.followUp({ embeds: [rollEmbed], components: [{ type: 1, components: [backButton] }], ephemeral: secret })
     }

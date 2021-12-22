@@ -14,6 +14,20 @@ module.exports = {
             return int.reply({ content: client.tl({ local: int.lang + "onMsg-cmdBarrado" }), ephemeral: true })
         }
         else {
+            client.on("err", (err, logged) => {
+                if (int.deferred) {
+                    if (int.replied) {
+                        return
+                    }
+                    else {
+                        return int.editReply({content: client.tl({ local: int.lang + "intCreate-onErr"}), ephemeral: true})
+                    }
+                }
+                else {
+                    return int.reply({content: client.tl({ local: int.lang + "intCreate-onErr"}), ephemeral: true})
+                }
+            })
+            
             cmd.run(client, int)
             client.emit("cmd", int, cmd.name)
             const args = client.utils.argsString(int)
