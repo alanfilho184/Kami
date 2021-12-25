@@ -42,24 +42,17 @@ module.exports = class sugestao {
                 const args = client.utils.args(int)
                 const mensagem = args.get("mensagem")
 
-                if (mensagem == undefined) {
-                    int.editReply(client.tl({ local: int.lang + "sugestao-nArg" }))
-                }
-                else {
-                    const embed = new client.Discord.MessageEmbed()
+                const embed = new client.Discord.MessageEmbed()
+                    .setAuthor(`${int.user.tag} | ${int.user.id}`, int.user.displayAvatarURL())
+                    .setTitle("Mensagem recebida")
+                    .setDescription(mensagem)
+                    .setColor(client.settings.color)
+                    .setFooter("Mensagem recebida em: " + time.now({ zone: "America/Fortaleza" }).toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)")
 
-                    embed
-                        .setAuthor(`${int.user.tag} | ${int.user.id}`, int.user.displayAvatarURL())
-                        .setTitle("Mensagem recebida")
-                        .setDescription(mensagem)
-                        .setColor(client.settings.color)
-                        .setFooter("Mensagem recebida em: " + time.now({ zone: "America/Fortaleza" }).toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)")
+                client.log.embed(embed, true, "sugestao")
+                    .then((msg) => msg.pin())
 
-                    client.log.embed(embed, true, "sugestao")
-                        .then((msg) => msg.pin())
-
-                    int.editReply({ content: client.tl({ local: int.lang + "sugestao-mEnv" }) })
-                }
+                int.editReply({ content: client.tl({ local: int.lang + "sugestao-mEnv" }) })
 
                 return
             })

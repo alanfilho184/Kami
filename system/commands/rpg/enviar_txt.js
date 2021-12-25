@@ -51,7 +51,7 @@ module.exports = class enviar_txt {
     }
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "enviar")
-        int.deferReply({ephemeral: secret})
+        int.deferReply({ ephemeral: secret })
             .then(async () => {
                 const args = client.utils.args(int)
 

@@ -73,8 +73,6 @@ module.exports = class roll {
             .then(() => {
                 const args = client.utils.args(int)
 
-                if (args.size < 1) { return int.editReply(client.tl({ local: int.lang + "dados-nArgs" })) }
-
                 const atributos = client.resources[int.lang].atributos
 
                 if (atributos.includes(client.utils.matchAtb(args.get("dado_ou_atributo").toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos))) {

@@ -60,8 +60,6 @@ Ex: **${"/"}apagar RPG_Kami irt**
                 const args = client.utils.args(int)
                 const beta = client.whitelist.get("beta")
 
-                if (args.size == 0) { return int.editReply(client.tl({ local: int.lang + "af-sNomeRpg" })) }
-
                 var nomeRpg = args.get("nome_da_ficha")
                 var irt = args.get("opções")
                 if (!irt) { irt = "false" }

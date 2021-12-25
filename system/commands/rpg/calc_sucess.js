@@ -43,7 +43,6 @@ module.exports = class sucesso {
                 const args = client.utils.args(int)
 
                 var valor = args.get("valor")
-                if (!valor) return int.editReply(client.tl({ local: int.lang + "cs-nArg" }))
 
                 if (valor.length > 20) return int.editReply(client.tl({ local: int.lang + "cs-mA" }))
 

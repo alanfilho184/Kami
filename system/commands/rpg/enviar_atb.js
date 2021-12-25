@@ -45,8 +45,6 @@ module.exports = class enviar_atb {
                 const atributos = client.resources[int.lang].atributos
                 const atributosF = client.resources[int.lang].atributosF
 
-                if (args.size == 0) { return int.editReply(client.tl({ local: int.lang + "cef-nArg" })) }
-
                 var nomeRpg = args.get("nome_da_ficha")
                 var atb = args.get("atributo")
 

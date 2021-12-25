@@ -55,8 +55,6 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
         int.deferReply({ ephemeral: secret })
             .then(() => {
 
-                if (args.size == 0) return int.editReply(client.tl({ local: int.lang + "ins-nArg" }))
-
                 const inTemp = client.resources[int.lang.replace("-", "")].inTemp
                 const inPerm = client.resources[int.lang.replace("-", "")].inPerm
 

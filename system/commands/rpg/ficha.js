@@ -94,8 +94,6 @@ module.exports = class ficha {
 
                 atributos.push("multi")
 
-                if (args.size == 0) { return int.editReply(client.tl({ local: int.lang + "cef-nArg" })) }
-
                 var nomeRpg = args.get("nome_da_ficha")
                 var atb = args.get("atributo")
                 var valor = args.get("valor")
@@ -116,7 +114,7 @@ module.exports = class ficha {
                         fichasUser.push(result[0][x].nomerpg)
                     }
 
-                    if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "cef-mFichas1", fichasUser: fichasUser })) }
+                    if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "cef-mFichas", fichasUser: fichasUser })) }
                     else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
                     else { nomeRpg == "1" }
                 }
