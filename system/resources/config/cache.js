@@ -228,7 +228,7 @@ module.exports = class Cache {
         else if (type == "button") {
             commandCount.buttonsTotal++
             commandCount.buttonsToday++
-            await this.client.db.query(`update info set buttoncount = ${commandCount.buttonTotal}`)
+            await this.client.db.query(`update info set buttoncount = ${commandCount.buttonsTotal}`)
         }
     }
 
