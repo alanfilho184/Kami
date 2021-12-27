@@ -11,6 +11,8 @@ var info = {
     fichasCount: 1195,
     commandsToday: 0,
     commandsTotal: 29971,
+    buttonsTotal: 0,
+    buttonsToday: 0,
     inviteLink: "https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=388160&scope=bot%20applications.commands",
     oldInfo: true
 }
@@ -75,6 +77,8 @@ module.exports = class botStatus {
             fichasCount: qFichas,
             commandsToday: commands.today,
             commandsTotal: commands.total,
+            buttonsTotal: commands.buttonTotal,
+            buttonsToday: commands.buttonToday,
             ping: client.ws.ping,
             dbSize: dbSize,
             dbPing: DBInfo.ping,
@@ -95,6 +99,7 @@ module.exports = class botStatus {
             .addRow(`Servidores`, `${client.guilds.cache.size}`)
             .addRow(`Usuários`, `${count}`)
             .addRow(`Comandos`, `Após iniciar: ${commands.today} - Total: ${commands.total}`)
+            .addRow(`Botões`, `Após iniciar: ${commands.buttonsToday} - Total: ${commands.buttonsTotal}`)
             .addRow("", "")
             .addRow("Versão do BOT", "v" + require("../../../package.json").version)
             .addRow("Node.js", process.version)

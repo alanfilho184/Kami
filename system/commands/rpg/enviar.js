@@ -71,7 +71,7 @@ module.exports = class enviar {
     }
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "enviar")
-        int.deferReply({ephemeral: secret})
+        int.deferReply({ ephemeral: secret })
             .then(async () => {
                 const args = client.utils.args(int)
                 const atributos = client.resources[int.lang].atributos
@@ -166,6 +166,10 @@ module.exports = class enviar {
                                     return
                                 }
                                 else if (true/*beta.has(`${int.user.id}`)*/) {
+                                    if (secret) {
+                                        return int.editReply(client.tl({ local: int.lang + "efd-ephIRT" }))
+                                    }
+                                    
                                     var infoUIRT = await client.db.query(`select nomerpg from irt where id = '${int.user.id}'`)
                                     infoUIRT = infoUIRT[0]
 

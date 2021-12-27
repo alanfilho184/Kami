@@ -1,17 +1,16 @@
 const time = require("luxon").DateTime
-var firstS = true
-var webhook = new Object()
 
 module.exports = {
     name: "cmd",
     type: "bot",
     execute: async (client, int, cmd) => {
-        client.cache.updateCnt()
+        client.cache.updateCnt("cmd")
 
         var Lang = int.lang
 
         args = client.utils.argsString(int) || "Nenhum argumento dado"
         
+        let idioma
         try {
             idioma = Lang.replace("-", "").toUpperCase()
         }
@@ -34,11 +33,6 @@ module.exports = {
             cmdEmbed.addField("Local: ", "DM", true)
         }
 
-        if (firstS == true) {
-            webhook = new client.Discord.WebhookClient({ id: client.settings.webhookID, token: client.settings.webhookToken });
-            firstS = false
-        }
-
-        webhook.send({ embeds: [cmdEmbed] })
+        client.log.webhook.send({ embeds: [cmdEmbed] })
     }
 }

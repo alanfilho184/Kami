@@ -125,6 +125,9 @@ module.exports = class MenuClient extends Client {
     setLog() {
         this.log = logs.log
 
+        const logWebhook = new this.Discord.WebhookClient({ id: this.settings.webhookID, token: this.settings.webhookToken });
+        this.log.webhook = logWebhook
+
         process.on("uncaughtException", (err) => {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)

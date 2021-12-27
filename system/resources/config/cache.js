@@ -78,6 +78,8 @@ module.exports = class Cache {
             .then(result => {
                 commandCount.total = result[0][0].commandcount
                 commandCount.today = 0
+                commandCount.buttonsTotal = result[0][0].buttoncount
+                commandCount.buttonsToday = 0
 
                 this.client.log.start("Contagem de comandos")
             })
@@ -164,15 +166,15 @@ module.exports = class Cache {
         if (novo && server) {
             await this.client.db.query(`insert into config (serverid, lang) values('${id}', ${info})`)
                 .catch(err => this.client.log.error(err, true))
-        } 
+        }
         else if (novo && !server) {
             await this.client.db.query(`insert into config (userid, ${local}) values('${id}', ${info})`)
                 .catch(err => this.client.log.error(err, true))
-        } 
+        }
         else if (!novo && server) {
             await this.client.db.query(`update config set lang = ${info} where serverid = '${id}'`)
                 .catch(err => this.client.log.error(err, true))
-        } 
+        }
         else {
             await this.client.db.query(`update config set ${local} = ${info} where userid = '${id}'`)
                 .catch(err => this.client.log.error(err, true))
@@ -217,10 +219,17 @@ module.exports = class Cache {
         return "Blacklist atualizada para o ID: " + id + "\nInfo adicionada:\n" + JSON.stringify(info)
     }
 
-    async updateCnt() {
-        commandCount.total++
-        commandCount.today++
-        await this.client.db.query(`update info set commandcount = ${commandCount.total}`)
+    async updateCnt(type) {
+        if (type == "cmd") {
+            commandCount.total++
+            commandCount.today++
+            await this.client.db.query(`update info set commandcount = ${commandCount.total}`)
+        }
+        else if (type == "button") {
+            commandCount.buttonsTotal++
+            commandCount.buttonsToday++
+            await this.client.db.query(`update info set commandcount = ${commandCount.buttonTotal}`)
+        }
     }
 
     async updateFicha(id, nomeRpg, atb, valor, custom_sql) {

@@ -72,6 +72,7 @@ module.exports = class botinfo {
             .addRow(`${client.tl({ local: int.lang + "botI-fStatusT4" })}`, `${client.guilds.cache.size}`)
             .addRow(`${client.tl({ local: int.lang + "botI-fStatusT5" })}`, `${count}`)
             .addRow(`${client.tl({ local: int.lang + "botI-fCmd" })}`, `${client.tl({ local: int.lang + "botI-cmdAI" })} ${commands.today} - Total: ${commands.total}`)
+            .addRow(`${client.tl({ local: int.lang + "botI-fBt" })}`, `${client.tl({ local: int.lang + "botI-cmdAI" })} ${commands.buttonsToday} - Total: ${commands.buttonsTotal}`)
             .addRow(`${client.tl({ local: int.lang + "botI-uptime" })}`, botuptime)
 
 
