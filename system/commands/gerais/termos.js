@@ -28,18 +28,20 @@ module.exports = class termos {
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
         int.deferReply({ ephemeral: secret })
-        const termEmbed = new client.Discord.MessageEmbed()
-            .setDescription(client.tl({ local: int.lang + "termos-embedDesc" }))
-            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
-            .setTimestamp()
-            .setColor(client.settings.color)
+            .then(() => {
+                const termEmbed = new client.Discord.MessageEmbed()
+                    .setDescription(client.tl({ local: int.lang + "termos-embedDesc" }))
+                    .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    .setTimestamp()
+                    .setColor(client.settings.color)
 
-        const bTermos = new client.Discord.MessageButton()
-            .setStyle(5)
-            .setLabel(client.tl({ local: int.lang + "termos-embedFT" }))
-            .setURL(`https://kamibot.vercel.app/short/termos/${int.lang}`)
+                const bTermos = new client.Discord.MessageButton()
+                    .setStyle(5)
+                    .setLabel(client.tl({ local: int.lang + "termos-embedFT" }))
+                    .setURL(`https://kamibot.vercel.app/short/termos/${int.lang.replace("-", "")}`)
 
 
-        int.editReply({ embeds: [termEmbed], components: [{ type: 1, components: [bTermos] }] })
+                int.editReply({ embeds: [termEmbed], components: [{ type: 1, components: [bTermos] }] })
+            })
     }
 }
