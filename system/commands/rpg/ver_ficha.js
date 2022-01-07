@@ -38,7 +38,6 @@ module.exports = class ver_ficha {
         }
     }
     execute(client, int) {
-
         int.deferReply({ ephemeral: true })
             .then(() => {
                 const args = client.utils.args(int)
