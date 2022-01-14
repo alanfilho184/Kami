@@ -174,7 +174,7 @@ module.exports = class ficha {
 
                     for (var x in atbValor) {
                         atbs.push(atbValor[x].split(":")[0])
-                        vals.push(atbValor[x].split(":")[1].replace("'", "ʽ"))
+                        try { vals.push(atbValor[x].split(":")[1].replace("'", "ʽ")) } catch (err) { client.log.warn(err) }
                     }
 
                     for (var y in atbs + 1) {
