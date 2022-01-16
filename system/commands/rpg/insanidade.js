@@ -55,8 +55,8 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
         int.deferReply({ ephemeral: secret })
             .then(() => {
 
-                const inTemp = client.resources[int.lang.replace("-", "")].inTemp
-                const inPerm = client.resources[int.lang.replace("-", "")].inPerm
+                const inTemp = client.resources[int.lang].inTemp
+                const inPerm = client.resources[int.lang].inPerm
 
                 if (args.get("tipo") == "permanente") {
                     var qPerm = inPerm.length
