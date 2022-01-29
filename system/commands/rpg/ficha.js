@@ -447,7 +447,7 @@ module.exports = class ficha {
                     .catch(err => client.log.error(err, true))
             })
     }
-    
+
     autocomplete(client, int) {
         const options = int.options._hoistedOptions
         const atributos = client.resources[int.lang].atributos
@@ -468,14 +468,18 @@ module.exports = class ficha {
                 }
             }
             else if (opt.name == "nome_da_ficha" && opt.focused) {
-                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
-                const data = new Array()
+                const fichasUser = client.cache.getFichasUser(int.user.id)
 
-                find.forEach(f => {
-                    data.push({ name: f, value: f })
-                })
+                if (fichasUser.length >= 1) {
+                    const find = client.utils.matchNomeFicha(opt.value, fichasUser)
+                    const data = new Array()
 
-                int.respond(data)
+                    find.forEach(f => {
+                        data.push({ name: f, value: f })
+                    })
+
+                    int.respond(data)
+                }
             }
         })
     }

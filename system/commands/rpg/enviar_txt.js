@@ -212,14 +212,18 @@ module.exports = class enviar_txt {
 
         options.forEach(opt => {
             if (opt.name == "nome_da_ficha" && opt.focused) {
-                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
-                const data = new Array()
+                const fichasUser = client.cache.getFichasUser(int.user.id)
 
-                find.forEach(f => {
-                    data.push({ name: f, value: f })
-                })
+                if (fichasUser.length >= 1) {
+                    const find = client.utils.matchNomeFicha(opt.value, fichasUser)
+                    const data = new Array()
 
-                int.respond(data)
+                    find.forEach(f => {
+                        data.push({ name: f, value: f })
+                    })
+
+                    int.respond(data)
+                }
             }
         })
     }
