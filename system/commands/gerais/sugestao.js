@@ -10,7 +10,7 @@ module.exports = class sugestao {
             desc: 'Envia uma mensagem para a equipe do BOT.',
             descEn: 'Sends a message to the BOT\'s team.',
             args: [
-                { name: "mensagem", desc: "A mensagem que deja enviar para a equipe.", type: "STRING", required: true }
+                { name: "mensagem", desc: "A mensagem que deja enviar para a equipe.", type: "STRING", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -43,11 +43,11 @@ module.exports = class sugestao {
                 const mensagem = args.get("mensagem")
 
                 const embed = new client.Discord.MessageEmbed()
-                    .setAuthor(`${int.user.tag} | ${int.user.id}`, int.user.displayAvatarURL())
+                    .setAuthor({ name:  `${int.user.tag} | ${int.user.id}`, iconURL: int.user.displayAvatarURL() })
                     .setTitle("Mensagem recebida")
                     .setDescription(mensagem)
                     .setColor(client.settings.color)
-                    .setFooter("Mensagem recebida em: " + time.now({ zone: "America/Fortaleza" }).toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)")
+                    .setFooter({ text: "Mensagem recebida em: " + time.now({ zone: "America/Fortaleza" }).toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)" })
 
                 client.log.embed(embed, true, "sugestao")
                     .then((msg) => msg.pin())

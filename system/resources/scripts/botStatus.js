@@ -107,9 +107,9 @@ module.exports = class botStatus {
             .addRow("", "")
             .addRow(`Tempo Online`, botuptime)
 
-        botStatus.setAuthor("Status atual do BOT")
+        botStatus.setAuthor({ name:  "Status atual do BOT" })
         botStatus.setDescription("```\n" + table.toString() + "```")
-        botStatus.setFooter(`${year} © Kami`, client.user.avatarURL())
+        botStatus.setFooter({ text: `${year} © Kami`, iconURL: client.user.avatarURL() })
         botStatus.setTimestamp()
         botStatus.setColor(client.settings.color)
 

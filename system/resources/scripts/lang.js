@@ -3,15 +3,14 @@ module.exports = {
         switch (toDo) {
             case "server":
                 if (!Lang) {
-                    Lang = "pt-"
+                    Lang = int.guildLocale == "pt-BR" ? "pt-" : "en-"
                 }
                 client.cache.update(int.guildId, Lang, "lang", true)
                 return Lang
 
             case "user":
                 if (!Lang) {
-                    client.commands.get("linguagem").run(client, int)
-                    return
+                    Lang = int.locale == "pt-BR" ? "pt-" : "en-"
                 }
                 client.cache.update(int.user.id, Lang, "lang", false)
                 return Lang

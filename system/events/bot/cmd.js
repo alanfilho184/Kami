@@ -9,7 +9,7 @@ module.exports = {
         var Lang = int.lang
 
         args = client.utils.argsString(int) || "Nenhum argumento dado"
-        
+
         let idioma
         try {
             idioma = Lang.replace("-", "").toUpperCase()
@@ -20,10 +20,10 @@ module.exports = {
 
         const cmdEmbed = new client.Discord.MessageEmbed()
             .setTitle("Comando: `" + cmd + "`")
-            .setAuthor(`${int.user.tag} - ${int.user.id}`, int.user.displayAvatarURL())
+            .setAuthor({ name:  `${int.user.tag} - ${int.user.id}`, iconURL: int.user.displayAvatarURL() })
             .setDescription("**Args:**\n" + "`" + args + "`")
             .addField("Idioma: ", "`" + idioma + "`", true)
-            .setFooter("Executado em: " + time.now(int.createdTimestamp).setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)")
+            .setFooter({ text: "Executado em: " + time.now(int.createdTimestamp).setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)" })
             .setColor(client.settings.color)
 
         if (int.guildId != null) {

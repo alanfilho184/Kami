@@ -31,7 +31,7 @@ module.exports = class invite {
             .then(() => {
                 const inviteEmbed = new client.Discord.MessageEmbed()
                     .setDescription(client.tl({ local: int.lang + "inv-embedDesc" }))
-                    .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .setTimestamp()
                     .setColor(client.settings.color)
 

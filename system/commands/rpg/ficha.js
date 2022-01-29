@@ -10,9 +10,9 @@ module.exports = class ficha {
             desc: 'Cria/edita uma ficha.',
             descEn: 'Create/edit a sheet.',
             args: [
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja criar/editar.", type: "STRING", required: true },
-                { name: "atributo", desc: "Atributo que deseja adicionar/editar na sua ficha", type: "STRING", required: true },
-                { name: "valor", desc: "Valor que o atributo terá.", type: "STRING", required: true },
+                { name: "nome_da_ficha", desc: "Nome da ficha que deseja criar/editar.", type: "STRING", required: true, autocomplete: true },
+                { name: "atributo", desc: "Atributo que deseja adicionar/editar na sua ficha", type: "STRING", required: true, autocomplete: true },
+                { name: "valor", desc: "Valor que o atributo terá.", type: "STRING", required: true, autocomplete: false },
             ],
             options: [],
             type: 1,
@@ -76,7 +76,8 @@ module.exports = class ficha {
             Ex: **${"/"}ficha RPG_Kami multi name: Kami RPG BOT | sanity: 1**
             
             `},
-            run: this.execute
+            run: this.execute,
+            autocomplete: this.autocomplete
         }
     }
 
@@ -393,6 +394,7 @@ module.exports = class ficha {
                                                         const custom_sql = `insert into fichas ${colunas[1]} ${colunas[2]}`
                                                         client.cache.updateFicha(int.user.id, nomeRpg, atbs, vals, custom_sql)
                                                             .then(r => {
+                                                                client.cache.updateFichasUser(int.user.id, nomeRpg)
                                                                 var msgToSend = String()
                                                                 if (atbsErr[0]) {
                                                                     msgToSend = client.tl({ local: int.lang + "cef-updtMultiErr", nomeRpg: nomeRpg, atributo: atbs, valor: vals, atb: atbsErr })
@@ -420,6 +422,7 @@ module.exports = class ficha {
                                                             type: QueryTypes.INSERT
                                                         })
                                                             .then(r => {
+                                                                client.cache.updateFichasUser(int.user.id, nomeRpg)
                                                                 return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomeRpg: nomeRpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }), components: [] })
                                                             })
                                                             .catch(err => client.log.error(err, true))
@@ -443,5 +446,37 @@ module.exports = class ficha {
                     })
                     .catch(err => client.log.error(err, true))
             })
+    }
+    
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+        const atributos = client.resources[int.lang].atributos
+        const atributosF = client.resources[int.lang].atributosF
+
+        options.forEach(opt => {
+            if (opt.name == "atributo" && opt.focused) {
+                const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
+                const data = new Array()
+
+                if (find[0] != opt.value) {
+                    find.forEach(f => {
+                        let index = client.utils.indexOf(atributos, f)
+                        data.push({ name: atributosF[index], value: atributos[index] })
+                    })
+
+                    int.respond(data)
+                }
+            }
+            else if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
     }
 }

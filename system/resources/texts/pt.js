@@ -100,6 +100,8 @@ const inTemp = ["Desmaia imediatamente", "Começa a gritar sem parar e fica imob
     "Sente que o corpo todo está anestesiado e difícil de mover", "Sente calafrios horrendos na espinha, que o fazem mover o seu corpo violentamente",]
 
 
+
+
 module.exports = {
     permissoes,
     atributos,
@@ -113,5 +115,5 @@ module.exports = {
     footer,
     inPerm,
     inTemp,
-    returnAtb
+    returnAtb,
 }

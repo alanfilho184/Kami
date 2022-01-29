@@ -8,8 +8,8 @@ module.exports = class enviar_atb {
             desc: 'Envia somente 1 atributo de uma ficha já criada.',
             descEn: 'Sends only 1 attribute of a sheet already created.',
             args: [
-                { name: "atributo", desc: "Atributo que deseja enviar.", type: "STRING", required: true },
-                { name: "nome_da_ficha", desc: "Nome da ficha onde o atributo está.", type: "STRING", required: false },
+                { name: "atributo", desc: "Atributo que deseja enviar.", type: "STRING", required: true, autocomplete: true },
+                { name: "nome_da_ficha", desc: "Nome da ficha onde o atributo está.", type: "STRING", required: false, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -32,7 +32,8 @@ module.exports = class enviar_atb {
             
             Ex: **${"/"}enviaratributo sanity RPG_Kami**`
             },
-            run: this.execute
+            run: this.execute,
+            autocomplete: this.autocomplete
         }
     }
     execute(client, int) {
@@ -88,8 +89,8 @@ module.exports = class enviar_atb {
 
                         const atributoEmbed = new client.Discord.MessageEmbed()
                             .setColor(client.settings.color)
-                            .setAuthor(client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
-                            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                            .setAuthor({text: client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
+                            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                             .setTimestamp()
                             .setTitle(atb + ":")
 
@@ -137,5 +138,36 @@ module.exports = class enviar_atb {
 
             })
 
+    }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+        const atributos = client.resources[int.lang].atributos
+        const atributosF = client.resources[int.lang].atributosF
+
+        options.forEach(opt => {
+            if (opt.name == "atributo" && opt.focused) {
+                const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
+                const data = new Array()
+
+                if (find[0] != opt.value) {
+                    find.forEach(f => {
+                        let index = client.utils.indexOf(atributos, f)
+                        data.push({ name: atributosF[index], value: atributos[index] })
+                    })
+
+                    int.respond(data)
+                }
+            }
+            else if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
     }
 }

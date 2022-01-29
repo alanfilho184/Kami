@@ -8,9 +8,9 @@ module.exports = class ver_ficha {
             desc: 'Visualiza uma ficha de outro usuário.',
             descEn: 'View another user sheet\`s',
             args: [
-                { name: "usuario", desc: "Usuário que deseja visualizar a ficha.", type: "USER", required: true },
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja visualizar.", type: "STRING", required: true },
-                { name: "senha_da_ficha", desc: "Senha da ficha que deseja visualizar.", type: "STRING", required: true }
+                { name: "usuario", desc: "Usuário que deseja visualizar a ficha.", type: "USER", required: true, autocomplete: false },
+                { name: "nome_da_ficha", desc: "Nome da ficha que deseja visualizar.", type: "STRING", required: true, autocomplete: true },
+                { name: "senha_da_ficha", desc: "Senha da ficha que deseja visualizar.", type: "STRING", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -34,7 +34,8 @@ module.exports = class ver_ficha {
             
                 Ex: **/verficha <@!716053210179043409> RPG_Kami xxxxxxxxxx**`
             },
-            run: this.execute
+            run: this.execute,
+            autocomplete: this.autocomplete
         }
     }
     execute(client, int) {
@@ -69,5 +70,21 @@ module.exports = class ver_ficha {
                         }
                     })
             })
+    }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+
+        options.forEach(opt => {
+            if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
     }
 }

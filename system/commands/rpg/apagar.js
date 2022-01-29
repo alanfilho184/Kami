@@ -12,11 +12,11 @@ module.exports = class apagar {
             desc: 'Apaga uma ficha que já tenha sido criada.',
             descEn: 'Deletes a sheet that has already been created.',
             args: [
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja apagar.", type: "STRING", required: true },
+                { name: "nome_da_ficha", desc: "Nome da ficha que deseja apagar.", type: "STRING", required: true, autocomplete: true },
             ],
             options: [{
                 name: "opções",
-                required:  false,
+                required: false,
                 type: "STRING",
                 desc: "Opções para o comando.",
                 choices: [
@@ -50,12 +50,13 @@ Ex: **${"/"}apagar RPG_Kami irt**
 
     Ex: **${"/"}apagar RPG_Kami irt**
 `},
-            run: this.execute
+            run: this.execute,
+            autocomplete: this.autocomplete
         }
     }
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
-        int.deferReply({ephemeral: secret})
+        int.deferReply({ ephemeral: secret })
             .then(() => {
                 const args = client.utils.args(int)
                 const beta = client.whitelist.get("beta")
@@ -125,6 +126,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                     .catch(err => { client.log.error(err, true) })
                                                     .then(() => {
                                                         client.cache.deleteFicha(int.user.id, nomeRpg)
+                                                        client.cache.deleteFichaUser(int.user.id, nomeRpg)
 
                                                         int.editReply({ content: client.tl({ local: int.lang + "af-fApg", nomeRpg: nomeRpg }), components: [] })
                                                             .then(async function () {
@@ -156,6 +158,23 @@ Ex: **${"/"}apagar RPG_Kami irt**
                     .catch(err => { client.log.error(err, true) })
             })
     }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+
+        options.forEach(opt => {
+            if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
+    }
+
 
 }
 

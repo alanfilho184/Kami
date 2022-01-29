@@ -16,10 +16,10 @@ module.exports = {
 
         const buttonEmbed = new client.Discord.MessageEmbed()
             .setTitle("Botão: `" + cmd + "`")
-            .setAuthor(`${comp.user.tag} - ${comp.user.id}`, comp.user.displayAvatarURL())
+            .setAuthor({ name:  `${comp.user.tag} - ${comp.user.id}`, iconURL: comp.user.displayAvatarURL() })
             .setDescription("**Info no botão:**\n" + "`" + comp.customId + "`")
             .addField("Idioma: ", "`" + idioma + "`", true)
-            .setFooter("Utilizado em: " + time.now(comp.createdTimestamp).setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)")
+            .setFooter({text:"Utilizado em: " + time.now(comp.createdTimestamp).setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)"})
             .setColor(client.settings.color)
 
         if (comp.guildId != null) {

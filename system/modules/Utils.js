@@ -60,8 +60,7 @@ module.exports = class Utils {
             }
 
             if (!Lang) {
-                setLang(this.client, int, "user")
-                return undefined
+                return setLang(this.client, int, "user")
             }
             return Lang
         }
@@ -129,6 +128,85 @@ module.exports = class Utils {
         else {
             return atributo
         }
+    }
+
+    matchAtbAutocomplete(atributo, atributos, customBase) {
+        var base = 0.155
+
+        var x = 0
+        while (x < atributo.length) {
+            base += 0.045
+            x++
+        }
+
+        if (base > 0.7) {
+            base = 0.7
+        }
+
+        if (customBase) { base = customBase }
+
+        const result = stringSimilarity.findBestMatch(atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos)
+
+        const matchs = new Array()
+        result.ratings.forEach(match => {
+            if (match.rating >= base) {
+                matchs.push(match)
+            }
+        })
+
+        matchs.sort(function (a, b) {
+            return b.rating - a.rating
+        })
+
+        var x = 0
+        const find = new Array()
+        matchs.forEach(match => {
+            if (x >= 5) { return }
+            find.push(match.target)
+            x++
+        })
+
+        if (result.bestMatch.rating >= 0.9) {
+            return new Array(result.bestMatch.target)
+        }
+        else{
+            return find.length == 0 ? new Array(atributo) : find
+        }
+    }
+
+    matchNomeFicha(typing, fichas) {
+        var base = 0.0
+
+        var x = 0
+
+        while (x < typing.length) {
+            base += 0.045
+            x++
+        }
+
+        if (base > 0.75) {
+            base = 0.75
+        }
+
+        const result = stringSimilarity.findBestMatch(typing, fichas)
+
+        const matchs = new Array()
+        result.ratings.forEach(match => {
+            if (match.rating >= base) {
+                matchs.push(match)
+            }
+        })
+
+        matchs.sort(function (a, b) {
+            return b.rating - a.rating
+        })
+
+        const find = new Array()
+        matchs.forEach(match => {
+            find.push(match.target)
+        })
+
+        return find.length == 0 ? fichas.sort() : find
     }
 
     replaceAll(string, search, replace) {

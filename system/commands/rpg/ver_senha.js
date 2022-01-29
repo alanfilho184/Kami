@@ -56,7 +56,7 @@ module.exports = class ver_senha {
                         const embedSenhas = new client.Discord.MessageEmbed()
                             .setTitle(embedTi)
                             .setColor(client.settings.color)
-                            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                             .setTimestamp()
 
                         fichas.forEach((senha, nomerpg) => {

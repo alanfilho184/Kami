@@ -81,7 +81,7 @@ module.exports = class botinfo {
         botIEmbed.setColor(client.settings.color)
         botIEmbed.setDescription("```\n" + table.toString() + "```")
         botIEmbed.setTimestamp(Date.now())
-        botIEmbed.setFooter(client.resources.footer(), client.user.displayAvatarURL())
+        botIEmbed.setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
 
 
         const bSup = new client.Discord.MessageButton()

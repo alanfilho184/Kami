@@ -37,7 +37,7 @@ module.exports = class ajuda {
             .setTitle(client.tl({ local: int.lang + "ajuda-tMain" }))
             .setColor(client.settings.color)
             .setDescription(client.tl({ local: int.lang + "ajuda-main" }))
-            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
             .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
             .setTimestamp()
 
@@ -98,7 +98,7 @@ module.exports = class ajuda {
                                 .setTitle(replaceAll(cmd.helpPt.title, "$prefix$", client.prefix))
                                 .setColor(client.settings.color)
                                 .setDescription(replaceAll(cmd.helpPt.desc, "$prefix$", client.prefix))
-                                .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                                .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
                             return
@@ -109,7 +109,7 @@ module.exports = class ajuda {
                                 .setTitle(replaceAll(cmd.helpEn.title, "$prefix$", client.prefix))
                                 .setColor(client.settings.color)
                                 .setDescription(replaceAll(cmd.helpEn.desc, "$prefix$", client.prefix))
-                                .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                                .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
                             return
@@ -139,7 +139,7 @@ module.exports = class ajuda {
                                 .setDescription("**" + atributosF + "**" + client.tl({ local: int.lang + "ajuda-atributos" }))
                                 .setColor(client.settings.color)
                                 .setTitle("<:fichaAjuda:766790214550814770> " + client.tl({ local: int.lang + "ajuda-tAtributos" }))
-                                .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                                .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
 

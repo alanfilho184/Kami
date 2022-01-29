@@ -55,7 +55,7 @@ module.exports = class config {
                         )
                         .addField(client.tl({ local: int.lang + "config-guiSepO" }) + "\n" + client.tl({ local: int.lang + "config-guiF6" }), `${userConfig.fPadrao ? userConfig.fPadrao : client.tl({ local: int.lang + "config-guiSFP" })}`, false)
                         .setColor(client.settings.color)
-                        .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                        .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                         .setTimestamp()
 
                     const uniqueID = `${Date.now()}`

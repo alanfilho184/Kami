@@ -8,8 +8,8 @@ module.exports = class renomear {
             desc: 'Renomeia uma ficha que você já tenha criada no BOT.',
             descEn: 'Rename a sheet you already have created on the BOT\'s.',
             args: [
-                { name: "atual_nome_da_ficha", desc: "Nome da ficha que deseja renomear.", type: "STRING", required: true },
-                { name: "novo_nome_da_ficha", desc: "Novo nome da ficha.", type: "STRING", required: true },
+                { name: "atual_nome_da_ficha", desc: "Nome da ficha que deseja renomear.", type: "STRING", required: true, autocomplete: true },
+                { name: "novo_nome_da_ficha", desc: "Novo nome da ficha.", type: "STRING", required: true, autocomplete: false },
             ],
             options: [],
             type: 1,
@@ -30,7 +30,8 @@ module.exports = class renomear {
     **${"/"}renomear <nameOld> <nameNew>**
     Ex: **${"/"}renomear RPG_Kami RPG_Kami2**`
             },
-            run: this.execute
+            run: this.execute,
+            autocomplete: this.autocomplete
         }
     }
     execute(client, int) {
@@ -50,11 +51,31 @@ module.exports = class renomear {
                         if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomeRpg: nomeRpgAtual })) }
                         else {
                             client.db.query(`update fichas set nomerpg = '${nomeRpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomeRpgAtual}'`)
-                                .then(() => { return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomeRpg: nomeRpgAtual, novoNomeRpg: nomeRpgNovo })) })
+                                .then(() => { 
+                                    client.cache.deleteFichaUser(int.user.id, nomeRpgAtual)
+                                    client.cache.updateFichasUser(int.user.id, nomeRpgNovo)
+                                    return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomeRpg: nomeRpgAtual, novoNomeRpg: nomeRpgNovo })) 
+                                })
                                 .catch(err => { client.log.error(err, true) })
                         }
                     })
                     .catch(err => client.log.error(err, true))
             })
+    }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+
+        options.forEach(opt => {
+            if (opt.name == "atual_nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
     }
 }

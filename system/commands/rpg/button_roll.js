@@ -11,7 +11,7 @@ module.exports = class button_roll {
             desc: 'Cria uma mensagem com botões para rolar dados.',
             descEn: 'Create a message with custom buttons to roll dices.',
             args: [
-                { name: "dados", desc: "Dados que devem ser criados botões, no máximo 25, separados por \"|\" e sem espaços", type: "STRING", required: true },
+                { name: "dados", desc: "Dados que devem ser criados botões, no máximo 25, separados por \"|\" e sem espaços", type: "STRING", required: true, autocomplete: false },
             ],
             options: [],
             type: 1,
@@ -265,7 +265,7 @@ module.exports = class button_roll {
                     .setColor(client.settings.color)
                     .setTitle(client.tl({ local: int.lang + "btR-eTi" }))
                     .setDescription(client.tl({ local: int.lang + "btR-eDesc" }))
-                    .setFooter(client.resources.footer(), client.user.avatarURL())
+                    .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .setTimestamp()
 
                 const componentsArray = new Array()
@@ -458,7 +458,7 @@ module.exports = class button_roll {
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
-            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 

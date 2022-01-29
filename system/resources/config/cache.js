@@ -85,7 +85,34 @@ module.exports = class Cache {
             })
             .catch(err => { this.client.log.error(err, true) })
 
+        this.client.db.query("select id, nomerpg from fichas")
+            .then(result => {
+                const fichasUsers = new Object()
+                let usuarios = new Array()
 
+
+                for (var x of result[0]) {
+                    usuarios.push(x.id)
+                }
+
+                usuarios.forEach(u => {
+                    let fichasUser = new Array()
+                    for (var x of result[0]) {
+                        if (x.id == u) {
+                            fichasUser.push(x.nomerpg == null ? "undefined" : x.nomerpg)
+                        }
+                    }
+                    fichasUsers[u] = fichasUser
+                })
+
+                fs.writeFileSync(path.join(__dirname, "json", 'nomeFichas.json'), JSON.stringify(fichasUsers), { flag: "w" }, function (err) {
+                    if (err) {
+                        this.client.log.error(err, true)
+                    }
+                })
+
+                this.client.log.start("Cache de nome das fichas")
+            })
     }
 
     get(id) {
@@ -117,6 +144,22 @@ module.exports = class Cache {
             if (r[0][0]) { fichas.set(id + nomeRpg, r[0][0]) }
             return r[0][0]
         }
+    }
+
+    async getIrt(id, nomeRpg) {
+        const i = irt.get(id + nomeRpg)
+        if (i) { return i }
+        else {
+            var r = await this.client.db.query(`select * from irt where id = '${id}' and nomerpg = '${nomeRpg}'`)
+            if (r[0][0] != undefined) { irt.set(id + nomeRpg, r[0]) }
+            return r[0]
+        }
+    }
+
+    getFichasUser(id) {
+        var result = fs.readFileSync(path.join(__dirname, "json", `nomeFichas.json`), "utf-8")
+        result = JSON.parse(result)
+        return result[id]
     }
 
     async update(id, info, local, server) {
@@ -199,18 +242,18 @@ module.exports = class Cache {
         var novo = await this.client.db.query(`select * from blacklist where userid = '${id}'`)
         novo = novo[0]
 
-        if (!novo) {
-            novo = true
-        } else {
-            novo = false
-        }
-
         if (novo) {
             await this.client.db.query(`insert into blacklist (userid, bans, banatual, duracaoban) values('${id}', '${info.bans}', '${info.banAtual}', '${info.duracaoBan}')`)
                 .catch(err => this.client.log.error(err))
         } else {
-            await this.client.db.query(`update blacklist set bans = '${info.bans}', banatual = '${info.banAtual}', duracaoban = '${info.duracaoBan}' where userid = '${id}'`)
-                .catch(err => this.client.log.error(err))
+            if (info.banAtual == null || info.duracaoBan == null) {
+                await this.client.db.query(`update blacklist set bans = '${info.bans}', banatual = null, duracaoban = null where userid = '${id}'`)
+                    .catch(err => this.client.log.error(err))
+            }
+            else {
+                await this.client.db.query(`update blacklist set bans = '${info.bans}', banatual = '${info.banAtual}', duracaoban = '${info.duracaoBan}' where userid = '${id}'`)
+                    .catch(err => this.client.log.error(err))
+            }
         }
         this.client.log.warn("Blacklist atualizada para o ID: " + id + "\nInfo adicionada:\n" + JSON.stringify(info), true)
 
@@ -284,18 +327,25 @@ module.exports = class Cache {
         }
     }
 
-    deleteFicha(id, nomeRpg) {
-        fichas.delete(id + nomeRpg)
-    }
+    updateFichasUser(id, nomeRpg) {
+        let uInfo = this.getFichaUser(id)
 
-    async getIrt(id, nomeRpg) {
-        const i = irt.get(id + nomeRpg)
-        if (i) { return i }
-        else {
-            var r = await this.client.db.query(`select * from irt where id = '${id}' and nomerpg = '${nomeRpg}'`)
-            if (r[0][0] != undefined) { irt.set(id + nomeRpg, r[0]) }
-            return r[0]
+        if (!uInfo) {
+            uInfo =  new Array() 
         }
+
+        uInfo.push(nomeRpg)
+        let nomeFichasCache = require("./json/nomeFichas.json")
+
+        nomeFichasCache[id] = uInfo
+
+        nomeFichasCache = JSON.stringify(nomeFichasCache)
+
+        fs.writeFileSync(path.join(__dirname, "json", `nomeFichas.json`), nomeFichasCache, function (err) {
+            if (err) {
+                this.client.log.error(err, true)
+            }
+        })
     }
 
     updateIrt(id, nomeRpg, msgid, chid) {
@@ -322,6 +372,11 @@ module.exports = class Cache {
         irt.set(id + nomeRpg, i)
     }
 
+    deleteFicha(id, nomeRpg) {
+        fichas.delete(id + nomeRpg)
+        this.deleteFichaUser(id, nomeRpg)
+    }
+
     deleteIrt(id, nomeRpg, msgid) {
         if (msgid) {
             var i = irt.get(id + nomeRpg)
@@ -343,6 +398,22 @@ module.exports = class Cache {
         else {
             irt.delete(id + nomeRpg)
         }
+    }
+
+    deleteFichaUser(id, nomeRpg){
+        let uInfo = this.getFichaUser(id)
+        uInfo.remove(nomeRpg)
+
+        let nomeFichasCache = require("./json/nomeFichas.json")
+
+        nomeFichasCache[id] = uInfo
+        nomeFichasCache = JSON.stringify(nomeFichasCache)
+
+        fs.writeFileSync(path.join(__dirname, "json", `nomeFichas.json`), nomeFichasCache, function (err) {
+            if (err) {
+                this.client.log.error(err, true)
+            }
+        })
     }
 
     evalSync(arg) {

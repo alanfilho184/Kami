@@ -18,7 +18,7 @@ module.exports = {
             { name: "Servidor:", value: "Nome: " + guild.name + "\nID: " + guild.id + "\n Quantidade de usuários: " + guild.memberCount },
             { name: "Dono:", value: owner[0].tag + "\nID: " + owner[0].id },
         )
-        gCreateEmbed.setFooter(`Removido em: ${time.now().setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ")} (GMT -3)`)
+        gCreateEmbed.setFooter({text:`Removido em: ${time.now().setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ")} (GMT -3)`})
         gCreateEmbed.setColor(client.settings.color)
 
         await client.db.query(`delete from config where serverid = '${guild.id}'`)

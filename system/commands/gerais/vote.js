@@ -31,7 +31,7 @@ module.exports = class vote {
             .then(() => {
                 const voteEmbed = new client.Discord.MessageEmbed()
                     .setDescription(client.tl({ local: int.lang + "vote-embedDesc" }))
-                    .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .setTimestamp()
                     .setColor(client.settings.color)
 

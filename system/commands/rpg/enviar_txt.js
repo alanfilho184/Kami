@@ -24,7 +24,7 @@ module.exports = class enviar_txt {
             desc: 'Envia a ficha como um arquivo .txt.',
             descEn: 'Sends a sheet as a .txt file.',
             args: [
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true },
+                { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -46,7 +46,9 @@ module.exports = class enviar_txt {
             Ex: **${"/"}enviartxt RPG_Kami**`
             },
             run: this.execute,
-            create: this.create
+            create: this.create,
+            autocomplete: this.autocomplete
+
         }
     }
     execute(client, int) {
@@ -204,5 +206,21 @@ module.exports = class enviar_txt {
         }
 
         return fichaTXT
+    }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+
+        options.forEach(opt => {
+            if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
     }
 }

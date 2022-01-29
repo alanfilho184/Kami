@@ -69,7 +69,7 @@ module.exports = class adicionar_imagem {
                         .setDescription(client.tl({ local: int.lang + "addI-eDesc" }))
                         .setImage(attach.url)
                         .setColor(client.settings.color)
-                        .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                        .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                         .setTimestamp()
 
                     var botmsg = await int.editReply({ embeds: [embed], components: [{ type: 1, components: [menu] }] })

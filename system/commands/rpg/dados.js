@@ -10,8 +10,8 @@ module.exports = class roll {
             desc: 'Rola um dado ou um atributo.',
             descEn: 'Rolls a dice or an attribute.',
             args: [
-                { name: "dado_ou_atributo", desc: "Dado ou atributo que deseja rolar.", type: "STRING", required: true },
-                { name: "nome_da_ficha", desc: "Nome da ficha onde o atributo está", type: "STRING", required: false },
+                { name: "dado_ou_atributo", desc: "Dado ou atributo que deseja rolar.", type: "STRING", required: true, autocomplete: true },
+                { name: "nome_da_ficha", desc: "Nome da ficha onde o atributo está", type: "STRING", required: false, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -63,6 +63,7 @@ module.exports = class roll {
             run: this.execute,
             rollNumber: this.rollNumber,
             rollAtb: this.rollAtb,
+            autocomplete: this.autocomplete
 
         }
     }
@@ -314,7 +315,7 @@ module.exports = class roll {
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
-            .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+            .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 
@@ -443,12 +444,12 @@ module.exports = class roll {
                         }
                     }
 
-                    embedRoll.setAuthor(client.tl({ local: int.lang + "ddb-embedA" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
+                    embedRoll.setAuthor({ name:  client.tl({ local: int.lang + "ddb-embedA" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
                     if (atbL == "Ext" || atbL == "Desc") {
-                        embedRoll.setAuthor(client.tl({ local: int.lang + "ddb-errEx" }))
+                        embedRoll.setAuthor({ name:  client.tl({ local: int.lang + "ddb-errEx" }) })
                         embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi2" }))
                     }
-                    embedRoll.setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    embedRoll.setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                     embedRoll.setTimestamp()
                     embedRoll.setColor(client.settings.color)
                     embedRoll.setThumbnail(client.resources.assets.d1_100[dice.result])
@@ -463,4 +464,37 @@ module.exports = class roll {
 
 
     }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+        const atributos = client.resources[int.lang].atributos
+        const atributosF = client.resources[int.lang].atributosF
+
+        options.forEach(opt => {
+            if (opt.name == "dado_ou_atributo" && opt.focused) {
+                const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
+                const data = new Array()
+
+                if (find[0] != opt.value) {
+                    find.forEach(f => {
+                        let index = client.utils.indexOf(atributos, f)
+                        data.push({ name: atributosF[index], value: atributos[index] })
+                    })
+
+                    int.respond(data)
+                }
+            }
+            else if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
+    }
+
+
 }

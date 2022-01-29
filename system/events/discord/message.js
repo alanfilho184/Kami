@@ -1,3 +1,5 @@
+const time = require("luxon").DateTime;
+
 var firstS = true
 const warn = new Set()
 
@@ -14,7 +16,7 @@ module.exports = {
 
         try {
             if (blacklist[msg.author.id].banAtual) {
-                if (blacklist[msg.author.id].duracaoBan <= moment().valueOf()) {
+                if (blacklist[msg.author.id].duracaoBan <= time.now().ts) {
                     var banUser = blacklist[interaction.member.user.id]
                     client.cache.updateBl(msg.author.id, { bans: banUser.bans, banAtual: null, duracaoBan: null })
                     tempblacklist.delete(msg.author.id)

@@ -10,7 +10,7 @@ module.exports = class sucesso {
             desc: 'Calcula o sucesso de um atributo.',
             descEn: 'Calculates the sucess of an attribute.',
             args: [
-                { name: "valor", desc: "Valor do atributo que deseja calcular (0 ~ 100).", type: "INTEGER", required: true }
+                { name: "valor", desc: "Valor do atributo que deseja calcular (0 ~ 100).", type: "INTEGER", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -77,7 +77,7 @@ module.exports = class sucesso {
 
         ${client.tl({ local: int.lang + "cs-embedDescFal" })} **${falha}**
     `)
-                    sucessos.setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    sucessos.setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     sucessos.setTimestamp()
                     int.editReply({ embeds: [sucessos] })
                 }

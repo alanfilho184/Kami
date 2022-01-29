@@ -41,7 +41,7 @@ module.exports = class ping {
 
                 const pingEmbed = new client.Discord.MessageEmbed()
                     .setColor(client.settings.color)
-                    .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .addField("BOT:", "`" + Math.round(int.ping) + " ms`", true)
                     .addField("API:", "`" + Math.round(client.ws.ping) + " ms`", true)
                     .addField("DB: ", "`" + Math.round(dbPing) + " ms`", true)

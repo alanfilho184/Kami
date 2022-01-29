@@ -7,8 +7,8 @@ module.exports = class responder {
             fName: "Responder",
             desc: 'Envia uma mensagem a um usuário.',
             args: [
-                { name: "id", desc: "ID do usuário.", type: "STRING", required: true },
-                { name: "mensagem", desc: "Mensagem para enviar.", type: "STRING", required: true },
+                { name: "id", desc: "ID do usuário.", type: "STRING", required: true, autocomplete: false },
+                { name: "mensagem", desc: "Mensagem para enviar.", type: "STRING", required: true, autocomplete: false },
             ],
             options: [],
             type: 1,

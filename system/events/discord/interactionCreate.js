@@ -13,6 +13,7 @@ module.exports = {
     type: "djs",
     execute: async (client, int) => {
         if (firstS) { client.emit("blacklist"); firstS = false }
+        if (int.isAutocomplete()) { return client.emit("autocompleteHandler", int) }
         if ((int.isMessageComponent())) { return client.emit("componentHandler", int) }
         if ((int.isContextMenu())) { return client.emit("contextMenuHandler", int) }
         if (!int.isCommand()) { return }
@@ -22,7 +23,7 @@ module.exports = {
 
         try {
             if (blacklist[int.user.id].banAtual) {
-                if (blacklist[int.user.id].duracaoBan <= moment().valueOf()) {
+                if (blacklist[int.user.id].duracaoBan <= time.now().ts) {
                     var banUser = blacklist[int.user.id]
                     client.cache.updateBl(int.user.id, { bans: banUser.bans, banAtual: null, duracaoBan: null })
                 }
@@ -57,11 +58,11 @@ module.exports = {
                             return
                         }
                         else {
-                            return int.editReply({content: client.tl({ local: int.lang + "intCreate-onErr"}), ephemeral: true})
+                            return int.editReply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
                         }
                     }
                     else {
-                        return int.reply({content: client.tl({ local: int.lang + "intCreate-onErr"}), ephemeral: true})
+                        return int.reply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
                     }
                 })
 

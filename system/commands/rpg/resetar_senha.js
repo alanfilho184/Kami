@@ -8,7 +8,7 @@ module.exports = class resetar_senha {
             desc: 'Resete a senha de uma ficha sua já criada.',
             descEn: 'Reset the password for a sheet you have already created.',
             args: [
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja resetar a senha.", type: "STRING", required: true },
+                { name: "nome_da_ficha", desc: "Nome da ficha que deseja resetar a senha.", type: "STRING", required: true, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -29,7 +29,8 @@ module.exports = class resetar_senha {
             
                 Ex: **/resetarsenha RPG_Kami**`
             },
-            run: this.execute
+            run: this.execute,
+            autocomplete: this.autocomplete
         }
     }
     execute(client, int) {
@@ -53,5 +54,21 @@ module.exports = class resetar_senha {
                     })
 
             })
+    }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+
+        options.forEach(opt => {
+            if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
     }
 }

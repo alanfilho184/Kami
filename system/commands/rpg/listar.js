@@ -51,7 +51,7 @@ Ex: **${"/"}listar**`
                         }
 
                         fichasU.setColor(client.settings.color)
-                        fichasU.setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                        fichasU.setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                         fichasU.setTimestamp()
                         return int.editReply({ embeds: [fichasU] })
 

@@ -31,7 +31,7 @@ module.exports = class termos {
             .then(() => {
                 const termEmbed = new client.Discord.MessageEmbed()
                     .setDescription(client.tl({ local: int.lang + "termos-embedDesc" }))
-                    .setFooter(client.resources.footer(), client.user.displayAvatarURL())
+                    .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .setTimestamp()
                     .setColor(client.settings.color)
 

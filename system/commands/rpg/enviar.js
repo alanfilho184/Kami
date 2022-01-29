@@ -12,7 +12,7 @@ module.exports = class enviar {
             desc: 'Envia uma ficha já criada em forma de embed.',
             descEn: 'Sends a sheet already as a Discord\'s embed.',
             args: [
-                { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true },
+                { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true, autocomplete: true },
             ],
             options: [
                 {
@@ -66,7 +66,8 @@ module.exports = class enviar {
 
             },
             run: this.execute,
-            create: this.create
+            create: this.create,
+            autocomplete: this.autocomplete
         }
     }
     execute(client, int) {
@@ -247,7 +248,7 @@ module.exports = class enviar {
 
         const info_perso = new client.Discord.MessageEmbed()
         info_perso.setColor(client.settings.color)
-        info_perso.setAuthor(client.tl({ local: int.lang + "ef-infAuthor" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
+        info_perso.setAuthor({text: client.tl({ local: int.lang + "ef-infAuthor" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
         info_perso.setThumbnail(fichaUser["imagem"])
         const status_perso = new client.Discord.MessageEmbed()
         const status_perso2 = new client.Discord.MessageEmbed()
@@ -387,5 +388,21 @@ module.exports = class enviar {
 
         return reply
 
+    }
+    autocomplete(client, int) {
+        const options = int.options._hoistedOptions
+
+        options.forEach(opt => {
+            if (opt.name == "nome_da_ficha" && opt.focused) {
+                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const data = new Array()
+
+                find.forEach(f => {
+                    data.push({ name: f, value: f })
+                })
+
+                int.respond(data)
+            }
+        })
     }
 }

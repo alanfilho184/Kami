@@ -2,19 +2,6 @@ const { REST } = require('@discordjs/rest');
 const { SlashCommandBuilder, ContextMenuCommandBuilder } = require('@discordjs/builders');
 const { Routes } = require('discord-api-types/v9');
 
-const types = {
-    "SUB_COMMAND": 1,
-    "SUB_COMMAND_GROUP": 2,
-    "STRING": 3,
-    "INTEGER": 4,
-    "BOOLEAN": 5,
-    "USER": 6,
-    "CHANNEL": 7,
-    "ROLE": 8,
-    "MENTIONABLE": 9,
-    "NUMBER": 10,
-}
-
 module.exports = class reloadSlash {
 
     constructor() {
@@ -51,10 +38,10 @@ module.exports = class reloadSlash {
                     if (c.args.length > 0) {
                         for (var x in c.args) {
                             if (c.args[x].type == "STRING") {
-                                command.addStringOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                                command.addStringOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
                             }
                             else if (c.args[x].type == "INTEGER") {
-                                command.addIntegerOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                                command.addIntegerOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
                             }
                             else if (c.args[x].type == "USER") {
                                 command.addUserOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
@@ -81,7 +68,6 @@ module.exports = class reloadSlash {
                     }
 
                     commandsOwner.push(command)
-
                 }
                 else {
                     command.setDefaultPermission(true)
@@ -96,10 +82,10 @@ module.exports = class reloadSlash {
                     if (c.args.length > 0) {
                         for (var x in c.args) {
                             if (c.args[x].type == "STRING") {
-                                command.addStringOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                                command.addStringOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
                             }
                             else if (c.args[x].type == "INTEGER") {
-                                command.addIntegerOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                                command.addIntegerOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
                             }
                             else if (c.args[x].type == "USER") {
                                 command.addUserOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))

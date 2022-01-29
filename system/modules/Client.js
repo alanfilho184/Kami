@@ -80,6 +80,9 @@ module.exports = class MenuClient extends Client {
             else if (eventFunction.name == "componentHandler") {
                 this.on("passInt", (...args) => { eventFunction.passInt(this, ...args) })
             }
+            else if (eventFunction == "autocompleteHandler"){
+                this.on("blacklist", (...args) => { eventFunction.blacklist(this, ...args) })
+            }
         })
         
         logs.log.start("Eventos")

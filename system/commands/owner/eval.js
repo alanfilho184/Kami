@@ -26,7 +26,7 @@ module.exports = class evaluate {
 
                     const codeEmbed = new client.Discord.MessageEmbed()
                         .setColor(client.settings.color)
-                        .setDescription("```js\n"+msg.content+"```")
+                        .setDescription("```js\n" + msg.content + "```")
                         .setTitle("Código:")
 
                     try {
@@ -42,7 +42,7 @@ module.exports = class evaluate {
 
                         evalEmbed
                             .setDescription(result)
-                            .setFooter(`Tempo de execução: ${ping} ms`, client.user.displayAvatarURL())
+                            .setFooter({ text: `Tempo de execução: ${ping} ms`, iconURL: client.user.displayAvatarURL() })
                             .setTitle("Resultado:")
                             .setTimestamp()
 
@@ -61,7 +61,7 @@ module.exports = class evaluate {
 
                         evalEmbed
                             .setDescription(error)
-                            .setFooter(`Tempo de execução: ${ping} ms`, client.user.displayAvatarURL())
+                            .setFooter({ text: `Tempo de execução: ${ping} ms`, iconURL: client.user.displayAvatarURL() })
                             .setTitle("Erro:")
                             .setTimestamp()
 
