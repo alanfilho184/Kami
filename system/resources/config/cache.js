@@ -159,7 +159,13 @@ module.exports = class Cache {
     getFichasUser(id) {
         var result = fs.readFileSync(path.join(__dirname, "json", `nomeFichas.json`), "utf-8")
         result = JSON.parse(result)
-        return result[id]
+
+        if (result[id] == undefined) {
+            return new Array()
+        }
+        else {
+            return result[id]
+        }
     }
 
     async update(id, info, local, server) {
@@ -331,7 +337,7 @@ module.exports = class Cache {
         let uInfo = this.getFichaUser(id)
 
         if (!uInfo) {
-            uInfo =  new Array() 
+            uInfo = new Array()
         }
 
         uInfo.push(nomeRpg)
@@ -400,7 +406,7 @@ module.exports = class Cache {
         }
     }
 
-    deleteFichaUser(id, nomeRpg){
+    deleteFichaUser(id, nomeRpg) {
         let uInfo = this.getFichaUser(id)
         uInfo.remove(nomeRpg)
 
