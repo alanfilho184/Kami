@@ -135,7 +135,7 @@ module.exports = class Utils {
 
         var x = 0
         while (x < atributo.length) {
-            base += 0.045
+            base += 0.025
             x++
         }
 
@@ -161,17 +161,12 @@ module.exports = class Utils {
         var x = 0
         const find = new Array()
         matchs.forEach(match => {
-            if (x >= 5) { return }
+            if (x >= 8) { return }
             find.push(match.target)
             x++
         })
 
-        if (result.bestMatch.rating >= 0.9) {
-            return new Array(result.bestMatch.target)
-        }
-        else{
-            return find.length == 0 ? new Array(atributo) : find
-        }
+        return find.length == 0 ? new Array(atributo) : find
     }
 
     matchNomeFicha(typing, fichas) {

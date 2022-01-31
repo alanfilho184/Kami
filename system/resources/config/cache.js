@@ -334,7 +334,7 @@ module.exports = class Cache {
     }
 
     updateFichasUser(id, nomeRpg) {
-        let uInfo = this.getFichaUser(id)
+        let uInfo = this.getFichasUser(id)
 
         if (!uInfo) {
             uInfo = new Array()
@@ -407,8 +407,8 @@ module.exports = class Cache {
     }
 
     deleteFichaUser(id, nomeRpg) {
-        let uInfo = this.getFichaUser(id)
-        uInfo.remove(nomeRpg)
+        let uInfo = this.getFichasUser(id)
+        uInfo.splice(uInfo.indexOf(nomeRpg), 1)
 
         let nomeFichasCache = require("./json/nomeFichas.json")
 

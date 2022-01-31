@@ -149,12 +149,15 @@ module.exports = class enviar_atb {
                 const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
                 const data = new Array()
 
-                if (find[0] != opt.value) {
-                    find.forEach(f => {
-                        let index = client.utils.indexOf(atributos, f)
-                        data.push({ name: atributosF[index], value: atributos[index] })
-                    })
+                find.forEach(f => {
+                    let index = client.utils.indexOf(atributos, f)
 
+                    if (index[0] != undefined) {
+                        data.push({ name: atributosF[index], value: atributos[index] })
+                    }
+                })
+
+                if (data.length > 0) {
                     int.respond(data)
                 }
             }

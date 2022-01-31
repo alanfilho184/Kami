@@ -36,7 +36,7 @@ module.exports = class renomear {
     }
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
-        int.deferReply({ephemeral: secret})
+        int.deferReply({ ephemeral: secret })
             .then(() => {
                 const args = client.utils.args(int)
 
@@ -50,13 +50,17 @@ module.exports = class renomear {
                     .then(result => {
                         if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomeRpg: nomeRpgAtual })) }
                         else {
-                            client.db.query(`update fichas set nomerpg = '${nomeRpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomeRpgAtual}'`)
-                                .then(() => { 
-                                    client.cache.deleteFichaUser(int.user.id, nomeRpgAtual)
-                                    client.cache.updateFichasUser(int.user.id, nomeRpgNovo)
-                                    return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomeRpg: nomeRpgAtual, novoNomeRpg: nomeRpgNovo })) 
-                                })
-                                .catch(err => { client.log.error(err, true) })
+                            const fichasUser = client.cache.getFichasUser(int.user.id)
+                            if (fichasUser.has(nomeRpgNovo)) { return int.editReply(client.tl({ local: int.lang + "rf-fE", nomeRpg: nomeRpgNovo })) }
+                            else {
+                                client.db.query(`update fichas set nomerpg = '${nomeRpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomeRpgAtual}'`)
+                                    .then(() => {
+                                        client.cache.deleteFichaUser(int.user.id, nomeRpgAtual)
+                                        client.cache.updateFichasUser(int.user.id, nomeRpgNovo)
+                                        return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomeRpg: nomeRpgAtual, novoNomeRpg: nomeRpgNovo }))
+                                    })
+                                    .catch(err => { client.log.error(err, true) })
+                            }
                         }
                     })
                     .catch(err => client.log.error(err, true))
