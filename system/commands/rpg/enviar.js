@@ -248,7 +248,7 @@ module.exports = class enviar {
 
         const info_perso = new client.Discord.MessageEmbed()
         info_perso.setColor(client.settings.color)
-        info_perso.setAuthor({text: client.tl({ local: int.lang + "ef-infAuthor" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
+        info_perso.setAuthor({name: client.tl({ local: int.lang + "ef-infAuthor" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
         info_perso.setThumbnail(fichaUser["imagem"])
         const status_perso = new client.Discord.MessageEmbed()
         const status_perso2 = new client.Discord.MessageEmbed()
