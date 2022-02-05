@@ -1,7 +1,8 @@
 const setLang = require("../resources/scripts/lang").setLang
 const stringSimilarity = require('string-similarity');
 const CryptoJS = require("crypto-js");
-var roll = require("roll")
+const time = require("luxon").DateTime
+var roll = require("roll");
 roll = new roll()
 
 module.exports = class Utils {
@@ -33,7 +34,7 @@ module.exports = class Utils {
     }
 
     getLang(int) {
-        if (int.guildId != null) {
+        if (int.inGuild()) {
             var info = this.client.cache.get(int.guildId)
 
             try { var Lang = info.lang }
@@ -63,6 +64,36 @@ module.exports = class Utils {
                 return setLang(this.client, int, "user")
             }
             return Lang
+        }
+    }
+
+    userOnBlacklist(id) {
+        const info = this.client.cache.getBl(id)
+        try {
+            if (info.banAtual != null) {
+                if (info.duracaoBan <= time.now().ts) {
+                    info.banAtual = null
+                    info.duracaoBan = null
+                    this.client.cache.updateBl(id, { bans: info.bans, banAtual: null, duracaoBan: null })
+
+                    return false
+                }
+                else {
+                    return true
+                }
+            }
+            else {
+                return false
+            }
+        }
+        catch (err) {
+            if (err == "TypeError: Cannot read properties of undefined (reading 'banAtual')") {
+                return false
+            }
+            else {
+                this.client.log.error(err, true)
+                return false
+            }
         }
     }
 

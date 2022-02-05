@@ -246,7 +246,10 @@ module.exports = class Cache {
         })
 
         var novo = await this.client.db.query(`select * from blacklist where userid = '${id}'`)
-        novo = novo[0]
+        try { novo = novo[0][0].userid ? false : true; }
+        catch (err) { novo = true }
+
+        console.log(novo)
 
         if (novo) {
             await this.client.db.query(`insert into blacklist (userid, bans, banatual, duracaoban) values('${id}', '${info.bans}', '${info.banAtual}', '${info.duracaoBan}')`)

@@ -1,33 +1,16 @@
 const time = require("luxon").DateTime;
 
-var firstS = true
 const warn = new Set()
 
 module.exports = {
     name: "messageCreate",
     type: "djs",
     execute: async (client, msg) => {
-        if (firstS) { client.emit("blacklist"); firstS = false }
         if (msg.author.bot) { return }
+        if (client.utils.userOnBlacklist(msg.author.id)) { return }
         if (warn.has(msg.author.id)) { return }
         if (!msg.content.startsWith(client.prefix)) {
             return
-        }
-
-        try {
-            if (blacklist[msg.author.id].banAtual) {
-                if (blacklist[msg.author.id].duracaoBan <= time.now().ts) {
-                    var banUser = blacklist[interaction.member.user.id]
-                    client.cache.updateBl(msg.author.id, { bans: banUser.bans, banAtual: null, duracaoBan: null })
-                    tempblacklist.delete(msg.author.id)
-                }
-                else {
-                    return
-                }
-            }
-        }
-        catch (err) {
-            if (err == "TypeError: Cannot read property 'duracaoBan' of undefined") return
         }
 
         warn.add(msg.author.id)
@@ -59,11 +42,6 @@ module.exports = {
             .setURL("https://discord.com/invite/9rqCkFB")
 
         return msg.channel.send({ content: `<@!${msg.author.id}>\n` + client.tl({ local: msg.lang + "onMsg-slash" }), components: [{ type: 1, components: [btLink, btSup, btInfo] }] })
-    },
-    blacklist: (client) => {
-        blacklist = client.cache.getBl()
-        client.log.warn("blacklist atualizada no evento Message")
-        return
-    },
+    }
 }
 

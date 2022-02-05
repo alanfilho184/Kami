@@ -76,18 +76,21 @@ module.exports = class ver_ficha {
 
         options.forEach(opt => {
             if (opt.name == "nome_da_ficha" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                try {
+                    const fichasUser = client.cache.getFichasUser(options[0].value)
 
-                if (fichasUser.length >= 1) {
-                    const find = client.utils.matchNomeFicha(opt.value, fichasUser)
-                    const data = new Array()
+                    if (fichasUser.length >= 1) {
+                        const find = client.utils.matchNomeFicha(opt.value, fichasUser)
+                        const data = new Array()
 
-                    find.forEach(f => {
-                        data.push({ name: f, value: f })
-                    })
+                        find.forEach(f => {
+                            data.push({ name: f, value: f })
+                        })
 
-                    int.respond(data)
+                        int.respond(data)
+                    }
                 }
+                catch (err) { }
             }
         })
     }

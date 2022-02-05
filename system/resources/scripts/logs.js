@@ -20,7 +20,7 @@ function info(msg, ds) {
     }
     else {
         logTxt += `---------------- [ ${time.now().setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") }| INFO ] ----------------\n`
-        logTxt += msg + "\n"
+        logTxt += inspect(msg, { depth: 99 }) + "\n"
         logTxt += `---------------- [ FIM DA INFO ] ----------------\n`
 
         console.log(`---------------- [ ${time.now().setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") }| INFO ] ----------------`.green);

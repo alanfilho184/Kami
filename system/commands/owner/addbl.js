@@ -1,4 +1,5 @@
 const toMs = require("milliseconds-parser")()
+const time = require("luxon").DateTime
 
 module.exports = class addbl {
     constructor() {
@@ -30,7 +31,7 @@ module.exports = class addbl {
                 const banAtual = args.get("banatual")
                 const duracaoBan = args.get("duracaoban")
 
-                client.cache.updateBl(banid, { bans: bans, banAtual: banAtual, duracaoBan: toMs.parse(duracaoBan) })
+                client.cache.updateBl(banid, { bans: bans, banAtual: banAtual, duracaoBan: time.now().ts + toMs.parse(duracaoBan) })
                     .then(bl => {
                         return int.editReply(bl)
                     })
@@ -49,8 +50,8 @@ module.exports = class addbl {
         options.forEach(opt => {
             if (opt.name == "bans" && opt.focused) {
                 int.respond([{
-                    name: `${BlUser.bans + 1}`,
-                    value: `${BlUser.bans + 1}`
+                    name: `${Number(BlUser.bans) + 1}`,
+                    value: `${Number(BlUser.bans) + 1}`
                 }])
             }
             else if (opt.name == "banatual" && opt.focused) {
@@ -62,7 +63,7 @@ module.exports = class addbl {
                 }
             }
             else if (opt.name == "duracaoban" && opt.focused) {
-                if (BlUser.bans <= 3) {
+                if (BlUser.bans <= 3 && options[2].value == "tempBan") {
                     int.respond([{ name: "1 semana", value: "1 semana", }])
                 }
                 else {

@@ -71,17 +71,10 @@ module.exports = class MenuClient extends Client {
 
             this.on(eventFunction.name, (...args) => { eventFunction.execute(this, ...args) })
             if (eventFunction.name == "interactionCreate") {
-                this.on("blacklist", (...args) => { eventFunction.blacklist(this, ...args) })
                 this.on("varUpdate", (...args) => { eventFunction.disableCmd(this, ...args) })
-            }
-            else if (eventFunction.name == "messageCreate") {
-                this.on("blacklist", (...args) => { eventFunction.blacklist(this, ...args) })
             }
             else if (eventFunction.name == "componentHandler") {
                 this.on("passInt", (...args) => { eventFunction.passInt(this, ...args) })
-            }
-            else if (eventFunction == "autocompleteHandler"){
-                this.on("blacklist", (...args) => { eventFunction.blacklist(this, ...args) })
             }
         })
         
