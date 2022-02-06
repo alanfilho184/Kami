@@ -89,7 +89,7 @@ module.exports = class enviar_atb {
 
                         const atributoEmbed = new client.Discord.MessageEmbed()
                             .setColor(client.settings.color)
-                            .setAuthor({text: client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
+                            .setAuthor({name: client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
                             .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                             .setTimestamp()
                             .setTitle(atb + ":")
