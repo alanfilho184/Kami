@@ -36,7 +36,8 @@ module.exports = {
                     guildId: comp.guildId,
                     user: {
                         id: comp.user.id
-                    }
+                    },
+                    inGuild() { return comp.guildId != null }
                 })
 
                 const bConf = new client.Discord.MessageButton()
@@ -123,7 +124,8 @@ module.exports = {
                     guildId: comp.guildId,
                     user: {
                         id: comp.user.id
-                    }
+                    },
+                    inGuild() { return comp.guildId != null }
                 })
 
                 const bConf = new client.Discord.MessageButton()
