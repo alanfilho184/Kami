@@ -1,0 +1,567 @@
+{
+    "pt": {
+        "bt": {
+            "conf": "Confirmar",
+            "canc": "Cancelar",
+            "desIrt": "Desativar este IRT",
+            "apgIrt": "Apagar esta mensagem"
+        },
+        "created": {
+            "undefined": "Criada por: "
+        },
+        "botI": {
+            "gI": "Carregando informações",
+            "fAu": "Criador: ",
+            "f2T": "Links Úteis",
+            "f2V": "Meu Discord de Suporte",
+            "f3V": "Vote em mim",
+            "f4V": "Me convide para o seu servidor",
+            "fStatusT1": "Uso de CPU",
+            "fStatusT2": "Uso de RAM",
+            "fStatusT4": "Servidores",
+            "fStatusT5": "Usuários",
+            "cmdAI": "Após iniciar:",
+            "fCmd": "Comandos",
+            "fBt": "Botões",
+            "fStatusRT": "RAM Total",
+            "uptime": "Tempo Online"
+        },
+        "cef": {
+            "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu modifique",
+            "anIn": "Você precisa anexar um arquivo de imagem ou gif, qualquer outro tipo de arquivo não irá funcionar",
+            "inUrl": "Você precisa anexar uma imagem ou colocar um link para que eu possa adicionar a sua ficha",
+            "nVUrl": "\"$valor$\" não é um URL válido, por que você não envia a imagem na minha DM e copia o link?",
+            "nVExt": "Esse link não possui uma extensão de arquivo válida para imagem, as extensões válidas são .png, .jpg, .jpeg e .gif",
+            "nVVal": "O valor de nenhum atributo pode ser vazio, se você não quer ele é só não colocar ele na sua ficha",
+            "nAVal": "É necessário utilizar nesse comando, um atributo, para que possa adicionar algo a sua ficha",
+            "updtFicha": "Ok, adicionei $atributo$ como \"$valor$\" na ficha \"$nomeRpg$\"",
+            "adcFicha": "Ok, adicionei $atributo$ como \"$valor$\" na ficha \"$nomeRpg$\"",
+            "delFicha": "Ok, apaguei o atributo \"$atributo$\" da ficha \"$nomeRpg$\"",
+            "confCrFicha": "Deseja criar uma nova ficha com o nome \"$nomeRpg$\"?",
+            "cancelReact": "Tudo bem, comando cancelado",
+            "sConfirm": "Sem confirmação após 30 segundos, nada foi feito",
+            "nFichaEn": "Não achei nenhuma ficha com o nome $nomeRpg$, não tenho nada pra apagar",
+            "atbNE": "$atributo$ não está na lista de atributos possíveis, tente olhar a lista em /ajuda > Atributos",
+            "nConf": "Não tenho nenhuma configuração sua salva, não tenho nada para apagar",
+            "nFP": "Você não tem nenhuma ficha padrão definida, não tenho nada para apagar",
+            "nFDB": "Você não tem nenhuma ficha com o nome \"$nomeRpg$\", não posso definir algo que não existe como sua ficha padrão",
+            "fPS": "Ok, agora a sua ficha padrão é: \"$nomeRpg$\"",
+            "cCNF": "Deseja criar uma nova ficha com o nome \"$nomeRpg$\"?",
+            "updtMulti": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomeRpg$\"",
+            "updtMultiErr": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomeRpg$\"\n\nOs seguintes atributos não puderam ser adicionados: \"$atb$\", pois, não estão na lista de atributos possíveis ou estão digitados de forma incorreta, corrija os erros ou adicione-os utilizando o extras no lugar do multi",
+            "allAtbErr": "Nenhum dos atributos digitados está na lista de atributos possíveis (**/ajuda > atributos** para ver a lista completa), ou foram digitados de forma incorreta, corrija erros ou utilize o **extras** no lugar do **multi** para adicionar seus atributos personalizados",
+            "fPE": "Ok, agora você não tem mais uma ficha padrão definida",
+            "lFE": "Você está atualmente no limite de fichas criadas por usuário (25 fichas), não é possível criar uma nova ficha, você pode tentar apagar alguma ficha que já não use mais para dar lugar a uma nova"
+        },
+        "af": {
+            "fApg": "Ficha \"$nomeRpg$\" apagada",
+            "fNE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\" no meu banco de dados, não tenho como apagar algo que não existe",
+            "cEF": "Tem certeza que deseja apagar a ficha \"$nomeRpg$\"?",
+            "fM": "Ficha \"$nomeRpg$\" mantida",
+            "sConfirm": "Sem confirmação após 30 segundos, ficha \"$nomeRpg$\" mantida",
+            "deacIrt": "IRT desativado para a ficha \"$nomeRpg$\"",
+            "irtNF": "Não achei nenhuma ficha com IRT ativado com o nome \"$nomeRpg$\""
+        },
+        "efd": {
+            "mFichas1": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu envie",
+            "nFE": "Não achei nenhuma ficha sua com o nome \"$nomeRpg$\" no meu banco de dados",
+            "uSF": "Não achei nenhuma ficha sua para poder enviar, tente criar uma nova agora!",
+            "bF": "Essa é uma função que ainda está em beta fechada, em breve, será liberada a todos",
+            "irtMF": "Você já possui o limite (5) de fichas IRT ativas",
+            "fCE": "Tem um problema com essa ficha. Você ainda pode ver a ficha utilizando `/enviartxt`",
+            "fE": "No campo \"$\", o c do campo é maior do que o Discord permite enviar (m caracteres)",
+            "fE2": "Um das seções (embeds) da ficha, excede o limite total de caracteres do Discord (6000 caracteres por embed)",
+            "ephIRT": "As fichas IRT não podem ser enviadas se a função de `Comandos de Enviar Ficha secreto` estiver ativada, desative-a para utilizar esta função"
+        },
+        "ea": {
+            "embedTi": "Ficha: ",
+            "atbSV": "O atributo \"$atb$\" não tem nenhum valor salvo na ficha \"$nomeRpg$\"",
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\" no meu banco de dados",
+            "uSF": "Não achei nenhuma ficha sua para poder enviar um atributo, tente criar uma nova agora /ajuda > ficha",
+            "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu envie"
+        },
+        "eft": {
+            "pEF": "Aqui está a ficha que você criou:",
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\"",
+            "fN": "Ficha_",
+            "uSF": "Não achei nenhuma ficha sua para poder enviar, tente criar uma nova agora /ajuda > ficha",
+            "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu envie"
+        },
+        "vf": {
+            "embedTi1": "Eu achei $qfichas$ ficha que você criou",
+            "embedTi2": "Eu achei $qfichas$ fichas que você criou",
+            "embedDesc1": "O nome da sua ficha é: **$fichasUser$**",
+            "embedDesc2": "Os nomes das suas fichas são: **$fichasUser$**",
+            "fNE": "Não achei nenhuma ficha sua, tente criar uma agora"
+        },
+        "cs": {
+            "mA": "O número que você quer calcular é grande demais",
+            "vInv": "Não tenho como calcular seus sucessos para \"$valor$\"",
+            "embedTi": "Seus sucessos para $valor$ vão ser:",
+            "embedDescExt": "Extremo será menor ou igual a",
+            "embedDescBomPt1": "Bom será menor ou igual a ",
+            "embedDescBomPt2": "e maior que",
+            "embedDescNor": "Normal será menor ou igual a",
+            "embedDescFal": "Falha será maior que"
+        },
+        "rf": {
+            "nNomeRpg": "Você precisa me dizer qual o novo nome da ficha",
+            "nInv": "Você não tem nenhuma ficha com o nome \"$nomeRpg$\"",
+            "fRenomeada": "Ok, agora a ficha \"$nomeRpg$\" se chama \"$novoNomeRpg$\"",
+            "nFE": "Não achei nenhuma ficha sua com o nome \"$nomeRpg$\" no meu banco de dados",
+            "fE": "Você já possui uma ficha com o nome \"$nomeRpg$\""
+        },
+        "ddb": {
+            "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu use",
+            "uSF": "Não achei nenhuma ficha sua para poder rolar esse dado, tente criar uma nova agora /ajuda > ficha",
+            "embedTi1": "rolou 1d100 para $atb$",
+            "embedTi2": "rolou 1d100",
+            "atbSV": "Nenhum valor salvo",
+            "rF": "Falha",
+            "rN": "Normal",
+            "rB": "Bom",
+            "rE": "Extremo",
+            "rM": "Milagre",
+            "rD": "Desastre",
+            "Result": "Resultado",
+            "embedA": "Ficha: ",
+            "errEx": "Desculpe, esse atributo não funciona com este comando",
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\" no meu banco de dados"
+        },
+        "onMsg": {
+            "cmdBarrado": "Desculpe, somente pessoal autorizado pode usar esse comando",
+            "cmdDsbDesc": "Este comando está desabilitado temporariamente\n\nMotivo: $cmd$",
+            "cmdDsbTi": "Comando Desabilitado",
+            "sPerm": "Você precisa ter permissão de administrador, gerenciar servidor ou gerenciar canais para alterar meu idioma neste servidor",
+            "slash": "Como vem sendo avisado à algum tempo, o BOT finalmente parou de aceitar comandos via mensagem, somente comandos ** ` / ` ** estão disponíveis.\n\nPara ajuda utilizando comandos ** ` / ` ** Utilize o comando ** `/ajuda` **, acesse o primeiro link abaixo ou entre no meu Discord de suporte.\n        ",
+            "btSlash": "Tutoriais do Kami",
+            "btSlashInfo": "Mais informações sobre a mudança"
+        },
+        "ajuda": {
+            "main": "Aqui você pode ver a lista completa de comandos disponíveis!\n\n        O prefixo do BOT é `/`. O prefixo `k!` foi descontinuado.\n        \n        Clique no menu abaixo para visualizar uma lista com os comandos disponíveis. Se ainda precisar de mais ajuda ou se tiver algum problema entre no meu servidor de suporte.\n\n        Você também pode ver algumas funções em mais detalhes nos [Tutoriais no site do Kami](https://kamibot.vercel.app/tutoriais)! (Mais tutoriais ainda serão adicionados)\n         \n        É recomendado ler os termos de uso do BOT.\n         ",
+            "btTermos": "Termos de Uso",
+            "atributos": "\n        \nO atributo **extras** serve para adicionar atributos customizados a sua ficha\n\n        _Formato do comando:_\n        **/ficha <nome_Rpg> extras <seu_atributo>:<valor> | <seu_atributo2>:<valor>**\n        \n        <:avisoAjuda:766826097051828235> \" : \" -> Separa um atributo de seu valor\n        <:avisoAjuda:766826097051828235> \" | \" -> Sepera diferentes atributos\n        <:avisoAjuda:766826097051828235> **Este formato de comando só é válido para o atributos Extras**\n\n        ",
+            "tMain": "Meus Comandos",
+            "tAtributos": "Atualmente os atributos possíveis são:",
+            "mPH": "Selecione um comando para visualizar"
+        },
+        "sugestao": {
+            "mEnv": "Prontinho, mensagem enviada!"
+        },
+        "dados": {
+            "tDadosMA": "Pega leve aí, $tdados$ é um número meio alto, não acha?",
+            "bDadosMA": "Na minha opnião, $bdados$, é um pouco demais, entende?",
+            "dadoInv": "Não consegui rolar \"$cmd$\", verifique se não tem algum erro",
+            "embedR1Tib": "rolou 1d",
+            "embedR1Ti": "rolou 1d",
+            "rMA": "Não consegui rolar \"$cmd$\", o resultado seria grande demais, lembre-se que o limite do discord é só de 2000 caracteres",
+            "embedR2": "rolou",
+            "embedR2Ti": "rolou $qdados$d$tdados$",
+            "nD": "Não consegui diferenciar o que é um dado e o que é um bônus, em um dado de vários segmentos, pelo menos 1 deles precisa de um \"d\", por exemplo, \"d10+3\""
+        },
+        "ef": {
+            "infAuthor": "Ficha: ",
+            "stpTi": "Status do Personagem",
+            "extPersoTi": "Extras",
+            "infoPersoTi": "Informações do Personagem",
+            "descPerso": "Descrição do Personagem",
+            "eLE": "Você atingiu o limite máximo de atributos extras em uma ficha (25), você ainda poderá ver os valores utilizando o comando /enviar_txt"
+        },
+        "ins": {
+            "embedPermTi": "Insanidade permanente",
+            "embedPermDesc": "Eu rolei um dado e o personagem desenvolve: ",
+            "embedPermDesc2inPt1": "Eu rolei um dado, o número foi alto e o personagem desenvolve:",
+            "embedPermDesc2inPt2": "e também",
+            "embedPermDesc3in": "Eu rolei um dado, e tivemos um _desastre_, o personagem desenvolve:",
+            "embedTempTi": "Insanidade temporária",
+            "embedTempDesc": "Eu rolei um dado e agora o personagem: "
+        },
+        "txt": {
+            "h1": "--Informações do Personagem----------------------------------------------------------------------------\n",
+            "h2": "--Status do Personagem---------------------------------------------------------------------------------\n",
+            "h3": "--Atributos Extras-------------------------------------------------------------------------------------\n",
+            "h4": "--Descrição do Personagem------------------------------------------------------------------------------\n"
+        },
+        "eL": {
+            "embedTi": "Escolha que linguagem deseja usar neste servidor",
+            "embedDesc": "Clique na língua que preferir, lembrando que a linguaguem original é Pt-Br\n\n    Você está atualmente em Pt-Br 🇧🇷\n    Click at: 🇺🇸 so that all commands on this server change to En-Us\n\n    **Mais línguas disponíveis em breve**",
+            "br": "Ok, agora todos os meus comandos neste servidor estão em Pt-Br",
+            "brDm": "Ok, agora todos os meus comandos nesta DM estão em Pt-Br",
+            "cancel": "Ok, nada foi feito",
+            "sR": "Sem nenhuma escolha após 2 minutos, nada foi feito"
+        },
+        "as": {
+            "timeTiT": "Foi banido temporariamente",
+            "timeTiP": "Foi banido permanentemente",
+            "timeDescP": "Você foi permanentemente banido de utilizar os comandos do BOT por **SPAM**. Se acha que está punição foi errada entre no [meu servidor de suporte](https://discord.com/invite/9rqCkFB) e faça sua reclamação",
+            "timeDescT": "Você foi temporariamente banido de utilizar os comandos do BOT por **SPAM**. Se acha que está punição foi errada entre no [meu servidor de suporte](https://discord.com/invite/9rqCkFB) e faça sua reclamação",
+            "timeF": "Você está banido até:",
+            "cooldown": "Espere mais $valor$ segundos antes de usar o próximo comando"
+        },
+        "inv": {
+            "embedDesc": "Então você quer me adicionar em outros servidores? Que bom, quanto mais gente melhor!",
+            "embedFT": "É só clicar aqui!"
+        },
+        "vote": {
+            "embedDesc": "Então você quer me votar em mim? Ainda bem, isso me ajuda bastante!",
+            "embedFT": "É só clicar aqui!"
+        },
+        "termos": {
+            "embedDesc": "Que bom que você quer ler os termos de uso, é bem importante!",
+            "embedFT": "Basta clicar aqui!"
+        },
+        "util": {
+            "voteTi": "Olha só, você votou em mim!",
+            "voteDesc": "$valor$ obrigado por votar em mim! Votos me ajudam a ganhar visibilidade, consequentemente me fazem crescer, por enquanto, tudo que posso fazer é agradecer por isso!"
+        },
+        "int": {
+            "sDM": "Atualmente, slash commands na DM não são suportados, você ainda pode utilizar os comandos com prefixo sem problemas.",
+            "nAddC": "Eu não possúo as permissões necessárias para executar slash commands neste servidor, para resolver este problema, basta readicionar o Kami no servidor utilizando este link:"
+        },
+        "config": {
+            "guiTi": "Configurações do usuário:",
+            "guiSepS": "Comandos secretos:",
+            "guiSepO": "Outras funções:",
+            "guiF1": "Rolagem:",
+            "guiF2": "Insanidade:",
+            "guiF3": "Comandos gerais:",
+            "guiF4": "Criar/Editar ficha:",
+            "guiF5": "Comandos de enviar ficha:",
+            "guiF6": "Ficha padrão:",
+            "guiAct": "✅ Ativado",
+            "guiDes": "❌ Desativado",
+            "guiSFP": "Sem ficha padrão",
+            "menuPH": "Selecione uma ficha",
+            "menuEFP": "Excluir ficha padrão",
+            "btDesRS": "Desativar rolagem secreta",
+            "btActRS": "Ativar rolagem secreta",
+            "btDesIS": "Desativar insanidade secreta",
+            "btActIS": "Ativar insanidade secreta",
+            "btDesG": "Desativar comandos gerais secretos",
+            "btActG": "Ativar comandos gerais secretos",
+            "btDesF": "Desativar criar/editar ficha secreto",
+            "btActF": "Ativar criar/editar ficha secreto",
+            "btDesE": "Desativar enviar ficha secreto",
+            "btActE": "Ativar enviar ficha secreto",
+            "btF": "Finalizar"
+        },
+        "verF": {
+            "nFE": "Não achei nenhuma ficha deste usuário com o nome \"$nomeRpg$\"",
+            "sI": "Senha incorreta para a ficha \"$nomeRpg$\"",
+            "nUE": "Não encontrei nenhum usuário com este ID",
+            "nFUE": "Não encontrei nenhuma ficha do usuário \"$cmd$\" com o nome \"$nomeRpg$\" "
+        },
+        "verS": {
+            "dm/": "Este comando só pode ser executado via DM ou `/`!",
+            "nFC": "Você não possuí nenhuma ficha criada",
+            "embedTi": "Senha$ da$ sua$ ficha$:"
+        },
+        "rS": {
+            "dm/": "Este comando só pode ser executado via DM ou `/`!",
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\"",
+            "sR": "Sua senha foi resetada com sucesso, a nova senha de ficha \"$nomeRpg$\" é: **$cmd$**"
+        },
+        "addI": {
+            "iNE": "Não encontrei nenhum arquivo nesta mensagem com uma extensão de imagem válida (png, jpg, jpeg, gif, gifV)",
+            "mPH": "Selecione uma ficha",
+            "eTi": "Adicionando esta imagem a uma de suas fichas",
+            "eDesc": "Ok, quer adicionar esta imagem a qual ficha? Basta selecionar no menu abaixo.",
+            "iAdd": "Imagem adicionada com sucesso"
+        },
+        "btR": {
+            "mS": "O máximo de dados que você pode adicionar numa única mensagem é 25",
+            "tDadoMA": "O dado \"$cmd$\" é grande demais",
+            "tDadoMB": "O dado \"$cmd$\" não pode ter valores menores que 0",
+            "msgMG": "O dado \"$cmd$\" teria um resultado grande demais",
+            "dInv": "O dado \"$cmd$\" não é válido",
+            "eTi": "Clique em um dos botões abaixo para rolar um dado",
+            "eDesc": "A rolagem será enviada neste canal\n\nEste comando é afetado pela rolagem secreta, se ativada somente você poderá ver o resultado",
+            "backBt": "Voltar aos botões"
+        },
+        "intCreate": {
+            "onErr": "Algo deu errado quando você tentou utilizar esse comando, um log de erro foi salvo e em breve o erro será corrigido"
+        }
+    },
+    "en": {
+        "bt": {
+            "conf": "Confirm",
+            "canc": "Cancel",
+            "desIrt": "Deactivate this IRT",
+            "apgIrt": "Delete this message"
+        },
+        "created": {
+            "undefined": "Created by: "
+        },
+        "botI": {
+            "gI": "Loading information",
+            "fAu": "Creator: ",
+            "f2T": "Useful Links",
+            "f2V": "My support Discord guild",
+            "f3V": "Vote for me",
+            "f4V": "Invite me to your guild",
+            "fStatusT1": "Use of CPU",
+            "fStatusT2": "Use of RAM",
+            "fStatusT4": "Guilds",
+            "fStatusT5": "Users",
+            "cmdAI": "After start:",
+            "fCmd": "Commands",
+            "fBt": "Buttons",
+            "fStatusRT": "Total RAM",
+            "uptime": "Uptime"
+        },
+        "cef": {
+            "mFichas1": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need tell me which sheet you want me to modify",
+            "mFichas2": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need tell me which sheet you want me to modify",
+            "anIn": "You need to attach an image or gif file, any other file type will not work",
+            "inUrl": "You need to attach an image or place a link so that I can add it to your sheet",
+            "nVUrl": " $valor$ is not a valid URL, why don't you upload the image in my DM and copy the link?",
+            "nVExt": "This link does not have a valid image file extension, valid extensions are .png, .jpg, .jpeg and .gif",
+            "nVVal": "The value of any attribute can be empty, if you don't want it is just don't put it",
+            "nAVal": "You need to use an attribute in this command, so you can add something to your sheet",
+            "updtFicha": "Ok, i added $atributo$ as \"$valor$\" on the sheet \"$nomeRpg$\"",
+            "adcFicha": "Ok, i added $atributo$ as \"$valor$\" on the sheet \"$nomeRpg$\"",
+            "delFicha": "Ok, i deleted the attribute \"$atributo$\" from the sheet \"$nomeRpg$\"",
+            "confCrfFicha": "Would you like to create a new sheet with the name \"$nomeRpg$\"",
+            "cancelReact": "All right, command cancelled",
+            "sConfirm": "Without confirmation after 30 seconds, nothing was done",
+            "nFichaEn": "I didn't find any sheet with the name $nomeRpg$, I have nothing to delete",
+            "nFE": " I didn't find any sheet with the name $nomeRpg$, I have nothing to delete",
+            "atbNE": "$atributo$ is not in the list of possible attributes, try looking at the list in /ajuda > attributes",
+            "updtMulti": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomeRpg$\" sheet",
+            "updtMultiErr": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomeRpg$\" sheet\n\nThe following attributes could not be added: \"$atb$\", because they are not in the list of possible attributes or are typed incorrectly, correct the errors or add them using the extras instead of multi",
+            "allAtbErr": "None of the attributes entered are in the list of possible attributes (**/ajuda > attributes** to see the full list), or were entered incorrectly, correct errors or use **extras** instead of **multi** to add your custom attributes",
+            "nConf": "I have no settings of yours saved, I have nothing to delete",
+            "nFP": "You don't have any default sheet set, I have nothing to delete",
+            "nFDB": "You don't have any sheet named \"$nomeRpg$\", I can't set something that doesn't exist as your default sheet",
+            "fPS": "Ok, now your default sheet is: \"$nomeRpg$\"",
+            "cCNF": "Would you like to create a new sheet with the name \"$nomeRpg$\"?",
+            "fPE": "Ok, now you no longer have a standard sheet defined",
+            "lFE": "You are currently at the limit of tokens created per user (25 tokens), you cannot create a new token, you can try to delete any token you no longer use to make place for a new one"
+        },
+        "af": {
+            "fApg": "Sheet \"$nomeRpg$\" deleted",
+            "fNE": "I didn't find any sheet named \"$nomeRpg$\" in my database, I can't delete something that doesn't exist",
+            "cEF": "Are you sure you want to delete the \"$nomeRpg$\" sheet?",
+            "fM": "Sheet \"$nomeRpg$\" maintained",
+            "sConfirm": "No confirmation after 30 seconds, \"$nomeRpg$\" sheet maintained",
+            "deacIrt": "IRT disabled for sheet \"$nomeRpg$\"",
+            "irtNF": "I didn't find any IRT-enabled sheet with the name \"$nomeRpg$\""
+        },
+        "efd": {
+            "mFichas1": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need to tell me which sheet you want me to send",
+            "nFE": "Didn't find any sheet of yours with the name \"$nomeRpg$\" in my database",
+            "uSF": "I couldn't find any of your sheets to send, try create a new one now!",
+            "bF": "This is a function that is still in beta closed, will soon be released to all users",
+            "irtMF": "You already have the limit (5) of IRT sheets active",
+            "fCE": "There is a problem with this sheet. You can still view the sheet using `/enviartxt`",
+            "fE": "In the field \"$\", the c of the field is larger than the Discord allows to send (m characters)",
+            "fE2": "One of the sections (embeds) of the sheet, exceeds Discord's total character limit (6000 characters per embed)",
+            "ephIRT": "IRT sheets cannot be sent if the `Send Sheet Secret` function is enabled, turn it off to use this function"
+        },
+        "ea": {
+            "uSF": "I couldn't find any of your sheets to send a attribute, try create a new one now /ajuda > sheet",
+            "embedTi": "Sheet: ",
+            "atbSV": "The attribute \"$atb$\" has no value saved in the sheet \"$nomeRpg$\"",
+            "nFE": "I didn't find any sheet with the name \"$nomeRpg$\" in my database",
+            "mFichas": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need to tell me which sheet you want me to send"
+        },
+        "eft": {
+            "pEF": "Here is the sheet that you created:",
+            "fN": "Sheet_",
+            "uSF": "I couldn't find any of your sheets to send, try create a new one now /ajuda > sheet",
+            "nFE": " I didn't find any sheet with the name \"$nomeRpg$\"",
+            "mFichas": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need tell me which sheet you want me to modify"
+        },
+        "vf": {
+            "embedTi1": "I found $qfichas$ sheet that you created",
+            "embedTi2": "I found $qfichas$ sheets that you created",
+            "embedDesc1": "Your sheet name is: **$fichasUser$**",
+            "embedDesc2": "The names of your sheets are: **$fichasUser$**",
+            "fNE": "I didn't find any sheet of yours, try to create one now"
+        },
+        "cs": {
+            "mA": "The number you want calculate is too big",
+            "vInv": "I have no way to calculate your success to \"$valor$\"",
+            "embedTi": "Your successes for $valor$ will be:",
+            "embedDescExt": "Extreme will be less than or equal to",
+            "embedDescBomPt1": "Good will be less than or equal to ",
+            "embedDescBomPt2": "and greater than",
+            "embedDescNor": "Normal will be less or equal to",
+            "embedDescFal": "Failure will be greater than"
+        },
+        "rf": {
+            "nNomeRpg": "You need to tell me what the new name of the sheet is",
+            "nInv": "You don't have any sheet with the name \"$nomeRpg$\"",
+            "fRenomeada": "Ok, now the \"$nomeRpg$\" sheet is called \"$novoNomeRpg$\"",
+            "nFE": "I didn't find any sheet of yours with the name \"$nomeRpg$\" in my database",
+            "fE": "You already have a sheet with the name \"$nomeRpg$\""
+        },
+        "ddb": {
+            "mFichas": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need to tell me which sheet you want me to use",
+            "uSF": "I couldn't find any of your sheets to roll this dice, try create a new one now /ajuda > sheet",
+            "embedTi1": "rolled 1d100 to $atb$",
+            "embedTi2": "rolled 1d100",
+            "atbSV": "No value saved",
+            "rF": "Failure",
+            "rN": "Normal",
+            "rB": "Good",
+            "rE": "Extreme",
+            "rM": "Miracle",
+            "rD": "Disaster",
+            "Result": "Result",
+            "embedA": "Sheet: ",
+            "errEx": "Sorry, this attribute does not work with this command",
+            "nFE": "I didn't find any sheet with the name \"$nomeRpg$\" in my database"
+        },
+        "onMsg": {
+            "cmdBarrado": "Sorry, only authorized people can use this command",
+            "sPerm": "You need to have administrator, manage channels or manage server permissions to change my language",
+            "cmdDsbDesc": "This command is temporarily disabled\n\n Reason: $cmd$",
+            "cmdDsbTi": "Command Disabled",
+            "slash": "As we have been warning for some time, the BOT stoped accepting commands via message, only ** ` / ` ** commands are available.\n        \nFor help using ** ` / ` ** commands, use the ** ` /ajuda ` ** command, go to the first link below or join my Discord Support Server.\n        ",
+            "btSlash": "Kami's Tutorials",
+            "btSlashInfo": "More information about the change"
+        },
+        "ajuda": {
+            "main": "Here you can see the full list of available commands!\n\n        The BOT prefix is `/`. The prefix `k!` will be discontinued soon.\n        \n        Click on the menu below to see a list of available commands. If you still need more help or have any problems join my support server.\n\n        You also can see some functions in more detais on [Kami's Tutorials](https://kamibot.vercel.app/tutoriais)! (More tutorials will be added)\n         \n        It is recommended that you read the BOT's terms of use.\n         ",
+            "btTermos": "Terms of Use",
+            "atributos": "\n    \nThe attribute **extras** is used to add custom attributes to your sheet\n\n    _Format of the command:_\n    **/ficha <sheet_name> extras <your_attribute>:<value> | <your_attribute2>:<value>**\n    \n    <:avisoAjuda:766826097051828235> \" : \" -> Separates an attribute from its value\n    <:avisoAjuda:766826097051828235> \" | \" -> Separates different attributes\n    <:avisoAjuda:766826097051828235> **This command format is only valid for the Extras attributes**",
+            "tMain": "My Commands",
+            "tAtributos": "Currently the possible attributes are:",
+            "mPH": "Select a command to visualize"
+        },
+        "sugestao": {
+            "mEnv": "Done, message sent!"
+        },
+        "dados": {
+            "tDadosMA": "Take it easy there, $tdados$ is a little high, don't you think?",
+            "bDadosMA": "In my opinion, $bdados$, is a bit much, you know?",
+            "dadoInv": "I couldn't roll \"$cmd$\", check that there are no errors",
+            "embedR1Tib": "rolled 1d",
+            "embedR1Ti": "rolled 1d",
+            "rMA": "I could not roll \"$cmd$\", the result would be too big, remember that the limit of Discord is only 2000 characters",
+            "embedR2Tib": "rolled $qdados$d$tdados$$op$$bdados$",
+            "embedR2Ti": "rolled $qdados$d$tdados$",
+            "embedR2": "rolled",
+            "nD": "I couldn't differentiate what is a dice and what is a bonus, on a multi-segment dice, at least 1 of them needs a \"d\", for example, \"d10+3\""
+        },
+        "ef": {
+            "infAuthor": "Sheet: ",
+            "stpTi": "Character Status",
+            "extPersoTi": "Extras",
+            "infoPersoTi": "Character Information",
+            "descPerso": "Character Description",
+            "eLE": "You have reached the maximum limit of extra attributes on a sheet (25 attributes), you can still see the values using the command /enviar_txt"
+        },
+        "ins": {
+            "embedPermTi": "Permanent insanity",
+            "embedPermDesc": "I rolled a dice and the character evolves:",
+            "embedPermDesc2inPt1": "I rolled a dice, the number was high and the character develops:",
+            "embedPermDesc2inPt2": "and also",
+            "embedPermDesc3in": "I rolled a dice, and we had a _disaster_, the character develops:",
+            "embedTempTi": "Temporary insanity",
+            "embedTempDesc": "I rolled a dice and now the character:"
+        },
+        "txt": {
+            "h1": "--Character Information--------------------------------------------------------------------------------\n",
+            "h2": "--Character Status-------------------------------------------------------------------------------------\n",
+            "h3": "--Extra Attributes-------------------------------------------------------------------------------------\n",
+            "h4": "--Character Description--------------------------------------------------------------------------------\n"
+        },
+        "eL": {
+            "embedTi": "Choose which language you want to use on this server",
+            "embedDesc": "Click in the language you prefer, remembering that the original language is Pt-Br\n\n    You are currently in En-Us 🇺🇸\n    Clique em: 🇧🇷 para que todos os comandos neste servidor mudem para Pt-Br\n\n    **More languages available soon**",
+            "en": "Ok, now all my commands on this server are in En-Us",
+            "enDm": "Ok, now all my commands on this DM are in En-Us",
+            "cancel": "Ok, nothing was done",
+            "sR": "No choice after 2 minutes, nothing was done"
+        },
+        "as": {
+            "timeTiP": "was permanently banned",
+            "timeTiT": "was temporally banned",
+            "timeDescP": "You have been permanently banned from using BOT commands by **SPAM**. If you think that this punishment was wrong enter in [my support guild](https://discord.com/invite/9rqCkFB) and make your appeal",
+            "timeDescT": "You have been temporally banned from using BOT commands by **SPAM**. If you think that this punishment was wrong enter in [my support guild](https://discord.com/invite/9rqCkFB) and make your appeal",
+            "timeF": "You are banned until:",
+            "cooldown": "Wait more $valor$ seconds before using the next command"
+        },
+        "inv": {
+            "embedDesc": "So you want to add me on other servers? Good, the more people the better!",
+            "embedFT": "Just click here!"
+        },
+        "vote": {
+            "embedDesc": "So you want to vote for me? Good, that helps me a lot!",
+            "embedFT": "Just click here!"
+        },
+        "termos": {
+            "embedDesc": "Glad you want to read the terms of use, it's very important!",
+            "embedFT": "Just click here!"
+        },
+        "util": {
+            "voteTi": "Look, you voted for me!",
+            "voteDesc": "$valor$ thank you for voting for me! Votes help me gain visibility, consequently they make me grow, for now, all I can do is thank you for that!"
+        },
+        "config": {
+            "guiTi": "User settings:",
+            "guiSepS": "Secret commands:",
+            "guiSepO": "Other functions:",
+            "guiF1": "Roll:",
+            "guiF2": "Insanity:",
+            "guiF3": "General commands:",
+            "guiF4": "Create/Edit sheet:",
+            "guiF5": "Commands to send a sheet:",
+            "guiF6": "Default sheet:",
+            "guiAct": "✅ Enabled",
+            "guiDes": "❌ Disabled",
+            "guiSFP": "No default sheet",
+            "menuPH": "Select a sheet",
+            "menuEFP": "Delete default sheet",
+            "btDesRS": "Disable secret roll",
+            "btActRS": "Enable secret roll",
+            "btDesIS": "Disable secret insanity",
+            "btActIS": "Enable secret insanity",
+            "btDesG": "Disable secret general commands",
+            "btActG": "Enable secret general commands",
+            "btDesF": "Disable secret create/edit sheet",
+            "btActF": "Enable secret create/edit sheet",
+            "btDesE": "Disable secret send sheet",
+            "btActE": "Enable secret send sheet",
+            "btF": "Finish"
+        },
+        "verF": {
+            "nFE": "I could not find any sheet for this user with the name \"$nomeRpg$\"",
+            "sI": "Incorrect password for sheet \"$nomeRpg$\"",
+            "nUE": "I could not find any user with this ID",
+            "nFUE": "I could not find any sheet of user \"$cmd$\" with the name \"$nomeRpg$\" "
+        },
+        "verS": {
+            "dm/": "This command can only be executed via DM or `/`!",
+            "nFC": "You don't have any sheet created",
+            "embedTi": "Password$ for your$ token$:"
+        },
+        "rS": {
+            "dm/": "This command can only be executed via DM or `/`!",
+            "nFE": "I couldn't find any sheet with the name \"$nomeRpg$\"",
+            "sR": "Your password was successfully reset, the new password of \"$nomeRpg$\" is: **$cmd$**"
+        },
+        "addI": {
+            "iNE": "I could not find any attachment in this message with a valid image extension (png, jpg, jpeg, gif, gifV)",
+            "mPH": "Select a sheet",
+            "eTi": "Adding this image to one of your sheets",
+            "eDesc": "Ok, you want to add this image to which sheet? Just select from the menu below.",
+            "iAdd": "Image added successfully"
+        },
+        "btR": {
+            "mS": "The maximum amount of dices you can add in a single message is 25",
+            "tDadoMA": "The dice \"$cmd$\" is too big",
+            "tDadoMB": "The dice \"$cmd$\" cannot have values less than 0",
+            "msgMG": "The dice \"$cmd$\" would have a result that is too big",
+            "dInv": "The dice \"$cmd$\" is not valid",
+            "eTi": "Click one of the buttons below to roll a dice",
+            "eDesc": "The roll will be sent on this channel\n\nThis command is affected by secret roll, if enabled only you can see the result",
+            "backBt": "Back to the buttons"
+        },
+        "intCreate": {
+            "onErr": "Something went wrong when you tried to use this command, an error log was saved and soon the error will be fixed"
+        }
+    }
+}
