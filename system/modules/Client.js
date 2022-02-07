@@ -77,7 +77,7 @@ module.exports = class MenuClient extends Client {
                 this.on("passInt", (...args) => { eventFunction.passInt(this, ...args) })
             }
         })
-        
+
         logs.log.start("Eventos")
     }
 
@@ -164,6 +164,15 @@ module.exports = class MenuClient extends Client {
     }
 
     setTl() {
+        this.resources = {
+            "pt-": require("../resources/texts/pt"),
+            "en-": require("../resources/texts/en"),
+            assets: require("../resources/assets/assets"),
+            msgs: require("../resources/messages/msgs.json")
+        }
+
+        this.resources.footer = this.resources["pt-"].footer
+
         const ml = require("../resources/messages/msgHandler")
         const tl = new ml(this)
 
@@ -172,14 +181,6 @@ module.exports = class MenuClient extends Client {
     }
 
     startup() {
-        this.resources = {
-            "pt-": require("../resources/texts/pt"),
-            "en-": require("../resources/texts/en"),
-            assets: require("../resources/assets/assets")
-        }
-
-        this.resources.footer = this.resources["pt-"].footer
-
         const botStatus = require("../resources/scripts/botStatus")
 
         const BS = new botStatus({ client: this })

@@ -8,7 +8,7 @@ module.exports = class msg_handler {
         try {
             const local = args.local.split("-")
 
-            var msg = require("./msgs.json")[local[0]][local[1]][local[2]]
+            var msg = this.resources.msgs[local[0]][local[1]][local[2]]
 
             Object.keys(args).forEach(k => {
                 if (k != "local") {
