@@ -164,7 +164,7 @@ module.exports = class MenuClient extends Client {
     }
 
     setTl() {
-        const ml = require("../resources/translate/tl")
+        const ml = require("../resources/messages/msgHandler")
         const tl = new ml(this)
 
         this.tl = tl.tl
