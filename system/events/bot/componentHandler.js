@@ -54,7 +54,7 @@ module.exports = {
                     .setStyle(1)
                     .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
                     .setDisabled(true)
-                    .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                    .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                 comp.message.edit({ components: [{ type: 1, components: [bApg, bConf, bCanc] }] })
                     .then(botmsg => {
@@ -76,12 +76,12 @@ module.exports = {
                                     const bDes = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
-                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     const bApg = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
-                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     int.message.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
                                 }
@@ -91,12 +91,12 @@ module.exports = {
                                     const bDes = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
-                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     const bApg = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
-                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     comp.message.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
 
@@ -142,7 +142,7 @@ module.exports = {
                     .setStyle(1)
                     .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
                     .setDisabled(true)
-                    .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                    .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                 comp.message.edit({ components: [{ type: 1, components: [bDes, bConf, bCanc] }] })
                     .then(botmsg => {
@@ -164,12 +164,12 @@ module.exports = {
                                     const bDes = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
-                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     const bApg = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
-                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     int.message.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
                                 }
@@ -179,12 +179,12 @@ module.exports = {
                                     const bDes = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
-                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     const bApg = new client.Discord.MessageButton()
                                         .setStyle(2)
                                         .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
-                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomeRpg}|msgid:${info.msgid}|chid:${info.chid}`)
+                                        .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
                                     comp.message.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
 

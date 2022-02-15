@@ -61,22 +61,22 @@ Ex: **${"/"}apagar RPG_Kami irt**
                 const args = client.utils.args(int)
                 const beta = client.whitelist.get("beta")
 
-                var nomeRpg = args.get("nome_da_ficha")
+                var nomerpg = args.get("nome_da_ficha")
                 var irt = args.get("opções")
                 if (!irt) { irt = "false" }
 
-                try { nomeRpg = nomeRpg.replace(/[^\w\s]/gi, '') } catch { }
+                try { nomerpg = nomerpg.replace(/[^\w\s]/gi, '') } catch { }
 
-                client.db.query(`select * from fichas where id = '${int.user.id}' and nomerpg = '${nomeRpg}'`)
+                client.db.query(`select * from fichas where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
                     .then(async result => {
-                        if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "af-fNE", nomeRpg: nomeRpg })) }
+                        if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "af-fNE", nomerpg: nomerpg })) }
                         else {
                             if (irt.toLowerCase() == "irt") {
-                                client.db.query(`select * from irt where id = '${int.user.id}' and nomerpg = '${nomeRpg}'`)
+                                client.db.query(`select * from irt where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
                                     .then(irt => {
                                         if (irt[0][0]) {
 
-                                            client.cache.getIrt(int.user.id, nomeRpg)
+                                            client.cache.getIrt(int.user.id, nomerpg)
                                                 .then(async fichasIrt => {
                                                     for (var f of fichasIrt) {
                                                         const c = client.channels.cache.get(f.chid)
@@ -87,14 +87,14 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                     }
                                                 })
 
-                                            client.db.query(`delete from irt where id = '${int.user.id}' and nomerpg = '${nomeRpg}'`)
+                                            client.db.query(`delete from irt where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
                                                 .then(r => {
-                                                    return int.editReply(client.tl({ local: int.lang + "af-deacIrt", nomeRpg: nomeRpg }))
+                                                    return int.editReply(client.tl({ local: int.lang + "af-deacIrt", nomerpg: nomerpg }))
                                                 })
-                                            client.cache.deleteIrt(int.user.id, nomeRpg)
+                                            client.cache.deleteIrt(int.user.id, nomerpg)
                                         }
                                         else {
-                                            return int.editReply(client.tl({ local: int.lang + "af-irtNF", nomeRpg: nomeRpg }))
+                                            return int.editReply(client.tl({ local: int.lang + "af-irtNF", nomerpg: nomerpg }))
                                         }
                                     })
 
@@ -112,7 +112,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                 .setLabel(client.tl({ local: int.lang + "bt-canc" }))
                                 .setCustomId("canc|" + uniqueID)
 
-                            int.editReply({ content: client.tl({ local: int.lang + "af-cEF", nomeRpg: nomeRpg }), components: [{ type: 1, components: [bConf, bCanc] }] })
+                            int.editReply({ content: client.tl({ local: int.lang + "af-cEF", nomerpg: nomerpg }), components: [{ type: 1, components: [bConf, bCanc] }] })
                                 .then(async botmsg => {
                                     if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
                                     const filter = (interaction) => interaction.user.id === int.user.id && interaction.customId.split("|")[1] === uniqueID
@@ -122,30 +122,30 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                             const choice = interaction.customId.split("|")[0]
 
                                             if (choice == "conf") {
-                                                client.db.query(`delete from fichas where id = '${int.user.id}' and nomerpg = '${nomeRpg}'`)
+                                                client.db.query(`delete from fichas where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
                                                     .catch(err => { client.log.error(err, true) })
                                                     .then(() => {
-                                                        client.cache.deleteFicha(int.user.id, nomeRpg)
-                                                        client.cache.deleteFichaUser(int.user.id, nomeRpg)
+                                                        client.cache.deleteFicha(int.user.id, nomerpg)
+                                                        client.cache.deleteFichaUser(int.user.id, nomerpg)
 
-                                                        int.editReply({ content: client.tl({ local: int.lang + "af-fApg", nomeRpg: nomeRpg }), components: [] })
+                                                        int.editReply({ content: client.tl({ local: int.lang + "af-fApg", nomerpg: nomerpg }), components: [] })
                                                             .then(async function () {
-                                                                client.cache.getIrt(int.user.id, nomeRpg)
+                                                                client.cache.getIrt(int.user.id, nomerpg)
                                                                     .then(infoUIRT => {
-                                                                        if (infoUIRT != "" && beta.has(`${int.user.id}`)) {
-                                                                            client.emit("apgFicha", { id: int.user.id, nomeRpg: nomeRpg })
+                                                                        if (infoUIRT != "") {
+                                                                            client.emit("apgFicha", { id: int.user.id, nomerpg: nomerpg })
                                                                         }
                                                                     })
                                                             })
                                                     })
                                             }
                                             else if (choice == "canc") {
-                                                int.editReply({ content: client.tl({ local: int.lang + "af-fM", nomeRpg: nomeRpg }), components: [] })
+                                                int.editReply({ content: client.tl({ local: int.lang + "af-fM", nomerpg: nomerpg }), components: [] })
                                             }
                                         })
                                         .catch(err => {
                                             if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                                return int.editReply({ content: client.tl({ local: int.lang + "af-sConfirm", nomeRpg: nomeRpg }), components: [] })
+                                                return int.editReply({ content: client.tl({ local: int.lang + "af-sConfirm", nomerpg: nomerpg }), components: [] })
                                             }
                                             else {
                                                 client.log.error(err, true)

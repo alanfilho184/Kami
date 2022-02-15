@@ -44,24 +44,24 @@ module.exports = class ver_ficha {
                 const args = client.utils.args(int)
 
                 const user = args.get("usuario")
-                const nomeRpg = args.get("nome_da_ficha")
+                const nomerpg = args.get("nome_da_ficha")
                 const senha = args.get("senha_da_ficha")
 
-                client.cache.getFicha(user, nomeRpg)
+                client.cache.getFicha(user, nomerpg)
                     .then(ficha => {
                         if (ficha == undefined) {
-                            return int.editReply({ content: client.tl({ local: int.lang + "verF-nFE", nomeRpg: nomeRpg }), ephemeral: true })
+                            return int.editReply({ content: client.tl({ local: int.lang + "verF-nFE", nomerpg: nomerpg }), ephemeral: true })
                         }
                         else {
                             if (ficha.senha != senha) {
-                                return int.editReply({ content: client.tl({ local: int.lang + "verF-sI", nomeRpg: nomeRpg }), ephemeral: true })
+                                return int.editReply({ content: client.tl({ local: int.lang + "verF-sI", nomerpg: nomerpg }), ephemeral: true })
                             }
                             else {
                                 client.users.fetch(user)
                                     .then(fProp => {
                                         var infoProp = int
                                         infoProp.user = fProp
-                                        const reply = client.commands.get("enviar").create(client, infoProp, nomeRpg, ficha, false)
+                                        const reply = client.commands.get("enviar").create(client, infoProp, nomerpg, ficha, false)
                                         const embedsArray = Object.values(reply)
 
                                         return int.editReply({ embeds: embedsArray, ephemeral: true })

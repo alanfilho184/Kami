@@ -37,18 +37,18 @@ module.exports = class resetar_senha {
         int.deferReply({ ephemeral: true })
             .then(() => {
                 const args = client.utils.args(int)
-                const nomeRpg = args.get("nome_da_ficha")
+                const nomerpg = args.get("nome_da_ficha")
 
-                client.db.query(`select id, nomerpg, senha from fichas where id = '${int.user.id}' and nomerpg = '${nomeRpg}' `)
+                client.db.query(`select id, nomerpg, senha from fichas where id = '${int.user.id}' and nomerpg = '${nomerpg}' `)
                     .then(r => {
                         if (r[0].length == 0) {
-                            return int.editReply({ content: client.tl({ local: int.lang + "rS-nFE", nomeRpg: nomeRpg }) })
+                            return int.editReply({ content: client.tl({ local: int.lang + "rS-nFE", nomerpg: nomerpg }) })
                         }
                         else {
                             const novaSenha = client.utils.gerarSenha()
-                            client.cache.updateFicha(int.user.id, nomeRpg, "senha", novaSenha)
+                            client.cache.updateFicha(int.user.id, nomerpg, "senha", novaSenha)
                                 .then(r => {
-                                    return int.editReply({ content: client.tl({ local: int.lang + "rS-sR", nomeRpg: nomeRpg, cmd: novaSenha }) })
+                                    return int.editReply({ content: client.tl({ local: int.lang + "rS-sR", nomerpg: nomerpg, cmd: novaSenha }) })
                                 })
                         }
                     })

@@ -95,11 +95,11 @@ module.exports = class ficha {
 
                 atributos.push("multi")
 
-                var nomeRpg = args.get("nome_da_ficha")
+                var nomerpg = args.get("nome_da_ficha")
                 var atb = args.get("atributo")
                 var valor = args.get("valor")
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", '') } catch { }
 
                 try {
                     atb = client.utils.matchAtb(atb, atributos)
@@ -107,7 +107,7 @@ module.exports = class ficha {
                 }
                 catch (err) { }
 
-                if (!nomeRpg) {
+                if (!nomerpg) {
                     const fichasUser = new Array()
                     var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
 
@@ -116,8 +116,8 @@ module.exports = class ficha {
                     }
 
                     if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "cef-mFichas", fichasUser: fichasUser })) }
-                    else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
-                    else { nomeRpg == "1" }
+                    else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
+                    else { nomerpg == "1" }
                 }
 
                 if (atb == "imagem" || atb == "image") {
@@ -184,7 +184,6 @@ module.exports = class ficha {
                             if (vals[x][vals[x].length - 1] == " ") { vals[x] = vals[x].slice(0, vals[x].length - 1) }
                             atbs[x] = atbs[x].replace(" ", "")
 
-
                             atbs[x] = client.utils.matchAtb(atbs[x], atributos)
 
                             if (!atributos.includes(atbs[x]) || atbs[x] == "extras") {
@@ -220,18 +219,18 @@ module.exports = class ficha {
                         if (x != vals.length - 1) { colunas[2] += "," }
                     }
 
-                    try { nomeRpg = nomeRpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
+                    try { nomerpg = nomerpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
 
-                    const ficha = await client.cache.getFicha(int.user.id, nomeRpg)
+                    const ficha = await client.cache.getFicha(int.user.id, nomerpg)
                     if (ficha) {
                         colunas[1] += `, id, nomerpg)`
-                        colunas[2] += `,'${int.user.id}', '${nomeRpg}')`
+                        colunas[2] += `,'${int.user.id}', '${nomerpg}')`
                     }
                     else {
                         const senha = client.utils.gerarSenha()
 
                         colunas[1] += `, id, nomerpg, senha)`
-                        colunas[2] += `,'${int.user.id}', '${nomeRpg}', '${senha}')`
+                        colunas[2] += `,'${int.user.id}', '${nomerpg}', '${senha}')`
                     }
 
 
@@ -244,7 +243,7 @@ module.exports = class ficha {
                     if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") {
                     }
                     else {
-                        var ficha = await client.cache.getFicha(int.user.id, nomeRpg)
+                        var ficha = await client.cache.getFicha(int.user.id, nomerpg)
 
                         try { var atbsAtual = ficha["extras"].split("|") }
                         catch (err) { atbsAtual = "" }
@@ -295,9 +294,9 @@ module.exports = class ficha {
 
                 }
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", '') } catch { }
 
-                client.cache.getFicha(int.user.id, nomeRpg)
+                client.cache.getFicha(int.user.id, nomerpg)
                     .then(async r => {
                         if (int.lang == "en-" && atb != "multi") {
                             atb = atributosPt[atributos.indexOf(atb)]
@@ -306,50 +305,50 @@ module.exports = class ficha {
                         if (r != undefined) {
                             try { var tryDel = valor.toLowerCase() } catch (err) { }
                             if (tryDel == "excluir" || tryDel == "delete") {
-                                client.cache.updateFicha(int.user.id, nomeRpg, atb, null)
+                                client.cache.updateFicha(int.user.id, nomerpg, atb, null)
                                     .then(r => {
-                                        int.editReply(client.tl({ local: int.lang + "cef-delFicha", nomeRpg: nomeRpg, atributo: atributosF[atributosPt.indexOf(atb)] }))
+                                        int.editReply(client.tl({ local: int.lang + "cef-delFicha", nomerpg: nomerpg, atributo: atributosF[atributosPt.indexOf(atb)] }))
                                             .then(async function () {
-                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomeRpg)
+                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                                 if (infoUIRT != "") {
-                                                    client.emit("updtFicha", int, { id: int.user.id, nomeRpg: nomeRpg, irt: infoUIRT })
+                                                    client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
                                                 }
                                             })
                                     })
                                     .catch(err => client.log.error(err, true))
                             }
                             else if (atb == "multi") {
-                                const custom_sql = `update fichas set ${colunas[0]} where id = '${int.user.id}' and nomerpg = '${nomeRpg}'`
+                                const custom_sql = `update fichas set ${colunas[0]} where id = '${int.user.id}' and nomerpg = '${nomerpg}'`
 
-                                client.cache.updateFicha(int.user.id, nomeRpg, atbs, vals, custom_sql)
+                                client.cache.updateFicha(int.user.id, nomerpg, atbs, vals, custom_sql)
                                     .then(r => {
                                         var msgToSend = String()
                                         if (atbsErr[0]) {
-                                            msgToSend = client.tl({ local: int.lang + "cef-updtMultiErr", nomeRpg: nomeRpg, atributo: atbs, valor: vals, atb: atbsErr })
+                                            msgToSend = client.tl({ local: int.lang + "cef-updtMultiErr", nomerpg: nomerpg, atributo: atbs, valor: vals, atb: atbsErr })
                                         }
                                         else {
-                                            msgToSend = client.tl({ local: int.lang + "cef-updtMulti", nomeRpg: nomeRpg, atributo: atbs, valor: vals })
+                                            msgToSend = client.tl({ local: int.lang + "cef-updtMulti", nomerpg: nomerpg, atributo: atbs, valor: vals })
                                         }
                                         int.editReply(msgToSend)
                                             .then(async function () {
-                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomeRpg)
+                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
                                                 if (infoUIRT != "") {
-                                                    client.emit("updtFicha", int, { id: int.user.id, nomeRpg: nomeRpg, irt: infoUIRT })
+                                                    client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
                                                 }
                                             })
                                     })
                                     .catch(err => client.log.error(err, true))
                             }
                             else {
-                                client.cache.updateFicha(int.user.id, nomeRpg, atb, valor)
+                                client.cache.updateFicha(int.user.id, nomerpg, atb, valor)
                                     .then(r => {
-                                        int.editReply(client.tl({ local: int.lang + "cef-updtFicha", nomeRpg: nomeRpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }))
+                                        int.editReply(client.tl({ local: int.lang + "cef-updtFicha", nomerpg: nomerpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }))
                                             .then(async function () {
-                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomeRpg)
+                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                                 if (infoUIRT != "") {
-                                                    client.emit("updtFicha", int, { id: int.user.id, nomeRpg: nomeRpg, irt: infoUIRT })
+                                                    client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
                                                 }
                                             })
                                     })
@@ -358,7 +357,7 @@ module.exports = class ficha {
                         }
                         else {
                             if (tryDel == "excluir" || tryDel == "delete") {
-                                return int.editReply(client.tl({ local: int.lang + "cef-nFichaEn", nomeRpg: nomeRpg }))
+                                return int.editReply(client.tl({ local: int.lang + "cef-nFichaEn", nomerpg: nomerpg }))
                             }
                             else {
 
@@ -380,7 +379,7 @@ module.exports = class ficha {
                                     .setCustomId("canc|" + uniqueID)
 
 
-                                int.editReply({ content: client.tl({ local: int.lang + "cef-cCNF", nomeRpg: nomeRpg }), components: [{ type: 1, components: [bConf, bCanc] }] })
+                                int.editReply({ content: client.tl({ local: int.lang + "cef-cCNF", nomerpg: nomerpg }), components: [{ type: 1, components: [bConf, bCanc] }] })
                                     .then(async botmsg => {
                                         if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
                                         const filter = (interaction) => interaction.customId.split("|")[1] === uniqueID && interaction.user.id === int.user.id
@@ -392,38 +391,38 @@ module.exports = class ficha {
                                                 if (choice == "conf") {
                                                     if (atb == "multi") {
                                                         const custom_sql = `insert into fichas ${colunas[1]} ${colunas[2]}`
-                                                        client.cache.updateFicha(int.user.id, nomeRpg, atbs, vals, custom_sql)
+                                                        client.cache.updateFicha(int.user.id, nomerpg, atbs, vals, custom_sql)
                                                             .then(r => {
-                                                                client.cache.updateFichasUser(int.user.id, nomeRpg)
+                                                                client.cache.updateFichasUser(int.user.id, nomerpg)
                                                                 var msgToSend = String()
                                                                 if (atbsErr[0]) {
-                                                                    msgToSend = client.tl({ local: int.lang + "cef-updtMultiErr", nomeRpg: nomeRpg, atributo: atbs, valor: vals, atb: atbsErr })
+                                                                    msgToSend = client.tl({ local: int.lang + "cef-updtMultiErr", nomerpg: nomerpg, atributo: atbs, valor: vals, atb: atbsErr })
                                                                 }
                                                                 else {
-                                                                    msgToSend = client.tl({ local: int.lang + "cef-updtMulti", nomeRpg: nomeRpg, atributo: atbs, valor: vals })
+                                                                    msgToSend = client.tl({ local: int.lang + "cef-updtMulti", nomerpg: nomerpg, atributo: atbs, valor: vals })
                                                                 }
                                                                 int.editReply({ content: msgToSend, components: [] })
                                                                     .then(async function () {
-                                                                        var infoUIRT = await client.cache.getIrt(int.user.id, nomeRpg)
+                                                                        var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                                                         if (infoUIRT != "") {
-                                                                            client.emit("updtFicha", int, { id: int.user.id, nomeRpg: nomeRpg, irt: infoUIRT })
+                                                                            client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
                                                                         }
                                                                     })
                                                             })
                                                             .catch(err => client.log.error(err, true))
                                                     }
                                                     else {
-                                                        try { nomeRpg = nomeRpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
+                                                        try { nomerpg = nomerpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
                                                         const senha = client.utils.gerarSenha()
 
-                                                        client.db.query(`insert into fichas (id, nomerpg, ${atb}, senha) values ('${int.user.id}', '${nomeRpg}', :valor, '${senha}')`, {
+                                                        client.db.query(`insert into fichas (id, nomerpg, ${atb}, senha) values ('${int.user.id}', '${nomerpg}', :valor, '${senha}')`, {
                                                             replacements: { valor: valor },
                                                             type: QueryTypes.INSERT
                                                         })
                                                             .then(r => {
-                                                                client.cache.updateFichasUser(int.user.id, nomeRpg)
-                                                                return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomeRpg: nomeRpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }), components: [] })
+                                                                client.cache.updateFichasUser(int.user.id, nomerpg)
+                                                                return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomerpg: nomerpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }), components: [] })
                                                             })
                                                             .catch(err => client.log.error(err, true))
                                                     }

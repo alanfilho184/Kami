@@ -81,14 +81,14 @@ module.exports = class adicionar_imagem {
                         .then((interaction) => {
                             interaction.deferUpdate()
 
-                            const nomeRpg = interaction.values[0]
+                            const nomerpg = interaction.values[0]
 
-                            client.cache.updateFicha(int.user.id, nomeRpg, "imagem", attach.url)
+                            client.cache.updateFicha(int.user.id, nomerpg, "imagem", attach.url)
                                 .then(async r => {
-                                    var infoUIRT = await client.cache.getIrt(int.user.id, nomeRpg)
+                                    var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                     if (infoUIRT != "") {
-                                        client.emit("updtFicha", int, { id: int.user.id, nomeRpg: nomeRpg, irt: infoUIRT })
+                                        client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
                                     }
 
                                     return int.editReply({ content: client.tl({ local: int.lang + "addI-iAdd" }), embeds: [], components: [] })

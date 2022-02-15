@@ -34,37 +34,37 @@
             "nVExt": "Esse link não possui uma extensão de arquivo válida para imagem, as extensões válidas são .png, .jpg, .jpeg e .gif",
             "nVVal": "O valor de nenhum atributo pode ser vazio, se você não quer ele é só não colocar ele na sua ficha",
             "nAVal": "É necessário utilizar nesse comando, um atributo, para que possa adicionar algo a sua ficha",
-            "updtFicha": "Ok, adicionei $atributo$ como \"$valor$\" na ficha \"$nomeRpg$\"",
-            "adcFicha": "Ok, adicionei $atributo$ como \"$valor$\" na ficha \"$nomeRpg$\"",
-            "delFicha": "Ok, apaguei o atributo \"$atributo$\" da ficha \"$nomeRpg$\"",
-            "confCrFicha": "Deseja criar uma nova ficha com o nome \"$nomeRpg$\"?",
+            "updtFicha": "Ok, adicionei $atributo$ como \"$valor$\" na ficha \"$nomerpg$\"",
+            "adcFicha": "Ok, adicionei $atributo$ como \"$valor$\" na ficha \"$nomerpg$\"",
+            "delFicha": "Ok, apaguei o atributo \"$atributo$\" da ficha \"$nomerpg$\"",
+            "confCrFicha": "Deseja criar uma nova ficha com o nome \"$nomerpg$\"?",
             "cancelReact": "Tudo bem, comando cancelado",
             "sConfirm": "Sem confirmação após 30 segundos, nada foi feito",
-            "nFichaEn": "Não achei nenhuma ficha com o nome $nomeRpg$, não tenho nada pra apagar",
+            "nFichaEn": "Não achei nenhuma ficha com o nome $nomerpg$, não tenho nada pra apagar",
             "atbNE": "$atributo$ não está na lista de atributos possíveis, tente olhar a lista em /ajuda > Atributos",
             "nConf": "Não tenho nenhuma configuração sua salva, não tenho nada para apagar",
             "nFP": "Você não tem nenhuma ficha padrão definida, não tenho nada para apagar",
-            "nFDB": "Você não tem nenhuma ficha com o nome \"$nomeRpg$\", não posso definir algo que não existe como sua ficha padrão",
-            "fPS": "Ok, agora a sua ficha padrão é: \"$nomeRpg$\"",
-            "cCNF": "Deseja criar uma nova ficha com o nome \"$nomeRpg$\"?",
-            "updtMulti": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomeRpg$\"",
-            "updtMultiErr": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomeRpg$\"\n\nOs seguintes atributos não puderam ser adicionados: \"$atb$\", pois, não estão na lista de atributos possíveis ou estão digitados de forma incorreta, corrija os erros ou adicione-os utilizando o extras no lugar do multi",
+            "nFDB": "Você não tem nenhuma ficha com o nome \"$nomerpg$\", não posso definir algo que não existe como sua ficha padrão",
+            "fPS": "Ok, agora a sua ficha padrão é: \"$nomerpg$\"",
+            "cCNF": "Deseja criar uma nova ficha com o nome \"$nomerpg$\"?",
+            "updtMulti": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomerpg$\"",
+            "updtMultiErr": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomerpg$\"\n\nOs seguintes atributos não puderam ser adicionados: \"$atb$\", pois, não estão na lista de atributos possíveis ou estão digitados de forma incorreta, corrija os erros ou adicione-os utilizando o extras no lugar do multi",
             "allAtbErr": "Nenhum dos atributos digitados está na lista de atributos possíveis (**/ajuda > atributos** para ver a lista completa), ou foram digitados de forma incorreta, corrija erros ou utilize o **extras** no lugar do **multi** para adicionar seus atributos personalizados",
             "fPE": "Ok, agora você não tem mais uma ficha padrão definida",
             "lFE": "Você está atualmente no limite de fichas criadas por usuário (25 fichas), não é possível criar uma nova ficha, você pode tentar apagar alguma ficha que já não use mais para dar lugar a uma nova"
         },
         "af": {
-            "fApg": "Ficha \"$nomeRpg$\" apagada",
-            "fNE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\" no meu banco de dados, não tenho como apagar algo que não existe",
-            "cEF": "Tem certeza que deseja apagar a ficha \"$nomeRpg$\"?",
-            "fM": "Ficha \"$nomeRpg$\" mantida",
-            "sConfirm": "Sem confirmação após 30 segundos, ficha \"$nomeRpg$\" mantida",
-            "deacIrt": "IRT desativado para a ficha \"$nomeRpg$\"",
-            "irtNF": "Não achei nenhuma ficha com IRT ativado com o nome \"$nomeRpg$\""
+            "fApg": "Ficha \"$nomerpg$\" apagada",
+            "fNE": "Não achei nenhuma ficha com o nome \"$nomerpg$\" no meu banco de dados, não tenho como apagar algo que não existe",
+            "cEF": "Tem certeza que deseja apagar a ficha \"$nomerpg$\"?",
+            "fM": "Ficha \"$nomerpg$\" mantida",
+            "sConfirm": "Sem confirmação após 30 segundos, ficha \"$nomerpg$\" mantida",
+            "deacIrt": "IRT desativado para a ficha \"$nomerpg$\"",
+            "irtNF": "Não achei nenhuma ficha com IRT ativado com o nome \"$nomerpg$\""
         },
         "efd": {
             "mFichas1": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu envie",
-            "nFE": "Não achei nenhuma ficha sua com o nome \"$nomeRpg$\" no meu banco de dados",
+            "nFE": "Não achei nenhuma ficha sua com o nome \"$nomerpg$\" no meu banco de dados",
             "uSF": "Não achei nenhuma ficha sua para poder enviar, tente criar uma nova agora!",
             "bF": "Essa é uma função que ainda está em beta fechada, em breve, será liberada a todos",
             "irtMF": "Você já possui o limite (5) de fichas IRT ativas",
@@ -75,14 +75,14 @@
         },
         "ea": {
             "embedTi": "Ficha: ",
-            "atbSV": "O atributo \"$atb$\" não tem nenhum valor salvo na ficha \"$nomeRpg$\"",
-            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\" no meu banco de dados",
+            "atbSV": "O atributo \"$atb$\" não tem nenhum valor salvo na ficha \"$nomerpg$\"",
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomerpg$\" no meu banco de dados",
             "uSF": "Não achei nenhuma ficha sua para poder enviar um atributo, tente criar uma nova agora /ajuda > ficha",
             "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu envie"
         },
         "eft": {
             "pEF": "Aqui está a ficha que você criou:",
-            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\"",
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomerpg$\"",
             "fN": "Ficha_",
             "uSF": "Não achei nenhuma ficha sua para poder enviar, tente criar uma nova agora /ajuda > ficha",
             "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu envie"
@@ -106,10 +106,10 @@
         },
         "rf": {
             "nNomeRpg": "Você precisa me dizer qual o novo nome da ficha",
-            "nInv": "Você não tem nenhuma ficha com o nome \"$nomeRpg$\"",
-            "fRenomeada": "Ok, agora a ficha \"$nomeRpg$\" se chama \"$novoNomeRpg$\"",
-            "nFE": "Não achei nenhuma ficha sua com o nome \"$nomeRpg$\" no meu banco de dados",
-            "fE": "Você já possui uma ficha com o nome \"$nomeRpg$\""
+            "nInv": "Você não tem nenhuma ficha com o nome \"$nomerpg$\"",
+            "fRenomeada": "Ok, agora a ficha \"$nomerpg$\" se chama \"$novoNomeRpg$\"",
+            "nFE": "Não achei nenhuma ficha sua com o nome \"$nomerpg$\" no meu banco de dados",
+            "fE": "Você já possui uma ficha com o nome \"$nomerpg$\""
         },
         "ddb": {
             "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu use",
@@ -126,7 +126,7 @@
             "Result": "Resultado",
             "embedA": "Ficha: ",
             "errEx": "Desculpe, esse atributo não funciona com este comando",
-            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\" no meu banco de dados"
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomerpg$\" no meu banco de dados"
         },
         "onMsg": {
             "cmdBarrado": "Desculpe, somente pessoal autorizado pode usar esse comando",
@@ -246,10 +246,10 @@
             "btF": "Finalizar"
         },
         "verF": {
-            "nFE": "Não achei nenhuma ficha deste usuário com o nome \"$nomeRpg$\"",
-            "sI": "Senha incorreta para a ficha \"$nomeRpg$\"",
+            "nFE": "Não achei nenhuma ficha deste usuário com o nome \"$nomerpg$\"",
+            "sI": "Senha incorreta para a ficha \"$nomerpg$\"",
             "nUE": "Não encontrei nenhum usuário com este ID",
-            "nFUE": "Não encontrei nenhuma ficha do usuário \"$cmd$\" com o nome \"$nomeRpg$\" "
+            "nFUE": "Não encontrei nenhuma ficha do usuário \"$cmd$\" com o nome \"$nomerpg$\" "
         },
         "verS": {
             "dm/": "Este comando só pode ser executado via DM ou `/`!",
@@ -258,8 +258,8 @@
         },
         "rS": {
             "dm/": "Este comando só pode ser executado via DM ou `/`!",
-            "nFE": "Não achei nenhuma ficha com o nome \"$nomeRpg$\"",
-            "sR": "Sua senha foi resetada com sucesso, a nova senha de ficha \"$nomeRpg$\" é: **$cmd$**"
+            "nFE": "Não achei nenhuma ficha com o nome \"$nomerpg$\"",
+            "sR": "Sua senha foi resetada com sucesso, a nova senha de ficha \"$nomerpg$\" é: **$cmd$**"
         },
         "addI": {
             "iNE": "Não encontrei nenhum arquivo nesta mensagem com uma extensão de imagem válida (png, jpg, jpeg, gif, gifV)",
@@ -318,38 +318,38 @@
             "nVExt": "This link does not have a valid image file extension, valid extensions are .png, .jpg, .jpeg and .gif",
             "nVVal": "The value of any attribute can be empty, if you don't want it is just don't put it",
             "nAVal": "You need to use an attribute in this command, so you can add something to your sheet",
-            "updtFicha": "Ok, i added $atributo$ as \"$valor$\" on the sheet \"$nomeRpg$\"",
-            "adcFicha": "Ok, i added $atributo$ as \"$valor$\" on the sheet \"$nomeRpg$\"",
-            "delFicha": "Ok, i deleted the attribute \"$atributo$\" from the sheet \"$nomeRpg$\"",
-            "confCrfFicha": "Would you like to create a new sheet with the name \"$nomeRpg$\"",
+            "updtFicha": "Ok, i added $atributo$ as \"$valor$\" on the sheet \"$nomerpg$\"",
+            "adcFicha": "Ok, i added $atributo$ as \"$valor$\" on the sheet \"$nomerpg$\"",
+            "delFicha": "Ok, i deleted the attribute \"$atributo$\" from the sheet \"$nomerpg$\"",
+            "confCrfFicha": "Would you like to create a new sheet with the name \"$nomerpg$\"",
             "cancelReact": "All right, command cancelled",
             "sConfirm": "Without confirmation after 30 seconds, nothing was done",
-            "nFichaEn": "I didn't find any sheet with the name $nomeRpg$, I have nothing to delete",
-            "nFE": " I didn't find any sheet with the name $nomeRpg$, I have nothing to delete",
+            "nFichaEn": "I didn't find any sheet with the name $nomerpg$, I have nothing to delete",
+            "nFE": " I didn't find any sheet with the name $nomerpg$, I have nothing to delete",
             "atbNE": "$atributo$ is not in the list of possible attributes, try looking at the list in /ajuda > attributes",
-            "updtMulti": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomeRpg$\" sheet",
-            "updtMultiErr": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomeRpg$\" sheet\n\nThe following attributes could not be added: \"$atb$\", because they are not in the list of possible attributes or are typed incorrectly, correct the errors or add them using the extras instead of multi",
+            "updtMulti": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomerpg$\" sheet",
+            "updtMultiErr": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomerpg$\" sheet\n\nThe following attributes could not be added: \"$atb$\", because they are not in the list of possible attributes or are typed incorrectly, correct the errors or add them using the extras instead of multi",
             "allAtbErr": "None of the attributes entered are in the list of possible attributes (**/ajuda > attributes** to see the full list), or were entered incorrectly, correct errors or use **extras** instead of **multi** to add your custom attributes",
             "nConf": "I have no settings of yours saved, I have nothing to delete",
             "nFP": "You don't have any default sheet set, I have nothing to delete",
-            "nFDB": "You don't have any sheet named \"$nomeRpg$\", I can't set something that doesn't exist as your default sheet",
-            "fPS": "Ok, now your default sheet is: \"$nomeRpg$\"",
-            "cCNF": "Would you like to create a new sheet with the name \"$nomeRpg$\"?",
+            "nFDB": "You don't have any sheet named \"$nomerpg$\", I can't set something that doesn't exist as your default sheet",
+            "fPS": "Ok, now your default sheet is: \"$nomerpg$\"",
+            "cCNF": "Would you like to create a new sheet with the name \"$nomerpg$\"?",
             "fPE": "Ok, now you no longer have a standard sheet defined",
             "lFE": "You are currently at the limit of tokens created per user (25 tokens), you cannot create a new token, you can try to delete any token you no longer use to make place for a new one"
         },
         "af": {
-            "fApg": "Sheet \"$nomeRpg$\" deleted",
-            "fNE": "I didn't find any sheet named \"$nomeRpg$\" in my database, I can't delete something that doesn't exist",
-            "cEF": "Are you sure you want to delete the \"$nomeRpg$\" sheet?",
-            "fM": "Sheet \"$nomeRpg$\" maintained",
-            "sConfirm": "No confirmation after 30 seconds, \"$nomeRpg$\" sheet maintained",
-            "deacIrt": "IRT disabled for sheet \"$nomeRpg$\"",
-            "irtNF": "I didn't find any IRT-enabled sheet with the name \"$nomeRpg$\""
+            "fApg": "Sheet \"$nomerpg$\" deleted",
+            "fNE": "I didn't find any sheet named \"$nomerpg$\" in my database, I can't delete something that doesn't exist",
+            "cEF": "Are you sure you want to delete the \"$nomerpg$\" sheet?",
+            "fM": "Sheet \"$nomerpg$\" maintained",
+            "sConfirm": "No confirmation after 30 seconds, \"$nomerpg$\" sheet maintained",
+            "deacIrt": "IRT disabled for sheet \"$nomerpg$\"",
+            "irtNF": "I didn't find any IRT-enabled sheet with the name \"$nomerpg$\""
         },
         "efd": {
             "mFichas1": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need to tell me which sheet you want me to send",
-            "nFE": "Didn't find any sheet of yours with the name \"$nomeRpg$\" in my database",
+            "nFE": "Didn't find any sheet of yours with the name \"$nomerpg$\" in my database",
             "uSF": "I couldn't find any of your sheets to send, try create a new one now!",
             "bF": "This is a function that is still in beta closed, will soon be released to all users",
             "irtMF": "You already have the limit (5) of IRT sheets active",
@@ -361,15 +361,15 @@
         "ea": {
             "uSF": "I couldn't find any of your sheets to send a attribute, try create a new one now /ajuda > sheet",
             "embedTi": "Sheet: ",
-            "atbSV": "The attribute \"$atb$\" has no value saved in the sheet \"$nomeRpg$\"",
-            "nFE": "I didn't find any sheet with the name \"$nomeRpg$\" in my database",
+            "atbSV": "The attribute \"$atb$\" has no value saved in the sheet \"$nomerpg$\"",
+            "nFE": "I didn't find any sheet with the name \"$nomerpg$\" in my database",
             "mFichas": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need to tell me which sheet you want me to send"
         },
         "eft": {
             "pEF": "Here is the sheet that you created:",
             "fN": "Sheet_",
             "uSF": "I couldn't find any of your sheets to send, try create a new one now /ajuda > sheet",
-            "nFE": " I didn't find any sheet with the name \"$nomeRpg$\"",
+            "nFE": " I didn't find any sheet with the name \"$nomerpg$\"",
             "mFichas": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need tell me which sheet you want me to modify"
         },
         "vf": {
@@ -391,10 +391,10 @@
         },
         "rf": {
             "nNomeRpg": "You need to tell me what the new name of the sheet is",
-            "nInv": "You don't have any sheet with the name \"$nomeRpg$\"",
-            "fRenomeada": "Ok, now the \"$nomeRpg$\" sheet is called \"$novoNomeRpg$\"",
-            "nFE": "I didn't find any sheet of yours with the name \"$nomeRpg$\" in my database",
-            "fE": "You already have a sheet with the name \"$nomeRpg$\""
+            "nInv": "You don't have any sheet with the name \"$nomerpg$\"",
+            "fRenomeada": "Ok, now the \"$nomerpg$\" sheet is called \"$novoNomeRpg$\"",
+            "nFE": "I didn't find any sheet of yours with the name \"$nomerpg$\" in my database",
+            "fE": "You already have a sheet with the name \"$nomerpg$\""
         },
         "ddb": {
             "mFichas": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need to tell me which sheet you want me to use",
@@ -411,7 +411,7 @@
             "Result": "Result",
             "embedA": "Sheet: ",
             "errEx": "Sorry, this attribute does not work with this command",
-            "nFE": "I didn't find any sheet with the name \"$nomeRpg$\" in my database"
+            "nFE": "I didn't find any sheet with the name \"$nomerpg$\" in my database"
         },
         "onMsg": {
             "cmdBarrado": "Sorry, only authorized people can use this command",
@@ -528,10 +528,10 @@
             "btF": "Finish"
         },
         "verF": {
-            "nFE": "I could not find any sheet for this user with the name \"$nomeRpg$\"",
-            "sI": "Incorrect password for sheet \"$nomeRpg$\"",
+            "nFE": "I could not find any sheet for this user with the name \"$nomerpg$\"",
+            "sI": "Incorrect password for sheet \"$nomerpg$\"",
             "nUE": "I could not find any user with this ID",
-            "nFUE": "I could not find any sheet of user \"$cmd$\" with the name \"$nomeRpg$\" "
+            "nFUE": "I could not find any sheet of user \"$cmd$\" with the name \"$nomerpg$\" "
         },
         "verS": {
             "dm/": "This command can only be executed via DM or `/`!",
@@ -540,8 +540,8 @@
         },
         "rS": {
             "dm/": "This command can only be executed via DM or `/`!",
-            "nFE": "I couldn't find any sheet with the name \"$nomeRpg$\"",
-            "sR": "Your password was successfully reset, the new password of \"$nomeRpg$\" is: **$cmd$**"
+            "nFE": "I couldn't find any sheet with the name \"$nomerpg$\"",
+            "sR": "Your password was successfully reset, the new password of \"$nomerpg$\" is: **$cmd$**"
         },
         "addI": {
             "iNE": "I could not find any attachment in this message with a valid image extension (png, jpg, jpeg, gif, gifV)",

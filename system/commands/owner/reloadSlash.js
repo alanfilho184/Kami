@@ -18,7 +18,7 @@ module.exports = class reloadSlash {
     }
 
     async execute(client, int) {
-        const rest = new REST({ version: '9' }).setToken(client.settings.token);
+        const rest = new REST({ version: '10' }).setToken(client.settings.token);
 
         const slashs = await rest.get(
             Routes.applicationCommands(client.settings.clientId)
@@ -171,8 +171,7 @@ module.exports = class reloadSlash {
         } catch (error) {
             client.log.error(error, true)
         }
-
+        
         int.reply("Slash commands recarregados")
-
     }
 }

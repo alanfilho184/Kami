@@ -136,22 +136,22 @@ module.exports = class Cache {
         return commandCount
     }
 
-    async getFicha(id, nomeRpg) {
-        var ficha = fichas.get(id + nomeRpg)
+    async getFicha(id, nomerpg) {
+        var ficha = fichas.get(id + nomerpg)
         if (ficha) { return ficha } else {
-            var r = await this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomeRpg}'`)
+            var r = await this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
 
-            if (r[0][0]) { fichas.set(id + nomeRpg, r[0][0]) }
+            if (r[0][0]) { fichas.set(id + nomerpg, r[0][0]) }
             return r[0][0]
         }
     }
 
-    async getIrt(id, nomeRpg) {
-        const i = irt.get(id + nomeRpg)
+    async getIrt(id, nomerpg) {
+        const i = irt.get(id + nomerpg)
         if (i) { return i }
         else {
-            var r = await this.client.db.query(`select * from irt where id = '${id}' and nomerpg = '${nomeRpg}'`)
-            if (r[0][0] != undefined) { irt.set(id + nomeRpg, r[0]) }
+            var r = await this.client.db.query(`select * from irt where id = '${id}' and nomerpg = '${nomerpg}'`)
+            if (r[0][0] != undefined) { irt.set(id + nomerpg, r[0]) }
             return r[0]
         }
     }
@@ -284,66 +284,66 @@ module.exports = class Cache {
         }
     }
 
-    async updateFicha(id, nomeRpg, atb, valor, custom_sql) {
+    async updateFicha(id, nomerpg, atb, valor, custom_sql) {
         if (custom_sql) {
             this.client.db.query(custom_sql)
                 .then(r => {
-                    if (fichas.has(id + nomeRpg)) {
-                        var f = fichas.get(id + nomeRpg)
+                    if (fichas.has(id + nomerpg)) {
+                        var f = fichas.get(id + nomerpg)
                         for (var x in atb) {
                             f[atb[x]] = valor[x]
                         }
-                        fichas.set(id + nomeRpg, f)
+                        fichas.set(id + nomerpg, f)
                         return r[0]
                     } else {
-                        this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomeRpg}'`)
-                            .then(r => { fichas.set(id + nomeRpg, r[0][0]); return r[0] })
+                        this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
+                            .then(r => { fichas.set(id + nomerpg, r[0][0]); return r[0] })
                     }
                 })
         }
         else {
             if (valor == null) {
-                await this.client.db.query(`update fichas set ${atb} = null where id = '${id}' and nomerpg = '${nomeRpg}'`)
+                await this.client.db.query(`update fichas set ${atb} = null where id = '${id}' and nomerpg = '${nomerpg}'`)
                     .then(r => {
-                        if (fichas.has(id + nomeRpg)) {
-                            var f = fichas.get(id + nomeRpg)
+                        if (fichas.has(id + nomerpg)) {
+                            var f = fichas.get(id + nomerpg)
                             f[atb] = valor
-                            fichas.set(id + nomeRpg, f)
+                            fichas.set(id + nomerpg, f)
                             return r[0]
                         } else {
-                            this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomeRpg}'`)
-                                .then(r => { fichas.set(id + nomeRpg, r[0][0]); return r[0] })
+                            this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
+                                .then(r => { fichas.set(id + nomerpg, r[0][0]); return r[0] })
                         }
                     })
             }
             else {
-                await this.client.db.query(`update fichas set ${atb} = :valor where id = '${id}' and nomerpg = '${nomeRpg}'`, {
+                await this.client.db.query(`update fichas set ${atb} = :valor where id = '${id}' and nomerpg = '${nomerpg}'`, {
                     replacements: { valor: valor },
                     type: QueryTypes.UPDATE
                 })
                     .then(r => {
-                        if (fichas.has(id + nomeRpg)) {
-                            var f = fichas.get(id + nomeRpg)
+                        if (fichas.has(id + nomerpg)) {
+                            var f = fichas.get(id + nomerpg)
                             f[atb] = valor
-                            fichas.set(id + nomeRpg, f)
+                            fichas.set(id + nomerpg, f)
                             return r[0]
                         } else {
-                            this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomeRpg}'`)
-                                .then(r => { fichas.set(id + nomeRpg, r[0][0]); return r[0] })
+                            this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
+                                .then(r => { fichas.set(id + nomerpg, r[0][0]); return r[0] })
                         }
                     })
             }
         }
     }
 
-    updateFichasUser(id, nomeRpg) {
+    updateFichasUser(id, nomerpg) {
         let uInfo = this.getFichasUser(id)
 
         if (!uInfo) {
             uInfo = new Array()
         }
 
-        uInfo.push(nomeRpg)
+        uInfo.push(nomerpg)
         let nomeFichasCache = require("./json/nomeFichas.json")
 
         nomeFichasCache[id] = uInfo
@@ -357,14 +357,14 @@ module.exports = class Cache {
         })
     }
 
-    updateIrt(id, nomeRpg, msgid, chid) {
-        var i = irt.get(id + nomeRpg)
+    updateIrt(id, nomerpg, msgid, chid) {
+        var i = irt.get(id + nomerpg)
 
         if (i == undefined) {
             i = new Array()
             i[0] = {
                 id: id,
-                nomerpg: nomeRpg,
+                nomerpg: nomerpg,
                 msgid: msgid,
                 chid: chid
             }
@@ -372,23 +372,23 @@ module.exports = class Cache {
         else {
             i[i.length] = {
                 id: id,
-                nomerpg: nomeRpg,
+                nomerpg: nomerpg,
                 msgid: msgid,
                 chid: chid
             }
         }
 
-        irt.set(id + nomeRpg, i)
+        irt.set(id + nomerpg, i)
     }
 
-    deleteFicha(id, nomeRpg) {
-        fichas.delete(id + nomeRpg)
-        this.deleteFichaUser(id, nomeRpg)
+    deleteFicha(id, nomerpg) {
+        fichas.delete(id + nomerpg)
+        this.deleteFichaUser(id, nomerpg)
     }
 
-    deleteIrt(id, nomeRpg, msgid) {
+    deleteIrt(id, nomerpg, msgid) {
         if (msgid) {
-            var i = irt.get(id + nomeRpg)
+            var i = irt.get(id + nomerpg)
 
             var iU = new Array()
             for (var x in i) {
@@ -398,20 +398,20 @@ module.exports = class Cache {
             }
 
             if (!iU[0]) {
-                irt.delete(id + nomeRpg)
+                irt.delete(id + nomerpg)
             }
             else {
-                irt.set(id + nomeRpg, iU)
+                irt.set(id + nomerpg, iU)
             }
         }
         else {
-            irt.delete(id + nomeRpg)
+            irt.delete(id + nomerpg)
         }
     }
 
-    deleteFichaUser(id, nomeRpg) {
+    deleteFichaUser(id, nomerpg) {
         let uInfo = this.getFichasUser(id)
-        uInfo.splice(uInfo.indexOf(nomeRpg), 1)
+        uInfo.splice(uInfo.indexOf(nomerpg), 1)
 
         let nomeFichasCache = require("./json/nomeFichas.json")
 

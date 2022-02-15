@@ -40,24 +40,24 @@ module.exports = class renomear {
             .then(() => {
                 const args = client.utils.args(int)
 
-                const nomeRpgAtual = args.get("atual_nome_da_ficha")
-                var nomeRpgNovo = args.get("novo_nome_da_ficha")
+                const nomerpgAtual = args.get("atual_nome_da_ficha")
+                var nomerpgNovo = args.get("novo_nome_da_ficha")
 
-                try { nomeRpgNovo = nomeRpgNovo.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
-                try { nomeRpgNovo = nomeRpgNovo.replace("'", '') } catch { }
+                try { nomerpgNovo = nomerpgNovo.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
+                try { nomerpgNovo = nomerpgNovo.replace("'", '') } catch { }
 
-                client.db.query(`select * from fichas where id = '${int.user.id}' and nomerpg = '${nomeRpgAtual}'`)
+                client.db.query(`select * from fichas where id = '${int.user.id}' and nomerpg = '${nomerpgAtual}'`)
                     .then(result => {
-                        if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomeRpg: nomeRpgAtual })) }
+                        if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomerpg: nomerpgAtual })) }
                         else {
                             const fichasUser = client.cache.getFichasUser(int.user.id)
-                            if (fichasUser.has(nomeRpgNovo)) { return int.editReply(client.tl({ local: int.lang + "rf-fE", nomeRpg: nomeRpgNovo })) }
+                            if (fichasUser.has(nomerpgNovo)) { return int.editReply(client.tl({ local: int.lang + "rf-fE", nomerpg: nomerpgNovo })) }
                             else {
-                                client.db.query(`update fichas set nomerpg = '${nomeRpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomeRpgAtual}'`)
+                                client.db.query(`update fichas set nomerpg = '${nomerpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomerpgAtual}'`)
                                     .then(() => {
-                                        client.cache.deleteFichaUser(int.user.id, nomeRpgAtual)
-                                        client.cache.updateFichasUser(int.user.id, nomeRpgNovo)
-                                        return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomeRpg: nomeRpgAtual, novoNomeRpg: nomeRpgNovo }))
+                                        client.cache.deleteFichaUser(int.user.id, nomerpgAtual)
+                                        client.cache.updateFichasUser(int.user.id, nomerpgNovo)
+                                        return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomerpg: nomerpgAtual, novoNomeRpg: nomerpgNovo }))
                                     })
                                     .catch(err => { client.log.error(err, true) })
                             }

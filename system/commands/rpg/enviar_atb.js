@@ -46,18 +46,18 @@ module.exports = class enviar_atb {
                 const atributos = client.resources[int.lang].atributos
                 const atributosF = client.resources[int.lang].atributosF
 
-                var nomeRpg = args.get("nome_da_ficha")
+                var nomerpg = args.get("nome_da_ficha")
                 var atb = args.get("atributo")
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", '') } catch { }
 
                 atb = client.utils.matchAtb(atb, atributos)
                 if (!atributos.includes(atb)) { return int.editReply(client.tl({ local: int.lang + "cef-atbNE", atributo: atb })) }
 
-                if (!nomeRpg) {
+                if (!nomerpg) {
                     try {
                         var fichasUser = client.cache.get(int.user.id).fPadrao
-                        nomeRpg = fichasUser
+                        nomerpg = fichasUser
                     }
                     catch (err) { fichasUser = undefined }
 
@@ -69,12 +69,12 @@ module.exports = class enviar_atb {
                             fichasUser.push(result[0][x].nomerpg)
                         }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
-                        else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
+                        else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
                         else { return int.editReply(client.tl({ local: int.lang + "eft-uSF" })) }
                     }
                 }
 
-                const fichaUser = await client.cache.getFicha(int.user.id, nomeRpg)
+                const fichaUser = await client.cache.getFicha(int.user.id, nomerpg)
                 if (fichaUser) {
                     if (int.lang == "en-") {
                         atb = atributosPt[atributos.indexOf(atb)]
@@ -89,7 +89,7 @@ module.exports = class enviar_atb {
 
                         const atributoEmbed = new client.Discord.MessageEmbed()
                             .setColor(client.settings.color)
-                            .setAuthor({name: client.tl({ local: int.lang + "ea-embedTi" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
+                            .setAuthor({name: client.tl({ local: int.lang + "ea-embedTi" }) + nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
                             .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                             .setTimestamp()
                             .setTitle(atb + ":")
@@ -129,11 +129,11 @@ module.exports = class enviar_atb {
 
                     }
                     else {
-                        return int.editReply(client.tl({ local: int.lang + "ea-atbSV", nomeRpg: nomeRpg, atb: atb }))
+                        return int.editReply(client.tl({ local: int.lang + "ea-atbSV", nomerpg: nomerpg, atb: atb }))
                     }
                 }
                 else {
-                    return int.editReply(client.tl({ local: int.lang + "ea-nFE", nomeRpg: nomeRpg }))
+                    return int.editReply(client.tl({ local: int.lang + "ea-nFE", nomerpg: nomerpg }))
                 }
 
             })

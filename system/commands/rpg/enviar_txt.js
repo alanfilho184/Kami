@@ -62,14 +62,14 @@ module.exports = class enviar_txt {
                 const beta = client.whitelist.get("beta")
                 const premium = client.whitelist.get("premium")
 
-                var nomeRpg = args.get("nome_da_ficha")
+                var nomerpg = args.get("nome_da_ficha")
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", '') } catch { }
 
-                if (!nomeRpg) {
+                if (!nomerpg) {
                     try {
                         var fichasUser = client.cache.get(int.user.id).fPadrao
-                        nomeRpg = fichasUser
+                        nomerpg = fichasUser
                     }
                     catch (err) { fichasUser = undefined }
 
@@ -81,15 +81,15 @@ module.exports = class enviar_txt {
                             fichasUser.push(result[0][x].nomerpg)
                         }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
-                        else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
+                        else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
                         else { return int.editReply(client.tl({ local: int.lang + "eft-uSF" })) }
                     }
 
                 }
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", '') } catch { }
 
-                client.cache.getFicha(int.user.id, nomeRpg)
+                client.cache.getFicha(int.user.id, nomerpg)
                     .then(async r => {
                         if (r) {
                             var fichaUser = r
@@ -104,27 +104,27 @@ module.exports = class enviar_txt {
                                 fichaUser["imagem"] = ""
                             }
 
-                            var fichaTXT = this.create(client, int, nomeRpg, fichaUser)
-                            fs.writeFile(client.tl({ local: int.lang + "eft-fN" }) + nomeRpg + "-" + int.user.id + '.txt', fichaTXT, function (err) {
+                            var fichaTXT = this.create(client, int, nomerpg, fichaUser)
+                            fs.writeFile(client.tl({ local: int.lang + "eft-fN" }) + nomerpg + "-" + int.user.id + '.txt', fichaTXT, function (err) {
                                 if (err) throw err;
                             })
 
-                            var txt = `${client.tl({ local: int.lang + "eft-fN" })}${nomeRpg + "-" + int.user.id}.txt`
+                            var txt = `${client.tl({ local: int.lang + "eft-fN" })}${nomerpg + "-" + int.user.id}.txt`
                             int.editReply({ content: `${client.tl({ local: int.lang + "eft-pEF" })}\n`, files: [txt] })
                                 .then(() => {
-                                    fs.unlink(client.tl({ local: int.lang + "eft-fN" }) + nomeRpg + "-" + int.user.id + '.txt', function (err) {
+                                    fs.unlink(client.tl({ local: int.lang + "eft-fN" }) + nomerpg + "-" + int.user.id + '.txt', function (err) {
                                         if (err) throw err;
                                     })
                                 })
                         }
                         else {
-                            return int.editReply(client.tl({ local: int.lang + "eft-nFE", nomeRpg: nomeRpg }))
+                            return int.editReply(client.tl({ local: int.lang + "eft-nFE", nomerpg: nomerpg }))
                         }
 
                     })
             })
     }
-    create(client, int, nomeRpg, fichaUser) {
+    create(client, int, nomerpg, fichaUser) {
         const atributosS1 = client.resources["pt-"].atributosStatus
         const atributosI1 = client.resources["pt-"].atributosI1
         const atributosI2 = client.resources["pt-"].atributosI2

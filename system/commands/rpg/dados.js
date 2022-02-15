@@ -337,16 +337,16 @@ module.exports = class roll {
         roll = new roll()
 
         var atb = args.get("dado_ou_atributo")
-        var nomeRpg = args.get("nome_da_ficha")
+        var nomerpg = args.get("nome_da_ficha")
 
-        try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
 
         atb = client.utils.matchAtb(atb.toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos)
 
-        if (!nomeRpg) {
+        if (!nomerpg) {
             try {
                 var fichasUser = client.cache.get(int.user.id).fPadrao
-                nomeRpg = fichasUser
+                nomerpg = fichasUser
             }
             catch (err) { fichasUser = undefined }
 
@@ -358,15 +358,15 @@ module.exports = class roll {
                     fichasUser.push(result[0][x].nomerpg)
                 }
                 if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "ddb-mFichas", fichasUser: fichasUser })) }
-                else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
+                else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
                 else { return int.editReply(client.tl({ local: int.lang + "ddb-uSF" })) }
             }
         }
 
-        try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
 
 
-        client.cache.getFicha(int.user.id, nomeRpg)
+        client.cache.getFicha(int.user.id, nomerpg)
             .then(r => {
                 if (r != undefined) {
 
@@ -444,7 +444,7 @@ module.exports = class roll {
                         }
                     }
 
-                    embedRoll.setAuthor({ name:  client.tl({ local: int.lang + "ddb-embedA" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+                    embedRoll.setAuthor({ name:  client.tl({ local: int.lang + "ddb-embedA" }) + nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
                     if (atbL == "Ext" || atbL == "Desc") {
                         embedRoll.setAuthor({ name:  client.tl({ local: int.lang + "ddb-errEx" }) })
                         embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi2" }))
@@ -458,7 +458,7 @@ module.exports = class roll {
 
                 }
                 else {
-                    return int.editReply(client.tl({ local: int.lang + "ddb-nFE", nomeRpg: nomeRpg }))
+                    return int.editReply(client.tl({ local: int.lang + "ddb-nFE", nomerpg: nomerpg }))
                 }
             })
 

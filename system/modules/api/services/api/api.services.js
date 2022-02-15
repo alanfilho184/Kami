@@ -21,4 +21,396 @@ module.exports = class apiServices {
             pass.client.log.embed(info.embed, info.ping)
         }
     }
+
+    isBeta(body) {
+        const beta = pass.client.whitelist.get("beta")
+        if (beta.has(body.id)) {
+            return { isBeta: true }
+        }
+        else {
+            return { isBeta: false }
+        }
+    }
+
+    async getUser(id) {
+        const fichas = await pass.client.commands.get("listar").api(pass.client, id)
+        //const irt = await pass.client.db.query(`select nomerpg, chid from irt where id = '${id}'`)
+        return {
+            fichas,
+            //irt: irt[0]
+        }
+    }
+
+    async getFicha(id, nomerpg) {
+        const ficha = await pass.client.cache.getFicha(id, nomerpg)
+
+        return ficha
+    }
+
+    async updateAtbFicha(body) {
+        const atributos = pass.client.resources["pt-"].returnAtb()
+
+        var nomerpg = body.nomerpg
+        var atb = body.atb
+        var valor = body.valor
+
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
+
+        try {
+            atb = pass.client.utils.matchAtb(atb, atributos)
+            if (!atributos.includes(atb)) {
+                return {
+                    status: 400,
+                    title: `Atributo "${atb}" não encontrado`,
+                    text: `Se você está tentando adicionar um atributo que não está na lista padrão, selecione a opção "Adicionar atributo como um Extra"`
+                }
+            }
+        }
+        catch (err) { }
+
+        if (atb == "imagem" || atb == "image") {
+            const imageType = ["jpg", "jpeg", "JPG", "JPEG", "png", "PNG", "gif", "gifV"]
+            function validURL(str) {
+                var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+                    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+                    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                    '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+                return !!pattern.test(str);
+            }
+
+            function validImageURL(url) {
+                var validUrlExt = new Map()
+
+                for (var x in imageType) {
+                    var type = url.search(imageType[x])
+                    if (type != -1) {
+                        var ext = imageType[x]
+                        validUrlExt.set("ext", ext)
+                        validUrlExt.set("vUrl", true)
+                        break
+                    }
+                    else {
+                        validUrlExt.set("vUrl", false)
+                        continue
+                    }
+                }
+                return validUrlExt
+            }
+
+            if (valor != "") {
+                var validImageUrl = validImageURL(valor)
+
+                if (!validURL(valor)) {
+                    return {
+                        status: 400,
+                        title: `URL inválida`,
+                        text: `A URL que você está tentando adicionar é inválida.`
+                    }
+                }
+                if (!validImageUrl.get("vUrl")) {
+                    return {
+                        status: 400,
+                        title: `Tipo de imagem inválida`,
+                        text: `O tipo de imagem que você está tentando adicionar é inválido. as extensões válidas são .jpg, .jpeg, .png, .gif, .gifV`
+                    }
+                }
+            }
+        }
+
+        if (atb == "extras") {
+            if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") { }
+            else {
+                const ficha = await pass.client.cache.getFicha(body.id, nomerpg)
+                try { var atbsAtual = ficha["extras"].split("|") }
+                catch (err) { atbsAtual = "" }
+                var atbsNovos = valor.split("|")
+
+                const atbsA = new Map()
+                const atbsN = new Map()
+
+                for (var x in atbsAtual) {
+                    var atbE = atbsAtual[x].split(":")[0]
+                    var val = atbsAtual[x].split(":")[1]
+
+                    try { atbE = atbE.replace(" ", "") } catch (err) { }
+                    try { val = val.replace(/ /, '') } catch (err) { }
+
+
+                    if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "" && val != undefined) {
+                        atbsA.set(atbE, val)
+                    }
+                }
+
+                for (var x in atbsNovos) {
+                    var atbE = atbsNovos[x].split(":")[0]
+                    var val = atbsNovos[x].split(":")[1]
+
+                    try { atbE = atbE.replace(" ", "") } catch (err) { }
+                    try { val = val.replace(/ /, '') } catch (err) { }
+
+
+                    if (val != "" && val != undefined) {
+                        atbsN.set(atbE, val)
+                    }
+                }
+
+                atbsN.forEach(function (value, key) {
+                    atbsA.set(key, value);
+                });
+
+                valor = ""
+
+                var x = 1
+                atbsA.forEach(function (value, key) {
+                    valor += `${key}: ${value}`
+
+                    if (x != atbsA.size) { valor += `| `; x++ }
+                });
+            }
+
+        }
+
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
+
+
+        try {
+            await pass.client.cache.updateFicha(body.id, nomerpg, atb, valor)
+
+            var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
+
+            if (infoUIRT != "") {
+                const info = {
+                    user: {
+                        id: body.id,
+                        tag: body.tag
+                    },
+                    fromSite: true
+                }
+                pass.client.emit("updtFicha", info, { id: body.id, nomerpg: body.nomerpg, irt: infoUIRT })
+            }
+
+            return {
+                status: 200,
+            }
+        }
+        catch (err) {
+            pass.client.log.error(err, true)
+            return {
+                status: 500,
+                title: "Erro interno",
+                text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
+            }
+        }
+    }
+
+    async removeAtbFicha(body) {
+        const atributos = pass.client.resources["pt-"].returnAtb()
+
+        var nomerpg = body.nomerpg
+        var atb = body.atb
+        var valor = body.valor
+
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
+
+        try {
+            atb = pass.client.utils.matchAtb(atb, atributos)
+            if (!atributos.includes(atb)) {
+                return {
+                    status: 400,
+                    title: `Atributo "${atb}" não encontrado`,
+                    text: `Se você está tentando remover um atributo que não está na lista padrão, selecione a opção "Atributo é um Extra"`
+                }
+            }
+        }
+        catch (err) { }
+
+        if (atb == "extras") {
+            if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") { }
+            else {
+                const ficha = await pass.client.cache.getFicha(body.id, nomerpg)
+                try { var atbsAtual = ficha["extras"].split("|") }
+                catch (err) { atbsAtual = "" }
+                var atbsNovos = valor.split("|")
+
+                const atbsA = new Map()
+                const atbsN = new Map()
+
+                for (var x in atbsAtual) {
+                    var atbE = atbsAtual[x].split(":")[0]
+                    var val = atbsAtual[x].split(":")[1]
+
+                    try { atbE = atbE.replace(" ", "") } catch (err) { }
+                    try { val = val.replace(/ /, '') } catch (err) { }
+
+
+                    if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "" && val != undefined) {
+                        atbsA.set(atbE, val)
+                    }
+                }
+
+                for (var x in atbsNovos) {
+                    var atbE = atbsNovos[x].split(":")[0]
+                    var val = atbsNovos[x].split(":")[1]
+
+                    try { atbE = atbE.replace(" ", "") } catch (err) { }
+                    try { val = val.replace(/ /, '') } catch (err) { }
+
+
+                    if (val != "" && val != undefined) {
+                        atbsN.set(atbE, val)
+                    }
+                }
+
+                atbsN.forEach(function (value, key) {
+                    atbsA.set(key, value);
+                });
+
+                valor = ""
+
+                var x = 1
+                atbsA.forEach(function (value, key) {
+                    valor += `${key}: ${value}`
+
+                    if (x != atbsA.size) { valor += `| `; x++ }
+                });
+            }
+
+        }
+
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
+
+        try {
+            await pass.client.cache.updateFicha(body.id, nomerpg, atb, valor)
+
+            var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
+
+            if (infoUIRT != "") {
+                const info = {
+                    user: {
+                        id: body.id,
+                        tag: body.tag
+                    },
+                    fromSite: true
+                }
+                pass.client.emit("updtFicha", info, { id: body.id, nomerpg: body.nomerpg, irt: infoUIRT })
+            }
+
+            return {
+                status: 200,
+            }
+        }
+        catch (err) {
+            pass.client.log.error(err, true)
+            return {
+                status: 500,
+                title: "Erro interno",
+                text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
+            }
+        }
+    }
+
+    async updateFicha(body) {
+        const rawFichaBot = await pass.client.cache.getFicha(body.id, body.nomerpg)
+        const asArray = Object.entries(rawFichaBot);
+        const filtered = asArray.filter(([key, value]) => value != null && value != "excluir" && value != "delete" && value != "-" && value != "");
+        var fichaBot = Object.fromEntries(filtered);
+        var fichaSite = body.ficha
+        fichaSite.senha = fichaBot.senha
+
+        const difference = (obj1, obj2) => {
+            obj1 = Object.keys(obj1).sort().reduce(function (result, key) {
+                result[key] = obj1[key];
+                return result;
+            }, {});
+
+            obj2 = Object.keys(obj2).sort().reduce(function (result, key) {
+                result[key] = obj2[key];
+                return result;
+            }, {});
+
+            const keys = new Array()
+            Object.keys(obj1).forEach(key => {
+                if (obj1[key] !== obj2[key]) {
+                    keys.push(key)
+                }
+            });
+
+            return keys;
+        };
+
+        const atbsDiff = difference(fichaSite, fichaBot)
+        const valsDiff = new Array()
+
+        if (atbsDiff.length > 0) {
+            var customSQL = `UPDATE fichas SET `
+            for (var x of atbsDiff) {
+                valsDiff.push(fichaSite[x])
+                customSQL += `${x} = '${fichaSite[x].replace("'", "ʽ")}'`
+                if (x != atbsDiff[atbsDiff.length - 1]) {
+                    customSQL += `, `
+                }
+            }
+            customSQL += ` WHERE id = '${body.id}' AND nomerpg = '${body.nomerpg}'`
+
+            try {
+                await pass.client.cache.updateFicha(body.id, body.nomerpg, atbsDiff, valsDiff, customSQL)
+
+                var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
+
+                if (infoUIRT != "") {
+                    const info = {
+                        user: {
+                            id: body.id,
+                            tag: body.tag
+                        },
+                        fromSite: true
+                    }
+                    pass.client.emit("updtFicha", info, { id: body.id, nomerpg: body.nomerpg, irt: infoUIRT })
+                }
+
+                return {
+                    status: 200,
+                }
+            }
+            catch (err) {
+                return {
+                    status: 500,
+                }
+            }
+        }
+        else {
+            return {
+                status: 400,
+                title: "Nenhuma mudança foi detectada",
+                text: "A sua ficha no site e no BOT já são iguais"
+            }
+        }
+    }
+
+    async deleteFicha(body) {
+        try {
+            await pass.client.db.query(`delete from fichas where id = '${body.id}' and nomerpg = '${body.nomerpg}'`)
+        }
+        catch (err) {
+            pass.client.log.error(err, true)
+            return {
+                status: 500,
+            }
+        }
+
+        await pass.client.cache.deleteFicha(body.id, body.nomerpg)
+        await pass.client.cache.deleteFichaUser(body.id, body.nomerpg)
+
+        const infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
+
+        if (infoUIRT != "") {
+            pass.client.emit("apgFicha", { id: body.id, nomerpg: body.nomerpg })
+        }
+
+        return {
+            status: 200,
+        }
+    }
 }

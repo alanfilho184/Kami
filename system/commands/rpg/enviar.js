@@ -80,15 +80,15 @@ module.exports = class enviar {
                 const beta = client.whitelist.get("beta")
                 const premium = client.whitelist.get("premium")
 
-                var nomeRpg = args.get("nome_da_ficha")
+                var nomerpg = args.get("nome_da_ficha")
                 var irtUpdt = args.get("opções")
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", '') } catch { }
 
-                if (!nomeRpg) {
+                if (!nomerpg) {
                     try {
                         var fichasUser = client.cache.get(int.user.id).fPadrao
-                        nomeRpg = fichasUser
+                        nomerpg = fichasUser
                     }
                     catch (err) { fichasUser = undefined }
 
@@ -100,14 +100,14 @@ module.exports = class enviar {
                             fichasUser.push(result[0][x].nomerpg)
                         }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "efd-mFichas1", fichasUser: fichasUser })) }
-                        else if (fichasUser.length == 1) { nomeRpg = fichasUser[0] }
+                        else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
                         else { return int.editReply(client.tl({ local: int.lang + "efd-uSF" })) }
                     }
                 }
 
-                try { nomeRpg = nomeRpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", '') } catch { }
 
-                client.cache.getFicha(int.user.id, nomeRpg)
+                client.cache.getFicha(int.user.id, nomerpg)
                     .then(async r => {
                         if (r) {
                             var fichaUser = r
@@ -127,7 +127,7 @@ module.exports = class enviar {
 
                             try {
                                 if (irtUpdt != "irt") {
-                                    const reply = this.create(client, int, nomeRpg, fichaUser)
+                                    const reply = this.create(client, int, nomerpg, fichaUser)
                                     const embedsArray = Object.values(reply)
 
                                     int.editReply({ embeds: embedsArray }).catch(err => {
@@ -170,7 +170,7 @@ module.exports = class enviar {
                                     if (secret) {
                                         return int.editReply(client.tl({ local: int.lang + "efd-ephIRT" }))
                                     }
-                                    
+
                                     var infoUIRT = await client.db.query(`select nomerpg from irt where id = '${int.user.id}'`)
                                     infoUIRT = infoUIRT[0]
 
@@ -178,7 +178,7 @@ module.exports = class enviar {
                                         return int.editReply(client.tl({ local: int.lang + "efd-irtMF" }))
                                     }
 
-                                    var reply = this.create(client, int, nomeRpg, fichaUser, "irtOn")
+                                    var reply = this.create(client, int, nomerpg, fichaUser, "irtOn")
                                     const embedsArray = Object.values(reply)
 
                                     await int.editReply({ embeds: embedsArray })
@@ -186,23 +186,23 @@ module.exports = class enviar {
                                             const bDes = new client.Discord.MessageButton()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-desIrt" }))
-                                                .setCustomId(`irt|des|id:${int.user.id}|nomerpg:${nomeRpg}|msgid:${m.id}|chid:${m.channel.id}`)
+                                                .setCustomId(`irt|des|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
 
                                             const bApg = new client.Discord.MessageButton()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-apgIrt" }))
-                                                .setCustomId(`irt|apg|id:${int.user.id}|nomerpg:${nomeRpg}|msgid:${m.id}|chid:${m.channel.id}`)
+                                                .setCustomId(`irt|apg|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
 
                                             m.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
 
                                             var irtU = {
                                                 id: int.user.id,
-                                                nomeRpg: nomeRpg,
+                                                nomerpg: nomerpg,
                                                 msgid: m.id,
                                                 chid: m.channel.id
                                             }
 
-                                            client.cache.updateIrt(irtU["id"], irtU["nomeRpg"], irtU["msgid"], irtU["chid"])
+                                            client.cache.updateIrt(irtU["id"], irtU["nomerpg"], irtU["msgid"], irtU["chid"])
                                             client.emit("irtStart", irtU)
                                         })
                                 }
@@ -218,7 +218,7 @@ module.exports = class enviar {
 
                         }
                         else {
-                            return int.editReply(client.tl({ local: int.lang + "efd-nFE", nomeRpg: nomeRpg }))
+                            return int.editReply(client.tl({ local: int.lang + "efd-nFE", nomerpg: nomerpg }))
                         }
 
                     })
@@ -227,7 +227,7 @@ module.exports = class enviar {
             })
 
     }
-    create(client, int, nomeRpg, fichaUser, irt) {
+    create(client, int, nomerpg, fichaUser, irt) {
         if (irt == "irtUpdt") {
             var usedInf = false
         }
@@ -248,7 +248,7 @@ module.exports = class enviar {
 
         const info_perso = new client.Discord.MessageEmbed()
         info_perso.setColor(client.settings.color)
-        info_perso.setAuthor({name: client.tl({ local: int.lang + "ef-infAuthor" }) + nomeRpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
+        info_perso.setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
         info_perso.setThumbnail(fichaUser["imagem"])
         const status_perso = new client.Discord.MessageEmbed()
         const status_perso2 = new client.Discord.MessageEmbed()
@@ -340,7 +340,12 @@ module.exports = class enviar {
                 }
 
                 if (x == 25) {
-                    int.editReply(client.tl({ local: int.lang + "ef-eLE" }))
+                    let fromSite = false
+                    try {
+                        fromSite = int.fromSite
+                    } catch (err) { }
+                    if (!int.fromSite) { int.editReply(client.tl({ local: int.lang + "ef-eLE" })) }
+
                     break
                 }
             }
