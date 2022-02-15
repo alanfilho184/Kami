@@ -44,7 +44,7 @@ module.exports = class ajuda {
         const bTermos = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btTermos" }))
-            .setURL(`https://kamibot.vercel.app/short/termos/${int.lang.replace("-", "")}`)	
+            .setURL(`https://kamisite.herokuapp.com/short/termos/${int.lang.replace("-", "")}`)	
 
         const bSup = new client.Discord.MessageButton()
             .setStyle(5)

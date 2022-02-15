@@ -38,7 +38,7 @@ module.exports = class termos {
                 const bTermos = new client.Discord.MessageButton()
                     .setStyle(5)
                     .setLabel(client.tl({ local: int.lang + "termos-embedFT" }))
-                    .setURL(`https://kamibot.vercel.app/short/termos/${int.lang.replace("-", "")}`)
+                    .setURL(`https://kamisite.herokuapp.com/short/termos/${int.lang.replace("-", "")}`)
 
 
                 int.editReply({ embeds: [termEmbed], components: [{ type: 1, components: [bTermos] }] })

@@ -97,7 +97,7 @@ module.exports = class botinfo {
         const bInv = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f4V" }))
-            .setURL(`https://kamibot.vercel.app/short/convite`)
+            .setURL(`https://kamisite.herokuapp.com/short/convite`)
 
         int.editReply({ content: null, embeds: [botIEmbed], components: [{ type: 1, components: [bSup, bVote, bInv] }] })
     }

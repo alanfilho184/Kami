@@ -23,7 +23,7 @@ module.exports = {
         const btLink = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: msg.lang + "onMsg-btSlash" }))
-            .setURL(`https://kamibot.vercel.app/tutoriais`)
+            .setURL(`https://kamisite.herokuapp.com/tutoriais`)
 
         const btInfo = new client.Discord.MessageButton()
             .setStyle(5)
