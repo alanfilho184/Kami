@@ -128,8 +128,10 @@ module.exports = class MenuClient extends Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
+            else if(err != "DiscordAPIError: Unknown interaction"){
+                this.emit("err", err, true)
+            }
             logs.log.error(err, true)
-            //this.emit("err", err, true)
             //logStack.set(err, err)
 
 
@@ -139,8 +141,10 @@ module.exports = class MenuClient extends Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
+            else if(err != "DiscordAPIError: Unknown interaction"){
+                this.emit("err", err, true)
+            }
             logs.log.error(err, true)
-            //this.emit("err", err, true)
             //logStack.set(err, err)
         })
 
