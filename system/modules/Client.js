@@ -129,7 +129,10 @@ module.exports = class MenuClient extends Client {
                 process.exit(1)
             }
             logs.log.error(err, true)
-            this.emit("err", err, true)
+            //this.emit("err", err, true)
+            //logStack.set(err, err)
+
+
         })
 
         process.on("unhandledRejection", (err) => {
@@ -137,7 +140,8 @@ module.exports = class MenuClient extends Client {
                 process.exit(1)
             }
             logs.log.error(err, true)
-            this.emit("err", err, true)
+            //this.emit("err", err, true)
+            //logStack.set(err, err)
         })
 
         process.on("SIGTERM", (signal) => {
