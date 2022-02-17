@@ -6,6 +6,8 @@ const toMs = require("milliseconds-parser")()
 const fs = require("fs");
 const time = require("luxon").DateTime
 
+const errorStack = 0
+
 module.exports = class MenuClient extends Client {
 
     constructor(options = {}) {
@@ -132,9 +134,13 @@ module.exports = class MenuClient extends Client {
                 this.emit("err", err, true)
             }
             logs.log.error(err, true)
-            //logStack.set(err, err)
 
+            errorStack++
 
+            if(errorStack >= 5){
+                logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
+                process.exit(1)
+            }
         })
 
         process.on("unhandledRejection", (err) => {
@@ -145,7 +151,13 @@ module.exports = class MenuClient extends Client {
                 this.emit("err", err, true)
             }
             logs.log.error(err, true)
-            //logStack.set(err, err)
+
+            errorStack++
+
+            if(errorStack >= 5){
+                logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
+                process.exit(1)
+            }
         })
 
         process.on("SIGTERM", (signal) => {
