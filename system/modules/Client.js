@@ -219,7 +219,6 @@ module.exports = class MenuClient extends Client {
         require("./api/app").api(this)
 
         if (this.settings.deploy == "production") {
-
             const postApi = require("./postInfo")
             const API = new postApi(this)
 
@@ -238,5 +237,4 @@ module.exports = class MenuClient extends Client {
     async login(token = this.token) {
         super.login(token)
     }
-
 }

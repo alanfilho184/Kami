@@ -6,7 +6,7 @@ module.exports = class API {
     }
 
     postBotinfo() {
-        axios.post(`${process.env.apiUrl}/botinfo`, this.client.botStatus.api(), {
+        axios.post(`${process.env.siteApiUrl}/status`, this.client.botStatus.api(), {
             headers: {
                 "Authorization": process.env.apiToken,
                 "Content-Type": "application/json"
@@ -35,7 +35,7 @@ module.exports = class API {
             }
         })
 
-        axios.post(`${process.env.apiUrl}/comandos`, comandos, {
+        axios.post(`${process.env.siteApiUrl}/comandos`, comandos, {
             headers: {
                 "Authorization": process.env.apiToken,
                 "Content-Type": "application/json"
