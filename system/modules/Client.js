@@ -6,7 +6,7 @@ const toMs = require("milliseconds-parser")()
 const fs = require("fs");
 const time = require("luxon").DateTime
 
-const errorStack = 0
+var errorStack = 0
 
 module.exports = class MenuClient extends Client {
 
