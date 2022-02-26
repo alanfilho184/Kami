@@ -411,11 +411,17 @@ module.exports = class Cache {
 
     deleteFichaUser(id, nomerpg) {
         let uInfo = this.getFichasUser(id)
-        uInfo.splice(uInfo.indexOf(nomerpg), 1)
+        let newUInfo = new Array()
+
+        uInfo.forEach((f) => {
+            if (f !== nomerpg) {
+                newUInfo.push(f)
+            }
+        })
 
         let nomeFichasCache = require("./json/nomeFichas.json")
 
-        nomeFichasCache[id] = uInfo
+        nomeFichasCache[id] = newUInfo
         nomeFichasCache = JSON.stringify(nomeFichasCache)
 
         fs.writeFileSync(path.join(__dirname, "json", `nomeFichas.json`), nomeFichasCache, function (err) {

@@ -362,7 +362,7 @@ module.exports = class ficha {
                             else {
 
                                 const qFichas = await client.commands.get("listar").api(client, int.user.id)
-                                if (qFichas.length >= 25) {
+                                if (qFichas.length >= 10) {
                                     int.editReply({ content: client.tl({ local: int.lang + "cef-lFE" }) })
                                     return
                                 }

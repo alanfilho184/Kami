@@ -34,7 +34,6 @@ module.exports = class apiController {
         routes.get("/user", async (req, res) => {
             if (req.headers.authorization === process.env.apiToken) {
                 try {
-                    console.log(req.body)
                     const user = await services.getUser(req.body.id)
                     res.status(200).json(user)
                     client.log.info("/userInfo endpoint autorizado")
@@ -148,7 +147,36 @@ module.exports = class apiController {
             }
         })
 
-        //routes.post("/ficha/create", async (req, res) => {})
+        routes.post("/ficha/create", async (req, res) => {
+            if (req.headers.authorization === process.env.apiToken) {
+                try {
+                    const create = await services.createFicha(req.body.ficha)
+                    if (create.status == 200) {
+                        res.status(200).end()
+                    }
+                    else {
+                        res.status(create.status).json({
+                            title: create.title,
+                            text: create.text
+                        })
+                    }
+                    client.log.info("/ficha/create endpoint autorizado")
+                }
+                catch (err) {
+                    res.status(500).json(
+                        {
+                            title: "Erro interno",
+                            text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
+                        }
+                    )
+                    client.log.error(err, true)
+                }
+            }
+            else {
+                res.status(401).end()
+                client.log.warn("/ficha/create endpoint não autorizado")
+            }
+        })
 
         routes.patch("/ficha/update", async (req, res) => {
             if (req.headers.authorization === process.env.apiToken) {
@@ -178,6 +206,39 @@ module.exports = class apiController {
             else {
                 res.status(401).end()
                 client.log.warn("/ficha/atb/update endpoint não autorizado")
+            }
+        })
+
+        routes.patch("/ficha/rename", async (req, res) => {
+            if (req.headers.authorization === process.env.apiToken) {
+                try {
+                    const rename = await services.renameFicha(req.body)
+                    if (rename.status == 200) {
+                        res.status(200).json({
+                            novonomerpg: rename.novonomerpg
+                        })
+                    }
+                    else {
+                        res.status(rename.status).json({
+                            title: rename.title,
+                            text: rename.text
+                        })
+                    }
+                    client.log.info("/ficha/atb/rename endpoint autorizado")
+                }
+                catch (err) {
+                    res.status(500).json(
+                        {
+                            title: "Erro interno",
+                            text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
+                        }
+                    )
+                    client.log.error(err, true)
+                }
+            }
+            else {
+                res.status(401).end()
+                client.log.warn("/ficha/atb/rename endpoint não autorizado")
             }
         })
 
@@ -214,6 +275,4 @@ module.exports = class apiController {
 
         return { path: '/api/v1/', router: routes }
     }
-
 }
-

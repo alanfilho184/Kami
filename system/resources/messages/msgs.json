@@ -51,7 +51,7 @@
             "updtMultiErr": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomerpg$\"\n\nOs seguintes atributos não puderam ser adicionados: \"$atb$\", pois, não estão na lista de atributos possíveis ou estão digitados de forma incorreta, corrija os erros ou adicione-os utilizando o extras no lugar do multi",
             "allAtbErr": "Nenhum dos atributos digitados está na lista de atributos possíveis (**/ajuda > atributos** para ver a lista completa), ou foram digitados de forma incorreta, corrija erros ou utilize o **extras** no lugar do **multi** para adicionar seus atributos personalizados",
             "fPE": "Ok, agora você não tem mais uma ficha padrão definida",
-            "lFE": "Você está atualmente no limite de fichas criadas por usuário (25 fichas), não é possível criar uma nova ficha, você pode tentar apagar alguma ficha que já não use mais para dar lugar a uma nova"
+            "lFE": "Você está atualmente no limite de fichas criadas por usuário (10 fichas), não é possível criar uma nova ficha, você pode tentar apagar alguma ficha que já não use mais para dar lugar a uma nova"
         },
         "af": {
             "fApg": "Ficha \"$nomerpg$\" apagada",
@@ -336,7 +336,7 @@
             "fPS": "Ok, now your default sheet is: \"$nomerpg$\"",
             "cCNF": "Would you like to create a new sheet with the name \"$nomerpg$\"?",
             "fPE": "Ok, now you no longer have a standard sheet defined",
-            "lFE": "You are currently at the limit of tokens created per user (25 tokens), you cannot create a new token, you can try to delete any token you no longer use to make place for a new one"
+            "lFE": "You are currently at the limit of sheets created per user (10 sheets), you cannot create a new token, you can try to delete any token you no longer use to make place for a new one"
         },
         "af": {
             "fApg": "Sheet \"$nomerpg$\" deleted",

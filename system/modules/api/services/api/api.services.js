@@ -25,11 +25,9 @@ module.exports = class apiServices {
     }
 
     async getUser(id) {
-        const fichas = await pass.client.commands.get("listar").api(pass.client, id)
-        //const irt = await pass.client.db.query(`select nomerpg, chid from irt where id = '${id}'`)
+        const fichas = await pass.client.cache.getFichasUser(id)
         return {
             fichas,
-            //irt: irt[0]
         }
     }
 
@@ -303,6 +301,55 @@ module.exports = class apiServices {
         }
     }
 
+    async createFicha(body) {
+        const fichasUser = await pass.client.cache.getFichasUser(body.id)
+
+        var nomerpg = body.nomerpg
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
+
+        if (fichasUser.includes(nomerpg)) {
+            return {
+                status: 400,
+                title: "Ficha já existe",
+                text: "Já existe uma ficha com esse nome, por favor escolha outro nome"
+            }
+        }
+        else if (fichasUser.length >= 10) {
+            return {
+                status: 400,
+                title: "Você atingiu o limite de fichas",
+                text: "Você atingiu o limite de fichas por usuário (10 fichas)"
+            }
+        }
+        else if (nomerpg.match(/[ '$%]/g) || nomerpg.length <= 0) {
+            return {
+                status: 400,
+                title: "Nome inválido",
+                text: "O nome da ficha não deve conter os caracteres ' $ % ou espaços e deve ter pelo menos 1 caractere"
+            }
+        }
+        else {
+            const senha = pass.client.utils.gerarSenha()
+            try {
+                await pass.client.db.query(`insert into fichas (id, nomerpg, senha) values ('${body.id}', '${nomerpg}', '${senha}')`)
+            }
+            catch (err) {
+                pass.client.log.error(err, true)
+                return {
+                    status: 500,
+                    title: "Erro interno",
+                    text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
+                }
+            }
+
+            try { pass.client.cache.updateFichasUser(body.id, nomerpg) } catch (err) { pass.client.log.error(err, true) }
+
+            return {
+                status: 200,
+            }
+        }
+    }
+
     async updateFicha(body) {
         const rawFichaBot = await pass.client.cache.getFicha(body.id, body.nomerpg)
         const asArray = Object.entries(rawFichaBot);
@@ -369,6 +416,8 @@ module.exports = class apiServices {
             catch (err) {
                 return {
                     status: 500,
+                    title: "Erro interno",
+                    text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
                 }
             }
         }
@@ -381,6 +430,59 @@ module.exports = class apiServices {
         }
     }
 
+    async renameFicha(body) {
+        const fichasUser = await pass.client.cache.getFichasUser(body.id)
+
+        var nomerpg = body.novonomerpg
+        try { nomerpg = nomerpg.replace("'", '') } catch { }
+
+        if (fichasUser.includes(nomerpg)) {
+            return {
+                status: 400,
+                title: "Ficha já existe",
+                text: "Já existe uma ficha com esse nome, por favor escolha outro nome"
+            }
+        }
+        else if (nomerpg.match(/[ '$%]/g) || nomerpg.length <= 0) {
+            return {
+                status: 400,
+                title: "Nome inválido",
+                text: "O nome da ficha não deve conter os caracteres ' $ % ou espaços e deve ter pelo menos 1 caractere"
+            }
+        }
+        else if (nomerpg == body.nomerpg) {
+            return {
+                status: 400,
+                title: "Nome não alterado",
+                text: "O novo nome da ficha é igual ao antigo"
+            }
+        }
+        else {
+            try {
+                await pass.client.db.query(`update fichas set nomerpg = '${nomerpg}' where id = '${body.id}' and nomerpg = '${body.nomerpg}'`)
+            }
+            catch (err) {
+                pass.client.log.error(err, true)
+                return {
+                    status: 500,
+                    title: "Erro interno",
+                    text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
+                }
+            }
+
+            try {
+                pass.client.cache.deleteFichaUser(body.id, body.nomerpg)
+                pass.client.cache.updateFichasUser(body.id, nomerpg)
+            } 
+            catch (err) { pass.client.log.error(err, true) }
+
+            return {
+                status: 200,
+                novonomerpg: nomerpg
+            }
+        }
+    }
+
     async deleteFicha(body) {
         try {
             await pass.client.db.query(`delete from fichas where id = '${body.id}' and nomerpg = '${body.nomerpg}'`)
@@ -389,6 +491,8 @@ module.exports = class apiServices {
             pass.client.log.error(err, true)
             return {
                 status: 500,
+                title: "Erro interno",
+                text: "Ocorreu um erro inesperado, um log de erro foi salvo e o problema será corrigido em breve"
             }
         }
 
