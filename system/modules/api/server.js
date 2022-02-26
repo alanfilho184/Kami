@@ -8,7 +8,7 @@ module.exports = class server {
 
         var limiter = new RateLimit({
             windowMs: 1 * 60 * 1000,
-            max: 15, 
+            max: 200, 
             delayMs: 0
         });
 
