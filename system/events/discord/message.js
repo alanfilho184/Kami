@@ -8,6 +8,7 @@ module.exports = {
     execute: async (client, msg) => {
         if (msg.author.bot) { return }
         if (client.utils.userOnBlacklist(msg.author.id)) { return }
+        if (client.utils.mention(msg)) { return msg.reply(client.tl({ local: "pt-onMsg-mention" })) }
         if (warn.has(msg.author.id)) { return }
         if (!msg.content.startsWith(client.prefix)) {
             return
@@ -17,7 +18,7 @@ module.exports = {
         setTimeout(() => {
             warn.delete(msg.author.id)
         }, 60 * 60 * 1000)
-        
+
         msg.lang = "pt-"
 
         const btLink = new client.Discord.MessageButton()

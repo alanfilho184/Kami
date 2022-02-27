@@ -272,4 +272,12 @@ module.exports = class Utils {
         return secret
     }
 
+    mention(msg) {
+        if (msg.mentions.users.size == 1 && msg.mentions.users.first().id == this.client.user.id && msg.content == `<@!${this.client.user.id}>`) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
 }

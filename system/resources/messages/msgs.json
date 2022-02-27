@@ -135,7 +135,8 @@
             "sPerm": "Você precisa ter permissão de administrador, gerenciar servidor ou gerenciar canais para alterar meu idioma neste servidor",
             "slash": "Como vem sendo avisado à algum tempo, o BOT finalmente parou de aceitar comandos via mensagem, somente comandos ** ` / ` ** estão disponíveis.\n\nPara ajuda utilizando comandos ** ` / ` ** Utilize o comando ** `/ajuda` **, acesse o primeiro link abaixo ou entre no meu Discord de suporte.\n        ",
             "btSlash": "Tutoriais do Kami",
-            "btSlashInfo": "Mais informações sobre a mudança"
+            "btSlashInfo": "Mais informações sobre a mudança",
+            "mention": "Utilize o comando **`/ajuda`** para ver meus comandos ou acesse https://kamisite.herokuapp.com/"
         },
         "ajuda": {
             "main": "Aqui você pode ver a lista completa de comandos disponíveis!\n\n        O prefixo do BOT é `/`. O prefixo `k!` foi descontinuado.\n        \n        Clique no menu abaixo para visualizar uma lista com os comandos disponíveis. Se ainda precisar de mais ajuda ou se tiver algum problema entre no meu servidor de suporte.\n\n        Você também pode ver algumas funções em mais detalhes nos [Tutoriais no site do Kami](https://kamibot.vercel.app/tutoriais)! (Mais tutoriais ainda serão adicionados)\n         \n        É recomendado ler os termos de uso do BOT.\n         ",
@@ -420,7 +421,8 @@
             "cmdDsbTi": "Command Disabled",
             "slash": "As we have been warning for some time, the BOT stoped accepting commands via message, only ** ` / ` ** commands are available.\n        \nFor help using ** ` / ` ** commands, use the ** ` /ajuda ` ** command, go to the first link below or join my Discord Support Server.\n        ",
             "btSlash": "Kami's Tutorials",
-            "btSlashInfo": "More information about the change"
+            "btSlashInfo": "More information about the change",
+            "mention": "Use the **`/ajuda`** command to see my commands or go to https://kamisite.herokuapp.com/"
         },
         "ajuda": {
             "main": "Here you can see the full list of available commands!\n\n        The BOT prefix is `/`. The prefix `k!` will be discontinued soon.\n        \n        Click on the menu below to see a list of available commands. If you still need more help or have any problems join my support server.\n\n        You also can see some functions in more detais on [Kami's Tutorials](https://kamibot.vercel.app/tutoriais)! (More tutorials will be added)\n         \n        It is recommended that you read the BOT's terms of use.\n         ",
