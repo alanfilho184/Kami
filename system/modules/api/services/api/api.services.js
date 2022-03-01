@@ -473,7 +473,25 @@ module.exports = class apiServices {
             try {
                 pass.client.cache.deleteFichaUser(body.id, body.nomerpg)
                 pass.client.cache.updateFichasUser(body.id, nomerpg)
-            } 
+
+                var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
+
+                if (infoUIRT != "") {
+                    pass.client.cache.modifyIrt(nomerpg, infoUIRT)
+                        .then((irt) => {
+                            const info = {
+                                user: {
+                                    id: body.id,
+                                    tag: body.tag
+                                },
+                                fromSite: true
+                            }
+
+                            pass.client.emit("updtFicha", info, { id: body.id, nomerpg: nomerpg, irt: irt })
+                        })
+                }
+
+            }
             catch (err) { pass.client.log.error(err, true) }
 
             return {

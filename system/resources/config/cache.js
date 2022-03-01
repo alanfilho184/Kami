@@ -336,6 +336,25 @@ module.exports = class Cache {
         }
     }
 
+    async modifyIrt(nomerpgNovo, infoUIRT) {
+        this.deleteIrt(infoUIRT[0].id, infoUIRT[0].nomerpg)
+
+        await this.client.db.query(`update irt set nomerpg = '${nomerpgNovo}' where id = '${infoUIRT[0].id}' and nomerpg = '${infoUIRT[0].nomerpg}'`)
+
+        const irt = new Array()
+
+        infoUIRT.forEach(info => {
+            irt.push({
+                id: info.id,
+                nomerpg: nomerpgNovo,
+                msgid: info.msgid,
+                chid: info.chid,
+            })
+        })
+
+        return irt
+    }
+
     updateFichasUser(id, nomerpg) {
         let uInfo = this.getFichasUser(id)
 

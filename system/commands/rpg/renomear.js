@@ -51,15 +51,30 @@ module.exports = class renomear {
                         if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomerpg: nomerpgAtual })) }
                         else {
                             const fichasUser = client.cache.getFichasUser(int.user.id)
-                            if (fichasUser.has(nomerpgNovo)) { return int.editReply(client.tl({ local: int.lang + "rf-fE", nomerpg: nomerpgNovo })) }
+                            if (fichasUser.includes(nomerpgNovo)) { return int.editReply(client.tl({ local: int.lang + "rf-fE", nomerpg: nomerpgNovo })) }
                             else {
                                 client.db.query(`update fichas set nomerpg = '${nomerpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomerpgAtual}'`)
                                     .then(() => {
                                         client.cache.deleteFichaUser(int.user.id, nomerpgAtual)
                                         client.cache.updateFichasUser(int.user.id, nomerpgNovo)
                                         return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomerpg: nomerpgAtual, novoNomeRpg: nomerpgNovo }))
+                                            .then(async function () {
+                                                console.log(nomerpgAtual, nomerpgNovo)
+                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomerpgAtual)
+
+                                                console.log(infoUIRT)
+
+                                                if (infoUIRT != "") {
+                                                    client.cache.modifyIrt(nomerpgNovo, infoUIRT)
+                                                        .then((irt) => {
+                                                            client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpgNovo, irt: irt })
+                                                        })
+                                                }
+                                            })
                                     })
                                     .catch(err => { client.log.error(err, true) })
+
+
                             }
                         }
                     })
