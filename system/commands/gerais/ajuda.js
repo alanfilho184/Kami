@@ -54,7 +54,7 @@ module.exports = class ajuda {
         const bSup = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
-            .setURL("https:/kamisite.herokuapp.com/suporte")
+            .setURL("https://kamisite.herokuapp.com/suporte")
 
         var repeat = true
         await int.editReply({ embeds: [mainHelp], components: [{ type: 1, components: [bTermos, bPrivacidade, bSup] }] })
