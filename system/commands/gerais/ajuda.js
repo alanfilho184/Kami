@@ -37,22 +37,27 @@ module.exports = class ajuda {
             .setTitle(client.tl({ local: int.lang + "ajuda-tMain" }))
             .setColor(client.settings.color)
             .setDescription(client.tl({ local: int.lang + "ajuda-main" }))
-            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+            .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
             .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
             .setTimestamp()
 
         const bTermos = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btTermos" }))
-            .setURL(`https://kamisite.herokuapp.com/short/termos/${int.lang.replace("-", "")}`)	
+            .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "termos" : "terms"}/`)
+
+        const bPrivacidade = new client.Discord.MessageButton()
+            .setStyle(5)
+            .setLabel(client.tl({ local: int.lang + "ajuda-btPrivacidade" }))
+            .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "privacidade" : "privacy"}/`)
 
         const bSup = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
-            .setURL("https://discord.com/invite/9rqCkFB")
+            .setURL("https:/kamisite.herokuapp.com/suporte")
 
         var repeat = true
-        await int.editReply({ embeds: [mainHelp], components: [{ type: 1, components: [bTermos, bSup] }] })
+        await int.editReply({ embeds: [mainHelp], components: [{ type: 1, components: [bTermos, bPrivacidade, bSup] }] })
 
         var help = mainHelp
         var choice = ""
@@ -98,7 +103,7 @@ module.exports = class ajuda {
                                 .setTitle(replaceAll(cmd.helpPt.title, "$prefix$", client.prefix))
                                 .setColor(client.settings.color)
                                 .setDescription(replaceAll(cmd.helpPt.desc, "$prefix$", client.prefix))
-                                .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                                .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
                             return
@@ -109,7 +114,7 @@ module.exports = class ajuda {
                                 .setTitle(replaceAll(cmd.helpEn.title, "$prefix$", client.prefix))
                                 .setColor(client.settings.color)
                                 .setDescription(replaceAll(cmd.helpEn.desc, "$prefix$", client.prefix))
-                                .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                                .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
                             return
@@ -139,7 +144,7 @@ module.exports = class ajuda {
                                 .setDescription("**" + atributosF + "**" + client.tl({ local: int.lang + "ajuda-atributos" }))
                                 .setColor(client.settings.color)
                                 .setTitle("<:fichaAjuda:766790214550814770> " + client.tl({ local: int.lang + "ajuda-tAtributos" }))
-                                .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                                .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                                 .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
                                 .setTimestamp()
 

@@ -38,7 +38,7 @@ module.exports = class invite {
                 const bInv = new client.Discord.MessageButton()
                     .setStyle(5)
                     .setLabel(client.tl({ local: int.lang + "inv-embedFT" }))
-                    .setURL(`https://kamisite.herokuapp.com/short/convite`)
+                    .setURL(`https://kamisite.herokuapp.com/convite`)
 
                 int.editReply({ embeds: [inviteEmbed], components: [{ type: 1, components: [bInv] }] })
             })

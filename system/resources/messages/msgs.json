@@ -141,6 +141,7 @@
         "ajuda": {
             "main": "Aqui você pode ver a lista completa de comandos disponíveis!\n\n        O prefixo do BOT é `/`. O prefixo `k!` foi descontinuado.\n        \n        Clique no menu abaixo para visualizar uma lista com os comandos disponíveis. Se ainda precisar de mais ajuda ou se tiver algum problema entre no meu servidor de suporte.\n\n        Você também pode ver algumas funções em mais detalhes nos [Tutoriais no site do Kami](https://kamibot.vercel.app/tutoriais)! (Mais tutoriais ainda serão adicionados)\n         \n        É recomendado ler os termos de uso do BOT.\n         ",
             "btTermos": "Termos de Uso",
+            "btPrivacidade": "Política de Privacidade",
             "atributos": "\n        \nO atributo **extras** serve para adicionar atributos customizados a sua ficha\n\n        _Formato do comando:_\n        **/ficha <nome_Rpg> extras <seu_atributo>:<valor> | <seu_atributo2>:<valor>**\n        \n        <:avisoAjuda:766826097051828235> \" : \" -> Separa um atributo de seu valor\n        <:avisoAjuda:766826097051828235> \" | \" -> Sepera diferentes atributos\n        <:avisoAjuda:766826097051828235> **Este formato de comando só é válido para o atributos Extras**\n\n        ",
             "tMain": "Meus Comandos",
             "tAtributos": "Atualmente os atributos possíveis são:",
@@ -427,6 +428,7 @@
         "ajuda": {
             "main": "Here you can see the full list of available commands!\n\n        The BOT prefix is `/`. The prefix `k!` will be discontinued soon.\n        \n        Click on the menu below to see a list of available commands. If you still need more help or have any problems join my support server.\n\n        You also can see some functions in more detais on [Kami's Tutorials](https://kamibot.vercel.app/tutoriais)! (More tutorials will be added)\n         \n        It is recommended that you read the BOT's terms of use.\n         ",
             "btTermos": "Terms of Use",
+            "btPrivacidade": "Privacy Policy",
             "atributos": "\n    \nThe attribute **extras** is used to add custom attributes to your sheet\n\n    _Format of the command:_\n    **/ficha <sheet_name> extras <your_attribute>:<value> | <your_attribute2>:<value>**\n    \n    <:avisoAjuda:766826097051828235> \" : \" -> Separates an attribute from its value\n    <:avisoAjuda:766826097051828235> \" | \" -> Separates different attributes\n    <:avisoAjuda:766826097051828235> **This command format is only valid for the Extras attributes**",
             "tMain": "My Commands",
             "tAtributos": "Currently the possible attributes are:",

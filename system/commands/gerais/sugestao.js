@@ -4,9 +4,9 @@ module.exports = class sugestao {
     constructor() {
         return {
             ownerOnly: false,
-            name: "sugestao",
-            fName: "Sugestão",
-            fNameEn: "Suggestion",
+            name: "suporte",
+            fName: "Suporte",
+            fNameEn: "Support",
             desc: 'Envia uma mensagem para a equipe do BOT.',
             descEn: 'Sends a message to the BOT\'s team.',
             args: [

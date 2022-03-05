@@ -87,7 +87,7 @@ module.exports = class botinfo {
         const bSup = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
-            .setURL("https://discord.com/invite/9rqCkFB")
+            .setURL("https://kamisite.herokuapp.com/suporte")
 
         const bVote = new client.Discord.MessageButton()
             .setStyle(5)
@@ -97,7 +97,7 @@ module.exports = class botinfo {
         const bInv = new client.Discord.MessageButton()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f4V" }))
-            .setURL(`https://kamisite.herokuapp.com/short/convite`)
+            .setURL(`https://kamisite.herokuapp.com/convite`)
 
         int.editReply({ content: null, embeds: [botIEmbed], components: [{ type: 1, components: [bSup, bVote, bInv] }] })
     }
