@@ -68,7 +68,7 @@ module.exports = class ajuda {
                 .setCustomId(uniqueID)
                 .setPlaceholder(client.tl({ local: int.lang + "ajuda-mPH" }))
 
-            if (choice != "") { menu.addOptions({ label: int.lang == "pt-" ? "Inicio" : "Home", value: "inicio", description: int.lang == "pt-" ? "Volta para página inicial." : "Go back to homepage." }) }
+            if (choice != "" && choice != "inicio") { menu.addOptions({ label: int.lang == "pt-" ? "Inicio" : "Home", value: "inicio", description: int.lang == "pt-" ? "Volta para página inicial." : "Go back to homepage." }) }
             if (choice != "atributos") { menu.addOptions({ label: int.lang == "pt-" ? "Atributos" : "Attributes", value: "atributos", description: int.lang == "pt-" ? "Lista todos os atributos." : "List all attributes." }) }
 
             client.commands.forEach(cmd => {
@@ -83,7 +83,7 @@ module.exports = class ajuda {
                 }
             })
 
-            var botmsg = await int.editReply({ embeds: [help], components: [{ type: 1, components: [bTermos, bSup] }, { type: 1, components: [menu] }] })
+            var botmsg = await int.editReply({ embeds: [help], components: [{ type: 1, components: [bTermos, bPrivacidade, bSup] }, { type: 1, components: [menu] }] })
 
             if (!int.inGuild()) { botmsg = await client.channels.fetch(int.channelId) }
 
