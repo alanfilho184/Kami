@@ -53,7 +53,7 @@ module.exports = class adicionar_imagem {
                     return
                 }
                 else {
-                    const fichas = await client.commands.get("listar").api(client, int.user.id)
+                    const fichas = client.cache.getFichasUser(int.user.id)
 
                     const uniqueID = `${Date.now()}`
                     const menu = new client.Discord.MessageSelectMenu()
@@ -69,7 +69,7 @@ module.exports = class adicionar_imagem {
                         .setDescription(client.tl({ local: int.lang + "addI-eDesc" }))
                         .setImage(attach.url)
                         .setColor(client.settings.color)
-                        .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                        .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                         .setTimestamp()
 
                     var botmsg = await int.editReply({ embeds: [embed], components: [{ type: 1, components: [menu] }] })
@@ -83,7 +83,7 @@ module.exports = class adicionar_imagem {
 
                             const nomerpg = interaction.values[0]
 
-                            client.cache.updateFicha(int.user.id, nomerpg, "imagem", attach.url)
+                            client.cache.updateFicha(int.user.id, nomerpg, { imagem: attach.url }, { query: "update" })
                                 .then(async r => {
                                     var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
@@ -98,7 +98,7 @@ module.exports = class adicionar_imagem {
                             if (err.code == "INTERACTION_COLLECTOR_ERROR") {
                                 int.editReply({ components: [] })
                             }
-                            else{
+                            else {
                                 client.logs.error(err, true)
                             }
                         })

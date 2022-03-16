@@ -9,7 +9,8 @@ module.exports = class lruCache {
     age() {
         setInterval(() => {
             this.map.forEach(info => {
-                if (Date.now() - info.lastUse >= info.maxAge && info.maxAge != 0) {
+                try { info = JSON.parse(info) } catch (err) { }
+                if (Date.now() - info.usedAt >= info.maxAge && info.maxAge != 0) {
                     this.map.delete(info.key)
                 }
             })
@@ -17,7 +18,7 @@ module.exports = class lruCache {
     }
 
     set(key, value, maxAge) {
-        this.map.set(key, { key: key, content: value, maxAge: maxAge || this.maxAge, creationTime: Date.now(), lastUse: Date.now() })
+        this.map.set(key, JSON.stringify({ key: key, content: value, maxAge: maxAge || this.maxAge, creationTime: Date.now(), usedAt: Date.now() }))
 
         return "Setado com sucesso"
     }
@@ -29,12 +30,14 @@ module.exports = class lruCache {
             toReturn = this.map.get(key).content
 
             if (this.updateAgeOnGet) {
-                this.map.set(key, { key: key, content: this.map.get(key).content, maxAge: this.map.get(key).maxAge || this.maxAge, creationTime: this.map.get(key).creationTime, lastUse: Date.now() })
+                this.map.set(key, JSON.stringify({ key: key, content: this.map.get(key).content, maxAge: this.map.get(key).maxAge || this.maxAge, creationTime: this.map.get(key).creationTime, usedAt: Date.now() }))
             }
         }
         catch (err) {
             toReturn = undefined
         }
+
+        try { toReturn = JSON.parse(toReturn) } catch (err) { }
 
         return toReturn
     }

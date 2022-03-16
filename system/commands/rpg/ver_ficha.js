@@ -61,10 +61,9 @@ module.exports = class ver_ficha {
                                     .then(fProp => {
                                         var infoProp = int
                                         infoProp.user = fProp
-                                        const reply = client.commands.get("enviar").create(client, infoProp, nomerpg, ficha, false)
-                                        const embedsArray = Object.values(reply)
+                                        const reply = client.commands.get("enviar").create(client, infoProp, ficha)
 
-                                        return int.editReply({ embeds: embedsArray, ephemeral: true })
+                                        return int.editReply({ embeds: reply, ephemeral: true })
                                     })
                             }
                         }

@@ -368,12 +368,11 @@ module.exports = class roll {
 
         client.cache.getFicha(int.user.id, nomerpg)
             .then(r => {
-                if (r != undefined) {
-
+                if (r != undefined) {  
                     if (int.lang == "en-") {
                         atb = atributosPt[atributos.indexOf(atb)]
                     }
-                    var valor = r[atb]
+                    var valor = r.atributos[atb]
 
                     const embedRoll = new client.Discord.MessageEmbed()
                     var index = atributosI1.indexOf(atb)

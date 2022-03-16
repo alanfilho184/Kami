@@ -44,17 +44,8 @@ module.exports = class apiServices {
         var atb = body.atb
         var valor = body.valor
 
-        try { nomerpg = nomerpg.replace("'", '') } catch { }
-
         try {
             atb = pass.client.utils.matchAtb(atb, atributos)
-            if (!atributos.includes(atb)) {
-                return {
-                    status: 400,
-                    title: `Atributo "${atb}" não encontrado`,
-                    text: `Se você está tentando adicionar um atributo que não está na lista padrão, selecione a opção "Adicionar atributo como um Extra"`
-                }
-            }
         }
         catch (err) { }
 
@@ -109,7 +100,7 @@ module.exports = class apiServices {
             }
         }
 
-        if (atb == "extras") {
+        if (false) {
             if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") { }
             else {
                 const ficha = await pass.client.cache.getFicha(body.id, nomerpg)
@@ -164,9 +155,8 @@ module.exports = class apiServices {
 
         try { nomerpg = nomerpg.replace("'", '') } catch { }
 
-
         try {
-            await pass.client.cache.updateFicha(body.id, nomerpg, atb, valor)
+            await pass.client.cache.updateFicha(body.id, nomerpg, { [atb]: valor }, {query: "update"})
 
             var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
 
@@ -206,17 +196,10 @@ module.exports = class apiServices {
 
         try {
             atb = pass.client.utils.matchAtb(atb, atributos)
-            if (!atributos.includes(atb)) {
-                return {
-                    status: 400,
-                    title: `Atributo "${atb}" não encontrado`,
-                    text: `Se você está tentando remover um atributo que não está na lista padrão, selecione a opção "Atributo é um Extra"`
-                }
-            }
         }
         catch (err) { }
 
-        if (atb == "extras") {
+        if (false) {
             if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") { }
             else {
                 const ficha = await pass.client.cache.getFicha(body.id, nomerpg)
@@ -269,10 +252,8 @@ module.exports = class apiServices {
 
         }
 
-        try { nomerpg = nomerpg.replace("'", '') } catch { }
-
         try {
-            await pass.client.cache.updateFicha(body.id, nomerpg, atb, valor)
+            await pass.client.cache.updateFicha(body.id, nomerpg, { [atb]: null }, {query: "update"})
 
             var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
 

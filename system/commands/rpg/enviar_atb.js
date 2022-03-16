@@ -38,7 +38,7 @@ module.exports = class enviar_atb {
     }
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "enviar")
-        int.deferReply({ephemeral: secret})
+        int.deferReply({ ephemeral: secret })
             .then(async () => {
                 const args = client.utils.args(int)
 
@@ -52,7 +52,6 @@ module.exports = class enviar_atb {
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 
                 atb = client.utils.matchAtb(atb, atributos)
-                if (!atributos.includes(atb)) { return int.editReply(client.tl({ local: int.lang + "cef-atbNE", atributo: atb })) }
 
                 if (!nomerpg) {
                     try {
@@ -62,12 +61,8 @@ module.exports = class enviar_atb {
                     catch (err) { fichasUser = undefined }
 
                     if (!fichasUser) {
-                        const fichasUser = new Array()
-                        var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
+                        const fichasUser = client.cache.getFichasUser(int.user.id)
 
-                        for (var x in result[0]) {
-                            fichasUser.push(result[0][x].nomerpg)
-                        }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
                         else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
                         else { return int.editReply(client.tl({ local: int.lang + "eft-uSF" })) }
@@ -76,21 +71,24 @@ module.exports = class enviar_atb {
 
                 const fichaUser = await client.cache.getFicha(int.user.id, nomerpg)
                 if (fichaUser) {
-                    if (int.lang == "en-") {
+                    if (int.lang == "en-" && client.utils.isDefaultAtb(atb, atributos)) {
                         atb = atributosPt[atributos.indexOf(atb)]
                     }
 
-                    if (fichaUser[atb]) {
-                        var valor = fichaUser[atb]
+                    if (fichaUser.atributos[atb]) {
+                        var valor = fichaUser.atributos[atb]
 
-                        atb = atributosF[atributosPt.indexOf(atb)]
+
+                        if (client.utils.isDefaultAtb(atb, atributosPt)) {
+                            atb = atributosF[atributosPt.indexOf(atb)]
+                        }
 
                         var atributo = atb
 
                         const atributoEmbed = new client.Discord.MessageEmbed()
                             .setColor(client.settings.color)
-                            .setAuthor({name: client.tl({ local: int.lang + "ea-embedTi" }) + nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`})
-                            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                            .setAuthor({ name: client.tl({ local: int.lang + "ea-embedTi" }) + nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+                            .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                             .setTimestamp()
                             .setTitle(atb + ":")
 

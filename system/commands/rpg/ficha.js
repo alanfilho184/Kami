@@ -86,12 +86,15 @@ module.exports = class ficha {
 
         int.deferReply({ ephemeral: secret })
             .then(async () => {
-
                 const args = client.utils.args(int)
 
                 const atributosPt = client.resources["pt-"].atributos
                 const atributos = client.resources[int.lang].returnAtb()
                 const atributosF = client.resources[int.lang].atributosF
+
+                const atbs = new Array()
+                const vals = new Array()
+                const atbsErr = new Array()
 
                 atributos.push("multi")
 
@@ -100,25 +103,6 @@ module.exports = class ficha {
                 var valor = args.get("valor")
 
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
-
-                try {
-                    atb = client.utils.matchAtb(atb, atributos)
-                    if (!atributos.includes(atb)) { return int.editReply(client.tl({ local: int.lang + "cef-atbNE", atributo: atb })) }
-                }
-                catch (err) { }
-
-                if (!nomerpg) {
-                    const fichasUser = new Array()
-                    var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
-
-                    for (var x in result[0]) {
-                        fichasUser.push(result[0][x].nomerpg)
-                    }
-
-                    if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "cef-mFichas", fichasUser: fichasUser })) }
-                    else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
-                    else { nomerpg == "1" }
-                }
 
                 if (atb == "imagem" || atb == "image") {
                     const imageType = ["jpg", "jpeg", "JPG", "JPEG", "png", "PNG", "gif", "gifV"]
@@ -167,79 +151,36 @@ module.exports = class ficha {
                     atributos.pop("multi")
                     var atbValor = valor.split("|")
 
-                    var atbs = new Array()
-                    var vals = new Array()
-                    var atbsErr = new Array()
-                    var atbsNW = new Array()
-                    var y = 0
+                    valor = new Object()
 
-                    for (var x in atbValor) {
-                        atbs.push(atbValor[x].split(":")[0])
-                        try { vals.push(atbValor[x].split(":")[1].replace("'", "ʽ")) } catch (err) { client.log.warn(err) }
-                    }
+                    atbValor.forEach(atbVal => {
+                        if (atbVal != " " && atbVal != "") {
+                            var atb = atbVal.split(":")
 
-                    for (var y in atbs + 1) {
-                        for (var x in atbs) {
-                            if (vals[x][0] == " ") { vals[x] = vals[x].slice(1, 9999) }
-                            if (vals[x][vals[x].length - 1] == " ") { vals[x] = vals[x].slice(0, vals[x].length - 1) }
-                            atbs[x] = atbs[x].replace(" ", "")
+                            atb[0] = atb[0].trimStart().trimEnd()
+                            atb[1] = atb[1].trimStart().trimEnd()
 
-                            atbs[x] = client.utils.matchAtb(atbs[x], atributos)
+                            atb[0] = client.utils.matchAtb(atb[0], atributos)
 
-                            if (!atributos.includes(atbs[x]) || atbs[x] == "extras") {
-                                atbsErr.push(atbs[x])
-                                atbs.splice(x, 1)
-                                vals.splice(x, 1)
+                            if (atb[0].match(/[^0-9a-záéíóúàèìòùâêîôûãõç_()-=+\[\]\{\}\*\|\.\s]+/gi) || atb[0].length > 150) {
+                                atbsErr.push(atb[0])
+                            }
+                            else if (atb[1] == "" || atb[1] == " " || atb[1] == "excluir" || atb[1] == "delete" || atb[1] == "-") {
+                                atbsErr.push(atb[0])
+                            }
+                            else {
+                                atbs.push(atb[0])
+                                vals.push(atb[1])
+                                valor[atb[0]] = atb[1]
                             }
                         }
-
-                    }
-
-                    if (atbs.length == 0) {
-                        return int.editReply(client.tl({ local: int.lang + "cef-allAtbErr" }))
-                    }
-
-                    var colunas = new Array()
-                    colunas[0] = ""
-                    colunas[1] = "("
-                    colunas[2] = "values("
-
-                    for (var x in atbs) {
-                        if (int.lang == "en-") {
-                            atbs[x] = atributosPt[atributos.indexOf(atbs[x])]
-                        }
-
-                        colunas[0] += atbs[x] + " = " + `'${vals[x]}'`
-                        if (x != atbs.length - 1) { colunas[0] += "," }
-
-                        colunas[1] += atbs[x]
-                        if (x != atbs.length - 1) { colunas[1] += "," }
-
-                        colunas[2] += `'${vals[x]}'`
-                        if (x != vals.length - 1) { colunas[2] += "," }
-                    }
-
-                    try { nomerpg = nomerpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
-
-                    const ficha = await client.cache.getFicha(int.user.id, nomerpg)
-                    if (ficha) {
-                        colunas[1] += `, id, nomerpg)`
-                        colunas[2] += `,'${int.user.id}', '${nomerpg}')`
-                    }
-                    else {
-                        const senha = client.utils.gerarSenha()
-
-                        colunas[1] += `, id, nomerpg, senha)`
-                        colunas[2] += `,'${int.user.id}', '${nomerpg}', '${senha}')`
-                    }
-
-
+                    })
                 }
 
                 if (!atb) { return client.commands.get("enviar").run(client, int) }
                 if (!valor) { return client.commands.get("enviaratributo").run(client, int, "ficha") }
 
-                if (atb == "extras") {
+                if (false) {
                     if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") {
                     }
                     else {
@@ -298,16 +239,24 @@ module.exports = class ficha {
 
                 client.cache.getFicha(int.user.id, nomerpg)
                     .then(async r => {
-                        if (int.lang == "en-" && atb != "multi") {
+
+                        if (int.lang == "en-" && atb != "multi" && client.utils.isDefaultAtb(atb, atributos)) {
                             atb = atributosPt[atributos.indexOf(atb)]
                         }
 
                         if (r != undefined) {
                             try { var tryDel = valor.toLowerCase() } catch (err) { }
                             if (tryDel == "excluir" || tryDel == "delete") {
-                                client.cache.updateFicha(int.user.id, nomerpg, atb, null)
+                                const data = new Object()
+                                data[`${atb}`] = null
+
+                                client.cache.updateFicha(int.user.id, nomerpg, data, { query: "update" })
                                     .then(r => {
-                                        int.editReply(client.tl({ local: int.lang + "cef-delFicha", nomerpg: nomerpg, atributo: atributosF[atributosPt.indexOf(atb)] }))
+                                        if (client.utils.isDefaultAtb(atb, atributos)) {
+                                            atb = atributosF[atributosPt.indexOf(atb)]
+                                        }
+
+                                        int.editReply(client.tl({ local: int.lang + "cef-delFicha", nomerpg: nomerpg, atributo: atb }))
                                             .then(async function () {
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
@@ -319,9 +268,7 @@ module.exports = class ficha {
                                     .catch(err => client.log.error(err, true))
                             }
                             else if (atb == "multi") {
-                                const custom_sql = `update fichas set ${colunas[0]} where id = '${int.user.id}' and nomerpg = '${nomerpg}'`
-
-                                client.cache.updateFicha(int.user.id, nomerpg, atbs, vals, custom_sql)
+                                client.cache.updateFicha(int.user.id, nomerpg, valor, { query: "update" })
                                     .then(r => {
                                         var msgToSend = String()
                                         if (atbsErr[0]) {
@@ -341,9 +288,16 @@ module.exports = class ficha {
                                     .catch(err => client.log.error(err, true))
                             }
                             else {
-                                client.cache.updateFicha(int.user.id, nomerpg, atb, valor)
+                                const data = new Object()
+                                data[`${atb}`] = valor
+
+                                client.cache.updateFicha(int.user.id, nomerpg, data, { query: "update" })
                                     .then(r => {
-                                        int.editReply(client.tl({ local: int.lang + "cef-updtFicha", nomerpg: nomerpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }))
+                                        if (client.utils.isDefaultAtb(atb, atributos)) {
+                                            atb = atributosF[atributosPt.indexOf(atb)]
+                                        }
+
+                                        int.editReply(client.tl({ local: int.lang + "cef-updtFicha", nomerpg: nomerpg, atributo: atb, valor: valor }))
                                             .then(async function () {
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
@@ -360,8 +314,7 @@ module.exports = class ficha {
                                 return int.editReply(client.tl({ local: int.lang + "cef-nFichaEn", nomerpg: nomerpg }))
                             }
                             else {
-
-                                const qFichas = await client.commands.get("listar").api(client, int.user.id)
+                                const qFichas = client.cache.getFichasUser(int.user.id)
                                 if (qFichas.length >= 10) {
                                     int.editReply({ content: client.tl({ local: int.lang + "cef-lFE" }) })
                                     return
@@ -390,8 +343,7 @@ module.exports = class ficha {
 
                                                 if (choice == "conf") {
                                                     if (atb == "multi") {
-                                                        const custom_sql = `insert into fichas ${colunas[1]} ${colunas[2]}`
-                                                        client.cache.updateFicha(int.user.id, nomerpg, atbs, vals, custom_sql)
+                                                        client.cache.updateFicha(int.user.id, nomerpg, valor, { query: "insert" })
                                                             .then(r => {
                                                                 client.cache.updateFichasUser(int.user.id, nomerpg)
                                                                 var msgToSend = String()
@@ -413,16 +365,19 @@ module.exports = class ficha {
                                                             .catch(err => client.log.error(err, true))
                                                     }
                                                     else {
-                                                        try { nomerpg = nomerpg.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
+                                                        try { nomerpg = nomerpg.replace(/[ '$%]/g, '') } catch (err) { }
                                                         const senha = client.utils.gerarSenha()
 
-                                                        client.db.query(`insert into fichas (id, nomerpg, ${atb}, senha) values ('${int.user.id}', '${nomerpg}', :valor, '${senha}')`, {
-                                                            replacements: { valor: valor },
-                                                            type: QueryTypes.INSERT
-                                                        })
+                                                        const data = new Object()
+                                                        data[`${atb}`] = valor
+
+                                                        client.cache.updateFicha(int.user.id, nomerpg, data, { query: "insert", resetarSenha: senha })
                                                             .then(r => {
+                                                                if (client.utils.isDefaultAtb(atb, atributos)) {
+                                                                    atb = atributosF[atributosPt.indexOf(atb)]
+                                                                }
                                                                 client.cache.updateFichasUser(int.user.id, nomerpg)
-                                                                return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomerpg: nomerpg, atributo: atributosF[atributosPt.indexOf(atb)], valor: valor }), components: [] })
+                                                                return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomerpg: nomerpg, atributo: atb, valor: valor }), components: [] })
                                                             })
                                                             .catch(err => client.log.error(err, true))
                                                     }
