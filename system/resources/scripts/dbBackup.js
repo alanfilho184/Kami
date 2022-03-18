@@ -1,27 +1,38 @@
 const fs = require("fs");
+const path = require("path")
 
-module.exports = (client) => {
-    var backup = new Object()
+module.exports = class psql_backup {
+    constructor(db) {
+        this.db = db
+    }
 
-    client.db.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE';")
-        .then(async (tables) => {
-            tables.forEach((table) => {
-                client.db.query(`SELECT * FROM ${table}`)
-                    .then((res) => {
-                        backup[table] = new Array()
+    toJSON(options = { backupPath: path.parse("/"), backupName: "dbBackup", schema: "public" }) {
+        var backup = new Object()
 
-                        res[0].forEach(async (item) => {
-                            var newItem = new Object()
+        this.db.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='${options.schema}' AND table_type='BASE TABLE';`)
+            .then(async (tables) => {
+                tables.forEach((table) => {
+                    this.db.query(`SELECT * FROM ${table}`)
+                        .then((res) => {
+                            backup[table] = new Array()
 
-                            for (var key in item) {
-                                newItem[key] = item[key]
-                            }
+                            res[0].forEach(async (item) => {
+                                var newItem = new Object()
 
-                            backup[table].push(newItem)
+                                for (var key in item) {
+                                    newItem[key] = item[key]
+                                }
+
+                                backup[table].push(newItem)
+                            })
+
+                            fs.writeFileSync(options.backupPath.toString() + options.backupName, JSON.stringify(backup), { encoding: "utf-8", flag: "w" })
                         })
-
-                        fs.writeFileSync(`dbBackup.json`, JSON.stringify(backup), { encoding: "utf-8", flag: "w" })
-                    })
+                })
             })
-        })
+    }
+
+    toPSQL() {
+
+    }
 }
