@@ -130,14 +130,14 @@ module.exports = class MenuClient extends Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
-            else if(err != "DiscordAPIError: Unknown interaction"){
+            else if (err != "DiscordAPIError: Unknown interaction") {
                 this.emit("err", err, true)
             }
             logs.log.error(err, true)
 
             errorStack++
 
-            if(errorStack >= 5){
+            if (errorStack >= 5) {
                 logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
                 process.exit(1)
             }
@@ -147,14 +147,14 @@ module.exports = class MenuClient extends Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
-            else if(err != "DiscordAPIError: Unknown interaction"){
+            else if (err != "DiscordAPIError: Unknown interaction") {
                 this.emit("err", err, true)
             }
             logs.log.error(err, true)
 
             errorStack++
 
-            if(errorStack >= 5){
+            if (errorStack >= 5) {
                 logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
                 process.exit(1)
             }
