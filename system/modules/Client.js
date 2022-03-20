@@ -116,7 +116,6 @@ module.exports = class MenuClient extends Client {
         const db = new Sequelize(conStr);
 
         this.db = db
-        require("../resources/scripts/dbBackup.js")(this)
         logs.log.start("Database")
 
     }
