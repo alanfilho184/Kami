@@ -29,9 +29,11 @@ Ex: **${"/"}listar**`
     }
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
-        int.deferReply({ephemeral: secret})
+        int.deferReply({ ephemeral: secret })
             .then(() => {
-                client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
+                client.db.query(`select nomerpg from fichas where id = :id`, {
+                    replacements: { id: int.user.id }
+                })
                     .then(result => {
                         const fichas = new Array()
                         result[0].map(f => fichas.push(f.nomerpg))
@@ -51,7 +53,7 @@ Ex: **${"/"}listar**`
                         }
 
                         fichasU.setColor(client.settings.color)
-                        fichasU.setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                        fichasU.setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                         fichasU.setTimestamp()
                         return int.editReply({ embeds: [fichasU] })
 
@@ -60,7 +62,9 @@ Ex: **${"/"}listar**`
             })
     }
     async api(client, id) {
-        var result = await client.db.query(`select nomerpg from fichas where id = '${id}'`)
+        var result = await client.db.query(`select nomerpg from fichas where id = :id`, {
+            replacements: { id: id }
+        })
 
         const fichas = new Array()
         result[0].map(f => fichas.push(f.nomerpg))

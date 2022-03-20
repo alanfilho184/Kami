@@ -46,20 +46,23 @@ module.exports = class renomear {
                 try { nomerpgNovo = nomerpgNovo.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
                 try { nomerpgNovo = nomerpgNovo.replace("'", '') } catch { }
 
-                client.db.query(`select * from fichas where id = '${int.user.id}' and nomerpg = '${nomerpgAtual}'`)
+                client.db.query(`select * from fichas where id = :id and nomerpg = :nomerpg`, {
+                    replacements: { id: int.user.id, nomerpg: nomerpgAtual },
+                })
                     .then(result => {
                         if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomerpg: nomerpgAtual })) }
                         else {
                             const fichasUser = client.cache.getFichasUser(int.user.id)
                             if (fichasUser.includes(nomerpgNovo)) { return int.editReply(client.tl({ local: int.lang + "rf-fE", nomerpg: nomerpgNovo })) }
                             else {
-                                client.db.query(`update fichas set nomerpg = '${nomerpgNovo}' where id = '${int.user.id}' and nomerpg = '${nomerpgAtual}'`)
+                                client.db.query(`update fichas set nomerpg = :nomerpgnovo where id = :id and nomerpg = :nomerpg`, {
+                                    replacements: { id: int.user.id, nomerpg: nomerpgAtual, nomerpgnovo: nomerpgNovo },
+                                })
                                     .then(() => {
                                         client.cache.deleteFichaUser(int.user.id, nomerpgAtual)
                                         client.cache.updateFichasUser(int.user.id, nomerpgNovo)
                                         return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomerpg: nomerpgAtual, novoNomeRpg: nomerpgNovo }))
                                             .then(async function () {
-                                                console.log(nomerpgAtual, nomerpgNovo)
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpgAtual)
 
                                                 console.log(infoUIRT)
@@ -73,8 +76,6 @@ module.exports = class renomear {
                                             })
                                     })
                                     .catch(err => { client.log.error(err, true) })
-
-
                             }
                         }
                     })

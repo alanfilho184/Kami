@@ -1,7 +1,3 @@
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 module.exports = class enviar {
     constructor() {
         return {
@@ -75,10 +71,8 @@ module.exports = class enviar {
         int.deferReply({ ephemeral: secret })
             .then(async () => {
                 const args = client.utils.args(int)
-                const atributos = client.resources[int.lang].atributos
 
                 const beta = client.whitelist.get("beta")
-                const premium = client.whitelist.get("premium")
 
                 var nomerpg = args.get("nome_da_ficha")
                 var irtUpdt = args.get("opções")
@@ -93,12 +87,8 @@ module.exports = class enviar {
                     catch (err) { fichasUser = undefined }
 
                     if (!fichasUser) {
-                        const fichasUser = new Array()
-                        var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
+                        const fichasUser = client.cache.getFichasUser(int.user.id)
 
-                        for (var x in result[0]) {
-                            fichasUser.push(result[0][x].nomerpg)
-                        }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "efd-mFichas1", fichasUser: fichasUser })) }
                         else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
                         else { return int.editReply(client.tl({ local: int.lang + "efd-uSF" })) }
@@ -108,29 +98,20 @@ module.exports = class enviar {
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 
                 client.cache.getFicha(int.user.id, nomerpg)
-                    .then(async r => {
-                        if (r) {
-                            var fichaUser = r
-
-                            for (var x in atributos) {
-                                if (fichaUser[atributos[x]] == undefined) {
-                                    fichaUser[atributos[x]] = "-"
-                                }
+                    .then(async fichaUser => {
+                        if (fichaUser) {
+                            if (fichaUser.atributos["imagem"] == "-" || fichaUser.atributos["imagem"] == null) {
+                                fichaUser.atributos["imagem"] = ""
                             }
-
-                            if (fichaUser["imagem"] == "-" || fichaUser["imagem"] == null) {
-                                fichaUser["imagem"] = ""
-                            }
-
 
                             try { irtUpdt = irtUpdt.toLowerCase() } catch (err) { }
 
                             try {
                                 if (irtUpdt != "irt") {
-                                    const reply = this.create(client, int, nomerpg, fichaUser)
+                                    const reply = this.create(client, int, fichaUser)
                                     const embedsArray = Object.values(reply)
 
-                                    int.editReply({ embeds: embedsArray }).catch(err => {
+                                    int.editReply({ embeds: reply }).catch(err => {
                                         if (err.name + err.message.split(/\n/)[0] == "DiscordAPIErrorInvalid Form Body") {
                                             if (err.message.split(/\n/)[1] == "embeds: Embed size exceeds maximum size of 6000") {
                                                 int.editReply(client.tl({ local: int.lang + "efd-fCE" }) + "\n" + client.tl({ local: int.lang + "efd-fE2" }))
@@ -171,17 +152,18 @@ module.exports = class enviar {
                                         return int.editReply(client.tl({ local: int.lang + "efd-ephIRT" }))
                                     }
 
-                                    var infoUIRT = await client.db.query(`select nomerpg from irt where id = '${int.user.id}'`)
+                                    var infoUIRT = await client.db.query(`select nomerpg from irt where id = :id`, {
+                                        replacements: { id: int.user.id },
+                                    })
                                     infoUIRT = infoUIRT[0]
 
                                     if (infoUIRT.length >= 5) {
                                         return int.editReply(client.tl({ local: int.lang + "efd-irtMF" }))
                                     }
 
-                                    var reply = this.create(client, int, nomerpg, fichaUser, "irtOn")
-                                    const embedsArray = Object.values(reply)
+                                    var reply = this.create(client, int, fichaUser)
 
-                                    await int.editReply({ embeds: embedsArray })
+                                    await int.editReply({ embeds: reply })
                                         .then(m => {
                                             const bDes = new client.Discord.MessageButton()
                                                 .setStyle(2)
@@ -227,172 +209,98 @@ module.exports = class enviar {
             })
 
     }
-    create(client, int, nomerpg, fichaUser, irt) {
-        if (irt == "irtUpdt") {
-            var usedInf = false
-        }
-        var usedS1 = false
-        var usedS2 = false
-        var usedS3 = false
-        var usedE = false
-        var usedD = false
+    create(client, int, fichaUser, irt) {
+        var reply = Object({
+            inf: false,
+            s1: false,
+            s2: false,
+            s3: false,
+            desc: false
+        })
 
-        // int.lang = "pt-"
+        const { atributosI1, atributosIF1, atributosI2, atributosIF2, atributosStatus, atributosStatusF } = client.resources[int.lang]
 
-        const atributosS1 = client.resources["pt-"].atributosStatus
-        const atributosI1 = client.resources["pt-"].atributosI1
-        const atributosI2 = client.resources["pt-"].atributosI2
-        const atributosS1F = client.resources[int.lang].atributosStatusF
-        const atributosIF1 = client.resources[int.lang].atributosIF1
-        const atributosIF2 = client.resources[int.lang].atributosIF2
+        const infEmbed = new client.Discord.MessageEmbed()
+            .setColor(client.settings.color)
+            .setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+            .setThumbnail(fichaUser.atributos.imagem ? fichaUser.atributos.imagem : "")
 
-        const info_perso = new client.Discord.MessageEmbed()
-        info_perso.setColor(client.settings.color)
-        info_perso.setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
-        info_perso.setThumbnail(fichaUser["imagem"])
-        const status_perso = new client.Discord.MessageEmbed()
-        const status_perso2 = new client.Discord.MessageEmbed()
-        const status_perso3 = new client.Discord.MessageEmbed()
-        const desc_perso = new client.Discord.MessageEmbed()
-        const extras_perso = new client.Discord.MessageEmbed()
+        delete fichaUser.atributos["imagem"]
 
-        status_perso.setColor(client.settings.color)
-        status_perso2.setColor(client.settings.color)
-        status_perso3.setColor(client.settings.color)
-        desc_perso.setColor(client.settings.color)
-        status_perso.setTitle(client.tl({ local: int.lang + "ef-stpTi" }))
-        extras_perso.setColor(client.settings.color)
-        extras_perso.setTitle(client.tl({ local: int.lang + "ef-extPersoTi" }))
+        const s1Embed = new client.Discord.MessageEmbed().setColor(client.settings.color), s2Embed = new client.Discord.MessageEmbed().setColor(client.settings.color)
+        const s3Embed = new client.Discord.MessageEmbed().setColor(client.settings.color), descEmbed = new client.Discord.MessageEmbed().setColor(client.settings.color)
 
-        status_perso.setTitle("Embed ainda não utilizado")
-        status_perso2.setTitle("Embed ainda não utilizado")
-        status_perso3.setTitle("Embed ainda não utilizado")
-        extras_perso.setTitle("Embed ainda não utilizado")
-        desc_perso.setTitle("Embed ainda não utilizado")
-
-        for (var z in atributosI1) {
-            var atb = atributosI1[z]
-            if (fichaUser[atb] != "-" && fichaUser[atb] != "" && fichaUser[atb] != undefined && fichaUser[atb] != null) {
-                var valor = fichaUser[atb]
-                atb = atributosIF1[z]
-                info_perso.addFields({ name: `${atb}:`, value: `${valor}`, inline: true })
-                info_perso.setTitle(client.tl({ local: int.lang + "ef-infoPersoTi" }))
-
-                if (irt == "irtUpdt") {
-                    usedInf = true
-                }
+        for (var x of atributosI1) {
+            if (fichaUser.atributos[x] != undefined) {
+                infEmbed.addField(atributosIF1[atributosI1.indexOf(x)], fichaUser.atributos[x], true)
+                delete fichaUser.atributos[x]
             }
         }
 
-        for (var y in atributosI2) {
-            var atb = atributosI2[y]
-            if (fichaUser[atb] != "-" && fichaUser[atb] != "" && fichaUser[atb] != undefined && fichaUser[atb] != null) {
-                var valor = fichaUser[atb]
-                atb = atributosIF2[y]
-                info_perso.addFields({ name: `${atb}:`, value: `${valor}` })
-                info_perso.setTitle(client.tl({ local: int.lang + "ef-infoPersoTi" }))
+        for (var x of atributosI2) {
+            if (fichaUser.atributos[x] != undefined) {
+                infEmbed.addField(atributosIF2[atributosI2.indexOf(x)], fichaUser.atributos[x], false)
+                delete fichaUser.atributos[x]
             }
         }
 
-        var fields = 1
-        for (var x in atributosS1) {
-            var atb = atributosS1[x]
-            if (fichaUser[atb] != "-" && fichaUser[atb] != "" && fichaUser[atb] != undefined && fichaUser[atb] != null) {
-                if (fields <= 24) {
-                    var valor = fichaUser[atb]
-                    atb = atributosS1F[x]
-                    status_perso.addFields({ name: `${atb}:`, value: `${valor}`, inline: true })
-                    status_perso.setTitle(client.tl({ local: int.lang + "ef-stpTi" }))
-                    usedS1 = true
+        var fields = 0
+        for (var x of atributosStatus) {
+            if (fichaUser.atributos[x] != undefined) {
+                if (fields <= 25) {
+                    s1Embed.addField(atributosStatusF[atributosStatus.indexOf(x)], fichaUser.atributos[x], true)
                 }
-                if (fields > 24 && fields <= 48) {
-                    var valor = fichaUser[atb]
-                    atb = atributosS1F[x]
-                    status_perso2.addFields({ name: `${atb}:`, value: `${valor}`, inline: true })
-                    status_perso2.setTitle("\u200b")
-                    usedS2 = true
+                else if (fields > 25 && fields <= 50) {
+                    s2Embed.addField(atributosStatusF[atributosStatus.indexOf(x)], fichaUser.atributos[x], true)
                 }
-                if (fields > 48 && fields <= 72) {
-                    var valor = fichaUser[atb]
-                    atb = atributosS1F[x]
-                    status_perso3.addFields({ name: `${atb}:`, value: `${valor}`, inline: true })
-                    status_perso3.setTitle("\u200b")
-                    usedS3 = true
+                else if (fields > 50 && fields <= 75) {
+                    s3Embed.addField(atributosStatusF[atributosStatus.indexOf(x)], fichaUser.atributos[x], true)
                 }
+
+                delete fichaUser.atributos[x]
                 fields += 1
             }
         }
-        if (fichaUser['extras'] != "-" && fichaUser['extras'] != "" && fichaUser['extras'] != undefined && fichaUser['extras'] != null) {
-            var atbExtras = fichaUser['extras']
 
-            var atbs = atbExtras.split("|")
-
-            for (var x in atbs) {
-                atb = atbs[x].split(":")[0]
-                var val = atbs[x].split(":")[1]
-
-                try { atb = atb.replace(" ", "") } catch (err) { }
-                try { val = val.replace(/ /, '') } catch (err) { }
-
-
-                if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "") {
-                    extras_perso.addFields({ name: atb + ":", value: val, inline: true })
-                }
-
-                if (x == 25) {
-                    let fromSite = false
-                    try {
-                        fromSite = int.fromSite
-                    } catch (err) { }
-                    if (!int.fromSite) { int.editReply(client.tl({ local: int.lang + "ef-eLE" })) }
-
-                    break
-                }
+        if (fichaUser.atributos.descricao != undefined) {
+            if (fichaUser.atributos.descricao != "") {
+                descEmbed.setDescription(fichaUser.atributos.descricao)
+                delete fichaUser.atributos.descricao
             }
-            extras_perso.setTitle(client.tl({ local: int.lang + "ef-extPersoTi" }))
-
-            usedE = true
         }
 
-        if (fichaUser['descricao'] != "-" && fichaUser['descricao'] != "" && fichaUser['descricao'] != undefined && fichaUser['descricao'] != null) {
-            desc_perso.setColor(client.settings.color)
-            desc_perso.setTitle(client.tl({ local: int.lang + "ef-descPerso" }))
-            desc_perso.setDescription(`${fichaUser['descricao']}`)
-            usedD = true
+        for (var x of Object.keys(fichaUser.atributos)) {
+            if (fichaUser.atributos[x] != undefined) {
+                if (fields <= 25) {
+                    s1Embed.addField(x, fichaUser.atributos[x], true)
+                }
+                else if (fields > 25 && fields <= 50) {
+                    s2Embed.addField(x, fichaUser.atributos[x], true)
+                }
+                else if (fields > 50 && fields <= 75) {
+                    s3Embed.addField(x, fichaUser.atributos[x], true)
+                }
+
+                delete fichaUser.atributos[x]
+                fields += 1
+            }
         }
 
-        var reply = new Object()
+        reply.inf = infEmbed.setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+        reply.s1 = s1Embed.fields.length > 0 ? s1Embed.setTitle(client.tl({ local: int.lang + "ef-stpTi" })) : false
+        reply.s2 = s2Embed.fields.length > 0 ? s2Embed : false
+        reply.s3 = s3Embed.fields.length > 0 ? s3Embed : false
+        reply.desc = descEmbed.description ? descEmbed.setTitle(client.tl({ local: int.lang + "ef-descPerso" })) : false
 
-        if (irt != "irtUpdt") {
-            reply["Inf"] = info_perso
-        }
-
-        else if (usedInf == true) {
-            reply["Inf"] = info_perso
-        }
-
-        if (usedS1 == true) {
-            reply["S1"] = status_perso
-        }
-
-        if (usedS2 == true) {
-            reply["S2"] = status_perso2
-        }
-
-        if (usedS3 == true) {
-            reply["S3"] = status_perso3
-        }
-
-        if (usedE == true) {
-            reply["Ext"] = extras_perso
-        }
-
-        if (usedD == true) {
-            reply["Descr"] = desc_perso
-        }
+        const replyArray = new Array
+        Object.values(reply).forEach((val) => {
+            if (val) {
+                replyArray.push(val)
+            }
+        })
+        reply = replyArray
 
         return reply
-
     }
     autocomplete(client, int) {
         const options = int.options._hoistedOptions

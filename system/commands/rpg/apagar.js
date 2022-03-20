@@ -59,7 +59,6 @@ Ex: **${"/"}apagar RPG_Kami irt**
         int.deferReply({ ephemeral: secret })
             .then(() => {
                 const args = client.utils.args(int)
-                const beta = client.whitelist.get("beta")
 
                 var nomerpg = args.get("nome_da_ficha")
                 var irt = args.get("opções")
@@ -67,12 +66,16 @@ Ex: **${"/"}apagar RPG_Kami irt**
 
                 try { nomerpg = nomerpg.replace(/[^\w\s]/gi, '') } catch { }
 
-                client.db.query(`select * from fichas where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
+                client.db.query(`select * from fichas where id = :id and nomerpg = :nomerpg`, {
+                    replacements: { id: int.user.id, nomerpg: nomerpg }
+                })
                     .then(async result => {
                         if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "af-fNE", nomerpg: nomerpg })) }
                         else {
                             if (irt.toLowerCase() == "irt") {
-                                client.db.query(`select * from irt where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
+                                client.db.query(`select * from irt where id = :id and nomerpg = :nomerpg`, {
+                                    replacements: { id: int.user.id, nomerpg: nomerpg }
+                                })
                                     .then(irt => {
                                         if (irt[0][0]) {
 
@@ -87,7 +90,9 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                     }
                                                 })
 
-                                            client.db.query(`delete from irt where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
+                                            client.db.query(`delete from irt where id = :id and nomerpg = :nomerpg`, {
+                                                replacements: { id: int.user.id, nomerpg: nomerpg }
+                                            })
                                                 .then(r => {
                                                     return int.editReply(client.tl({ local: int.lang + "af-deacIrt", nomerpg: nomerpg }))
                                                 })
@@ -122,8 +127,9 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                             const choice = interaction.customId.split("|")[0]
 
                                             if (choice == "conf") {
-                                                client.db.query(`delete from fichas where id = '${int.user.id}' and nomerpg = '${nomerpg}'`)
-                                                    .catch(err => { client.log.error(err, true) })
+                                                client.db.query(`delete from fichas where id = :id and nomerpg = :nomerpg`, {
+                                                    replacements: { id: int.user.id, nomerpg: nomerpg }
+                                                })
                                                     .then(() => {
                                                         client.cache.deleteFicha(int.user.id, nomerpg)
                                                         client.cache.deleteFichaUser(int.user.id, nomerpg)
@@ -138,6 +144,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                                     })
                                                             })
                                                     })
+                                                    .catch(err => { client.log.error(err, true) })
                                             }
                                             else if (choice == "canc") {
                                                 int.editReply({ content: client.tl({ local: int.lang + "af-fM", nomerpg: nomerpg }), components: [] })

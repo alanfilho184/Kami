@@ -1,90 +1,63 @@
 const fs = require("fs");
+const path = require("path")
 
 module.exports = class psql_backup {
-    constructor(db) {
+    constructor({ db, options }) {
         this.db = db
+        this.options = options
     }
 
-    async toJSON(options = { backupPath: "/", backupName: "dbBackup", schema: "public" }) {
-        var backup = new Object({
-            tables: new Object(),
-            data: new Object()
-        })
+    toJSON(options = { backupPath: path.parse("/"), backupName: "dbBackup", schema: "public" }) {
+        var backup = new Object()
 
-        const tables = await this.db.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='${options.schema}' AND table_type='BASE TABLE';`)
+        this.db.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='${options.schema}' AND table_type='BASE TABLE';`)
+            .then(async (tables) => {
+                tables.forEach((table) => {
+                    this.db.query(`SELECT * FROM ${table}`)
+                        .then((res) => {
+                            //TODO Salvar tipos e tamanho das colunas
+                            backup[table] = new Array()
 
-        await tables.forEach(async (table) => {
-            const res = await this.db.query(`SELECT * FROM ${table}`)
-            res[1].fields.forEach(field => {
-                backup.tables[table] = {
-                    ...backup.tables[table],
-                    [field.name]: field.format
-                }
-            })
+                            res[0].forEach(async (item) => {
+                                var newItem = new Object()
 
-            backup.data[table] = new Array()
+                                for (var key in item) {
+                                    newItem[key] = item[key]
+                                }
 
-            res[0].forEach((item) => {
-                var newItem = new Object()
+                                backup[table].push(newItem)
+                            })
 
-                for (var key in item) {
-                    if (typeof item[key] == "object") {
-                        Object.entries(item[key]).forEach(([key, value]) => {
-                            item[key] = value.charAt(0) == " " ? item[key].substring(1) : item[key]
+                            fs.writeFileSync(options.backupPath.toString() + options.backupName, JSON.stringify(backup), { encoding: "utf-8", flag: "w" })
                         })
-                    }
-                    else {
-                        newItem[key] = item[key].charAt(0) == " " ? item[key].substring(1) : item[key]
-                    }
-                }
-
-                backup.data[table].push(newItem)
+                })
             })
-
-            fs.writeFileSync("dbBackup.json", JSON.stringify(backup), { encoding: "utf-8", flag: "w" })
-        })
     }
 
     toPSQLScript() {
         var sqlScript = ""
 
-        let backup = fs.readFileSync("dbBackup.json", { encoding: "utf-8" })
+        let backup = fs.readFileSync(this.options.backupPath.toString() + this.options.backupName, { encoding: "utf-8" })
         backup = JSON.parse(backup)
 
-        for (var table in backup.tables) {
-            sqlScript += `DROP TABLE ${table} IF EXISTS;\n`
-            sqlScript += `CREATE TABLE ${table} (\n`
+        //TODO loop para criar tabelas
 
-            for (var field in backup.tables[table]) {
-                sqlScript += `\t${field} ${backup.tables[table][field]},\n`
-            }
+        Object.keys(backup).forEach(table => {
+            sqlScript += `INSERT INTO ${TABLE} (`
 
-            sqlScript = sqlScript.substring(0, sqlScript.length - 2) + "\n);\n\n"
-        }
-
-        for (var table in backup.data) {
-            backup.data[table].forEach(item => {
-                sqlScript += `INSERT INTO ${table} (\n`
-
-                for (var field in item) {
-                    sqlScript += `\t${field},\n`
-                }
-
-                sqlScript = sqlScript.substring(0, sqlScript.length - 2) + "\n)\nVALUES (\n"
-
-                for (var field in item) {
-                    if (typeof item[field] == "object") {
-                        sqlScript += `\t'${JSON.stringify(item[field])}',\n`
-                    }
-                    else {
-                        sqlScript += `\t'${item[field]}',\n`
-                    }
-                }
-
-                sqlScript = sqlScript.substring(0, sqlScript.length - 2) + ");\n\n"
+            Object.keys(backup[table]).forEach(key => {
+                sqlScript += `${key},`
             })
-        }
 
-        console.log(sqlScript)
+            sqlScript.substring(sqlScript.length, sqlScript.length - 1)
+            sqlScript += ")\n VALUES ("
+
+            Object.values(backup[table]).forEach(value => {
+                sqlScript += `${value},`
+            })
+
+            sqlScript.substring(sqlScript.length, sqlScript.length - 1)
+            sqlScript += ")"
+        })
     }
 }

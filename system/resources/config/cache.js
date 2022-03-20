@@ -3,6 +3,7 @@ const path = require('path');
 const toMs = require("milliseconds-parser")()
 const LRU = require("./lru")
 const { QueryTypes } = require('sequelize');
+const { query } = require("express");
 
 const fichas = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
 const irt = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
@@ -45,8 +46,7 @@ module.exports = class Cache {
                 this.client.log.start("Cache de servidores e usuários")
 
             })
-            .catch(err => this.client.log.error(err, true))
-
+            .catch(err => { this.client.log.error(err, true) })
 
         this.client.db.query("select * from blacklist")
             .then(result => {
@@ -113,6 +113,7 @@ module.exports = class Cache {
 
                 this.client.log.start("Cache de nome das fichas")
             })
+            .catch(err => { this.client.log.error(err, true) })
     }
 
     get(id) {
@@ -138,8 +139,11 @@ module.exports = class Cache {
 
     async getFicha(id, nomerpg) {
         var ficha = fichas.get(id + nomerpg)
+
         if (ficha) { return ficha } else {
-            var r = await this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
+            var r = await this.client.db.query(`select * from fichas where id = :id and nomerpg = :nomerpg`, {
+                replacements: { id: id, nomerpg: nomerpg },
+            })
 
             if (r[0][0]) { fichas.set(id + nomerpg, r[0][0]) }
             return r[0][0]
@@ -249,8 +253,6 @@ module.exports = class Cache {
         try { novo = novo[0][0].userid ? false : true; }
         catch (err) { novo = true }
 
-        console.log(novo)
-
         if (novo) {
             await this.client.db.query(`insert into blacklist (userid, bans, banatual, duracaoban) values('${id}', '${info.bans}', '${info.banAtual}', '${info.duracaoBan}')`)
                 .catch(err => this.client.log.error(err))
@@ -284,54 +286,111 @@ module.exports = class Cache {
         }
     }
 
-    async updateFicha(id, nomerpg, atb, valor, custom_sql) {
-        if (custom_sql) {
-            this.client.db.query(custom_sql)
-                .then(r => {
-                    if (fichas.has(id + nomerpg)) {
-                        var f = fichas.get(id + nomerpg)
-                        for (var x in atb) {
-                            f[atb[x]] = valor[x]
-                        }
-                        fichas.set(id + nomerpg, f)
-                        return r[0]
-                    } else {
-                        this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
-                            .then(r => { fichas.set(id + nomerpg, r[0][0]); return r[0] })
+    async updateFicha(id, nomerpg, data, config) {
+        config = {
+            ...config,
+            query: config.query || "update"
+        }
+
+        if (config.query == "insert") {
+            var atributos = {
+                ...data
+            }
+
+            const atbTest = Object.entries(atributos)
+
+            atbTest.forEach((e) => {
+                e[1] = e[1].replaceAll(" ", "").toLowerCase()
+                if (e[1] == null || e[1] == undefined || e[1] === "" || e[1] === " " || e[1] == "undefined" || e[1] == "null" || e[1] == "excluir" || e[1] == "delete" || e[1] == "-") {
+                    delete atributos[e[0]]
+                }
+            })
+
+            const senha = this.client.utils.gerarSenha()
+            const lastuse = this.client.utils.getPostgresTime()
+
+            await this.client.db.query(`insert into fichas (id, nomerpg, senha, lastuse, atributos) values (:id, :nomerpg, :senha, :lastuse, :atributos)`, {
+                replacements: {
+                    id: id,
+                    nomerpg: nomerpg,
+                    senha: senha,
+                    lastuse: lastuse,
+                    atributos: JSON.stringify(atributos)
+                },
+                type: QueryTypes.INSERT
+            })
+
+            fichas.set(`${id}${nomerpg}`, { id: id, nomerpg: nomerpg, senha: senha, lastuse: lastuse, atributos: atributos })
+            this.updateFichasUser(id, nomerpg)
+
+            return { id: id, nomerpg: nomerpg, senha: senha, lastuse: lastuse, atributos: atributos }
+        }
+        else if (config.query == "update") {
+            config = {
+                ...config,
+                resetarSenha: config.resetarSenha || false,
+                oldData: config.oldData || await this.getFicha(id, nomerpg),
+            }
+
+            if (Object.entries(config.oldData.atributos).length == 0) {
+                var oldData = await this.client.db.query("select * from fichas where id = :id and nomerpg = :nomerpg", {
+                    replacements: {
+                        id: id,
+                        nomerpg: nomerpg
                     }
                 })
-        }
-        else {
-            if (valor == null) {
-                await this.client.db.query(`update fichas set ${atb} = null where id = '${id}' and nomerpg = '${nomerpg}'`)
-                    .then(r => {
-                        if (fichas.has(id + nomerpg)) {
-                            var f = fichas.get(id + nomerpg)
-                            f[atb] = valor
-                            fichas.set(id + nomerpg, f)
-                            return r[0]
-                        } else {
-                            this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
-                                .then(r => { fichas.set(id + nomerpg, r[0][0]); return r[0] })
-                        }
-                    })
+
+                config.oldData = oldData[0][0]
             }
-            else {
-                await this.client.db.query(`update fichas set ${atb} = :valor where id = '${id}' and nomerpg = '${nomerpg}'`, {
-                    replacements: { valor: valor },
+
+            if (config.resetarSenha) {
+                const lastuse = this.client.utils.getPostgresTime()
+
+                await this.client.db.query(`update fichas set senha = :senha, lastuse = :lastuse where id = :id and nomerpg = :nomerpg`, {
+                    replacements: {
+                        id: id,
+                        nomerpg: nomerpg,
+                        senha: config.resetarSenha,
+                        lastuse: lastuse
+                    },
                     type: QueryTypes.UPDATE
                 })
-                    .then(r => {
-                        if (fichas.has(id + nomerpg)) {
-                            var f = fichas.get(id + nomerpg)
-                            f[atb] = valor
-                            fichas.set(id + nomerpg, f)
-                            return r[0]
-                        } else {
-                            this.client.db.query(`select * from fichas where id = '${id}' and nomerpg = '${nomerpg}'`)
-                                .then(r => { fichas.set(id + nomerpg, r[0][0]); return r[0] })
-                        }
-                    })
+
+                fichas.set(`${id}${nomerpg}`, { id: id, nomerpg: nomerpg, senha: config.resetarSenha, lastuse: lastuse, atributos: config.oldData.atributos })
+                this.updateFichasUser(id, nomerpg)
+
+                return { id: id, nomerpg: nomerpg, senha: config.resetarSenha, lastuse: lastuse, atributos: config.oldData.atributos }
+            }
+            else {
+                var atributos = {
+                    ...config.oldData.atributos,
+                    ...data
+                }
+
+                const atbTest = Object.entries(atributos)
+
+                atbTest.forEach((e) => {
+                    try { e[1] = e[1].replaceAll(" ", "").toLowerCase() } catch (err) { }
+                    if (e[1] == null || e[1] == undefined || e[1] === "" || e[1] == "undefined" || e[1] == "null" || e[1] == "excluir" || e[1] == "delete" || e[1] == "-") {
+                        delete atributos[e[0]]
+                    }
+                })
+
+                const lastuse = this.client.utils.getPostgresTime()
+
+                await this.client.db.query(`update fichas set atributos = :atributos, lastuse = :lastuse where id = :id and nomerpg = :nomerpg`, {
+                    replacements: {
+                        id: id,
+                        nomerpg: nomerpg,
+                        lastuse: lastuse,
+                        atributos: JSON.stringify(atributos)
+                    },
+                    type: QueryTypes.UPDATE
+                })
+
+                fichas.set(id + nomerpg, { id: id, nomerpg: nomerpg, senha: config.oldData.senha, lastuse: lastuse, atributos: atributos })
+
+                return { id: id, nomerpg: nomerpg, senha: config.oldData.senha, lastuse: lastuse, atributos: atributos }
             }
         }
     }
@@ -339,7 +398,13 @@ module.exports = class Cache {
     async modifyIrt(nomerpgNovo, infoUIRT) {
         this.deleteIrt(infoUIRT[0].id, infoUIRT[0].nomerpg)
 
-        await this.client.db.query(`update irt set nomerpg = '${nomerpgNovo}' where id = '${infoUIRT[0].id}' and nomerpg = '${infoUIRT[0].nomerpg}'`)
+        await this.client.db.query(`update irt set nomerpg = ':nomerpgNovo' where id = ':id' and nomerpg = ':nomerpg'`, {
+            replacements: {
+                id: infoUIRT[0].id,
+                nomerpg: infoUIRT[0].nomerpg,
+                nomerpgNovo: nomerpgNovo
+            }
+        })
 
         const irt = new Array()
 
@@ -366,7 +431,6 @@ module.exports = class Cache {
         let nomeFichasCache = require("./json/nomeFichas.json")
 
         nomeFichasCache[id] = uInfo
-
         nomeFichasCache = JSON.stringify(nomeFichasCache)
 
         fs.writeFileSync(path.join(__dirname, "json", `nomeFichas.json`), nomeFichasCache, function (err) {

@@ -39,14 +39,16 @@ module.exports = class resetar_senha {
                 const args = client.utils.args(int)
                 const nomerpg = args.get("nome_da_ficha")
 
-                client.db.query(`select id, nomerpg, senha from fichas where id = '${int.user.id}' and nomerpg = '${nomerpg}' `)
+                client.db.query(`select id, nomerpg, senha from fichas where id = :id and nomerpg = :nomerpg`, {
+                    replacements: { id: int.user.id, nomerpg: nomerpg }
+                })
                     .then(r => {
                         if (r[0].length == 0) {
                             return int.editReply({ content: client.tl({ local: int.lang + "rS-nFE", nomerpg: nomerpg }) })
                         }
                         else {
                             const novaSenha = client.utils.gerarSenha()
-                            client.cache.updateFicha(int.user.id, nomerpg, "senha", novaSenha)
+                            client.cache.updateFicha(int.user.id, nomerpg, {}, { query: "update", resetarSenha: novaSenha })
                                 .then(r => {
                                     return int.editReply({ content: client.tl({ local: int.lang + "rS-sR", nomerpg: nomerpg, cmd: novaSenha }) })
                                 })

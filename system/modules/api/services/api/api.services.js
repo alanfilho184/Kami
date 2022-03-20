@@ -44,17 +44,8 @@ module.exports = class apiServices {
         var atb = body.atb
         var valor = body.valor
 
-        try { nomerpg = nomerpg.replace("'", '') } catch { }
-
         try {
             atb = pass.client.utils.matchAtb(atb, atributos)
-            if (!atributos.includes(atb)) {
-                return {
-                    status: 400,
-                    title: `Atributo "${atb}" não encontrado`,
-                    text: `Se você está tentando adicionar um atributo que não está na lista padrão, selecione a opção "Adicionar atributo como um Extra"`
-                }
-            }
         }
         catch (err) { }
 
@@ -109,7 +100,7 @@ module.exports = class apiServices {
             }
         }
 
-        if (atb == "extras") {
+        if (false) {
             if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") { }
             else {
                 const ficha = await pass.client.cache.getFicha(body.id, nomerpg)
@@ -164,9 +155,8 @@ module.exports = class apiServices {
 
         try { nomerpg = nomerpg.replace("'", '') } catch { }
 
-
         try {
-            await pass.client.cache.updateFicha(body.id, nomerpg, atb, valor)
+            await pass.client.cache.updateFicha(body.id, nomerpg, { [atb]: valor }, { query: "update" })
 
             var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
 
@@ -206,17 +196,10 @@ module.exports = class apiServices {
 
         try {
             atb = pass.client.utils.matchAtb(atb, atributos)
-            if (!atributos.includes(atb)) {
-                return {
-                    status: 400,
-                    title: `Atributo "${atb}" não encontrado`,
-                    text: `Se você está tentando remover um atributo que não está na lista padrão, selecione a opção "Atributo é um Extra"`
-                }
-            }
         }
         catch (err) { }
 
-        if (atb == "extras") {
+        if (false) {
             if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") { }
             else {
                 const ficha = await pass.client.cache.getFicha(body.id, nomerpg)
@@ -269,10 +252,8 @@ module.exports = class apiServices {
 
         }
 
-        try { nomerpg = nomerpg.replace("'", '') } catch { }
-
         try {
-            await pass.client.cache.updateFicha(body.id, nomerpg, atb, valor)
+            await pass.client.cache.updateFicha(body.id, nomerpg, { [atb]: null }, { query: "update" })
 
             var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
 
@@ -351,10 +332,7 @@ module.exports = class apiServices {
     }
 
     async updateFicha(body) {
-        const rawFichaBot = await pass.client.cache.getFicha(body.id, body.nomerpg)
-        const asArray = Object.entries(rawFichaBot);
-        const filtered = asArray.filter(([key, value]) => value != null && value != "excluir" && value != "delete" && value != "-" && value != "");
-        var fichaBot = Object.fromEntries(filtered);
+        const fichaBot = await pass.client.cache.getFicha(body.id, body.nomerpg)
         var fichaSite = body.ficha
         fichaSite.senha = fichaBot.senha
 
@@ -379,22 +357,16 @@ module.exports = class apiServices {
             return keys;
         };
 
-        const atbsDiff = difference(fichaSite, fichaBot)
-        const valsDiff = new Array()
+        const atbsDiff = difference(fichaSite.atributos, fichaBot.atributos)
 
         if (atbsDiff.length > 0) {
-            var customSQL = `UPDATE fichas SET `
+            const data = new Object()
             for (var x of atbsDiff) {
-                valsDiff.push(fichaSite[x])
-                customSQL += `${x} = '${fichaSite[x].replace("'", "ʽ")}'`
-                if (x != atbsDiff[atbsDiff.length - 1]) {
-                    customSQL += `, `
-                }
+                data[x] = fichaSite.atributos[x]
             }
-            customSQL += ` WHERE id = '${body.id}' AND nomerpg = '${body.nomerpg}'`
 
             try {
-                await pass.client.cache.updateFicha(body.id, body.nomerpg, atbsDiff, valsDiff, customSQL)
+                await pass.client.cache.updateFicha(body.id, body.nomerpg, data, { query: "update", oldData: fichaBot })
 
                 var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
 
