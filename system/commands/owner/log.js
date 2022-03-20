@@ -63,7 +63,7 @@ module.exports = class log {
         
                     var queryString = `insert into fichasjson (id, nomerpg, senha, lastuse, atributos) values `
                     var atributosString = ""
-        
+                    const time = require('luxon').DateTime;
                     const timeNow = time.now().setZone('America/Sao_Paulo').toSQL({ includeZone: true });
         
                     var x = 0
