@@ -74,12 +74,8 @@ module.exports = class enviar_txt {
                     catch (err) { fichasUser = undefined }
 
                     if (!fichasUser) {
-                        const fichasUser = new Array()
-                        var result = await client.db.query(`select nomerpg from fichas where id = '${int.user.id}'`)
+                        const fichasUser = client.cache.getFichasUser(int.user.id)
 
-                        for (var x in result[0]) {
-                            fichasUser.push(result[0][x].nomerpg)
-                        }
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
                         else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
                         else { return int.editReply(client.tl({ local: int.lang + "eft-uSF" })) }
@@ -92,19 +88,9 @@ module.exports = class enviar_txt {
                 client.cache.getFicha(int.user.id, nomerpg)
                     .then(async r => {
                         if (r) {
-                            var fichaUser = r
+                            var fichaUser = r.atributos
 
-                            for (var x in atributos) {
-                                if (fichaUser[atributos[x]] == undefined) {
-                                    fichaUser[atributos[x]] = "-"
-                                }
-                            }
-
-                            if (fichaUser["imagem"] == "-" || fichaUser["imagem"] == null) {
-                                fichaUser["imagem"] = ""
-                            }
-
-                            var fichaTXT = this.create(client, int, nomerpg, fichaUser)
+                            var fichaTXT = this.create(client, int, fichaUser)
                             fs.writeFile(client.tl({ local: int.lang + "eft-fN" }) + nomerpg + "-" + int.user.id + '.txt', fichaTXT, function (err) {
                                 if (err) throw err;
                             })
@@ -124,7 +110,7 @@ module.exports = class enviar_txt {
                     })
             })
     }
-    create(client, int, nomerpg, fichaUser) {
+    create(client, int, fichaUser) {
         const atributosS1 = client.resources["pt-"].atributosStatus
         const atributosI1 = client.resources["pt-"].atributosI1
         const atributosI2 = client.resources["pt-"].atributosI2
@@ -140,6 +126,8 @@ module.exports = class enviar_txt {
             atb = atributosI1[z]
             if (fichaUser[atb] != "-" && fichaUser[atb] != "- " && fichaUser[atb] != undefined && fichaUser[atb] != null) {
                 var valor = fichaUser[atb]
+                delete fichaUser[atb]
+
                 atb = atributosIF1[z]
                 fichaTXT += br(`${atb}: ` + `${valor}`, 90) + "\n"
             }
@@ -150,6 +138,8 @@ module.exports = class enviar_txt {
             atb = atributosI2[y]
             if (fichaUser[atb] != "-" && fichaUser[atb] != "- " && fichaUser[atb] != undefined && fichaUser[atb] != null) {
                 valor = fichaUser[atb]
+                delete fichaUser[atb]
+
                 atb = atributosIF2[y]
                 fichaTXT += br(`${atb}: ` + `${valor}`, 90) + "\n"
             }
@@ -157,46 +147,22 @@ module.exports = class enviar_txt {
 
         fichaTXT += client.tl({ local: int.lang + "txt-h2" })
 
-        var x;
-        var fields = 1
         for (var x in atributosS1) {
             atb = atributosS1[x]
             if (fichaUser[atb] != "-" && fichaUser[atb] != "- " && fichaUser[atb] != undefined && fichaUser[atb] != null) {
-                if (fields <= 24) {
-                    valor = fichaUser[atb]
-                    atb = atributosS1F[x]
-                    fichaTXT += br(`${atb}: ` + `${valor}`, 90) + "\n"
-                }
-                if (fields > 24 && fields <= 48) {
-                    valor = fichaUser[atb]
-                    atb = atributosS1F[x]
-                    fichaTXT += br(`${atb}: ` + `${valor}`, 90) + "\n"
-                }
-                if (fields > 48 && fields <= 72) {
-                    valor = fichaUser[atb]
-                    atb = atributosS1F[x]
-                    fichaTXT += br(`${atb}: ` + `${valor}`, 90) + "\n"
-                }
-                fields += 1
+                valor = fichaUser[atb]
+                delete fichaUser[atb]
+
+                atb = atributosS1F[x]
+                fichaTXT += br(`${atb}: ` + `${valor}`, 90) + "\n"
             }
         }
-        if (fichaUser['extras'] != "-" && fichaUser['extras'] != "- " && fichaUser['extras'] != undefined && fichaUser['extras'] != null && fichaUser['extras'] != "") {
-            fichaTXT += client.tl({ local: int.lang + "txt-h3" })
-            var atbExtras = fichaUser['extras']
 
-            var atbs = atbExtras.split("|")
+        for (var x of Object.keys(fichaUser)) {
+            if (fichaUser[x] != undefined && x != "descricao") {
+                fichaTXT += br(`${x}: ` + `${fichaUser[x]}`, 90) + "\n"
 
-            for (var x in atbs) {
-                var atb = atbs[x].split(":")[0]
-                var val = atbs[x].split(":")[1]
-
-                atb = atb.replace(" ", "")
-                val = val.replace(/ /, '')
-
-                if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "") {
-                    fichaTXT += br(`${atb}: ` + `${val}`, 90) + "\n"
-                }
-                else { }
+                delete fichaUser[x]
             }
         }
 

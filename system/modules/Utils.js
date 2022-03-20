@@ -280,4 +280,33 @@ module.exports = class Utils {
             return false
         }
     }
+
+    getPostgresTime(){
+        return time.now().setZone('America/Sao_Paulo').toSQL({ includeZone: true });
+    }
+
+    isDefaultAtb(atributo, atributos){
+        var base = 0.295
+
+        const result = stringSimilarity.findBestMatch(atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos)
+        const rating = result.bestMatch.rating
+
+        var x = 0
+
+        while (x < atributo.length) {
+            base += 0.045
+            x++
+        }
+
+        if (base > 0.75) {
+            base = 0.75
+        }
+
+        if (rating >= base) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
 }

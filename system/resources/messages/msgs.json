@@ -27,7 +27,6 @@
             "uptime": "Tempo Online"
         },
         "cef": {
-            "mFichas": "Eu achei 12 fichas suas com os nomes de \"$fichasUser$\", você precisa me dizer qual ficha quer que eu modifique",
             "anIn": "Você precisa anexar um arquivo de imagem ou gif, qualquer outro tipo de arquivo não irá funcionar",
             "inUrl": "Você precisa anexar uma imagem ou colocar um link para que eu possa adicionar a sua ficha",
             "nVUrl": "\"$valor$\" não é um URL válido, por que você não envia a imagem na minha DM e copia o link?",
@@ -48,8 +47,8 @@
             "fPS": "Ok, agora a sua ficha padrão é: \"$nomerpg$\"",
             "cCNF": "Deseja criar uma nova ficha com o nome \"$nomerpg$\"?",
             "updtMulti": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomerpg$\"",
-            "updtMultiErr": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomerpg$\"\n\nOs seguintes atributos não puderam ser adicionados: \"$atb$\", pois, não estão na lista de atributos possíveis ou estão digitados de forma incorreta, corrija os erros ou adicione-os utilizando o extras no lugar do multi",
-            "allAtbErr": "Nenhum dos atributos digitados está na lista de atributos possíveis (**/ajuda > atributos** para ver a lista completa), ou foram digitados de forma incorreta, corrija erros ou utilize o **extras** no lugar do **multi** para adicionar seus atributos personalizados",
+            "updtMultiErr": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomerpg$\"\n\nOs seguintes atributos não puderam ser adicionados: \"$atb$\", pois, possuem caracteres inválidos ou outros erros",
+            "allAtbErr": "Nenhum dos atributos pode ser adicionado, pois, possuem caracteres inválidos ou outros erros",
             "fPE": "Ok, agora você não tem mais uma ficha padrão definida",
             "lFE": "Você está atualmente no limite de fichas criadas por usuário (10 fichas), não é possível criar uma nova ficha, você pode tentar apagar alguma ficha que já não use mais para dar lugar a uma nova"
         },
@@ -312,8 +311,6 @@
             "uptime": "Uptime"
         },
         "cef": {
-            "mFichas1": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need tell me which sheet you want me to modify",
-            "mFichas2": "I found 12 sheets of yours with the names of \"$fichasUser$\", you need tell me which sheet you want me to modify",
             "anIn": "You need to attach an image or gif file, any other file type will not work",
             "inUrl": "You need to attach an image or place a link so that I can add it to your sheet",
             "nVUrl": " $valor$ is not a valid URL, why don't you upload the image in my DM and copy the link?",
@@ -330,8 +327,8 @@
             "nFE": " I didn't find any sheet with the name $nomerpg$, I have nothing to delete",
             "atbNE": "$atributo$ is not in the list of possible attributes, try looking at the list in /ajuda > attributes",
             "updtMulti": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomerpg$\" sheet",
-            "updtMultiErr": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomerpg$\" sheet\n\nThe following attributes could not be added: \"$atb$\", because they are not in the list of possible attributes or are typed incorrectly, correct the errors or add them using the extras instead of multi",
-            "allAtbErr": "None of the attributes entered are in the list of possible attributes (**/ajuda > attributes** to see the full list), or were entered incorrectly, correct errors or use **extras** instead of **multi** to add your custom attributes",
+            "updtMultiErr": "Ok, I added \"$atributo$\" with the values \"$valor$\" to the \"$nomerpg$\" sheet\n\nThe following attributes could not be added: \"$atb$\", because they have invalid characters or other errors",
+            "allAtbErr": "Any of the attributes you tried to add has invalid characters or other errors, so they were not added",
             "nConf": "I have no settings of yours saved, I have nothing to delete",
             "nFP": "You don't have any default sheet set, I have nothing to delete",
             "nFDB": "You don't have any sheet named \"$nomerpg$\", I can't set something that doesn't exist as your default sheet",

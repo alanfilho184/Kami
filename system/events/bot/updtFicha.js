@@ -13,8 +13,6 @@ module.exports = {
 
         const fichaUser = await client.cache.getFicha(user, nomerpg)
 
-        console.log(fichaUser)
-
         for (m in irt) {
             try {
                 const ch = await client.channels.fetch(irt[m].chid)
@@ -28,10 +26,9 @@ module.exports = {
                     inGuild() { ch.type == "GUILD_TEXT" }
                 })
 
-                const reply = client.commands.get("enviar").create(client, int, nomerpg, fichaUser, "irtUpdt")
-                const embedsArray = Object.values(reply)
+                const reply = client.commands.get("enviar").create(client, int, fichaUser)
 
-                await irtMsg.edit({ embeds: embedsArray })
+                await irtMsg.edit({ embeds: reply })
                     .then(e => { client.log.info(irt[m]) })
             }
             catch (err) {
@@ -51,7 +48,6 @@ module.exports = {
             }
             await sleep(4000)
         }
-
         return
     }
 }

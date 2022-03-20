@@ -36,7 +36,9 @@ module.exports = class ver_senha {
     execute(client, int) {
         int.deferReply({ ephemeral: true })
             .then(() => {
-                client.db.query(`select nomerpg, senha from fichas where id = '${int.user.id}'`)
+                client.db.query(`select nomerpg, senha from fichas where id = :id`, {
+                    replacements: { id: int.user.id }
+                })
                     .then(result => {
                         if (result[0].size == 0) {
                             return int.editReply({ content: client.tl({ local: int.lang + "verS-nFC" }) })
@@ -56,7 +58,7 @@ module.exports = class ver_senha {
                         const embedSenhas = new client.Discord.MessageEmbed()
                             .setTitle(embedTi)
                             .setColor(client.settings.color)
-                            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                            .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                             .setTimestamp()
 
                         fichas.forEach((senha, nomerpg) => {
