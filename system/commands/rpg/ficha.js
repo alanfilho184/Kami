@@ -28,8 +28,6 @@ module.exports = class ficha {
             Para excluir algo da sua ficha:
             **${"/"}ficha <nome_da_ficha> <atributo> excluir**
             
-            <:avisoAjuda:766826097051828235> Você pode ver a lista completa com todos os atributos em:\n**${"/"}ajuda atributos**
-            
             Para adicionar uma imagem na sua ficha:
             **${"/"}ficha <nome_da_ficha> imagem <url_da_imagem>**
             Ou
@@ -57,8 +55,6 @@ module.exports = class ficha {
             
             To delete something from your sheet:
             **${"/"}ficha <sheet_name> <attribute> delete**
-            
-            <:avisoAjuda:766826097051828235> You can see the complete list with all the attributes in:\n**${"/"}ajuda**
             
             To add an image to your sheet:
             **${"/"}ficha <sheet_name> image <url_of_image>**
