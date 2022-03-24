@@ -176,61 +176,6 @@ module.exports = class ficha {
                 if (!atb) { return client.commands.get("enviar").run(client, int) }
                 if (!valor) { return client.commands.get("enviaratributo").run(client, int, "ficha") }
 
-                if (false) {
-                    if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") {
-                    }
-                    else {
-                        var ficha = await client.cache.getFicha(int.user.id, nomerpg)
-
-                        try { var atbsAtual = ficha["extras"].split("|") }
-                        catch (err) { atbsAtual = "" }
-                        var atbsNovos = valor.split("|")
-
-                        const atbsA = new Map()
-                        const atbsN = new Map()
-
-                        for (var x in atbsAtual) {
-                            var atbE = atbsAtual[x].split(":")[0]
-                            var val = atbsAtual[x].split(":")[1]
-
-                            try { atbE = atbE.replace(" ", "") } catch (err) { }
-                            try { val = val.replace(/ /, '') } catch (err) { }
-
-
-                            if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "" && val != undefined) {
-                                atbsA.set(atbE, val)
-                            }
-                        }
-
-                        for (var x in atbsNovos) {
-                            var atbE = atbsNovos[x].split(":")[0]
-                            var val = atbsNovos[x].split(":")[1]
-
-                            try { atbE = atbE.replace(" ", "") } catch (err) { }
-                            try { val = val.replace(/ /, '') } catch (err) { }
-
-
-                            if (val != "" && val != undefined) {
-                                atbsN.set(atbE, val)
-                            }
-                        }
-
-                        atbsN.forEach(function (value, key) {
-                            atbsA.set(key, value);
-                        });
-
-                        valor = ""
-
-                        var x = 1
-                        atbsA.forEach(function (value, key) {
-                            valor += `${key}: ${value}`
-
-                            if (x != atbsA.size) { valor += `| `; x++ }
-                        });
-                    }
-
-                }
-
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 
                 client.cache.getFicha(int.user.id, nomerpg)

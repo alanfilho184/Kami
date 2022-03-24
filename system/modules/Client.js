@@ -22,6 +22,7 @@ module.exports = class MenuClient extends Client {
         this.setUtils()
         this.setDB(options)
         this.loadCommands()
+        this.loadComponents()
         this.loadEvents()
         this.setCache()
         this.setTl()
@@ -44,7 +45,7 @@ module.exports = class MenuClient extends Client {
         this.commands = new Discord.Collection()
 
         try {
-            var commands = glob.sync(["**/commands/**/*.js", "!node_modules", "!events"])
+            var commands = glob.sync(["**/commands/**/*.js", "!node_modules", "!events", "!components"])
 
             commands.forEach(cmd => {
                 if (cmd.startsWith("system/commands/")) {
@@ -63,6 +64,29 @@ module.exports = class MenuClient extends Client {
         }
 
         logs.log.start("Comandos")
+    }
+
+    loadComponents() {
+        this.components = new Discord.Collection()
+
+        try {
+            var components = glob.sync(["**/components/**/*.js", "!node_modules", "!events", "!commands"])
+
+            components.forEach(comp => {
+                if (comp.startsWith("system/components/")) {
+                    var compFunction = require("../../" + comp)
+
+                    var info = new compFunction()
+
+                    this.components.set(info.name, info)
+                }
+            })
+        }
+        catch (err) {
+            logs.log.error(err)
+        }
+
+        logs.log.start("Componentes")
     }
 
     loadEvents() {
@@ -130,14 +154,14 @@ module.exports = class MenuClient extends Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
-            else if(err != "DiscordAPIError: Unknown interaction"){
+            else if (err != "DiscordAPIError: Unknown interaction") {
                 this.emit("err", err, true)
             }
             logs.log.error(err, true)
 
             errorStack++
 
-            if(errorStack >= 5){
+            if (errorStack >= 5) {
                 logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
                 process.exit(1)
             }
@@ -147,14 +171,14 @@ module.exports = class MenuClient extends Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
-            else if(err != "DiscordAPIError: Unknown interaction"){
+            else if (err != "DiscordAPIError: Unknown interaction") {
                 this.emit("err", err, true)
             }
             logs.log.error(err, true)
 
             errorStack++
 
-            if(errorStack >= 5){
+            if (errorStack >= 5) {
                 logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
                 process.exit(1)
             }

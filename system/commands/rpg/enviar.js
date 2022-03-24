@@ -168,12 +168,12 @@ module.exports = class enviar {
                                             const bDes = new client.Discord.MessageButton()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-desIrt" }))
-                                                .setCustomId(`irt|des|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
+                                                .setCustomId(`buttonIrt|des|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
 
                                             const bApg = new client.Discord.MessageButton()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-apgIrt" }))
-                                                .setCustomId(`irt|apg|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
+                                                .setCustomId(`buttonIrt|apg|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
 
                                             m.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
 
