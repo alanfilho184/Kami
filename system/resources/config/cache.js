@@ -3,7 +3,6 @@ const path = require('path');
 const toMs = require("milliseconds-parser")()
 const LRU = require("./lru")
 const { QueryTypes } = require('sequelize');
-const { query } = require("express");
 
 const fichas = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
 const irt = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
@@ -427,7 +426,7 @@ module.exports = class Cache {
             uInfo = new Array()
         }
 
-        uInfo.push(nomerpg)
+        if (!uInfo.includes(nomerpg)) { uInfo.push(nomerpg) }
         let nomeFichasCache = require("./json/nomeFichas.json")
 
         nomeFichasCache[id] = uInfo

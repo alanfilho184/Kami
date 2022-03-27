@@ -134,6 +134,15 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                         client.cache.deleteFicha(int.user.id, nomerpg)
                                                         client.cache.deleteFichaUser(int.user.id, nomerpg)
 
+                                                        try {
+                                                            const fPadrao = client.cache.get(int.user.id).fPadrao
+
+                                                            if (fPadrao == nomerpg) {
+                                                                client.cache.update(int.user.id, null, "fPadrao", false)
+                                                            }
+                                                        }
+                                                        catch (err) {}
+
                                                         int.editReply({ content: client.tl({ local: int.lang + "af-fApg", nomerpg: nomerpg }), components: [] })
                                                             .then(async function () {
                                                                 client.cache.getIrt(int.user.id, nomerpg)

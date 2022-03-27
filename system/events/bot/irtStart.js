@@ -2,7 +2,7 @@ module.exports = {
     name: "irtStart",
     type: "bot",
     execute: (client, irtU) => {
-        client.db.query(`insert into irt (id, nomerpg, msgid, chid) values (':id', ':nomerpg', ':msgid', ':chid')`, {
+        client.db.query(`insert into irt (id, nomerpg, msgid, chid) values (:id, :nomerpg, :msgid, :chid)`, {
             replacements: {
                 id: irtU.id,
                 nomerpg: irtU.nomerpg,
