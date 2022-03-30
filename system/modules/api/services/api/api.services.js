@@ -1,5 +1,6 @@
 const pass = new Object()
 const fs = require("fs")
+const crypto = require("crypto-js")
 
 module.exports = class apiServices {
     constructor(client) {
@@ -35,6 +36,29 @@ module.exports = class apiServices {
         const ficha = await pass.client.cache.getFicha(id, nomerpg)
 
         return ficha
+    }
+
+    async getFichaWithPassword(body) {
+        const ficha = await pass.client.cache.getFicha(body.id, body.nomerpg)
+
+        if (ficha.senha === body.senha) {
+            const user = await pass.client.users.fetch(body.id)
+            ficha.tag = user.tag
+            
+            return {
+                status: 200,
+                data: {
+                    ficha: ficha
+                }
+            }
+        }
+        else {
+            return {
+                status: 400,
+                title: "Senha incorreta",
+                text: "A senha informada é incorreta"
+            }
+        }
     }
 
     async updateAtbFicha(body) {
@@ -496,7 +520,7 @@ module.exports = class apiServices {
                 pass.client.cache.update(body.id, null, "fPadrao", false)
             }
         }
-        catch (err) {}
+        catch (err) { }
 
         const infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
 
