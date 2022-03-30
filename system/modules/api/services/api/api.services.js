@@ -1,5 +1,6 @@
 const pass = new Object()
 const fs = require("fs")
+const crypto = require("crypto-js")
 
 module.exports = class apiServices {
     constructor(client) {
@@ -41,9 +42,14 @@ module.exports = class apiServices {
         const ficha = await pass.client.cache.getFicha(body.id, body.nomerpg)
 
         if (ficha.senha === body.senha) {
+            const user = await pass.client.users.fetch(body.id)
+            ficha.tag = user.tag
+            
             return {
                 status: 200,
-                data: ficha
+                data: {
+                    ficha: ficha
+                }
             }
         }
         else {

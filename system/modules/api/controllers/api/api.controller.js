@@ -91,9 +91,7 @@ module.exports = class apiController {
                     const ficha = await services.getFichaWithPassword(req.body)
 
                     if (ficha.status === 200) {
-                        res.status(200).json({
-                            ficha: ficha.data,
-                        })
+                        res.status(200).json(ficha.data)
                         client.log.info("/ficha/password endpoint autorizado")
                     }
                     else if (ficha.status === 400) {
