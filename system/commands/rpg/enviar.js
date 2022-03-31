@@ -168,12 +168,12 @@ module.exports = class enviar {
                                             const bDes = new client.Discord.MessageButton()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-desIrt" }))
-                                                .setCustomId(`buttonIrt|des|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
+                                                .setCustomId(`irt|des|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
 
                                             const bApg = new client.Discord.MessageButton()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-apgIrt" }))
-                                                .setCustomId(`buttonIrt|apg|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
+                                                .setCustomId(`irt|apg|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
 
                                             m.edit({ components: [{ type: 1, components: [bDes, bApg] }] })
 
@@ -222,7 +222,8 @@ module.exports = class enviar {
 
         const infEmbed = new client.Discord.MessageEmbed()
             .setColor(client.settings.color)
-            .setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+            .setTitle(client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
+            .setAuthor({ name: "Clique aqui para visualizar esta ficha no site do Kami", url: `https://kamisite.herokuapp.com/ficha/${fichaUser.id}/${fichaUser.nomerpg}` })
             .setThumbnail(fichaUser.atributos.imagem ? fichaUser.atributos.imagem : "")
 
         delete fichaUser.atributos["imagem"]
@@ -286,7 +287,7 @@ module.exports = class enviar {
             }
         }
 
-        reply.inf = infEmbed.setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+        reply.inf = infEmbed
         reply.s1 = s1Embed.fields.length > 0 ? s1Embed.setTitle(client.tl({ local: int.lang + "ef-stpTi" })) : false
         reply.s2 = s2Embed.fields.length > 0 ? s2Embed : false
         reply.s3 = s3Embed.fields.length > 0 ? s3Embed : false

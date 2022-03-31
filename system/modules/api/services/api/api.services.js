@@ -1,6 +1,5 @@
 const pass = new Object()
 const fs = require("fs")
-const crypto = require("crypto-js")
 
 module.exports = class apiServices {
     constructor(client) {
@@ -514,15 +513,6 @@ module.exports = class apiServices {
 
         await pass.client.cache.deleteFicha(body.id, body.nomerpg)
         await pass.client.cache.deleteFichaUser(body.id, body.nomerpg)
-
-        try {
-            const fPadrao = pass.client.cache.get(int.user.id).fPadrao
-
-            if (fPadrao == body.nomerpg) {
-                pass.client.cache.update(body.id, null, "fPadrao", false)
-            }
-        }
-        catch (err) { }
 
         const infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
 

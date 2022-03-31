@@ -85,35 +85,6 @@ module.exports = class apiController {
             }
         })
 
-        routes.get("/ficha/password", async (req, res) => {
-            if (req.headers.authorization === process.env.apiToken) {
-                try {
-                    const ficha = await services.getFichaWithPassword(req.body)
-
-                    if (ficha.status === 200) {
-                        res.status(200).json(ficha.data)
-                        client.log.info("/ficha/password endpoint autorizado")
-                    }
-                    else if (ficha.status === 400) {
-                        res.status(400).json({
-                            title: ficha.title,
-                            text: ficha.text
-                        })
-
-                        client.log.warn("/ficha/password autorizado, senha incorreta")
-                    }
-                }
-                catch (err) {
-                    res.status(500).end()
-                    client.log.error(err, true)
-                }
-            }
-            else {
-                res.status(401).end()
-                client.log.warn("/ficha/password endpoint não autorizado")
-            }
-        })
-
         routes.put("/ficha/atb/update", async (req, res) => {
             if (req.headers.authorization === process.env.apiToken) {
                 try {

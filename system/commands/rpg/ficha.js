@@ -28,6 +28,8 @@ module.exports = class ficha {
             Para excluir algo da sua ficha:
             **${"/"}ficha <nome_da_ficha> <atributo> excluir**
             
+            <:avisoAjuda:766826097051828235> Você pode ver a lista completa com todos os atributos em:\n**${"/"}ajuda atributos**
+            
             Para adicionar uma imagem na sua ficha:
             **${"/"}ficha <nome_da_ficha> imagem <url_da_imagem>**
             Ou
@@ -55,6 +57,8 @@ module.exports = class ficha {
             
             To delete something from your sheet:
             **${"/"}ficha <sheet_name> <attribute> delete**
+            
+            <:avisoAjuda:766826097051828235> You can see the complete list with all the attributes in:\n**${"/"}ajuda**
             
             To add an image to your sheet:
             **${"/"}ficha <sheet_name> image <url_of_image>**
@@ -175,6 +179,61 @@ module.exports = class ficha {
 
                 if (!atb) { return client.commands.get("enviar").run(client, int) }
                 if (!valor) { return client.commands.get("enviaratributo").run(client, int, "ficha") }
+
+                if (false) {
+                    if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") {
+                    }
+                    else {
+                        var ficha = await client.cache.getFicha(int.user.id, nomerpg)
+
+                        try { var atbsAtual = ficha["extras"].split("|") }
+                        catch (err) { atbsAtual = "" }
+                        var atbsNovos = valor.split("|")
+
+                        const atbsA = new Map()
+                        const atbsN = new Map()
+
+                        for (var x in atbsAtual) {
+                            var atbE = atbsAtual[x].split(":")[0]
+                            var val = atbsAtual[x].split(":")[1]
+
+                            try { atbE = atbE.replace(" ", "") } catch (err) { }
+                            try { val = val.replace(/ /, '') } catch (err) { }
+
+
+                            if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "" && val != undefined) {
+                                atbsA.set(atbE, val)
+                            }
+                        }
+
+                        for (var x in atbsNovos) {
+                            var atbE = atbsNovos[x].split(":")[0]
+                            var val = atbsNovos[x].split(":")[1]
+
+                            try { atbE = atbE.replace(" ", "") } catch (err) { }
+                            try { val = val.replace(/ /, '') } catch (err) { }
+
+
+                            if (val != "" && val != undefined) {
+                                atbsN.set(atbE, val)
+                            }
+                        }
+
+                        atbsN.forEach(function (value, key) {
+                            atbsA.set(key, value);
+                        });
+
+                        valor = ""
+
+                        var x = 1
+                        atbsA.forEach(function (value, key) {
+                            valor += `${key}: ${value}`
+
+                            if (x != atbsA.size) { valor += `| `; x++ }
+                        });
+                    }
+
+                }
 
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 

@@ -69,6 +69,7 @@ module.exports = class ajuda {
                 .setPlaceholder(client.tl({ local: int.lang + "ajuda-mPH" }))
 
             if (choice != "" && choice != "inicio") { menu.addOptions({ label: int.lang == "pt-" ? "Inicio" : "Home", value: "inicio", description: int.lang == "pt-" ? "Volta para página inicial." : "Go back to homepage." }) }
+            if (choice != "atributos") { menu.addOptions({ label: int.lang == "pt-" ? "Atributos" : "Attributes", value: "atributos", description: int.lang == "pt-" ? "Lista todos os atributos." : "List all attributes." }) }
 
             client.commands.forEach(cmd => {
                 if (cmd.ownerOnly) { return }
@@ -120,7 +121,36 @@ module.exports = class ajuda {
                         }
                     }
                     catch {
-                        if (interaction.values[0] == "inicio") {
+                        if (interaction.values[0] == "atributos") {
+                            const atributos = client.resources[int.lang].atributos
+
+                            if (int.lang == "en-") {
+                                var atributosF = "Attributes:"
+                            }
+                            else {
+                                var atributosF = "Atributos:"
+                            }
+
+                            for (var x in atributos) {
+                                if (x < atributos.length - 1) {
+                                    atributosF += " " + atributos[x] + ","
+                                }
+                                if (x == atributos.length - 1) {
+                                    atributosF += " " + atributos[x]
+                                }
+                            }
+
+                            help = new client.Discord.MessageEmbed()
+                                .setDescription("**" + atributosF + "**" + client.tl({ local: int.lang + "ajuda-atributos" }))
+                                .setColor(client.settings.color)
+                                .setTitle("<:fichaAjuda:766790214550814770> " + client.tl({ local: int.lang + "ajuda-tAtributos" }))
+                                .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
+                                .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
+                                .setTimestamp()
+
+                            return
+                        }
+                        else if (interaction.values[0] == "inicio") {
                             help = mainHelp
                             return
                         }
