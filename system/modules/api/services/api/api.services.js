@@ -34,6 +34,8 @@ module.exports = class apiServices {
 
     async getFicha(id, nomerpg) {
         const ficha = await pass.client.cache.getFicha(id, nomerpg)
+        const user = await pass.client.users.cache.get(body.id)
+        ficha.tag = user.tag
 
         return ficha
     }
@@ -42,9 +44,9 @@ module.exports = class apiServices {
         const ficha = await pass.client.cache.getFicha(body.id, body.nomerpg)
 
         if (ficha.senha === body.senha) {
-            const user = await pass.client.users.fetch(body.id)
+            const user = await pass.client.users.cache.get(body.id)
             ficha.tag = user.tag
-            
+
             return {
                 status: 200,
                 data: {
