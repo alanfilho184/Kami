@@ -33,6 +33,8 @@ module.exports = class apiServices {
 
     async getFicha(id, nomerpg) {
         const ficha = await pass.client.cache.getFicha(id, nomerpg)
+        const user = await pass.client.users.cache.get(id)
+        ficha.tag = user.tag
 
         return ficha
     }
