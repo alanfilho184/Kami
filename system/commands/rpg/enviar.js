@@ -222,7 +222,8 @@ module.exports = class enviar {
 
         const infEmbed = new client.Discord.MessageEmbed()
             .setColor(client.settings.color)
-            .setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+            .setTitle(client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
+            .setAuthor({ name: "Clique aqui para visualizar esta ficha no site do Kami", url: `https://kamisite.herokuapp.com/ficha/${fichaUser.id}/${fichaUser.nomerpg}` })
             .setThumbnail(fichaUser.atributos.imagem ? fichaUser.atributos.imagem : "")
 
         delete fichaUser.atributos["imagem"]
@@ -286,7 +287,7 @@ module.exports = class enviar {
             }
         }
 
-        reply.inf = infEmbed.setAuthor({ name: client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}` })
+        reply.inf = infEmbed
         reply.s1 = s1Embed.fields.length > 0 ? s1Embed.setTitle(client.tl({ local: int.lang + "ef-stpTi" })) : false
         reply.s2 = s2Embed.fields.length > 0 ? s2Embed : false
         reply.s3 = s3Embed.fields.length > 0 ? s3Embed : false
