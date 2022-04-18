@@ -34,7 +34,7 @@ module.exports = class apiServices {
     async getFicha(id, nomerpg) {
         const ficha = await pass.client.cache.getFicha(id, nomerpg)
 
-        if(ficha){
+        if (ficha) {
             const user = await pass.client.users.fetch(id)
             ficha.tag = user.tag
         }
@@ -48,7 +48,7 @@ module.exports = class apiServices {
         if (ficha.senha === body.senha) {
             const user = await pass.client.users.fetch(body.id)
             ficha.tag = user.tag
-            
+
             return {
                 status: 200,
                 data: {
@@ -218,7 +218,6 @@ module.exports = class apiServices {
 
         var nomerpg = body.nomerpg
         var atb = body.atb
-        var valor = body.valor
 
         try { nomerpg = nomerpg.replace("'", '') } catch { }
 
@@ -227,77 +226,43 @@ module.exports = class apiServices {
         }
         catch (err) { }
 
-        if (false) {
-            if (valor.replace(" ", "") == "excluir" || valor.replace(" ", "") == "delete") { }
-            else {
-                const ficha = await pass.client.cache.getFicha(body.id, nomerpg)
-                try { var atbsAtual = ficha["extras"].split("|") }
-                catch (err) { atbsAtual = "" }
-                var atbsNovos = valor.split("|")
-
-                const atbsA = new Map()
-                const atbsN = new Map()
-
-                for (var x in atbsAtual) {
-                    var atbE = atbsAtual[x].split(":")[0]
-                    var val = atbsAtual[x].split(":")[1]
-
-                    try { atbE = atbE.replace(" ", "") } catch (err) { }
-                    try { val = val.replace(/ /, '') } catch (err) { }
-
-
-                    if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "" && val != undefined) {
-                        atbsA.set(atbE, val)
-                    }
-                }
-
-                for (var x in atbsNovos) {
-                    var atbE = atbsNovos[x].split(":")[0]
-                    var val = atbsNovos[x].split(":")[1]
-
-                    try { atbE = atbE.replace(" ", "") } catch (err) { }
-                    try { val = val.replace(/ /, '') } catch (err) { }
-
-
-                    if (val != "" && val != undefined) {
-                        atbsN.set(atbE, val)
-                    }
-                }
-
-                atbsN.forEach(function (value, key) {
-                    atbsA.set(key, value);
-                });
-
-                valor = ""
-
-                var x = 1
-                atbsA.forEach(function (value, key) {
-                    valor += `${key}: ${value}`
-
-                    if (x != atbsA.size) { valor += `| `; x++ }
-                });
-            }
-
-        }
-
         try {
-            await pass.client.cache.updateFicha(body.id, nomerpg, { [atb]: null }, { query: "update" })
+            const ficha = pass.client.cache.get(body.id, nomerpg)
 
-            var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
-
-            if (infoUIRT != "") {
-                const info = {
-                    user: {
-                        id: body.id,
-                        tag: body.tag
-                    },
-                    fromSite: true
-                }
-                pass.client.emit("updtFicha", info, { id: body.id, nomerpg: body.nomerpg, irt: infoUIRT })
+            let atbE = false
+            try{
+                atbE = ficha.atributos.includes(atb)
+            }
+            catch(err){
+                atbE = false
             }
 
-            return {
-                status: 200,
+            if (atbE) {
+                await pass.client.cache.updateFicha(body.id, nomerpg, { [atb]: null }, { query: "update" })
+
+                var infoUIRT = await pass.client.cache.getIrt(body.id, body.nomerpg)
+
+                if (infoUIRT != "") {
+                    const info = {
+                        user: {
+                            id: body.id,
+                            tag: body.tag
+                        },
+                        fromSite: true
+                    }
+                    pass.client.emit("updtFicha", info, { id: body.id, nomerpg: body.nomerpg, irt: infoUIRT })
+                }
+
+                return {
+                    status: 200,
+                }
+            }
+            else {
+                return {
+                    status: 400,
+                    title: "Atributo não encontrado",
+                    text: `O atributo "${atb}", não foi encontrado nessa ficha.`
+                }
             }
         }
         catch (err) {

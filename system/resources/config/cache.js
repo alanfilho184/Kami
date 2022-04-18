@@ -331,6 +331,10 @@ module.exports = class Cache {
                 oldData: config.oldData || await this.getFicha(id, nomerpg),
             }
 
+            if(!config.oldData.atributos) {
+                config.oldData.atributos = {}
+            }
+
             if (Object.entries(config.oldData.atributos).length == 0) {
                 var oldData = await this.client.db.query("select * from fichas where id = :id and nomerpg = :nomerpg", {
                     replacements: {
