@@ -16,13 +16,13 @@ Devido a mudanças que serão realizadas pelo Discord no futuro, somente comando
 
 &nbsp;
 # Projetos relacionados
-- ## **[Kami-Site](https://github.com/Kamikaze184/Kami-Site)** 
+- ## **[Kami-Site](https://github.com/alanfilho184/Kami-Site)** 
   Site com informações e tutoriais relacionados ao Kami.  
-> ## Adicione o Kami ao seu servidor **[Clicando aqui](https://discord.com/api/oauth2/authorize?client_id=716053210179043409&permissions=388160&scope=bot%20applications.commands)**
+> ## Adicione o Kami ao seu servidor **[Clicando aqui](https://kamisite.herokuapp.com/convite)**
 &nbsp;
 
 # Achou algum bug? tem alguma sugestão?
-### Abra uma issue **[clicando aqui](https://github.com/Kamikaze184/Kami/issues)**, ela será respondida o mais rápido possível!
+### Abra uma issue **[clicando aqui](https://github.com/alanfilho184/Kami/issues)**, ela será respondida o mais rápido possível!
 
 
 
