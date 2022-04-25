@@ -1,5 +1,6 @@
 const { REST } = require('@discordjs/rest');
 const { SlashCommandBuilder, ContextMenuCommandBuilder } = require('@discordjs/builders');
+const builder = require('@discordjs/builders');
 const { Routes } = require('discord-api-types/v9');
 
 module.exports = class reloadSlash {
@@ -24,6 +25,8 @@ module.exports = class reloadSlash {
             Routes.applicationCommands(client.settings.clientId)
         )
 
+        
+
         const commands = new Array()
         const commandsOwner = new Array()
 
@@ -46,6 +49,9 @@ module.exports = class reloadSlash {
                             else if (c.args[x].type == "USER") {
                                 command.addUserOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
                             }
+                            else if (c.args[x].type == "ATTACHMENT") {
+                                command.addAttachmentOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                            }
                         }
                     }
 
@@ -57,7 +63,7 @@ module.exports = class reloadSlash {
 
                                     if (c.options[x].choices.length > 0) {
                                         for (var y in c.options[x].choices) {
-                                            option.addChoice(c.options[x].choices[y].name, c.options[x].choices[y].return)
+                                            option.addChoices({ name: c.options[x].choices[y].name, value: c.options[x].choices[y].return })
                                         }
                                     }
 
@@ -90,6 +96,9 @@ module.exports = class reloadSlash {
                             else if (c.args[x].type == "USER") {
                                 command.addUserOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
                             }
+                            else if (c.args[x].type == "ATTACHMENT") {
+                                command.addAttachmentOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                            }
                         }
                     }
 
@@ -101,7 +110,7 @@ module.exports = class reloadSlash {
 
                                     if (c.options[x].choices.length > 0) {
                                         for (var y in c.options[x].choices) {
-                                            option.addChoice(c.options[x].choices[y].name, c.options[x].choices[y].return)
+                                            option.addChoices({ name: c.options[x].choices[y].name, value: c.options[x].choices[y].return })
                                         }
                                     }
 
@@ -171,7 +180,7 @@ module.exports = class reloadSlash {
         } catch (error) {
             client.log.error(error, true)
         }
-        
+
         int.reply("Slash commands recarregados")
     }
 }
