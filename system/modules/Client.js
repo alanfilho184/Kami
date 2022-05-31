@@ -26,8 +26,8 @@ module.exports = class MenuClient extends Client {
         this.loadEvents()
         this.setCache()
         this.setTl()
-        this.startup()
-        this.startAPI()
+        if (options.full || options.bot && !options.api) this.startup()
+        if (options.full || options.api && !options.bot) this.startAPI()
 
     }
 
