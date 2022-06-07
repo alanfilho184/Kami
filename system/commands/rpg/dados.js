@@ -311,7 +311,7 @@ module.exports = class roll {
             return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
         }
 
-        const rollEmbed = new client.Discord.MessageEmbed()
+        const rollEmbed = new client.Discord.EmbedBuilder()
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
@@ -374,7 +374,7 @@ module.exports = class roll {
                     }
                     var valor = r.atributos[atb]
 
-                    const embedRoll = new client.Discord.MessageEmbed()
+                    const embedRoll = new client.Discord.EmbedBuilder()
                     var index = atributosI1.indexOf(atb)
                     var index2 = atributosI2.indexOf(atb)
                     var index3 = atributosS1.indexOf(atb)

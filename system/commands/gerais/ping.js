@@ -39,7 +39,7 @@ module.exports = class ping {
                     })
 
 
-                const pingEmbed = new client.Discord.MessageEmbed()
+                const pingEmbed = new client.Discord.EmbedBuilder()
                     .setColor(client.settings.color)
                     .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .addField("BOT:", "`" + Math.round(int.ping) + " ms`", true)

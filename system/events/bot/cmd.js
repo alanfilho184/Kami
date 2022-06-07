@@ -18,7 +18,7 @@ module.exports = {
             idioma = "Nenhum idioma configurado"
         }
 
-        const cmdEmbed = new client.Discord.MessageEmbed()
+        const cmdEmbed = new client.Discord.EmbedBuilder()
             .setTitle("Comando: `" + cmd + "`")
             .setAuthor({ name:  `${int.user.tag} - ${int.user.id}`, iconURL: int.user.displayAvatarURL() })
             .setDescription("**Args:**\n" + "`" + args + "`")

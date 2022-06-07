@@ -55,7 +55,7 @@ module.exports = class ver_senha {
                             embedTi = client.utils.replaceAll(embedTi, "$", "")
                         }
 
-                        const embedSenhas = new client.Discord.MessageEmbed()
+                        const embedSenhas = new client.Discord.EmbedBuilder()
                             .setTitle(embedTi)
                             .setColor(client.settings.color)
                             .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })

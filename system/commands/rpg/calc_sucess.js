@@ -64,7 +64,7 @@ module.exports = class sucesso {
 
                 }
                 else {
-                    const sucessos = new client.Discord.MessageEmbed()
+                    const sucessos = new client.Discord.EmbedBuilder()
 
                     sucessos.setTitle(client.tl({ local: int.lang + "cs-embedTi", valor: valorO }))
                     sucessos.setColor(client.settings.color)

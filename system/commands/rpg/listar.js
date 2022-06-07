@@ -38,7 +38,7 @@ Ex: **${"/"}listar**`
                         const fichas = new Array()
                         result[0].map(f => fichas.push(f.nomerpg))
 
-                        const fichasU = new client.Discord.MessageEmbed()
+                        const fichasU = new client.Discord.EmbedBuilder()
 
                         if (fichas.length == 1) {
                             fichasU.setTitle(client.tl({ local: int.lang + "vf-embedTi1", qfichas: fichas.length }))

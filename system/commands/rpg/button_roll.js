@@ -261,7 +261,7 @@ module.exports = class button_roll {
 
                 if (stop) { return }
 
-                const embed = new client.Discord.MessageEmbed()
+                const embed = new client.Discord.EmbedBuilder()
                     .setColor(client.settings.color)
                     .setTitle(client.tl({ local: int.lang + "btR-eTi" }))
                     .setDescription(client.tl({ local: int.lang + "btR-eDesc" }))
@@ -454,7 +454,7 @@ module.exports = class button_roll {
             return int.followUp(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
         }
 
-        const rollEmbed = new client.Discord.MessageEmbed()
+        const rollEmbed = new client.Discord.EmbedBuilder()
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)

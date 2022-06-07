@@ -33,7 +33,7 @@ module.exports = class ajuda {
         const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
         await int.deferReply({ ephemeral: secret })
 
-        const mainHelp = new client.Discord.MessageEmbed()
+        const mainHelp = new client.Discord.EmbedBuilder()
             .setTitle(client.tl({ local: int.lang + "ajuda-tMain" }))
             .setColor(client.settings.color)
             .setDescription(client.tl({ local: int.lang + "ajuda-main" }))
@@ -132,7 +132,7 @@ module.exports = class ajuda {
 
                             if (int.lang == "pt-") {
 
-                                help = new client.Discord.MessageEmbed()
+                                help = new client.Discord.EmbedBuilder()
                                     .setTitle(replaceAll(cmd.helpPt.title, "$prefix$", client.prefix))
                                     .setColor(client.settings.color)
                                     .setDescription(replaceAll(cmd.helpPt.desc, "$prefix$", client.prefix))
@@ -143,7 +143,7 @@ module.exports = class ajuda {
 
                             }
                             else {
-                                help = new client.Discord.MessageEmbed()
+                                help = new client.Discord.EmbedBuilder()
                                     .setTitle(replaceAll(cmd.helpEn.title, "$prefix$", client.prefix))
                                     .setColor(client.settings.color)
                                     .setDescription(replaceAll(cmd.helpEn.desc, "$prefix$", client.prefix))

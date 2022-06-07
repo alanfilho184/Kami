@@ -64,7 +64,7 @@ module.exports = class adicionar_imagem {
                         menu.addOptions({ label: f, value: f })
                     })
 
-                    const embed = new client.Discord.MessageEmbed()
+                    const embed = new client.Discord.EmbedBuilder()
                         .setTitle(client.tl({ local: int.lang + "addI-eTi" }))
                         .setDescription(client.tl({ local: int.lang + "addI-eDesc" }))
                         .setImage(attach.url)

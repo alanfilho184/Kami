@@ -50,7 +50,7 @@ module.exports = class lang {
                     }
                 }
 
-                const lEmbed = new client.Discord.MessageEmbed()
+                const lEmbed = new client.Discord.EmbedBuilder()
                     .setTitle(client.tl({ local: int.lang + "eL-embedTi" }))
                     .setDescription(client.tl({ local: int.lang + "eL-embedDesc" }))
                     .setColor(client.settings.color)

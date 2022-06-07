@@ -42,7 +42,7 @@ module.exports = class config {
                         enviar: null
                     }
 
-                    const gui = new client.Discord.MessageEmbed()
+                    const gui = new client.Discord.EmbedBuilder()
                         .setTitle(client.tl({ local: int.lang + "config-guiTi" }))
                         .addFields(
                             { name: client.tl({ local: int.lang + "config-guiSepS" }) + "\n" + client.tl({ local: int.lang + "config-guiF1" }), value: `${userConfig.roll == "true" ? client.tl({ local: int.lang + "config-guiAct" }) : client.tl({ local: int.lang + "config-guiDes" })}`, inline: true },

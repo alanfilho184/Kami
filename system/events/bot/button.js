@@ -14,7 +14,7 @@ module.exports = {
             idioma = "Nenhum idioma configurado"
         }
 
-        const buttonEmbed = new client.Discord.MessageEmbed()
+        const buttonEmbed = new client.Discord.EmbedBuilder()
             .setTitle("Botão: `" + cmd + "`")
             .setAuthor({ name:  `${comp.user.tag} - ${comp.user.id}`, iconURL: comp.user.displayAvatarURL() })
             .setDescription("**Info no botão:**\n" + "`" + comp.customId + "`")

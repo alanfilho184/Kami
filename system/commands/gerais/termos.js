@@ -29,7 +29,7 @@ module.exports = class termos {
         const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
         int.deferReply({ ephemeral: secret })
             .then(() => {
-                const termEmbed = new client.Discord.MessageEmbed()
+                const termEmbed = new client.Discord.EmbedBuilder()
                     .setDescription(client.tl({ local: int.lang + "termos-embedDesc" }))
                     .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .setTimestamp()

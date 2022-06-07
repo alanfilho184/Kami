@@ -76,7 +76,7 @@ module.exports = class botinfo {
             .addRow(`${client.tl({ local: int.lang + "botI-uptime" })}`, botuptime)
 
 
-        const botIEmbed = new client.Discord.MessageEmbed()
+        const botIEmbed = new client.Discord.EmbedBuilder()
         botIEmbed.setTitle(client.tl({ local: int.lang + "botI-fAu" }) + owner.tag)
         botIEmbed.setColor(client.settings.color)
         botIEmbed.setDescription("```\n" + table.toString() + "```")

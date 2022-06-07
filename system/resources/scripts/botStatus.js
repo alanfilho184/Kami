@@ -49,7 +49,7 @@ module.exports = class botStatus {
         var dbSize = DBInfo.size[0].pg_database_size
         var dbFichas = DBInfo.fichas
 
-        const botStatus = new client.Discord.MessageEmbed()
+        const botStatus = new client.Discord.EmbedBuilder()
 
         var qFichas = dbFichas.length
 

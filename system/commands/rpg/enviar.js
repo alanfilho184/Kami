@@ -220,7 +220,7 @@ module.exports = class enviar {
 
         const { atributosI1, atributosIF1, atributosI2, atributosIF2, atributosStatus, atributosStatusF } = client.resources[int.lang]
 
-        const infEmbed = new client.Discord.MessageEmbed()
+        const infEmbed = new client.Discord.EmbedBuilder()
             .setColor(client.settings.color)
             .setTitle(client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
             .setAuthor({ name: "Clique aqui para visualizar esta ficha no site do Kami", url: `https://kamisite.herokuapp.com/ficha/${fichaUser.id}/${fichaUser.nomerpg}` })
@@ -228,8 +228,8 @@ module.exports = class enviar {
 
         delete fichaUser.atributos["imagem"]
 
-        const s1Embed = new client.Discord.MessageEmbed().setColor(client.settings.color), s2Embed = new client.Discord.MessageEmbed().setColor(client.settings.color)
-        const s3Embed = new client.Discord.MessageEmbed().setColor(client.settings.color), descEmbed = new client.Discord.MessageEmbed().setColor(client.settings.color)
+        const s1Embed = new client.Discord.EmbedBuilder().setColor(client.settings.color), s2Embed = new client.Discord.EmbedBuilder().setColor(client.settings.color)
+        const s3Embed = new client.Discord.EmbedBuilder().setColor(client.settings.color), descEmbed = new client.Discord.EmbedBuilder().setColor(client.settings.color)
 
         for (var x of atributosI1) {
             if (fichaUser.atributos[x] != undefined) {
