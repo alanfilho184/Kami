@@ -35,7 +35,7 @@ module.exports = class vote {
                     .setTimestamp()
                     .setColor(client.settings.color)
 
-                const bVote = new client.Discord.MessageButton()
+                const bVote = new client.Discord.ButtonBuilder()
                     .setStyle(5)
                     .setLabel(client.tl({ local: int.lang + "vote-embedFT" }))
                     .setURL("https://botsparadiscord.com.br/bots/716053210179043409")

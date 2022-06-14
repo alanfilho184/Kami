@@ -59,7 +59,7 @@ module.exports = class config {
                         .setTimestamp()
 
                     const uniqueID = `${Date.now()}`
-                    const menu = new client.Discord.MessageSelectMenu()
+                    const menu = new client.Discord.SelectMenuBuilder()
                         .setCustomId("fPadrao|" + uniqueID)
                         .setPlaceholder(userConfig.fPadrao ? userConfig.fPadrao : client.tl({ local: int.lang + "config-menuPH" }))
 
@@ -73,32 +73,32 @@ module.exports = class config {
 
                     if (userConfig.fPadrao) { menu.addOptions({ label: client.tl({ local: int.lang + "config-menuEFP" }), value: "excluir" }) }
 
-                    const bRoll = new client.Discord.MessageButton()
+                    const bRoll = new client.Discord.ButtonBuilder()
                         .setStyle(userConfig.roll == "true" ? 4 : 3)
                         .setLabel(userConfig.roll == "true" ? client.tl({ local: int.lang + "config-btDesRS" }) : client.tl({ local: int.lang + "config-btActRS" }))
                         .setCustomId("rollS|" + uniqueID)
 
-                    const bInsan = new client.Discord.MessageButton()
+                    const bInsan = new client.Discord.ButtonBuilder()
                         .setStyle(userConfig.insan == "true" ? 4 : 3)
                         .setLabel(userConfig.insan == "true" ? client.tl({ local: int.lang + "config-btDesIS" }) : client.tl({ local: int.lang + "config-btActIS" }))
                         .setCustomId("insS|" + uniqueID)
 
-                    const bGeral = new client.Discord.MessageButton()
+                    const bGeral = new client.Discord.ButtonBuilder()
                         .setStyle(userConfig.geral == "true" ? 4 : 3)
                         .setLabel(userConfig.geral == "true" ? client.tl({ local: int.lang + "config-btDesG" }) : client.tl({ local: int.lang + "config-btActG" }))
                         .setCustomId("geralS|" + uniqueID)
 
-                    const bFicha = new client.Discord.MessageButton()
+                    const bFicha = new client.Discord.ButtonBuilder()
                         .setStyle(userConfig.ficha == "true" ? 4 : 3)
                         .setLabel(userConfig.ficha == "true" ? client.tl({ local: int.lang + "config-btDesF" }) : client.tl({ local: int.lang + "config-btActF" }))
                         .setCustomId("fichaS|" + uniqueID)
 
-                    const bEnviar = new client.Discord.MessageButton()
+                    const bEnviar = new client.Discord.ButtonBuilder()
                         .setStyle(userConfig.enviar == "true" ? 4 : 3)
                         .setLabel(userConfig.enviar == "true" ? client.tl({ local: int.lang + "config-btDesE" }) : client.tl({ local: int.lang + "config-btActE" }))
                         .setCustomId("enviarS|" + uniqueID)
 
-                    const bF = new client.Discord.MessageButton()
+                    const bF = new client.Discord.ButtonBuilder()
                         .setStyle(1)
                         .setLabel(client.tl({ local: int.lang + "config-btF" }))
                         .setCustomId("done|" + uniqueID)

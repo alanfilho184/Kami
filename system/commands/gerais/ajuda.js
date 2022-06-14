@@ -41,17 +41,17 @@ module.exports = class ajuda {
             .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
             .setTimestamp()
 
-        const bTermos = new client.Discord.MessageButton()
+        const bTermos = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btTermos" }))
             .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "termos" : "terms"}/`)
 
-        const bPrivacidade = new client.Discord.MessageButton()
+        const bPrivacidade = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btPrivacidade" }))
             .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "privacidade" : "privacy"}/`)
 
-        const bSup = new client.Discord.MessageButton()
+        const bSup = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
             .setURL("https://kamisite.herokuapp.com/suporte")
@@ -59,7 +59,7 @@ module.exports = class ajuda {
         const uniqueID = Date.now()
         var menuDisplayed = 0
 
-        const bMenu = new client.Discord.MessageButton()
+        const bMenu = new client.Discord.ButtonBuilder()
             .setStyle(1)
             .setLabel("Próximo menu")
             //.setEmoji("➡")
@@ -72,7 +72,7 @@ module.exports = class ajuda {
         var choice = ""
 
         while (repeat) {
-            const menu = new client.Discord.MessageSelectMenu()
+            const menu = new client.Discord.SelectMenuBuilder()
                 .setCustomId(`helpMenu|${uniqueID}`)
                 .setPlaceholder(client.tl({ local: int.lang + "ajuda-mPH" }))
 

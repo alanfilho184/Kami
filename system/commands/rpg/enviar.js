@@ -165,12 +165,12 @@ module.exports = class enviar {
 
                                     await int.editReply({ embeds: reply })
                                         .then(m => {
-                                            const bDes = new client.Discord.MessageButton()
+                                            const bDes = new client.Discord.ButtonBuilder()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-desIrt" }))
                                                 .setCustomId(`buttonIrt|des|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
 
-                                            const bApg = new client.Discord.MessageButton()
+                                            const bApg = new client.Discord.ButtonBuilder()
                                                 .setStyle(2)
                                                 .setLabel(client.tl({ local: int.lang + "bt-apgIrt" }))
                                                 .setCustomId(`buttonIrt|apg|id:${int.user.id}|nomerpg:${nomerpg}|msgid:${m.id}|chid:${m.channel.id}`)
@@ -233,14 +233,14 @@ module.exports = class enviar {
 
         for (var x of atributosI1) {
             if (fichaUser.atributos[x] != undefined) {
-                infEmbed.addField(atributosIF1[atributosI1.indexOf(x)], fichaUser.atributos[x], true)
+                infEmbed.addFields({ name: atributosIF1[atributosI1.indexOf(x)], value: fichaUser.atributos[x], inline: true })
                 delete fichaUser.atributos[x]
             }
         }
 
         for (var x of atributosI2) {
             if (fichaUser.atributos[x] != undefined) {
-                infEmbed.addField(atributosIF2[atributosI2.indexOf(x)], fichaUser.atributos[x], false)
+                infEmbed.addFields({ name: atributosIF2[atributosI2.indexOf(x)], value: fichaUser.atributos[x], inline: false })
                 delete fichaUser.atributos[x]
             }
         }
@@ -249,13 +249,13 @@ module.exports = class enviar {
         for (var x of atributosStatus) {
             if (fichaUser.atributos[x] != undefined) {
                 if (fields <= 25) {
-                    s1Embed.addField(atributosStatusF[atributosStatus.indexOf(x)], fichaUser.atributos[x], true)
+                    s1Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[x], inline: true })
                 }
                 else if (fields > 25 && fields <= 50) {
-                    s2Embed.addField(atributosStatusF[atributosStatus.indexOf(x)], fichaUser.atributos[x], true)
+                    s2Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[x], inline: true })
                 }
                 else if (fields > 50 && fields <= 75) {
-                    s3Embed.addField(atributosStatusF[atributosStatus.indexOf(x)], fichaUser.atributos[x], true)
+                    s3Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[x], inline: true })
                 }
 
                 delete fichaUser.atributos[x]
@@ -273,13 +273,13 @@ module.exports = class enviar {
         for (var x of Object.keys(fichaUser.atributos)) {
             if (fichaUser.atributos[x] != undefined) {
                 if (fields <= 25) {
-                    s1Embed.addField(x, fichaUser.atributos[x], true)
+                    s1Embed.addFields({ name: x, value: fichaUser.atributos[x], inline: true })
                 }
                 else if (fields > 25 && fields <= 50) {
-                    s2Embed.addField(x, fichaUser.atributos[x], true)
+                    s2Embed.addFields({ name: x, value: fichaUser.atributos[x], inline: true })
                 }
                 else if (fields > 50 && fields <= 75) {
-                    s3Embed.addField(x, fichaUser.atributos[x], true)
+                    s3Embed.addFields({ name: x, value: fichaUser.atributos[x], inline: true })
                 }
 
                 delete fichaUser.atributos[x]
@@ -288,10 +288,10 @@ module.exports = class enviar {
         }
 
         reply.inf = infEmbed
-        reply.s1 = s1Embed.fields.length > 0 ? s1Embed.setTitle(client.tl({ local: int.lang + "ef-stpTi" })) : false
-        reply.s2 = s2Embed.fields.length > 0 ? s2Embed : false
-        reply.s3 = s3Embed.fields.length > 0 ? s3Embed : false
-        reply.desc = descEmbed.description ? descEmbed.setTitle(client.tl({ local: int.lang + "ef-descPerso" })) : false
+        if (s1Embed.data.fields) { reply.s1 = s1Embed.data.fields.length > 0 ? s1Embed.setTitle(client.tl({ local: int.lang + "ef-stpTi" })) : false }
+        if (s2Embed.data.fields) { reply.s2 = s2Embed.data.fields.length > 0 ? s2Embed.setTitle(client.tl({ local: int.lang + "ef-stpTi" })) : false }
+        if (s3Embed.data.fields) { reply.s3 = s3Embed.data.fields.length > 0 ? s3Embed.setTitle(client.tl({ local: int.lang + "ef-stpTi" })) : false }
+        reply.desc = descEmbed.data.description ? descEmbed.setTitle(client.tl({ local: int.lang + "ef-descPerso" })) : false
 
         const replyArray = new Array
         Object.values(reply).forEach((val) => {

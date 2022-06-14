@@ -58,21 +58,21 @@ module.exports = class lang {
 
                 const uniqueID = `${Date.now()}`
 
-                const bPT = new client.Discord.MessageButton()
+                const bPT = new client.Discord.ButtonBuilder()
                     .setStyle(2)
                     .setLabel("PT-BR")
                     .setEmoji('🇧🇷')
                     .setDisabled(int.lang == "pt-")
                     .setCustomId("pt|" + uniqueID)
 
-                const bEN = new client.Discord.MessageButton()
+                const bEN = new client.Discord.ButtonBuilder()
                     .setStyle(2)
                     .setLabel("EN-US")
                     .setEmoji('🇺🇸')
                     .setDisabled(int.lang == "en-")
                     .setCustomId("en|" + uniqueID)
 
-                const bCanc = new client.Discord.MessageButton()
+                const bCanc = new client.Discord.ButtonBuilder()
                     .setStyle(4)
                     .setLabel(client.tl({ local: int.lang + "bt-canc" }))
                     .setCustomId("canc|" + uniqueID)

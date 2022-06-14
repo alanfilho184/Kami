@@ -84,17 +84,17 @@ module.exports = class botinfo {
         botIEmbed.setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
 
 
-        const bSup = new client.Discord.MessageButton()
+        const bSup = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
             .setURL("https://kamisite.herokuapp.com/suporte")
 
-        const bVote = new client.Discord.MessageButton()
+        const bVote = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f3V" }))
             .setURL("https://botsparadiscord.com.br/bots/716053210179043409")
 
-        const bInv = new client.Discord.MessageButton()
+        const bInv = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f4V" }))
             .setURL(`https://kamisite.herokuapp.com/convite`)

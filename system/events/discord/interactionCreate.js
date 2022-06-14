@@ -10,8 +10,8 @@ module.exports = {
     type: "djs",
     execute: async (client, int) => {
         if (client.utils.userOnBlacklist(int.user.id)) { return }
-        if (int.isAutocomplete()) { return client.emit("autocompleteHandler", int) }
-        if ((int.isMessageComponent())) { return client.emit("componentHandler", int) }
+        if (int.type == 4) { return client.emit("autocompleteHandler", int) }
+        if (int.type == 3) { return client.emit("componentHandler", int) }
         if ((int.isContextMenuCommand())) { return client.emit("contextMenuHandler", int) }
         if (!int.isChatInputCommand()) { return }
 

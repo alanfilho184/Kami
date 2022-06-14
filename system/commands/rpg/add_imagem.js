@@ -56,7 +56,7 @@ module.exports = class adicionar_imagem {
                     const fichas = client.cache.getFichasUser(int.user.id)
 
                     const uniqueID = `${Date.now()}`
-                    const menu = new client.Discord.MessageSelectMenu()
+                    const menu = new client.Discord.SelectMenuBuilder()
                         .setCustomId("addImg|" + uniqueID)
                         .setPlaceholder(client.tl({ local: int.lang + "addI-mPH" }))
 

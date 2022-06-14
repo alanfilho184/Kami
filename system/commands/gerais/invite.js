@@ -35,7 +35,7 @@ module.exports = class invite {
                     .setTimestamp()
                     .setColor(client.settings.color)
 
-                const bInv = new client.Discord.MessageButton()
+                const bInv = new client.Discord.ButtonBuilder()
                     .setStyle(5)
                     .setLabel(client.tl({ local: int.lang + "inv-embedFT" }))
                     .setURL(`https://kamisite.herokuapp.com/convite`)

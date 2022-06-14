@@ -1,6 +1,5 @@
 const { REST } = require('@discordjs/rest');
 const { SlashCommandBuilder, ContextMenuCommandBuilder } = require('@discordjs/builders');
-const builder = require('@discordjs/builders');
 const { Routes } = require('discord-api-types/v9');
 
 module.exports = class reloadSlash {
@@ -127,14 +126,14 @@ module.exports = class reloadSlash {
                 const command = new ContextMenuCommandBuilder()
 
                 if (c.ownerOnly) {
-                    command.setDefaultPermission(false)
+                    command.setDefaultMemberPermissions(false)
                     command.setName(c.name)
                     command.setType(c.type)
 
                     commandsOwner.push(command)
                 }
                 else {
-                    command.setDefaultPermission(true)
+                    command.setDefaultMemberPermissions(true)
                     command.setName(c.name)
                     command.setType(c.type)
 

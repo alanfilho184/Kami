@@ -251,7 +251,7 @@ module.exports = class button_roll {
                         return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: segments[0] }) })
                     }
 
-                    const button = new client.Discord.MessageButton()
+                    const button = new client.Discord.ButtonBuilder()
                         .setStyle(1)
                         .setLabel(title)
                         .setCustomId(`buttonRoll|${title}`)
@@ -462,7 +462,7 @@ module.exports = class button_roll {
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 
-        const backButton = new client.Discord.MessageButton()
+        const backButton = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "btR-backBt", cmd: numberDice }))
             .setURL(`https://discord.com/channels/${int.message.guildId}/${int.message.channelId}/${int.message.id}`)

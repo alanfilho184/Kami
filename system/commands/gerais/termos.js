@@ -35,7 +35,7 @@ module.exports = class termos {
                     .setTimestamp()
                     .setColor(client.settings.color)
 
-                const bTermos = new client.Discord.MessageButton()
+                const bTermos = new client.Discord.ButtonBuilder()
                     .setStyle(5)
                     .setLabel(client.tl({ local: int.lang + "termos-embedFT" }))
                     .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "termos" : "terms"}/`)
