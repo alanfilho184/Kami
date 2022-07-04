@@ -95,31 +95,7 @@ module.exports = class enviar_atb {
                         if (atributo.toLowerCase() == "imagem") {
                             atributoEmbed.setImage(valor)
                         }
-                        if (atributo.toLowerCase() == "extras") {
-                            var atbExtras = valor
-
-                            var atbs = atbExtras.split("|")
-
-                            for (var x in atbs) {
-                                var atb = atbs[x].split(":")[0]
-                                var val = atbs[x].split(":")[1]
-
-                                try { atb = atb.replace(" ", "") } catch { }
-                                try { val = val.replace(/ .$/, '') } catch { }
-                                try { val = val.replace(/ (.+)/, '') } catch { }
-
-                                if (val != "excluir" && val != "delete" && val != "-" && val != "- " && val != "") {
-                                    atributoEmbed.addFields({ name: atb + ":", value: val, inline: true })
-                                }
-                                else { }
-
-                                if (x == 25) {
-                                    int.editReply(client.tl({ local: int.lang + "ef-eLE" }))
-                                    break
-                                }
-                            }
-                        }
-                        if (atributo.toLowerCase() != "imagem" && atributo.toLowerCase() != "extras") {
+                        else {
                             atributoEmbed.setDescription(`**_${valor}_**`)
                         }
 

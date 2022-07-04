@@ -162,17 +162,18 @@ module.exports = class ajuda {
                     }
                     else if (toDo == "bMenu") {
                         if (menuDisplayed == 0) { 
-                            bMenu.setLabel("Menu anterior")
+                            bMenu.setLabel(client.tl({lang: lang, local:"ajuda-aLista"}))
                             menuDisplayed = 1 
                         }
                         else { 
-                            bMenu.setLabel("Próximo menu")
+                            bMenu.setLabel(client.tl({lang: lang, local:"ajuda-pLista"}))
                             menuDisplayed = 0 
                         }
                     }
                 })
                 .catch(err => {
-                    if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                    console.log(err.code)
+                    if (err.code == "InteractionCollectorError") {
                         int.editReply({ content: null, components: [{ type: 1, components: [bTermos, bSup] }] })
                     }
                     else {

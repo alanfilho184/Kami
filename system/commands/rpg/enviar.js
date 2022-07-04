@@ -209,7 +209,7 @@ module.exports = class enviar {
             })
 
     }
-    create(client, int, fichaUser, irt) {
+    create(client, int, fichaUser) {
         var reply = Object({
             inf: false,
             s1: false,
@@ -224,7 +224,7 @@ module.exports = class enviar {
             .setColor(client.settings.color)
             .setTitle(client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
             .setAuthor({ name: "Clique aqui para visualizar esta ficha no site do Kami", url: `https://kamisite.herokuapp.com/ficha/${fichaUser.id}/${fichaUser.nomerpg}` })
-            .setThumbnail(fichaUser.atributos.imagem ? fichaUser.atributos.imagem : "")
+        if (fichaUser.atributos.imagem) { infEmbed.setThumbnail(fichaUser.atributos.imagem) }
 
         delete fichaUser.atributos["imagem"]
 
@@ -272,13 +272,13 @@ module.exports = class enviar {
 
         for (var x of Object.keys(fichaUser.atributos)) {
             if (fichaUser.atributos[x] != undefined) {
-                if (fields <= 25) {
+                if (fields < 25) {
                     s1Embed.addFields({ name: x, value: fichaUser.atributos[x], inline: true })
                 }
-                else if (fields > 25 && fields <= 50) {
+                else if (fields >= 25 && fields < 50) {
                     s2Embed.addFields({ name: x, value: fichaUser.atributos[x], inline: true })
                 }
-                else if (fields > 50 && fields <= 75) {
+                else if (fields >= 50 && fields < 75) {
                     s3Embed.addFields({ name: x, value: fichaUser.atributos[x], inline: true })
                 }
 

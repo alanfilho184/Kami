@@ -77,7 +77,6 @@ module.exports = class lang {
                     .setLabel(client.tl({ local: int.lang + "bt-canc" }))
                     .setCustomId("canc|" + uniqueID)
 
-
                 int.editReply({ embeds: [lEmbed], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
                     .then(async botmsg => {
                         botmsg = await client.channels.fetch(int.channelId)
@@ -100,7 +99,7 @@ module.exports = class lang {
                                 }
                             })
                             .catch(err => {
-                                if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                                if (err.code == "InteractionCollectorError") {
                                     return int.editReply({ content: client.tl({ local: int.lang + "eL-sR" }), embeds: [], components: [] })
                                 }
                                 else {

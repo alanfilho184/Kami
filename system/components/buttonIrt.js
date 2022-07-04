@@ -82,7 +82,7 @@ module.exports = class buttonIrt {
                             }
                         })
                         .catch(err => {
-                            if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                            if (err.code == "InteractionCollectorError") {
                                 const bDes = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))

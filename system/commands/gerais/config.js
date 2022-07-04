@@ -53,7 +53,7 @@ module.exports = class config {
                             { name: client.tl({ local: int.lang + "config-guiF4" }), value: `${userConfig.ficha == "true" ? client.tl({ local: int.lang + "config-guiAct" }) : client.tl({ local: int.lang + "config-guiDes" })}`, inline: true },
                             { name: client.tl({ local: int.lang + "config-guiF5" }), value: `${userConfig.enviar == "true" ? client.tl({ local: int.lang + "config-guiAct" }) : client.tl({ local: int.lang + "config-guiDes" })}`, inline: true },
                         )
-                        .addField(client.tl({ local: int.lang + "config-guiSepO" }) + "\n" + client.tl({ local: int.lang + "config-guiF6" }), `${userConfig.fPadrao ? userConfig.fPadrao : client.tl({ local: int.lang + "config-guiSFP" })}`, false)
+                        .addFields({name: client.tl({ local: int.lang + "config-guiSepO" }) + "\n" + client.tl({ local: int.lang + "config-guiF6" }), value: `${userConfig.fPadrao ? userConfig.fPadrao : client.tl({ local: int.lang + "config-guiSFP" })}`, inline: false})
                         .setColor(client.settings.color)
                         .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                         .setTimestamp()
@@ -116,7 +116,7 @@ module.exports = class config {
                         .then(async interaction => {
                             interaction.deferUpdate()
 
-                            if (interaction.componentType == "BUTTON") {
+                            if (interaction.componentType == 2) {
                                 const choice = interaction.customId.split("|")[0]
 
                                 if (choice == "rollS") {
@@ -187,7 +187,7 @@ module.exports = class config {
                             }
                         })
                         .catch(err => {
-                            if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                            if (err.code == "InteractionCollectorError") {
                                 int.editReply({ content: null, components: [] })
                             }
                             else {

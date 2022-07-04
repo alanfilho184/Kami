@@ -62,7 +62,7 @@ module.exports = class ver_senha {
                             .setTimestamp()
 
                         fichas.forEach((senha, nomerpg) => {
-                            embedSenhas.addField(nomerpg + ":", senha, true)
+                            embedSenhas.addFields({name: nomerpg + ":", value: senha, inline: true})
                         })
 
 
