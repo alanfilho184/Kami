@@ -63,7 +63,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
 
                     var result = client.utils.dice(qPerm)
 
-                    const insPerm = new client.Discord.MessageEmbed()
+                    const insPerm = new client.Discord.EmbedBuilder()
                         .setTitle(client.tl({ local: int.lang + "ins-embedPermTi" }))
                         .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                         .setColor(client.settings.color)
@@ -117,7 +117,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
                     var qTemp = inTemp.length
                     var result = client.utils.dice(qTemp)
 
-                    const insTemp = new client.Discord.MessageEmbed()
+                    const insTemp = new client.Discord.EmbedBuilder()
                         .setTitle(client.tl({ local: int.lang + "ins-embedTempTi" }))
                         .setColor(client.settings.color)
                         .setDescription(`${client.tl({ local: int.lang + "ins-embedTempDesc" })} **${inTemp[result - 1]}**`)

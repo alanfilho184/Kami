@@ -42,7 +42,7 @@ module.exports = class sugestao {
                 const args = client.utils.args(int)
                 const mensagem = args.get("mensagem")
 
-                const embed = new client.Discord.MessageEmbed()
+                const embed = new client.Discord.EmbedBuilder()
                     .setAuthor({ name:  `${int.user.tag} | ${int.user.id}`, iconURL: int.user.displayAvatarURL() })
                     .setTitle("Mensagem recebida")
                     .setDescription(mensagem)

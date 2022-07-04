@@ -18,21 +18,21 @@ module.exports = {
             idioma = "Nenhum idioma configurado"
         }
 
-        const cmdEmbed = new client.Discord.MessageEmbed()
+        const cmdEmbed = new client.Discord.EmbedBuilder()
             .setTitle("Comando: `" + cmd + "`")
-            .setAuthor({ name:  `${int.user.tag} - ${int.user.id}`, iconURL: int.user.displayAvatarURL() })
+            .setAuthor({ name: `${int.user.tag} - ${int.user.id}`, iconURL: int.user.displayAvatarURL() })
             .setDescription("**Args:**\n" + "`" + args + "`")
-            .addField("Idioma: ", "`" + idioma + "`", true)
+            .addFields({ name: "Idioma: ", value: "`" + idioma + "`", inline: true })
             .setFooter({ text: "Executado em: " + time.now(int.createdTimestamp).setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)" })
             .setColor(client.settings.color)
 
         if (int.guildId != null) {
-            cmdEmbed.addField("Local: ", "`" + int.member.guild.name + "` - `" + int.member.guild.id + "`", true)
+            cmdEmbed.addFields({ name: "Local: ", value: "`" + int.member.guild.name + "` - `" + int.member.guild.id + "`", inline: true })
         }
         else {
-            cmdEmbed.addField("Local: ", "DM", true)
+            cmdEmbed.addFields({ name: "Local: ", value: "DM", inline: true })
         }
 
-        client.log.webhook.send({ embeds: [cmdEmbed] })
+        client.log.webhook.send({ embeds: [cmdEmbed] }).catch(err => { })
     }
 }

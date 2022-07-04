@@ -14,22 +14,22 @@ module.exports = {
             idioma = "Nenhum idioma configurado"
         }
 
-        const buttonEmbed = new client.Discord.MessageEmbed()
+        const buttonEmbed = new client.Discord.EmbedBuilder()
             .setTitle("Botão: `" + cmd + "`")
             .setAuthor({ name:  `${comp.user.tag} - ${comp.user.id}`, iconURL: comp.user.displayAvatarURL() })
             .setDescription("**Info no botão:**\n" + "`" + comp.customId + "`")
-            .addField("Idioma: ", "`" + idioma + "`", true)
+            .addFields({name: "Idioma: ", value: "`" + idioma + "`", inline: true})
             .setFooter({text:"Utilizado em: " + time.now(comp.createdTimestamp).setZone('America/Sao_Paulo').toFormat("dd/MM/y | HH:mm:ss ") + "(GMT -3)"})
             .setColor(client.settings.color)
 
         if (comp.guildId != null) {
-            buttonEmbed.addField("Local: ", "`" + comp.member.guild.name + "` - `" + comp.member.guild.id + "`", true)
+            buttonEmbed.addFields({name: "Local: ", value: "`" + comp.member.guild.name + "` - `" + comp.member.guild.id + "`", inline: true})
         }
         else {
-            buttonEmbed.addField("Local: ", "DM", true)
+            buttonEmbed.addFields({name: "Local: ", value: "DM", inline: true})
         }
 
-        client.log.webhook.send({ embeds: [buttonEmbed] })
+        client.log.webhook.send({ embeds: [buttonEmbed] }).catch(err => { })
         client.log.info(`Botão: ${cmd} utilizado por ${comp.user.tag}(${comp.user.id})`)
     }
 }

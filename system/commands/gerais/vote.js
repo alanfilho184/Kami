@@ -29,13 +29,13 @@ module.exports = class vote {
         const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
         int.deferReply({ ephemeral: secret })
             .then(() => {
-                const voteEmbed = new client.Discord.MessageEmbed()
+                const voteEmbed = new client.Discord.EmbedBuilder()
                     .setDescription(client.tl({ local: int.lang + "vote-embedDesc" }))
                     .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
                     .setTimestamp()
                     .setColor(client.settings.color)
 
-                const bVote = new client.Discord.MessageButton()
+                const bVote = new client.Discord.ButtonBuilder()
                     .setStyle(5)
                     .setLabel(client.tl({ local: int.lang + "vote-embedFT" }))
                     .setURL("https://botsparadiscord.com.br/bots/716053210179043409")

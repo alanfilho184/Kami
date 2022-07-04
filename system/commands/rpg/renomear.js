@@ -65,8 +65,6 @@ module.exports = class renomear {
                                             .then(async function () {
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpgAtual)
 
-                                                console.log(infoUIRT)
-
                                                 if (infoUIRT != "") {
                                                     client.cache.modifyIrt(nomerpgNovo, infoUIRT)
                                                         .then((irt) => {

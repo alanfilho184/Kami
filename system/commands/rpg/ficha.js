@@ -262,12 +262,12 @@ module.exports = class ficha {
                                 }
 
                                 const uniqueID = `${Date.now()}`
-                                const bConf = new client.Discord.MessageButton()
+                                const bConf = new client.Discord.ButtonBuilder()
                                     .setStyle(3)
                                     .setLabel(client.tl({ local: int.lang + "bt-conf" }))
                                     .setCustomId("conf|" + uniqueID)
 
-                                const bCanc = new client.Discord.MessageButton()
+                                const bCanc = new client.Discord.ButtonBuilder()
                                     .setStyle(4)
                                     .setLabel(client.tl({ local: int.lang + "bt-canc" }))
                                     .setCustomId("canc|" + uniqueID)

@@ -33,7 +33,7 @@ module.exports = class ajuda {
         const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
         await int.deferReply({ ephemeral: secret })
 
-        const mainHelp = new client.Discord.MessageEmbed()
+        const mainHelp = new client.Discord.EmbedBuilder()
             .setTitle(client.tl({ local: int.lang + "ajuda-tMain" }))
             .setColor(client.settings.color)
             .setDescription(client.tl({ local: int.lang + "ajuda-main" }))
@@ -41,17 +41,17 @@ module.exports = class ajuda {
             .setImage("https://media.discordapp.net/attachments/737416028857958480/875401171710378044/background_ajuda.png")
             .setTimestamp()
 
-        const bTermos = new client.Discord.MessageButton()
+        const bTermos = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btTermos" }))
             .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "termos" : "terms"}/`)
 
-        const bPrivacidade = new client.Discord.MessageButton()
+        const bPrivacidade = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btPrivacidade" }))
             .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "privacidade" : "privacy"}/`)
 
-        const bSup = new client.Discord.MessageButton()
+        const bSup = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
             .setURL("https://kamisite.herokuapp.com/suporte")
@@ -59,7 +59,7 @@ module.exports = class ajuda {
         const uniqueID = Date.now()
         var menuDisplayed = 0
 
-        const bMenu = new client.Discord.MessageButton()
+        const bMenu = new client.Discord.ButtonBuilder()
             .setStyle(1)
             .setLabel("Próximo menu")
             //.setEmoji("➡")
@@ -72,7 +72,7 @@ module.exports = class ajuda {
         var choice = ""
 
         while (repeat) {
-            const menu = new client.Discord.MessageSelectMenu()
+            const menu = new client.Discord.SelectMenuBuilder()
                 .setCustomId(`helpMenu|${uniqueID}`)
                 .setPlaceholder(client.tl({ local: int.lang + "ajuda-mPH" }))
 
@@ -132,7 +132,7 @@ module.exports = class ajuda {
 
                             if (int.lang == "pt-") {
 
-                                help = new client.Discord.MessageEmbed()
+                                help = new client.Discord.EmbedBuilder()
                                     .setTitle(replaceAll(cmd.helpPt.title, "$prefix$", client.prefix))
                                     .setColor(client.settings.color)
                                     .setDescription(replaceAll(cmd.helpPt.desc, "$prefix$", client.prefix))
@@ -143,7 +143,7 @@ module.exports = class ajuda {
 
                             }
                             else {
-                                help = new client.Discord.MessageEmbed()
+                                help = new client.Discord.EmbedBuilder()
                                     .setTitle(replaceAll(cmd.helpEn.title, "$prefix$", client.prefix))
                                     .setColor(client.settings.color)
                                     .setDescription(replaceAll(cmd.helpEn.desc, "$prefix$", client.prefix))
@@ -162,17 +162,18 @@ module.exports = class ajuda {
                     }
                     else if (toDo == "bMenu") {
                         if (menuDisplayed == 0) { 
-                            bMenu.setLabel("Menu anterior")
+                            bMenu.setLabel(client.tl({lang: lang, local:"ajuda-aLista"}))
                             menuDisplayed = 1 
                         }
                         else { 
-                            bMenu.setLabel("Próximo menu")
+                            bMenu.setLabel(client.tl({lang: lang, local:"ajuda-pLista"}))
                             menuDisplayed = 0 
                         }
                     }
                 })
                 .catch(err => {
-                    if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                    console.log(err.code)
+                    if (err.code == "InteractionCollectorError") {
                         int.editReply({ content: null, components: [{ type: 1, components: [bTermos, bSup] }] })
                     }
                     else {

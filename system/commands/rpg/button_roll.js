@@ -251,7 +251,7 @@ module.exports = class button_roll {
                         return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: segments[0] }) })
                     }
 
-                    const button = new client.Discord.MessageButton()
+                    const button = new client.Discord.ButtonBuilder()
                         .setStyle(1)
                         .setLabel(title)
                         .setCustomId(`buttonRoll|${title}`)
@@ -261,7 +261,7 @@ module.exports = class button_roll {
 
                 if (stop) { return }
 
-                const embed = new client.Discord.MessageEmbed()
+                const embed = new client.Discord.EmbedBuilder()
                     .setColor(client.settings.color)
                     .setTitle(client.tl({ local: int.lang + "btR-eTi" }))
                     .setDescription(client.tl({ local: int.lang + "btR-eDesc" }))
@@ -454,7 +454,7 @@ module.exports = class button_roll {
             return int.followUp(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
         }
 
-        const rollEmbed = new client.Discord.MessageEmbed()
+        const rollEmbed = new client.Discord.EmbedBuilder()
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
@@ -462,7 +462,7 @@ module.exports = class button_roll {
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 
-        const backButton = new client.Discord.MessageButton()
+        const backButton = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "btR-backBt", cmd: numberDice }))
             .setURL(`https://discord.com/channels/${int.message.guildId}/${int.message.channelId}/${int.message.id}`)

@@ -56,7 +56,7 @@ module.exports = class adicionar_imagem {
                     const fichas = client.cache.getFichasUser(int.user.id)
 
                     const uniqueID = `${Date.now()}`
-                    const menu = new client.Discord.MessageSelectMenu()
+                    const menu = new client.Discord.SelectMenuBuilder()
                         .setCustomId("addImg|" + uniqueID)
                         .setPlaceholder(client.tl({ local: int.lang + "addI-mPH" }))
 
@@ -64,7 +64,7 @@ module.exports = class adicionar_imagem {
                         menu.addOptions({ label: f, value: f })
                     })
 
-                    const embed = new client.Discord.MessageEmbed()
+                    const embed = new client.Discord.EmbedBuilder()
                         .setTitle(client.tl({ local: int.lang + "addI-eTi" }))
                         .setDescription(client.tl({ local: int.lang + "addI-eDesc" }))
                         .setImage(attach.url)

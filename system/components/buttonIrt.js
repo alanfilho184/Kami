@@ -35,17 +35,17 @@ module.exports = class buttonIrt {
                 inGuild() { return comp.guildId != null }
             })
 
-            const bConf = new client.Discord.MessageButton()
+            const bConf = new client.Discord.ButtonBuilder()
                 .setStyle(3)
                 .setLabel(client.tl({ local: msg.lang + "bt-conf" }))
                 .setCustomId("conf|" + uniqueID)
 
-            const bCanc = new client.Discord.MessageButton()
+            const bCanc = new client.Discord.ButtonBuilder()
                 .setStyle(4)
                 .setLabel(client.tl({ local: msg.lang + "bt-canc" }))
                 .setCustomId("canc|" + uniqueID)
 
-            const bApg = new client.Discord.MessageButton()
+            const bApg = new client.Discord.ButtonBuilder()
                 .setStyle(1)
                 .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
                 .setDisabled(true)
@@ -68,12 +68,12 @@ module.exports = class buttonIrt {
                             else if (choice == "canc") {
                                 int.deferUpdate()
 
-                                const bDes = new client.Discord.MessageButton()
+                                const bDes = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
                                     .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
-                                const bApg = new client.Discord.MessageButton()
+                                const bApg = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
                                     .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
@@ -82,13 +82,13 @@ module.exports = class buttonIrt {
                             }
                         })
                         .catch(err => {
-                            if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                const bDes = new client.Discord.MessageButton()
+                            if (err.code == "InteractionCollectorError") {
+                                const bDes = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
                                     .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
-                                const bApg = new client.Discord.MessageButton()
+                                const bApg = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
                                     .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
@@ -123,17 +123,17 @@ module.exports = class buttonIrt {
                 inGuild() { return comp.guildId != null }
             })
 
-            const bConf = new client.Discord.MessageButton()
+            const bConf = new client.Discord.ButtonBuilder()
                 .setStyle(3)
                 .setLabel(client.tl({ local: msg.lang + "bt-conf" }))
                 .setCustomId("conf|" + uniqueID)
 
-            const bCanc = new client.Discord.MessageButton()
+            const bCanc = new client.Discord.ButtonBuilder()
                 .setStyle(4)
                 .setLabel(client.tl({ local: msg.lang + "bt-canc" }))
                 .setCustomId("canc|" + uniqueID)
 
-            const bDes = new client.Discord.MessageButton()
+            const bDes = new client.Discord.ButtonBuilder()
                 .setStyle(1)
                 .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
                 .setDisabled(true)
@@ -156,12 +156,12 @@ module.exports = class buttonIrt {
                             else if (choice == "canc") {
                                 int.deferUpdate()
 
-                                const bDes = new client.Discord.MessageButton()
+                                const bDes = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
                                     .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
-                                const bApg = new client.Discord.MessageButton()
+                                const bApg = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
                                     .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
@@ -171,12 +171,12 @@ module.exports = class buttonIrt {
                         })
                         .catch(err => {
                             if (err.code == "INTERACTION_COLLECTOR_ERROR") {
-                                const bDes = new client.Discord.MessageButton()
+                                const bDes = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-desIrt" }))
                                     .setCustomId(`irt|des|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)
 
-                                const bApg = new client.Discord.MessageButton()
+                                const bApg = new client.Discord.ButtonBuilder()
                                     .setStyle(2)
                                     .setLabel(client.tl({ local: msg.lang + "bt-apgIrt" }))
                                     .setCustomId(`irt|apg|id:${info.id}|nomerpg:${info.nomerpg}|msgid:${info.msgid}|chid:${info.chid}`)

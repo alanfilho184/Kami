@@ -311,7 +311,7 @@ module.exports = class roll {
             return int.editReply(client.tl({ local: int.lang + "dados-dadoInv", cmd: numberDice }))
         }
 
-        const rollEmbed = new client.Discord.MessageEmbed()
+        const rollEmbed = new client.Discord.EmbedBuilder()
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(client.settings.color)
@@ -374,7 +374,7 @@ module.exports = class roll {
                     }
                     var valor = r.atributos[atb]
 
-                    const embedRoll = new client.Discord.MessageEmbed()
+                    const embedRoll = new client.Discord.EmbedBuilder()
                     var index = atributosI1.indexOf(atb)
                     var index2 = atributosI2.indexOf(atb)
                     var index3 = atributosS1.indexOf(atb)
@@ -396,11 +396,11 @@ module.exports = class roll {
 
                     var dice = roll.roll("d100")
 
-                    embedRoll.addField("1d100:", `${dice.result}`, true)
+                    embedRoll.addFields({name: "1d100:", value: `${dice.result}`, inline: true})
 
                     if (!valor) {
-                        embedRoll.addField(`\u200B`, `\u200B`, true)
-                        embedRoll.addField(atributosF[atributos.indexOf(atb.toLowerCase())] + ":", client.tl({ local: int.lang + "ddb-atbSV" }), true)
+                        embedRoll.addFields({name: `\u200B`, value:`\u200B`, inline: true})
+                        embedRoll.addFields({name: atributosF[atributos.indexOf(atb.toLowerCase())] + ":", value: client.tl({ local: int.lang + "ddb-atbSV" }), inline: true})
                     }
 
                     if (atbL == "S1" && valor) {
@@ -429,16 +429,16 @@ module.exports = class roll {
                             var resultado = client.tl({ local: int.lang + "ddb-rD" })
                         }
 
-                        embedRoll.addField(atb + ":", valor, true)
-                        if (resultado) { embedRoll.addField(client.tl({ local: int.lang + "ddb-Result" }) + ":", resultado, true) }
+                        embedRoll.addFields({name: atb + ":", value: valor, inline: true})
+                        if (resultado) { embedRoll.addFields({name: client.tl({ local: int.lang + "ddb-Result" }) + ":", value: resultado, inline: true}) }
                         embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi1", atb: atb }))
 
                     }
                     else if (atbL == "I1" || atbL == "I2" && valor && valor.length <= 160) {
                         if (valor == undefined || valor == null) { }
                         else {
-                            embedRoll.addField(`\u200B`, `\u200B`, true)
-                            embedRoll.addField(atb + ":", `${valor}`, true)
+                            embedRoll.addFields({name: `\u200B`, value: `\u200B`, inline: true})
+                            embedRoll.addFields({name: atb + ":", value: `${valor}`, inline: true})
                             embedRoll.setTitle(int.user.username + " " + client.tl({ local: int.lang + "ddb-embedTi1", atb: atb }))
                         }
                     }

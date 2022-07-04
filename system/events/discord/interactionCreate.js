@@ -10,10 +10,10 @@ module.exports = {
     type: "djs",
     execute: async (client, int) => {
         if (client.utils.userOnBlacklist(int.user.id)) { return }
-        if (int.isAutocomplete()) { return client.emit("autocompleteHandler", int) }
-        if ((int.isMessageComponent())) { return client.emit("componentHandler", int) }
-        if ((int.isContextMenu())) { return client.emit("contextMenuHandler", int) }
-        if (!int.isCommand()) { return }
+        if (int.type == 4) { return client.emit("autocompleteHandler", int) }
+        if (int.type == 3) { return client.emit("componentHandler", int) }
+        if ((int.isContextMenuCommand())) { return client.emit("contextMenuHandler", int) }
+        if (!int.isChatInputCommand()) { return }
 
         int.ping = time.now().ts - int.createdTimestamp
         int.lang = client.utils.getLang(int)
@@ -25,7 +25,7 @@ module.exports = {
         }
         else {
             if (cmdConfig.disableCmds.includes(cmd.name)) {
-                const disableEmbed = new client.Discord.MessageEmbed()
+                const disableEmbed = new client.Discord.EmbedBuilder()
                     .setTitle(client.tl({ local: int.lang + "onMsg-cmdDsbTi" }))
                     .setColor(client.settings.color)
                     .setDescription(client.tl({ local: int.lang + "onMsg-cmdDsbDesc", cmd: cmdConfig.reason[cmd.name][int.lang] }))

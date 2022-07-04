@@ -21,12 +21,12 @@ module.exports = {
 
         msg.lang = "pt-"
 
-        const btLink = new client.Discord.MessageButton()
+        const btLink = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: msg.lang + "onMsg-btSlash" }))
             .setURL(`https://kamisite.herokuapp.com/tutoriais`)
 
-        const btInfo = new client.Discord.MessageButton()
+        const btInfo = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: msg.lang + "onMsg-btSlashInfo" }))
 
@@ -37,7 +37,7 @@ module.exports = {
             btInfo.setURL(`https://support-dev.discord.com/hc/en-us/articles/4404772028055`)
         }
 
-        const btSup = new client.Discord.MessageButton()
+        const btSup = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: msg.lang + "botI-f2V" }))
             .setURL("https://discord.com/invite/9rqCkFB")

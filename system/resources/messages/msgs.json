@@ -142,7 +142,9 @@
             "btTermos": "Termos de Uso",
             "btPrivacidade": "Política de Privacidade",
             "tMain": "Meus Comandos",
-            "mPH": "Selecione um comando para visualizar"
+            "mPH": "Selecione um comando para visualizar",
+            "pLista": "Próxima lista",
+            "aLista": "Lista anterior"
         },
         "sugestao": {
             "mEnv": "Prontinho, mensagem enviada!"
@@ -279,6 +281,11 @@
         },
         "intCreate": {
             "onErr": "Algo deu errado quando você tentou utilizar esse comando, um log de erro foi salvo e em breve o erro será corrigido"
+        },
+        "fi":{
+            "iAdd": "Imagem \"$imagem$\" adicionada com sucesso a ficha \"$nomerpg$\"",
+            "fNE": "Não achei nenhuma ficha com o nome \"$nomerpg$\"",
+            "fInv": "Este arquivo não possuí um formato válido (.JPEG, .JPG, .PNG, .GIF, .GIFV)"
         }
     },
     "en": {
@@ -425,7 +432,9 @@
             "btTermos": "Terms of Use",
             "btPrivacidade": "Privacy Policy",
             "tMain": "My Commands",
-            "mPH": "Select a command to visualize"
+            "mPH": "Select a command to visualize",
+            "pLista": "Next list",
+            "aLista": "Previous list"
         },
         "sugestao": {
             "mEnv": "Done, message sent!"
@@ -559,6 +568,11 @@
         },
         "intCreate": {
             "onErr": "Something went wrong when you tried to use this command, an error log was saved and soon the error will be fixed"
+        },
+        "fi":{
+            "iAdd": "Image \"$imagem$\" succefully added to the sheet \"$nomerpg$\"",
+            "fNE": "I couldn't find any sheet with the name \"$nomerpg$\"",
+            "fInv": "This file doesn't have a valid format (.JPEG, .JPG, .PNG, .GIF, .GIFV)"
         }
     }
 }

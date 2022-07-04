@@ -9,7 +9,7 @@ module.exports = {
         var owner = new Array()
         await client.users.fetch(guild.ownerId).then(user => owner.push(user))
 
-        const gCreateEmbed = new client.Discord.MessageEmbed()
+        const gCreateEmbed = new client.Discord.EmbedBuilder()
         gCreateEmbed.setTitle("Bot adicionando em servidor")
         gCreateEmbed.setThumbnail(guild.iconURL())
         gCreateEmbed.addFields(

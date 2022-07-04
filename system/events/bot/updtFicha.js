@@ -12,6 +12,7 @@ module.exports = {
         var irt = info.irt
 
         const fichaUser = await client.cache.getFicha(user, nomerpg)
+        const reply = client.commands.get("enviar").create(client, int, fichaUser)
 
         for (m in irt) {
             try {
@@ -25,8 +26,6 @@ module.exports = {
                     },
                     inGuild() { ch.type == "GUILD_TEXT" }
                 })
-
-                const reply = client.commands.get("enviar").create(client, int, fichaUser)
 
                 await irtMsg.edit({ embeds: reply })
                     .then(e => { client.log.info(irt[m]) })

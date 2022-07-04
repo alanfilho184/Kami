@@ -21,10 +21,10 @@ module.exports = class evaluate {
 
                     msg.delete()
 
-                    const evalEmbed = new client.Discord.MessageEmbed()
+                    const evalEmbed = new client.Discord.EmbedBuilder()
                         .setColor(client.settings.color)
 
-                    const codeEmbed = new client.Discord.MessageEmbed()
+                    const codeEmbed = new client.Discord.EmbedBuilder()
                         .setColor(client.settings.color)
                         .setDescription("```js\n" + msg.content + "```")
                         .setTitle("Código:")

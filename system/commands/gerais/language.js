@@ -50,7 +50,7 @@ module.exports = class lang {
                     }
                 }
 
-                const lEmbed = new client.Discord.MessageEmbed()
+                const lEmbed = new client.Discord.EmbedBuilder()
                     .setTitle(client.tl({ local: int.lang + "eL-embedTi" }))
                     .setDescription(client.tl({ local: int.lang + "eL-embedDesc" }))
                     .setColor(client.settings.color)
@@ -58,25 +58,24 @@ module.exports = class lang {
 
                 const uniqueID = `${Date.now()}`
 
-                const bPT = new client.Discord.MessageButton()
+                const bPT = new client.Discord.ButtonBuilder()
                     .setStyle(2)
                     .setLabel("PT-BR")
                     .setEmoji('🇧🇷')
                     .setDisabled(int.lang == "pt-")
                     .setCustomId("pt|" + uniqueID)
 
-                const bEN = new client.Discord.MessageButton()
+                const bEN = new client.Discord.ButtonBuilder()
                     .setStyle(2)
                     .setLabel("EN-US")
                     .setEmoji('🇺🇸')
                     .setDisabled(int.lang == "en-")
                     .setCustomId("en|" + uniqueID)
 
-                const bCanc = new client.Discord.MessageButton()
+                const bCanc = new client.Discord.ButtonBuilder()
                     .setStyle(4)
                     .setLabel(client.tl({ local: int.lang + "bt-canc" }))
                     .setCustomId("canc|" + uniqueID)
-
 
                 int.editReply({ embeds: [lEmbed], components: [{ type: 1, components: [bPT, bEN, bCanc] }] })
                     .then(async botmsg => {
@@ -100,7 +99,7 @@ module.exports = class lang {
                                 }
                             })
                             .catch(err => {
-                                if (err.code == "INTERACTION_COLLECTOR_ERROR") {
+                                if (err.code == "InteractionCollectorError") {
                                     return int.editReply({ content: client.tl({ local: int.lang + "eL-sR" }), embeds: [], components: [] })
                                 }
                                 else {

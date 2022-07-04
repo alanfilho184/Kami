@@ -401,7 +401,7 @@ module.exports = class Cache {
     async modifyIrt(nomerpgNovo, infoUIRT) {
         this.deleteIrt(infoUIRT[0].id, infoUIRT[0].nomerpg)
 
-        await this.client.db.query(`update irt set nomerpg = ':nomerpgNovo' where id = ':id' and nomerpg = ':nomerpg'`, {
+        await this.client.db.query(`update irt set nomerpg = :nomerpgNovo where id = :id and nomerpg = :nomerpg`, {
             replacements: {
                 id: infoUIRT[0].id,
                 nomerpg: infoUIRT[0].nomerpg,

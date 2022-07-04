@@ -29,7 +29,7 @@ module.exports = class ping {
 
     execute(client, int) {
         const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
-        int.deferReply({ephemeral: secret})
+        int.deferReply({ ephemeral: secret })
             .then(async () => {
 
                 var dbPing = time.now().ts
@@ -39,12 +39,14 @@ module.exports = class ping {
                     })
 
 
-                const pingEmbed = new client.Discord.MessageEmbed()
+                const pingEmbed = new client.Discord.EmbedBuilder()
                     .setColor(client.settings.color)
-                    .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
-                    .addField("BOT:", "`" + Math.round(int.ping) + " ms`", true)
-                    .addField("API:", "`" + Math.round(client.ws.ping) + " ms`", true)
-                    .addField("DB: ", "`" + Math.round(dbPing) + " ms`", true)
+                    .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
+                    .addFields([
+                        { name: "BOT:", value: "`" + Math.round(int.ping) + " ms`", inline: true },
+                        { name: "API:", value: "`" + Math.round(client.ws.ping) + " ms`", inline: true },
+                        { name: "DB: ", value: "`" + Math.round(dbPing) + " ms`", inline: true }
+                    ])
                     .setTitle("Ping:")
                     .setTimestamp()
 
