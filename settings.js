@@ -16,4 +16,5 @@ module.exports = {
     fKey: process.env.fKey,
     clientId: process.env.clientId,
     deploy: process.env.deploy,
+    controlsId: process.env.controlsId
 }
