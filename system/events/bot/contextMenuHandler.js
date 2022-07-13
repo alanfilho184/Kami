@@ -8,6 +8,8 @@ module.exports = {
         int.ping = time.now().ts - int.createdTimestamp
         int.lang = client.utils.getLang(int)
 
+        if (!int.lang) { int.lang = "pt-" }
+
         const cmd = client.commands.get(int.commandName)
 
         if (cmd.ownerOnly == true && int.user.id != client.settings.owner) {
