@@ -16,17 +16,14 @@ module.exports = {
     type: "bot",
     execute: (client, toDo) => {
         function run() {
-            if(act != ""){clearInterval(act)}
+            client.user.setStatus(status)
+            if (act != "") { clearInterval(act) }
             var x = 0
             act = setInterval(() => {
-                if (x == acts.length){x = 0}
+                if (x == acts.length) { x = 0 }
                 let textStatus = acts[x]
-                client.user.setPresence({
-                    status: status,
-                    activities: [{
-                        name: `${replaceAll(textStatus, "$prefix$", client.prefix)}`,
-                        type: typeStatus,
-                    }]
+                client.user.setActivity(`${replaceAll(textStatus, "$prefix$", client.prefix)}`, {
+                    type: client.Discord.ActivityType[typeStatus],
                 })
                 x++
             }, timeChange)

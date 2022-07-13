@@ -162,11 +162,11 @@ module.exports = class ajuda {
                     }
                     else if (toDo == "bMenu") {
                         if (menuDisplayed == 0) { 
-                            bMenu.setLabel(client.tl({lang: lang, local:"ajuda-aLista"}))
+                            bMenu.setLabel(client.tl({lang: int.lang, local:"ajuda-aLista"}))
                             menuDisplayed = 1 
                         }
                         else { 
-                            bMenu.setLabel(client.tl({lang: lang, local:"ajuda-pLista"}))
+                            bMenu.setLabel(client.tl({lang: int.lang, local:"ajuda-pLista"}))
                             menuDisplayed = 0 
                         }
                     }
