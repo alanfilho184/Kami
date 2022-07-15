@@ -3,7 +3,7 @@ const imageType = ["jpg", "jpeg", "JPG", "JPEG", "png", "PNG", "gif", "gifV"]
 module.exports = class ficha_imagem {
     constructor() {
         return {
-            ownerOnly: false,
+            ownerOnly: true,
             name: "fichaimagem",
             fName: "Ficha imagem",
             fNameEn: "sheetimage",
