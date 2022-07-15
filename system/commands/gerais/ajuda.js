@@ -61,7 +61,7 @@ module.exports = class ajuda {
 
         const bMenu = new client.Discord.ButtonBuilder()
             .setStyle(1)
-            .setLabel("Próximo menu")
+            .setLabel(client.tl({ local: int.lang + "ajuda-pLista" }))
             //.setEmoji("➡")
             .setCustomId(`bMenu|${uniqueID}`)
 
@@ -161,13 +161,13 @@ module.exports = class ajuda {
                         }
                     }
                     else if (toDo == "bMenu") {
-                        if (menuDisplayed == 0) { 
-                            bMenu.setLabel(client.tl({lang: int.lang, local:"ajuda-aLista"}))
-                            menuDisplayed = 1 
+                        if (menuDisplayed == 0) {
+                            bMenu.setLabel(client.tl({ local: int.lang + "ajuda-aLista" }))
+                            menuDisplayed = 1
                         }
-                        else { 
-                            bMenu.setLabel(client.tl({lang: int.lang, local:"ajuda-pLista"}))
-                            menuDisplayed = 0 
+                        else {
+                            bMenu.setLabel(client.tl({ local: int.lang + "ajuda-pLista" }))
+                            menuDisplayed = 0
                         }
                     }
                 })
