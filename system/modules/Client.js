@@ -26,7 +26,7 @@ module.exports = class MenuClient extends Client {
         this.loadEvents()
         this.setCache()
         this.setTl()
-        this.postInfo()
+        //this.postInfo()
         this.setWebSocket()
         if (options.full || options.bot && !options.api) this.startup()
         // if (options.full || options.api && !options.bot) this.startAPI()
