@@ -14,8 +14,8 @@ module.exports = class WebSocket {
         const sockets = new Object()
         const app = express();
         const router = express.Router()
-        router.get("ping", (req, res) => { res.status(200).end() })
-        app.use(router)
+        router.get("/ping", (req, res) => { res.status(200).end() })
+        app.use("/", router)
         const httpServer = createServer(app);
         const io = new Server(httpServer, {
             cors: {
