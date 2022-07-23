@@ -243,7 +243,7 @@ module.exports = class MenuClient extends Client {
 
     postInfo() {
         if (this.settings.deploy == "production") {
-            const postApi = require("./PostInfo")
+            const postApi = require("./PostInfo.js")
             const API = new postApi(this)
 
             setTimeout(() => {

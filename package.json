@@ -1,10 +1,10 @@
 {
   "name": "kami",
-  "version": "4.10.1",
+  "version": "4.10.2",
   "description": "Um BOT para Discord com foco em ajudar em mesas de RPG online, tendo suas principais funções criar fichas e rolar dados.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.js --full",
     "apiMode": "node index.js --api",
     "botMode": "node index.js --bot",
     "test": "echo \"Error: no test specified\" && exit 1"
