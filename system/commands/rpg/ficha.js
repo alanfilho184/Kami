@@ -199,6 +199,7 @@ module.exports = class ficha {
 
                                         int.editReply(client.tl({ local: int.lang + "cef-delFicha", nomerpg: nomerpg, atributo: atb }))
                                             .then(async function () {
+                                                client.emit("updateFichaBot", int.user.id, nomerpg)
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                                 if (infoUIRT != "") {
@@ -220,7 +221,9 @@ module.exports = class ficha {
                                         }
                                         int.editReply(msgToSend)
                                             .then(async function () {
+                                                client.emit("updateFichaBot", int.user.id, nomerpg)
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
+
                                                 if (infoUIRT != "") {
                                                     client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
                                                 }
@@ -240,6 +243,7 @@ module.exports = class ficha {
 
                                         int.editReply(client.tl({ local: int.lang + "cef-updtFicha", nomerpg: nomerpg, atributo: atb, valor: valor }))
                                             .then(async function () {
+                                                client.emit("updateFichaBot", int.user.id, nomerpg)
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                                 if (infoUIRT != "") {
@@ -295,12 +299,8 @@ module.exports = class ficha {
                                                                     msgToSend = client.tl({ local: int.lang + "cef-updtMulti", nomerpg: nomerpg, atributo: atbs, valor: vals })
                                                                 }
                                                                 int.editReply({ content: msgToSend, components: [] })
-                                                                    .then(async function () {
-                                                                        var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
-
-                                                                        if (infoUIRT != "") {
-                                                                            client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
-                                                                        }
+                                                                    .then(() => {
+                                                                        client.emit("createFichaBot", int.user.id, nomerpg)
                                                                     })
                                                             })
                                                             .catch(err => client.log.error(err, true))
@@ -319,6 +319,9 @@ module.exports = class ficha {
                                                                 }
                                                                 client.cache.updateFichasUser(int.user.id, nomerpg)
                                                                 return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomerpg: nomerpg, atributo: atb, valor: valor }), components: [] })
+                                                                    .then(() => {
+                                                                        client.emit("createFichaBot", int.user.id, nomerpg)
+                                                                    })
                                                             })
                                                             .catch(err => client.log.error(err, true))
                                                     }

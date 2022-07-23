@@ -85,6 +85,7 @@ module.exports = class adicionar_imagem {
 
                             client.cache.updateFicha(int.user.id, nomerpg, { imagem: attach.url }, { query: "update" })
                                 .then(async r => {
+                                    client.emit("updateFichaBot", int.user.id, nomerpg)
                                     var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                     if (infoUIRT != "") {

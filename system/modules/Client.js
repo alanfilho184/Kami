@@ -26,8 +26,10 @@ module.exports = class MenuClient extends Client {
         this.loadEvents()
         this.setCache()
         this.setTl()
+        this.postInfo()
+        this.setWebSocket()
         if (options.full || options.bot && !options.api) this.startup()
-        if (options.full || options.api && !options.bot) this.startAPI()
+        // if (options.full || options.api && !options.bot) this.startAPI()
 
     }
 
@@ -239,11 +241,9 @@ module.exports = class MenuClient extends Client {
         logs.log.start("Recursos gerais")
     }
 
-    startAPI() {
-        require("./api/app").api(this)
-
+    postInfo() {
         if (this.settings.deploy == "production") {
-            const postApi = require("./postInfo")
+            const postApi = require("./PostInfo")
             const API = new postApi(this)
 
             setTimeout(() => {
@@ -256,6 +256,11 @@ module.exports = class MenuClient extends Client {
                 API.postCommands()
             }, toMs.parse("30 minutos"))
         }
+    }
+
+    setWebSocket(){
+        const ws = require("./websocket/server")
+        new ws(this)
     }
 
     async login(token = this.token) {

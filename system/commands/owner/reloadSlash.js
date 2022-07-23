@@ -1,5 +1,5 @@
 const { REST } = require('@discordjs/rest');
-const { SlashCommandBuilder, ContextMenuCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, ContextMenuCommandBuilder } = require('discord.js');
 const { Routes } = require('discord-api-types/v9');
 
 module.exports = class reloadSlash {
@@ -24,8 +24,6 @@ module.exports = class reloadSlash {
             Routes.applicationCommands(client.settings.clientId)
         )
 
-        
-
         const commands = new Array()
         const commandsOwner = new Array()
 
@@ -34,7 +32,7 @@ module.exports = class reloadSlash {
                 const command = new SlashCommandBuilder()
 
                 if (c.ownerOnly) {
-                    command.setDefaultPermission(false)
+                    command.setDefaultMemberPermissions('0')
                     command.setName(c.name).setDescription(c.desc)
 
                     if (c.args.length > 0) {
@@ -75,7 +73,7 @@ module.exports = class reloadSlash {
                     commandsOwner.push(command)
                 }
                 else {
-                    command.setDefaultPermission(true)
+                    command.setDefaultMemberPermissions()
                     command.setName(c.name).setDescription(c.desc)
 
                     for (var x in slashs) {
@@ -126,14 +124,14 @@ module.exports = class reloadSlash {
                 const command = new ContextMenuCommandBuilder()
 
                 if (c.ownerOnly) {
-                    command.setDefaultMemberPermissions(false)
+                    command.setDefaultMemberPermissions('0')
                     command.setName(c.name)
                     command.setType(c.type)
 
                     commandsOwner.push(command)
                 }
                 else {
-                    command.setDefaultMemberPermissions(true)
+                    command.setDefaultMemberPermissions()
                     command.setName(c.name)
                     command.setType(c.type)
 
@@ -157,25 +155,6 @@ module.exports = class reloadSlash {
                 Routes.applicationGuildCommands(client.settings.clientId, "717173630110400515"),
                 { body: commandsOwner },
             )
-                .then(async r => {
-                    var commands = await client.guilds.cache.get("717173630110400515").commands.fetch()
-
-                    commands.forEach(async c => {
-
-                        const command = await client.guilds.cache.get("717173630110400515").commands.fetch(c.id);
-
-                        const permissions = [
-                            {
-                                id: client.settings.owner,
-                                type: 'USER',
-                                permission: true,
-                            },
-                        ];
-
-                        await command.permissions.add({ permissions })
-                    })
-                })
-
         } catch (error) {
             client.log.error(error, true)
         }
