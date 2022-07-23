@@ -13,6 +13,9 @@ module.exports = class WebSocket {
         const connections = new LRU({ maxAge: toMs.parse("2 minutos"), updateAgeOnGet: true })
         const sockets = new Object()
         const app = express();
+        const router = express.Router()
+        router.get("ping", (req, res) => { res.status(200).end() })
+        app.use(router)
         const httpServer = createServer(app);
         const io = new Server(httpServer, {
             cors: {
