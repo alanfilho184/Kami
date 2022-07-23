@@ -131,6 +131,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                     replacements: { id: int.user.id, nomerpg: nomerpg }
                                                 })
                                                     .then(() => {
+                                                        client.emit("deleteFichaBot", int.user.id, nomerpg)
                                                         client.cache.deleteFicha(int.user.id, nomerpg)
                                                         client.cache.deleteFichaUser(int.user.id, nomerpg)
 

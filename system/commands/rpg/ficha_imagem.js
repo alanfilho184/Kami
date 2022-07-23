@@ -3,12 +3,12 @@ const imageType = ["jpg", "jpeg", "JPG", "JPEG", "png", "PNG", "gif", "gifV"]
 module.exports = class ficha_imagem {
     constructor() {
         return {
-            ownerOnly: true,
+            ownerOnly: false,
             name: "fichaimagem",
             fName: "Ficha imagem",
             fNameEn: "sheetimage",
-            desc: 'Adiciona uma imagem a uma ficha já criada.',
-            descEn: '',
+            desc: "Adiciona uma imagem a uma ficha já criada.",
+            descEn: "Adds an image to an already created sheet.",
             args: [
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja criar/editar.", type: "STRING", required: true, autocomplete: true },
                 { name: "imagem", desc: "Imagem que deseja adicionar a ficha", type: "ATTACHMENT", required: true, autocomplete: false }
@@ -16,11 +16,22 @@ module.exports = class ficha_imagem {
             options: [],
             type: 1,
             helpPt: {
-                title: "<:fichaAjuda:766790214550814770> " + "/" + "", desc: ``
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "fichaimagem", desc: `Com esse comando você pode anexar uma imagem para ser adicionada em uma ficha já existente
+
+                _Formato do comando:_
+                **/fichaimagem <nome_da_ficha> <imagem_anexada>**
+
+                Ex: **/fichaimagem RPG_Kami Kami.png**
+                `
             },
 
             helpEn: {
-                title: "<:fichaAjuda:766790214550814770> " + "/" + "", desc: ``
+                title: "<:fichaAjuda:766790214550814770> " + "/" + "fichaimagem", desc: `With this command you can attach an image to be added to an existing sheet
+
+                __Format of the command:__
+                **/sheetimage <sheet_name> <attached_image>**
+
+                Ex: **/sheetimage RPG_Kami Kami.png**`
             },
             run: this.execute,
             autocomplete: this.autocomplete
@@ -39,7 +50,7 @@ module.exports = class ficha_imagem {
                 var nomerpg = args.get("nome_da_ficha")
                 var imagem = int.options.get("imagem").attachment
 
-                try { nomerpg = nomerpg.replace("'", '') } catch { }
+                try { nomerpg = nomerpg.replace("'", "") } catch { }
 
                 if (!imageType.includes(imagem.contentType.split("/")[1])) {
                     return int.editReply({ content: client.tl({ local: int.lang + "fi-fInv" }) })
@@ -50,6 +61,7 @@ module.exports = class ficha_imagem {
                         if (r) {
                             client.cache.updateFicha(int.user.id, nomerpg, { imagem: imagem.url }, { query: "update" })
                                 .then(async r => {
+                                    client.emit("updateFichaBot", int.user.id, nomerpg)
                                     var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
 
                                     if (infoUIRT != "") {

@@ -46,6 +46,10 @@ module.exports = class renomear {
                 try { nomerpgNovo = nomerpgNovo.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
                 try { nomerpgNovo = nomerpgNovo.replace("'", '') } catch { }
 
+                if (nomerpgNovo == "") {
+                    nomerpgNovo = "1"
+                }
+
                 client.db.query(`select * from fichas where id = :id and nomerpg = :nomerpg`, {
                     replacements: { id: int.user.id, nomerpg: nomerpgAtual },
                 })
@@ -63,6 +67,7 @@ module.exports = class renomear {
                                         client.cache.updateFichasUser(int.user.id, nomerpgNovo)
                                         return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomerpg: nomerpgAtual, novoNomeRpg: nomerpgNovo }))
                                             .then(async function () {
+                                                client.emit("renameFichaBot", int.user.id, nomerpgAtual, nomerpgNovo)
                                                 var infoUIRT = await client.cache.getIrt(int.user.id, nomerpgAtual)
 
                                                 if (infoUIRT != "") {

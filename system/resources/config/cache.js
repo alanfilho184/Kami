@@ -1,7 +1,7 @@
 const fs = require("fs")
 const path = require('path');
 const toMs = require("milliseconds-parser")()
-const LRU = require("./lru")
+const LRU = require("kami-lru-cache").kami_cache
 const { QueryTypes } = require('sequelize');
 
 const fichas = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
@@ -136,10 +136,10 @@ module.exports = class Cache {
         return commandCount
     }
 
-    async getFicha(id, nomerpg) {
+    async getFicha(id, nomerpg, force = false) {
         var ficha = fichas.get(id + nomerpg)
 
-        if (ficha) { return ficha } else {
+        if (ficha && !force) { return ficha } else {
             var r = await this.client.db.query(`select * from fichas where id = :id and nomerpg = :nomerpg`, {
                 replacements: { id: id, nomerpg: nomerpg },
             })

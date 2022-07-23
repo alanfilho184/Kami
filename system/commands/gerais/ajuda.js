@@ -62,7 +62,6 @@ module.exports = class ajuda {
         const bMenu = new client.Discord.ButtonBuilder()
             .setStyle(1)
             .setLabel(client.tl({ local: int.lang + "ajuda-pLista" }))
-            //.setEmoji("➡")
             .setCustomId(`bMenu|${uniqueID}`)
 
         var repeat = true
@@ -172,7 +171,6 @@ module.exports = class ajuda {
                     }
                 })
                 .catch(err => {
-                    console.log(err.code)
                     if (err.code == "InteractionCollectorError") {
                         int.editReply({ content: null, components: [{ type: 1, components: [bTermos, bSup] }] })
                     }
