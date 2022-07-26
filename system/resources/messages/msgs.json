@@ -250,7 +250,8 @@
             "nFE": "Não achei nenhuma ficha deste usuário com o nome \"$nomerpg$\"",
             "sI": "Senha incorreta para a ficha \"$nomerpg$\"",
             "nUE": "Não encontrei nenhum usuário com este ID",
-            "nFUE": "Não encontrei nenhuma ficha do usuário \"$cmd$\" com o nome \"$nomerpg$\" "
+            "nFUE": "Não encontrei nenhuma ficha do usuário \"$cmd$\" com o nome \"$nomerpg$\" ",
+            "fU": "Para visualizar sua própria ficha utilize o comando /enviar"
         },
         "verS": {
             "dm/": "Este comando só pode ser executado via DM ou `/`!",
@@ -537,7 +538,8 @@
             "nFE": "I could not find any sheet for this user with the name \"$nomerpg$\"",
             "sI": "Incorrect password for sheet \"$nomerpg$\"",
             "nUE": "I could not find any user with this ID",
-            "nFUE": "I could not find any sheet of user \"$cmd$\" with the name \"$nomerpg$\" "
+            "nFUE": "I could not find any sheet of user \"$cmd$\" with the name \"$nomerpg$\" ",
+            "fU": "To view your own sheet use the /enviar command"
         },
         "verS": {
             "dm/": "This command can only be executed via DM or `/`!",

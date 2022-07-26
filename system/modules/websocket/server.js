@@ -2,7 +2,7 @@ const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const toMs = require("milliseconds-parser")()
-const LRU = require("kami-lru-cache").kami_cache
+const LRU = require("@alanfilho184/kami-lru-cache").kami_cache
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -25,7 +25,7 @@ module.exports = class WebSocket {
             pingInterval: 15000
         });
 
-        connections._events.on('autoDeleteFromCache', (key) => {
+        connections.events.on('keyAutoDelete', (key) => {
             client.log.warn(`WS sem resposta excluído: ${key}`)
             delete sockets[key]
         })

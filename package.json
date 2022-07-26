@@ -1,6 +1,6 @@
 {
   "name": "kami",
-  "version": "4.10.4",
+  "version": "4.10.5",
   "description": "Um BOT para Discord com foco em ajudar em mesas de RPG online, tendo suas principais funções criar fichas e rolar dados.",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   "author": "Kamikaze_184",
   "license": "CC BY-NC-ND 4.0",
   "dependencies": {
+    "@alanfilho184/kami-lru-cache": "^1.2.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "ascii-table": "0.0.9",
     "axios": "^0.24.0",
@@ -36,7 +37,6 @@
     "express": "^4.17.1",
     "express-rate-limit": "^5.5.1",
     "fast-glob": "^3.2.7",
-    "kami-lru-cache": "github:alanfilho184/kami-lru-cache",
     "luxon": "^2.1.1",
     "milliseconds-parser": "^1.0.2",
     "node-schedule": "^2.0.0",
