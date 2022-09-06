@@ -223,7 +223,7 @@ module.exports = class enviar {
         const infEmbed = new client.Discord.EmbedBuilder()
             .setColor(client.settings.color)
             .setTitle(client.tl({ local: int.lang + "ef-infAuthor" }) + fichaUser.nomerpg + `. ${client.tl({ local: int.lang + "created" })}${int.user.tag}`)
-            .setAuthor({ name: "Clique aqui para visualizar esta ficha no site do Kami", url: `https://kamisite.herokuapp.com/ficha/${fichaUser.id}/${fichaUser.nomerpg}` })
+            .setAuthor({ name: "Clique aqui para visualizar esta ficha no site do Kami", url: `https://kamiapp.com.br/ficha/${fichaUser.id}/${fichaUser.nomerpg}` })
         if (fichaUser.atributos.imagem) { infEmbed.setThumbnail(fichaUser.atributos.imagem) }
 
         delete fichaUser.atributos["imagem"]
