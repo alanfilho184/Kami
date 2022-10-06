@@ -15,7 +15,8 @@ module.exports = class WebSocket {
         const app = express();
         const router = express.Router()
         app.use((req, res, next) => {
-            if (req.hostname.startsWith("bot.")) {
+            client.log.info(`Request para ${req.hostname}`)
+            if (req.hostname.split(".")[0] == "bot") {
                 next()
             }
             else {
