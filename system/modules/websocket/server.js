@@ -14,6 +14,14 @@ module.exports = class WebSocket {
         const sockets = new Object()
         const app = express();
         const router = express.Router()
+        app.use((req, res, next) => {
+            if (req.hostname.startsWith("bot.")) {
+                next()
+            }
+            else {
+                res.redirect("https://kamiapp.com.br")
+            }
+        })
         router.get("/ping", (req, res) => { res.status(200).end() })
         app.use("/", router)
         const httpServer = createServer(app);
