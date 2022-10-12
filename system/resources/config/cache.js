@@ -1,11 +1,11 @@
 const fs = require("fs")
 const path = require('path');
 const toMs = require("milliseconds-parser")()
-const LRU = require("kami-lru-cache").kami_cache
+const LRU = require("@alanfilho184/kami-lru-cache").kami_cache
 const { QueryTypes } = require('sequelize');
 
-const fichas = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
-const irt = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true })
+const fichas = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true, rateOfVerifyAgedKeys: toMs.parse("10 minutos") })
+const irt = new LRU({ maxAge: toMs.parse("2 horas"), updateAgeOnGet: true, rateOfVerifyAgedKeys: toMs.parse("10 minutos") })
 
 function replaceAll(string, search, replace) {
     try { var splited = string.split(search).join(replace); }

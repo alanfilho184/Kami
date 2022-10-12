@@ -2,7 +2,7 @@ const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const toMs = require("milliseconds-parser")()
-const LRU = require("kami-lru-cache").kami_cache
+const LRU = require("@alanfilho184/kami-lru-cache").kami_cache
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -13,6 +13,18 @@ module.exports = class WebSocket {
         const connections = new LRU({ maxAge: toMs.parse("2 minutos"), updateAgeOnGet: true })
         const sockets = new Object()
         const app = express();
+        const router = express.Router()
+        app.use((req, res, next) => {
+            client.log.info(`Request para ${req.hostname}`)
+            if (req.hostname.split(".")[0] == "bot") {
+                next()
+            }
+            else {
+                res.redirect("https://kamiapp.com.br")
+            }
+        })
+        router.get("/ping", (req, res) => { res.status(200).end() })
+        app.use("/", router)
         const httpServer = createServer(app);
         const io = new Server(httpServer, {
             cors: {
@@ -22,7 +34,7 @@ module.exports = class WebSocket {
             pingInterval: 15000
         });
 
-        connections._events.on('autoDeleteFromCache', (key) => {
+        connections.events.on('keyAutoDelete', (key) => {
             client.log.warn(`WS sem resposta excluído: ${key}`)
             delete sockets[key]
         })

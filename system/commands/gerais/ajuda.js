@@ -44,17 +44,17 @@ module.exports = class ajuda {
         const bTermos = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btTermos" }))
-            .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "termos" : "terms"}/`)
+            .setURL(`https://kamiapp.com.br/${int.lang == "pt-" ? "termos" : "terms"}/`)
 
         const bPrivacidade = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "ajuda-btPrivacidade" }))
-            .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "privacidade" : "privacy"}/`)
+            .setURL(`https://kamiapp.com.br/${int.lang == "pt-" ? "privacidade" : "privacy"}/`)
 
         const bSup = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))
-            .setURL("https://kamisite.herokuapp.com/suporte")
+            .setURL("https://kamiapp.com.br/suporte")
 
         const uniqueID = Date.now()
         var menuDisplayed = 0

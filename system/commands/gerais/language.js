@@ -44,8 +44,8 @@ module.exports = class lang {
 
                 if (local == "server") {
                     if (int.user.id != client.settings.owner) {
-                        if (!int.member.permissions.has("ADMINISTRATOR") || !int.member.permissions.has("MANAGE_CHANNELS") || !int.member.permissions.has("MANAGE_GUILD")) {
-                            return int.reply(client.tl({ local: int.lang + "onMsg-sPerm" }))
+                        if (!int.member.permissions.has(client.Discord.PermissionsBitField.Flags.Administrator) || !int.member.permissions.has(client.Discord.PermissionsBitField.Flags.ManageChannels) || !int.member.permissions.has(client.Discord.PermissionsBitField.Flags.ManageGuild)) {
+                            return int.editReply(client.tl({ local: int.lang + "onMsg-sPerm" }))
                         }
                     }
                 }

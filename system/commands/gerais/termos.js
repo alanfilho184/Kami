@@ -38,7 +38,7 @@ module.exports = class termos {
                 const bTermos = new client.Discord.ButtonBuilder()
                     .setStyle(5)
                     .setLabel(client.tl({ local: int.lang + "termos-embedFT" }))
-                    .setURL(`https://kamisite.herokuapp.com/${int.lang == "pt-" ? "termos" : "terms"}/`)
+                    .setURL(`https://kamiapp.com.br/${int.lang == "pt-" ? "termos" : "terms"}/`)
 
 
                 int.editReply({ embeds: [termEmbed], components: [{ type: 1, components: [bTermos] }] })

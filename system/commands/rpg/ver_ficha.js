@@ -47,6 +47,10 @@ module.exports = class ver_ficha {
                 const nomerpg = args.get("nome_da_ficha")
                 const senha = args.get("senha_da_ficha")
 
+                if (user == int.user.id) {
+                    return int.editReply({ content: client.tl({ local: int.lang + "verF-fU" }) })
+                }
+
                 client.cache.getFicha(user, nomerpg)
                     .then(ficha => {
                         if (ficha == undefined) {
