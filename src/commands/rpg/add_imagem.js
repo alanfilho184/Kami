@@ -48,7 +48,15 @@ module.exports = class adicionar_imagem {
                 const msg = int.options._hoistedOptions[0].message
                 const attach = Array.from(msg.attachments.values())[0]
 
-                if (!attach || !imageType.includes(attach.contentType.split("/")[1])) {
+
+                let includeImageType = false
+
+                try {
+                    includeImageType = imageType.includes(attach.contentType.split("/")[1])
+                }
+                catch (err) { }
+
+                if (!attach || !includeImageType) {
                     int.editReply(client.tl({ local: int.lang + "addI-iNE" }))
                     return
                 }

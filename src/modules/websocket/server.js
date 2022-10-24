@@ -12,19 +12,13 @@ module.exports = class WebSocket {
     constructor(client) {
         const connections = new LRU({ maxAge: toMs.parse("2 minutos"), updateAgeOnGet: true })
         const sockets = new Object()
+
         const app = express();
         const router = express.Router()
-        app.use((req, res, next) => {
-            client.log.info(`Request para ${req.hostname}`)
-            if (req.hostname.split(".")[0] == "bot") {
-                next()
-            }
-            else {
-                res.redirect("https://kamiapp.com.br")
-            }
-        })
+
         router.get("/ping", (req, res) => { res.status(200).end() })
         app.use("/", router)
+
         const httpServer = createServer(app);
         const io = new Server(httpServer, {
             cors: {
