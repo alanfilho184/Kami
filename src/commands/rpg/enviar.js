@@ -157,7 +157,7 @@ module.exports = class enviar {
                                     })
                                     infoUIRT = infoUIRT[0]
 
-                                    if (infoUIRT.length >= 5) {
+                                    if (infoUIRT.length >= 20) {
                                         return int.editReply(client.tl({ local: int.lang + "efd-irtMF" }))
                                     }
 

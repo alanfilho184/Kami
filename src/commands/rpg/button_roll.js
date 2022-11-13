@@ -251,12 +251,26 @@ module.exports = class button_roll {
                         return int.editReply({ content: client.tl({ local: int.lang + "btR-dInv", cmd: segments[0] }) })
                     }
 
-                    const button = new client.Discord.ButtonBuilder()
-                        .setStyle(1)
-                        .setLabel(title)
-                        .setCustomId(`buttonRoll|${title}`)
 
-                    buttons.push(button)
+
+                    let saved = false
+                    buttons.forEach(savedButton => {
+                        if (savedButton.data.label == title) {
+                            saved = true
+                        }
+                        else {
+                            saved = false
+                        }
+                    })
+
+                    if (!saved) {
+                        const button = new client.Discord.ButtonBuilder()
+                            .setStyle(1)
+                            .setLabel(title)
+                            .setCustomId(`buttonRoll|${title}`)
+
+                        buttons.push(button)
+                    }
                 })
 
                 if (stop) { return }
@@ -265,7 +279,7 @@ module.exports = class button_roll {
                     .setColor(parseInt(process.env.EMBED_COLOR))
                     .setTitle(client.tl({ local: int.lang + "btR-eTi" }))
                     .setDescription(client.tl({ local: int.lang + "btR-eDesc" }))
-                    .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                    .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                     .setTimestamp()
 
                 const componentsArray = new Array()
@@ -458,7 +472,7 @@ module.exports = class button_roll {
             .setTitle(int.user.username + " " + client.tl({ local: int.lang + "dados-embedR2" }) + " " + title)
             .setDescription("**" + rolled + "**")
             .setColor(parseInt(process.env.EMBED_COLOR))
-            .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+            .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
             .setTimestamp(Date.now())
         if (r <= 100) rollEmbed.setThumbnail(client.resources.assets.d1_100[r])
 
