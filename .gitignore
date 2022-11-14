@@ -1,0 +1,10 @@
+node_modules
+.env
+log.txt
+siteLog.txt
+src/resources/config/json/config.json
+src/resources/config/json/blacklist.json
+src/resources/config/json/nomeFichas.json
+src/commands/owner/teste.js
+dbBackup.json
+nodemon.json
