@@ -218,6 +218,10 @@ module.exports = class enviar {
             desc: false
         })
 
+        const atributosI1Pt = client.resources['pt-'].atributosI1
+        const atributosI2Pt = client.resources['pt-'].atributosI2
+        const atributosStatusPt = client.resources['pt-'].atributosStatus
+
         const { atributosI1, atributosIF1, atributosI2, atributosIF2, atributosStatus, atributosStatusF } = client.resources[int.lang]
 
         const infEmbed = new client.Discord.EmbedBuilder()
@@ -232,33 +236,33 @@ module.exports = class enviar {
         const s3Embed = new client.Discord.EmbedBuilder().setColor(parseInt(process.env.EMBED_COLOR)), descEmbed = new client.Discord.EmbedBuilder().setColor(parseInt(process.env.EMBED_COLOR))
 
         for (var x of atributosI1) {
-            if (fichaUser.atributos[x] != undefined) {
-                infEmbed.addFields({ name: atributosIF1[atributosI1.indexOf(x)], value: fichaUser.atributos[x], inline: true })
-                delete fichaUser.atributos[x]
+            if (fichaUser.atributos[atributosI1Pt[atributosI1.indexOf(x)]] != undefined) {
+                infEmbed.addFields({ name: atributosIF1[atributosI1.indexOf(x)], value: fichaUser.atributos[atributosI1Pt[atributosI1.indexOf(x)]], inline: true })
+                delete fichaUser.atributos[atributosI1Pt[atributosI1.indexOf(x)]]
             }
         }
 
         for (var x of atributosI2) {
-            if (fichaUser.atributos[x] != undefined) {
-                infEmbed.addFields({ name: atributosIF2[atributosI2.indexOf(x)], value: fichaUser.atributos[x], inline: false })
-                delete fichaUser.atributos[x]
+            if (fichaUser.atributos[atributosI2Pt[atributosI2.indexOf(x)]] != undefined) {
+                infEmbed.addFields({ name: atributosIF2[atributosI2.indexOf(x)], value: fichaUser.atributos[atributosI2Pt[atributosI2.indexOf(x)]], inline: false })
+                delete fichaUser.atributos[atributosI2Pt[atributosI2.indexOf(x)]]
             }
         }
 
         var fields = 0
         for (var x of atributosStatus) {
-            if (fichaUser.atributos[x] != undefined) {
+            if (fichaUser.atributos[atributosStatusPt[atributosStatus.indexOf(x)]] != undefined) {
                 if (fields <= 25) {
-                    s1Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[x], inline: true })
+                    s1Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[atributosStatusPt[atributosStatus.indexOf(x)]], inline: true })
                 }
                 else if (fields > 25 && fields <= 50) {
-                    s2Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[x], inline: true })
+                    s2Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[atributosStatusPt[atributosStatus.indexOf(x)]], inline: true })
                 }
                 else if (fields > 50 && fields <= 75) {
-                    s3Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[x], inline: true })
+                    s3Embed.addFields({ name: atributosStatusF[atributosStatus.indexOf(x)], value: fichaUser.atributos[atributosStatusPt[atributosStatus.indexOf(x)]], inline: true })
                 }
 
-                delete fichaUser.atributos[x]
+                delete fichaUser.atributos[atributosStatusPt[atributosStatus.indexOf(x)]]
                 fields += 1
             }
         }
