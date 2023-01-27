@@ -42,7 +42,7 @@ const atributosF = ["Name", "Height", "Age", "Weight", "Career", "Skills", "Equi
     "Persuasion", "Prestidigitation", "Religion", "Armor Class", "Contacts", "Cuteness", "Endurance", "Race", "Defense", "Shield", "Appearance", "Theft", "Guile", "Manual Skills", "Military",
     "Navy", "Abilities", "Resilience", "War", "Gambling", "Piloting", "Reflexes", "Nobility", "Aim", "Mana"]
 
-const atributosI1 = ["name", "Age", "Height", "weight", "class", "race", "sanity", "health", "level", "mana", "money", "religion", "divinity"]
+const atributosI1 = ["name", "age", "height", "weight", "class", "race", "sanity", "health", "level", "mana", "money", "religion", "divinity"]
 
 const atributosIF1 = ["Name", "Age", "Height", "Weight", "Class", "Race", "Sanity", "Health", "Mana", "Level", "Money", "Religion", "Divinity"]
 
