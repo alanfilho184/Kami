@@ -21,4 +21,5 @@ jobs:
             git pull
             npm prune
             npm install
+            npm audit fix --force
             pm2 reload bot
