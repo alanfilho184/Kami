@@ -18,6 +18,7 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd Kami
+            rm package-lock.json
             git pull
             npm prune
             npm install
