@@ -54,6 +54,7 @@ module.exports = {
                 client.emit("cmd", int, cmd.name)
                 const args = client.utils.argsString(int)
                 client.log.info(`Comando: ${cmd.name} executado por ${int.user.tag}(${int.user.id}) ${args ? `- Args: ${args}` : ``}`)
+                try { client.utils.askForm(int) } catch { }
             }
         }
     },
