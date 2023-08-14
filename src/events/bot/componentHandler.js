@@ -16,8 +16,8 @@ module.exports = {
             if (func[0] == "irt") { func[0] = "buttonIrt" }
             if (c.name === func[0]) {
 
-            c.run(client, comp)
-        }
-    })
-}
+                c.run(client, comp)
+            }
+        })
+    }
 }
