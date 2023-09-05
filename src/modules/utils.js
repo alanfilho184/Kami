@@ -310,17 +310,4 @@ module.exports = class Utils {
             return false
         }
     }
-
-    askForm(int) {
-        if (this.formAskedChannels.has(int.channel.id)) {
-            return
-        }
-        else {
-            this.formAskedChannels.add(int.channel.id)
-            int.channel.send({ 
-                content: `Desculpem o incômodo, queria informar que uma nova plataforma/bot está sendo desenvolvido, mas, para que o resultado seja o melhor possível para todos, é importante a opinião de usuários reais. Agradeço se puderem responder ao formulário abaixo:\n\nhttps://forms.gle/2ENJzQQiogwFQ4cV7\n\nÉ bem rápido e não é necessário se identificar, obrigado!
-                `
-             })
-        }
-    }
 }

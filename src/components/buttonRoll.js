@@ -13,8 +13,6 @@ module.exports = class buttonRoll {
 
             client.commands.get("buttonroll").roll(client, comp, rollInfo)
             client.emit("button", comp, "buttonRoll")
-            try { client.utils.askForm(comp) }
-            catch (err) { console.log(err) }
         })
     }
 }
