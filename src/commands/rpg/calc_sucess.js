@@ -5,12 +5,16 @@ module.exports = class sucesso {
         return {
             ownerOnly: false,
             name: "sucesso",
+            nameEn: "sucess",
             fName: "Sucesso",
             fNameEn: "Sucess",
             desc: 'Calcula o sucesso de um atributo.',
             descEn: 'Calculates the sucess of an attribute.',
             args: [
                 { name: "valor", desc: "Valor do atributo que deseja calcular (0 ~ 100).", type: "INTEGER", required: true, autocomplete: false }
+            ],
+            argsEn: [
+                { name: "value", desc: "Attribute value you want to calculate (0 ~ 100).", type: "INTEGER", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -42,7 +46,7 @@ module.exports = class sucesso {
             .then(() => {
                 const args = client.utils.args(int)
 
-                var valor = args.get("valor")
+                var valor = args.get("value")
 
                 if (valor.length > 20) return int.editReply(client.tl({ local: int.lang + "cs-mA" }))
 

@@ -11,7 +11,7 @@ function sleep(ms) {
 module.exports = class WebSocket {
     constructor(client) {
         const connections = new LRU({ maxAge: toMs.parse("2 minutos"), updateAgeOnGet: true })
-        const sockets = new Object()
+        const sockets = new Object({ main: { emit: () => { } } })
 
         const app = express();
         const router = express.Router()

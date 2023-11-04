@@ -7,6 +7,7 @@ module.exports = class ajuda {
         return {
             ownerOnly: false,
             name: "ajuda",
+            nameEn: "help",
             fName: "Ajuda",
             fNameEn: "Help",
             desc: 'Mostra uma lista completa com os comandos do BOT.',

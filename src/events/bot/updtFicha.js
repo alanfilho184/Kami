@@ -26,7 +26,7 @@ module.exports = {
                     inGuild() { ch.type == "GUILD_TEXT" }
                 })
 
-                const reply = client.commands.get("enviar").create(client, int, fichaUser)
+                const reply = client.commands.get("send").create(client, int, fichaUser)
 
                 await irtMsg.edit({ embeds: reply })
                     .then(e => { client.log.info(irt[m]) })

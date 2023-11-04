@@ -5,6 +5,7 @@ module.exports = class ping {
         return {
             ownerOnly: false,
             name: 'ping',
+            nameEn: 'ping',
             fName: 'Ping',
             fNameEn: 'Ping',
             desc: 'Mostra os tempos de resposta do BOT.',

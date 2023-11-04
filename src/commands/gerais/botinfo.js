@@ -8,6 +8,7 @@ module.exports = class botinfo {
         return {
             ownerOnly: false,
             name: "botinfo",
+            nameEn: "botinfo",
             fName: "Botinfo",
             fNameEn: "Botinfo",
             desc: 'Mostra informações técnicas e links sobre o BOT.',

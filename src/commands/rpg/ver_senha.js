@@ -3,6 +3,7 @@ module.exports = class ver_senha {
         return {
             ownerOnly: false,
             name: "versenha",
+            nameEn: "viewpassword",
             fName: "Ver senha",
             fNameEn: "View password",
             desc: 'Visualize a senha de suas fichas.',

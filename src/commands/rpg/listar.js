@@ -3,6 +3,7 @@ module.exports = class listar {
         return {
             ownerOnly: false,
             name: "listar",
+            nameEn: "list",
             fName: "Listar",
             fNameEn: "List",
             desc: 'Mostra o nome de todas as fichas que você possuí no BOT.',

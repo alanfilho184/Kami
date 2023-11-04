@@ -5,6 +5,7 @@ module.exports = class adicionar_imagem {
         return {
             ownerOnly: false,
             name: "Add imagem à ficha",
+            nameEn: "Add image to a sheet",
             fName: "Add imagem à ficha",
             fNameEn: "Add image to a sheet",
             desc: 'Adiciona a imagem da mensagem onde foi utilizado.',

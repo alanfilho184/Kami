@@ -7,6 +7,7 @@ module.exports = class apagar {
         return {
             ownerOnly: false,
             name: "apagar",
+            nameEn: "delete",
             fName: "Apagar",
             fNameEn: "Delete",
             desc: 'Apaga uma ficha que já tenha sido criada.',
@@ -14,13 +15,25 @@ module.exports = class apagar {
             args: [
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja apagar.", type: "STRING", required: true, autocomplete: true },
             ],
+            argsEn: [
+                { name: "sheet_name", desc: "Name of the sheet you want to delete.", type: "STRING", required: true, autocomplete: true },
+            ],
             options: [{
                 name: "opções",
                 required: false,
                 type: "STRING",
                 desc: "Opções para o comando.",
                 choices: [
-                    { name: "Desativar IRT para a ficha (a ficha é mantida).", return: "irt" }
+                    { name: "Somente desativar IRT para a ficha (a ficha é mantida).", return: "irt" }
+                ],
+            }],
+            optionsEn: [{
+                name: "options",
+                required: false,
+                type: "STRING",
+                desc: "Options for the command.",
+                choices: [
+                    { name: "Just disable IRT for the sheet (the sheet is kept).", return: "irt" }
                 ],
             }],
             type: 1,
@@ -60,8 +73,8 @@ Ex: **${"/"}apagar RPG_Kami irt**
             .then(() => {
                 const args = client.utils.args(int)
 
-                var nomerpg = args.get("nome_da_ficha")
-                var irt = args.get("opções")
+                var nomerpg = args.get("sheet_name")
+                var irt = args.get("options")
                 if (!irt) { irt = "false" }
 
                 try { nomerpg = nomerpg.replace(/[^\w\s]/gi, '') } catch { }
@@ -142,7 +155,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                                 client.cache.update(int.user.id, null, "fPadrao", false)
                                                             }
                                                         }
-                                                        catch (err) {}
+                                                        catch (err) { }
 
                                                         int.editReply({ content: client.tl({ local: int.lang + "af-fApg", nomerpg: nomerpg }), components: [] })
                                                             .then(async function () {
@@ -179,7 +192,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
         const options = int.options._hoistedOptions
 
         options.forEach(opt => {
-            if (opt.name == "nome_da_ficha" && opt.focused) {
+            if (opt.name == "sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {

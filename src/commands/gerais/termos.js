@@ -3,6 +3,7 @@ module.exports = class termos {
         return {
             ownerOnly: false,
             name: "termos",
+            nameEn: "terms",
             fName: "Termos",
             fNameEn: "Terms",
             desc: 'Envia o link para os termos de uso do BOT.',

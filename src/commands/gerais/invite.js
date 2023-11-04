@@ -3,6 +3,7 @@ module.exports = class invite {
         return {
             ownerOnly: false,
             name: "convite",
+            nameEn: "invite",
             fName: "Convite",
             fNameEn: "Invite",
             desc: 'Envia o link para adicionar o BOT.',

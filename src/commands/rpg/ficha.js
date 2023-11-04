@@ -5,6 +5,7 @@ module.exports = class ficha {
         return {
             ownerOnly: false,
             name: "ficha",
+            nameEn: "sheet",
             fName: "Ficha",
             fNameEn: "Sheet",
             desc: 'Cria/edita uma ficha.',
@@ -13,6 +14,11 @@ module.exports = class ficha {
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja criar/editar.", type: "STRING", required: true, autocomplete: true },
                 { name: "atributo", desc: "Atributo que deseja adicionar/editar na sua ficha", type: "STRING", required: true, autocomplete: true },
                 { name: "valor", desc: "Valor que o atributo terá.", type: "STRING", required: true, autocomplete: false },
+            ],
+            argsEn: [
+                { name: "sheet_name", desc: "Name of the sheet you want to create/edit.", type: "STRING", required: true, autocomplete: true },
+                { name: "attribute", desc: "Attribute you want to add/edit to your sheet", type: "STRING", required: true, autocomplete: true },
+                { name: "value", desc: "Value that the attribute will have.", type: "STRING", required: true, autocomplete: false },
             ],
             options: [],
             type: 1,
@@ -94,9 +100,9 @@ module.exports = class ficha {
 
                 atributos.push("multi")
 
-                var nomerpg = args.get("nome_da_ficha")
-                var atb = args.get("atributo")
-                var valor = args.get("valor")
+                var nomerpg = args.get("sheet_name")
+                var atb = args.get("attribute")
+                var valor = args.get("value")
 
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 
@@ -352,7 +358,7 @@ module.exports = class ficha {
         const atributosF = client.resources[int.lang].atributosF
 
         options.forEach(opt => {
-            if (opt.name == "atributo" && opt.focused) {
+            if (opt.name == "attribute" && opt.focused) {
                 const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
                 const data = new Array()
 
@@ -368,7 +374,7 @@ module.exports = class ficha {
                     int.respond(data)
                 }
             }
-            else if (opt.name == "nome_da_ficha" && opt.focused) {
+            else if (opt.name == "sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {

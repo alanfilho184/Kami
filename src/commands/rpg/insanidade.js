@@ -3,6 +3,7 @@ module.exports = class insanidade {
         return {
             ownerOnly: false,
             name: "insanidade",
+            nameEn: "insanity",
             fName: "Insanidade",
             fNameEn: "Insanity",
             desc: 'Envia uma insanidade para um personagem, temporaria ou permanente.',
@@ -18,6 +19,18 @@ module.exports = class insanidade {
                     { name: "Permanente", return: "permanente" }
                 ],
             }],
+            optionsEn: [
+                {
+                    name: "type",
+                    required: true,
+                    type: "STRING",
+                    desc: "Command options.",
+                    choices: [
+                        { name: "Temporary", return: "temporaria" },
+                        { name: "Permanent", return: "permanente" }
+                    ],
+                }
+            ],
             type: 1,
             helpPt: {
                 title: "<:dadosAjuda:766790214030852137> " + "/" + "insanidade (ins)", desc: `
@@ -58,14 +71,14 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
                 const inTemp = client.resources[int.lang].inTemp
                 const inPerm = client.resources[int.lang].inPerm
 
-                if (args.get("tipo") == "permanente") {
+                if (args.get("type") == "permanente") {
                     var qPerm = inPerm.length
 
                     var result = client.utils.dice(qPerm)
 
                     const insPerm = new client.Discord.EmbedBuilder()
                         .setTitle(client.tl({ local: int.lang + "ins-embedPermTi" }))
-                        .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                        .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                         .setColor(parseInt(process.env.EMBED_COLOR))
                         .setTimestamp()
 
@@ -113,7 +126,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
                     return int.editReply({ embeds: [insPerm] })
                 }
 
-                if (args.get("tipo") == "temporaria") {
+                if (args.get("type") == "temporaria") {
                     var qTemp = inTemp.length
                     var result = client.utils.dice(qTemp)
 
@@ -121,7 +134,7 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
                         .setTitle(client.tl({ local: int.lang + "ins-embedTempTi" }))
                         .setColor(parseInt(process.env.EMBED_COLOR))
                         .setDescription(`${client.tl({ local: int.lang + "ins-embedTempDesc" })} **${inTemp[result - 1]}**`)
-                        .setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
+                        .setFooter({ text: client.resources.footer(), iconURL: client.user.displayAvatarURL() })
                         .setTimestamp()
 
                     return int.editReply({ embeds: [insTemp] })
