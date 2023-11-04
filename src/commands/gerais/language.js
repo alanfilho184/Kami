@@ -6,6 +6,7 @@ module.exports = class lang {
         return {
             ownerOnly: false,
             name: "linguagem",
+            nameEn: "language",
             fName: "Linguagem",
             fNameEn: "Language",
             desc: 'Altera o idioma do BOT.',

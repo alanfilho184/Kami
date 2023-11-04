@@ -3,6 +3,7 @@ module.exports = class config {
         return {
             ownerOnly: false,
             name: "config",
+            nameEn: "config",
             fName: "Config",
             fNameEn: "Config",
             desc: 'Configurações de alguns comandos do BOT.',

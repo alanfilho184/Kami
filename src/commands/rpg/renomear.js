@@ -3,6 +3,7 @@ module.exports = class renomear {
         return {
             ownerOnly: false,
             name: "renomear",
+            nameEn: "rename",
             fName: "Renomear",
             fNameEn: "Rename",
             desc: 'Renomeia uma ficha que você já tenha criada no BOT.',
@@ -10,6 +11,10 @@ module.exports = class renomear {
             args: [
                 { name: "atual_nome_da_ficha", desc: "Nome da ficha que deseja renomear.", type: "STRING", required: true, autocomplete: true },
                 { name: "novo_nome_da_ficha", desc: "Novo nome da ficha.", type: "STRING", required: true, autocomplete: false },
+            ],
+            argsEn: [
+                { name: "current_sheet_name", desc: "Name of the sheet you want to rename.", type: "STRING", required: true, autocomplete: true },
+                { name: "new_sheet_name", desc: "New sheet name.", type: "STRING", required: true, autocomplete: false },
             ],
             options: [],
             type: 1,
@@ -40,8 +45,8 @@ module.exports = class renomear {
             .then(() => {
                 const args = client.utils.args(int)
 
-                const nomerpgAtual = args.get("atual_nome_da_ficha")
-                var nomerpgNovo = args.get("novo_nome_da_ficha")
+                const nomerpgAtual = args.get("current_sheet_name")
+                var nomerpgNovo = args.get("new_sheet_name")
 
                 try { nomerpgNovo = nomerpgNovo.normalize("NFD").replace(/[^\w\s]/gi, '') } catch (err) { }
                 try { nomerpgNovo = nomerpgNovo.replace("'", '') } catch { }
@@ -89,7 +94,7 @@ module.exports = class renomear {
         const options = int.options._hoistedOptions
 
         options.forEach(opt => {
-            if (opt.name == "atual_nome_da_ficha" && opt.focused) {
+            if (opt.name == "current_sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {

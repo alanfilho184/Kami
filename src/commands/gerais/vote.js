@@ -3,6 +3,7 @@ module.exports = class vote {
         return {
             ownerOnly: false,
             name: "votar",
+            nameEn: "vote",
             fName: "Votar",
             fNameEn: "Vote",
             desc: 'Envia o link para votar no BOT.',

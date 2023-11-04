@@ -5,6 +5,7 @@ module.exports = class ficha_imagem {
         return {
             ownerOnly: false,
             name: "fichaimagem",
+            nameEn: "sheetimage",
             fName: "Ficha imagem",
             fNameEn: "sheetimage",
             desc: "Adiciona uma imagem a uma ficha já criada.",
@@ -12,6 +13,10 @@ module.exports = class ficha_imagem {
             args: [
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja criar/editar.", type: "STRING", required: true, autocomplete: true },
                 { name: "imagem", desc: "Imagem que deseja adicionar a ficha", type: "ATTACHMENT", required: true, autocomplete: false }
+            ],
+            argsEn: [
+                { name: "sheet_name", desc: "Name of the sheet you want to create/edit.", type: "STRING", required: true, autocomplete: true },
+                { name: "image", desc: "Image you want to add to the sheet", type: "ATTACHMENT", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -47,8 +52,8 @@ module.exports = class ficha_imagem {
 
                 const beta = client.whitelist.get("beta")
 
-                var nomerpg = args.get("nome_da_ficha")
-                var imagem = int.options.get("imagem").attachment
+                var nomerpg = args.get("sheet_name")
+                var imagem = int.options.get("image").attachment
 
                 try { nomerpg = nomerpg.replace("'", "") } catch { }
 
@@ -81,7 +86,7 @@ module.exports = class ficha_imagem {
         const options = int.options._hoistedOptions
 
         options.forEach(opt => {
-            if (opt.name == "nome_da_ficha" && opt.focused) {
+            if (opt.name == "sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {

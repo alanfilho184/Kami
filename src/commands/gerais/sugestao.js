@@ -5,12 +5,16 @@ module.exports = class sugestao {
         return {
             ownerOnly: false,
             name: "suporte",
+            nameEn: "support",
             fName: "Suporte",
             fNameEn: "Support",
             desc: 'Envia uma mensagem para a equipe do BOT.',
             descEn: 'Sends a message to the BOT\'s team.',
             args: [
                 { name: "mensagem", desc: "A mensagem que deja enviar para a equipe.", type: "STRING", required: true, autocomplete: false }
+            ],
+            argsEn: [
+                { name: "message", desc: "The message you want to send to the team.", type: "STRING", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -40,7 +44,7 @@ module.exports = class sugestao {
         int.deferReply({ ephemeral: true })
             .then(() => {
                 const args = client.utils.args(int)
-                const mensagem = args.get("mensagem")
+                const mensagem = args.get("message")
 
                 const embed = new client.Discord.EmbedBuilder()
                     .setAuthor({ name:  `${int.user.tag} | ${int.user.id}`, iconURL: int.user.displayAvatarURL() })

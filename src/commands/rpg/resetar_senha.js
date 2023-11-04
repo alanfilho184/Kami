@@ -3,12 +3,16 @@ module.exports = class resetar_senha {
         return {
             ownerOnly: false,
             name: "resetarsenha",
+            nameEn: "resetpassword",
             fName: "Resetar senha",
             fNameEn: "Reset password",
             desc: 'Resete a senha de uma ficha sua já criada.',
             descEn: 'Reset the password for a sheet you have already created.',
             args: [
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja resetar a senha.", type: "STRING", required: true, autocomplete: true },
+            ],
+            argsEn: [
+                { name: "sheet_name", desc: "Name of the sheet you want to reset the password.", type: "STRING", required: true, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -37,7 +41,7 @@ module.exports = class resetar_senha {
         int.deferReply({ ephemeral: true })
             .then(() => {
                 const args = client.utils.args(int)
-                const nomerpg = args.get("nome_da_ficha")
+                const nomerpg = args.get("sheet_name")
 
                 client.db.query(`select id, nomerpg, senha from fichas where id = :id and nomerpg = :nomerpg`, {
                     replacements: { id: int.user.id, nomerpg: nomerpg }
@@ -61,7 +65,7 @@ module.exports = class resetar_senha {
         const options = int.options._hoistedOptions
 
         options.forEach(opt => {
-            if (opt.name == "nome_da_ficha" && opt.focused) {
+            if (opt.name == "sheet_name" && opt.focused) {
                 const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
                 const data = new Array()
 

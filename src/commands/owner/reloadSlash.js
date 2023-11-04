@@ -74,7 +74,15 @@ module.exports = class reloadSlash {
                 }
                 else {
                     command.setDefaultMemberPermissions()
-                    command.setName(c.name).setDescription(c.desc)
+                    command.setName(c.nameEn).setDescription(c.descEn)
+                    command.setNameLocalizations({
+                        "pt-BR": c.name,
+                        "en-US": c.nameEn
+                    })
+                    command.setDescriptionLocalizations({
+                        "pt-BR": c.desc,
+                        "en-US": c.descEn
+                    })
 
                     for (var x in slashs) {
                         if (slashs[x].name == c.name) {
@@ -85,16 +93,16 @@ module.exports = class reloadSlash {
                     if (c.args.length > 0) {
                         for (var x in c.args) {
                             if (c.args[x].type == "STRING") {
-                                command.addStringOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
+                                command.addStringOption(option => option.setName(c.argsEn[x].name).setDescription(c.argsEn[x].desc).setNameLocalizations({ "pt-BR": c.args[x].name, "en-US": c.argsEn[x].name }).setDescriptionLocalizations({ "pt-BR": c.args[x].desc, "en-US": c.argsEn[x].desc }).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
                             }
                             else if (c.args[x].type == "INTEGER") {
-                                command.addIntegerOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
+                                command.addIntegerOption(option => option.setName(c.argsEn[x].name).setDescription(c.argsEn[x].desc).setNameLocalizations({ "pt-BR": c.args[x].name, "en-US": c.argsEn[x].name }).setDescriptionLocalizations({ "pt-BR": c.args[x].desc, "en-US": c.argsEn[x].desc }).setRequired(c.args[x].required).setAutocomplete(c.args[x].autocomplete))
                             }
                             else if (c.args[x].type == "USER") {
-                                command.addUserOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                                command.addUserOption(option => option.setName(c.argsEn[x].name).setDescription(c.argsEn[x].desc).setNameLocalizations({ "pt-BR": c.args[x].name, "en-US": c.argsEn[x].name }).setDescriptionLocalizations({ "pt-BR": c.args[x].desc, "en-US": c.argsEn[x].desc }).setRequired(c.args[x].required))
                             }
                             else if (c.args[x].type == "ATTACHMENT") {
-                                command.addAttachmentOption(option => option.setName(c.args[x].name).setDescription(c.args[x].desc).setRequired(c.args[x].required))
+                                command.addAttachmentOption(option => option.setName(c.argsEn[x].name).setDescription(c.argsEn[x].desc).setNameLocalizations({ "pt-BR": c.args[x].name, "en-US": c.argsEn[x].name }).setDescriptionLocalizations({ "pt-BR": c.args[x].desc, "en-US": c.argsEn[x].desc }).setRequired(c.args[x].required))
                             }
                         }
                     }
@@ -103,11 +111,11 @@ module.exports = class reloadSlash {
                         for (var x in c.options) {
                             if (c.options[x].type == "STRING") {
                                 command.addStringOption(option => {
-                                    option.setName(c.options[x].name).setDescription(c.options[x].desc).setRequired(c.options[x].required)
+                                    option.setName(c.optionsEn[x].name).setDescription(c.optionsEn[x].desc).setNameLocalizations({ "pt-BR": c.options[x].name, "en-US": c.optionsEn[x].name }).setDescriptionLocalizations({ "pt-BR": c.options[x].desc, "en-US": c.optionsEn[x].desc }).setRequired(c.options[x].required)
 
                                     if (c.options[x].choices.length > 0) {
                                         for (var y in c.options[x].choices) {
-                                            option.addChoices({ name: c.options[x].choices[y].name, value: c.options[x].choices[y].return })
+                                            option.addChoices({ name: c.optionsEn[x].choices[y].name, value: c.options[x].choices[y].return, name_localizations: { "pt-BR": c.options[x].choices[y].name, "en-US": c.optionsEn[x].choices[y].name } })
                                         }
                                     }
 
@@ -132,7 +140,11 @@ module.exports = class reloadSlash {
                 }
                 else {
                     command.setDefaultMemberPermissions()
-                    command.setName(c.name)
+                    command.setName(c.nameEn)
+                    command.setNameLocalizations({
+                        "pt-BR": c.name,
+                        "en-US": c.nameEn
+                    })
                     command.setType(c.type)
 
                     commands.push(command)

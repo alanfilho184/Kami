@@ -44,7 +44,7 @@ module.exports = class MenuClient extends Discord.Client {
                     var info = new cmdFunction()
 
                     if (info.name != "coletar") {
-                        this.commands.set(info.name, info)
+                        this.commands.set(info.nameEn, info)
                     }
                 }
             })
@@ -166,8 +166,8 @@ module.exports = class MenuClient extends Discord.Client {
 
             errorStack++
 
-            if (errorStack >= 5) {
-                logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
+            if (errorStack >= 15) {
+                logs.log.error("Ocorreram 15 erros consecutivos, reiniciando o bot...")
                 process.exit(1)
             }
         })
@@ -183,8 +183,8 @@ module.exports = class MenuClient extends Discord.Client {
 
             errorStack++
 
-            if (errorStack >= 5) {
-                logs.log.error("Ocorreram 5 erros consecutivos, reiniciando o bot...")
+            if (errorStack >= 15) {
+                logs.log.error("Ocorreram 15 erros consecutivos, reiniciando o bot...")
                 process.exit(1)
             }
         })

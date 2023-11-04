@@ -3,6 +3,7 @@ module.exports = class enviar_atb {
         return {
             ownerOnly: false,
             name: "enviaratributo",
+            nameEn: "sendattribute",
             fName: "Enviar Atributo",
             fNameEn: "Send Attribute",
             desc: 'Envia somente 1 atributo de uma ficha já criada.',
@@ -10,6 +11,10 @@ module.exports = class enviar_atb {
             args: [
                 { name: "atributo", desc: "Atributo que deseja enviar.", type: "STRING", required: true, autocomplete: true },
                 { name: "nome_da_ficha", desc: "Nome da ficha onde o atributo está.", type: "STRING", required: false, autocomplete: true },
+            ],
+            argsEn: [
+                { name: "attribute", desc: "Attribute you want to send.", type: "STRING", required: true, autocomplete: true },
+                { name: "sheet_name", desc: "Name of the sheet where the attribute is.", type: "STRING", required: false, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -46,8 +51,8 @@ module.exports = class enviar_atb {
                 const atributos = client.resources[int.lang].atributos
                 const atributosF = client.resources[int.lang].atributosF
 
-                var nomerpg = args.get("nome_da_ficha")
-                var atb = args.get("atributo")
+                var nomerpg = args.get("sheet_name")
+                var atb = args.get("attribute")
 
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 
@@ -119,7 +124,7 @@ module.exports = class enviar_atb {
         const atributosF = client.resources[int.lang].atributosF
 
         options.forEach(opt => {
-            if (opt.name == "atributo" && opt.focused) {
+            if (opt.name == "attribute" && opt.focused) {
                 const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
                 const data = new Array()
 
@@ -135,7 +140,7 @@ module.exports = class enviar_atb {
                     int.respond(data)
                 }
             }
-            else if (opt.name == "nome_da_ficha" && opt.focused) {
+            else if (opt.name == "sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {

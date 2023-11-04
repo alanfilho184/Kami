@@ -19,12 +19,16 @@ module.exports = class enviar_txt {
         return {
             ownerOnly: false,
             name: "enviartxt",
+            nameEn: "sendtxt",
             fName: "Enviar TXT",
             fNameEn: "Send TXT",
             desc: 'Envia a ficha como um arquivo .txt.',
             descEn: 'Sends a sheet as a .txt file.',
             args: [
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true, autocomplete: true },
+            ],
+            argsEn: [
+                { name: "sheet_name", desc: "Name of the sheet you want to send.", type: "STRING", required: true, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -62,7 +66,7 @@ module.exports = class enviar_txt {
                 const beta = client.whitelist.get("beta")
                 const premium = client.whitelist.get("premium")
 
-                var nomerpg = args.get("nome_da_ficha")
+                var nomerpg = args.get("sheet_name")
 
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 
@@ -177,7 +181,7 @@ module.exports = class enviar_txt {
         const options = int.options._hoistedOptions
 
         options.forEach(opt => {
-            if (opt.name == "nome_da_ficha" && opt.focused) {
+            if (opt.name == "sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {

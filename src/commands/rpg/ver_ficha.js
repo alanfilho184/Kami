@@ -3,6 +3,7 @@ module.exports = class ver_ficha {
         return {
             ownerOnly: false,
             name: "verficha",
+            nameEn: "viewsheet",
             fName: "Ver ficha",
             fNameEn: "View sheet",
             desc: 'Visualiza uma ficha de outro usuário.',
@@ -11,6 +12,11 @@ module.exports = class ver_ficha {
                 { name: "usuario", desc: "Usuário que deseja visualizar a ficha.", type: "USER", required: true, autocomplete: false },
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja visualizar.", type: "STRING", required: true, autocomplete: true },
                 { name: "senha_da_ficha", desc: "Senha da ficha que deseja visualizar.", type: "STRING", required: true, autocomplete: false }
+            ],
+            argsEn: [
+                { name: "user", desc: "User you want to view the sheet.", type: "USER", required: true, autocomplete: false },
+                { name: "sheet_name", desc: "Name of the sheet you want to view.", type: "STRING", required: true, autocomplete: true },
+                { name: "sheet_password", desc: "Password of the sheet you want to view.", type: "STRING", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -43,9 +49,9 @@ module.exports = class ver_ficha {
             .then(() => {
                 const args = client.utils.args(int)
 
-                const user = args.get("usuario")
-                const nomerpg = args.get("nome_da_ficha")
-                const senha = args.get("senha_da_ficha")
+                const user = args.get("user")
+                const nomerpg = args.get("sheet_name")
+                const senha = args.get("sheet_password")
 
                 if (user == int.user.id) {
                     return int.editReply({ content: client.tl({ local: int.lang + "verF-fU" }) })
@@ -78,7 +84,7 @@ module.exports = class ver_ficha {
         const options = int.options._hoistedOptions
 
         options.forEach(opt => {
-            if (opt.name == "nome_da_ficha" && opt.focused) {
+            if (opt.name == "sheet_name" && opt.focused) {
                 try {
                     const fichasUser = client.cache.getFichasUser(options[0].value)
 

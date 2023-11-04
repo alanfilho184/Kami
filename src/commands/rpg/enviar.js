@@ -3,12 +3,16 @@ module.exports = class enviar {
         return {
             ownerOnly: false,
             name: "enviar",
+            nameEn: "send",
             fName: "Enviar",
             fNameEn: "Send",
             desc: 'Envia uma ficha já criada em forma de embed.',
             descEn: 'Sends a sheet already as a Discord\'s embed.',
             args: [
                 { name: "nome_da_ficha", desc: "Nome da ficha que deseja enviar.", type: "STRING", required: true, autocomplete: true },
+            ],
+            argsEn: [
+                { name: "sheet_name", desc: "Name of the sheet you want to send.", type: "STRING", required: true, autocomplete: true },
             ],
             options: [
                 {
@@ -18,6 +22,17 @@ module.exports = class enviar {
                     desc: "Opções para o comando.",
                     choices: [
                         { name: "Ativar IRT (Atualização em tempo real).", return: "irt" }
+                    ],
+                }
+            ],
+            optionsEn: [
+                {
+                    name: "options",
+                    required: false,
+                    type: "STRING",
+                    desc: "Command options.",
+                    choices: [
+                        { name: "Activate IRT (In Real Time update).", return: "irt" }
                     ],
                 }
             ],
@@ -74,8 +89,8 @@ module.exports = class enviar {
 
                 const beta = client.whitelist.get("beta")
 
-                var nomerpg = args.get("nome_da_ficha")
-                var irtUpdt = args.get("opções")
+                var nomerpg = args.get("sheet_name")
+                var irtUpdt = args.get("options")
 
                 try { nomerpg = nomerpg.replace("'", '') } catch { }
 
@@ -218,6 +233,8 @@ module.exports = class enviar {
             desc: false
         })
 
+        fichaUser = JSON.parse(JSON.stringify(fichaUser))
+
         const atributosI1Pt = client.resources['pt-'].atributosI1
         const atributosI2Pt = client.resources['pt-'].atributosI2
         const atributosStatusPt = client.resources['pt-'].atributosStatus
@@ -311,7 +328,7 @@ module.exports = class enviar {
         const options = int.options._hoistedOptions
 
         options.forEach(opt => {
-            if (opt.name == "nome_da_ficha" && opt.focused) {
+            if (opt.name == "sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {

@@ -6,12 +6,16 @@ module.exports = class button_roll {
         return {
             ownerOnly: false,
             name: "buttonroll",
+            nameEn: "buttonroll",
             fName: "Button Roll",
             fNameEn: "Button Roll",
             desc: 'Cria uma mensagem com botões para rolar dados.',
             descEn: 'Create a message with custom buttons to roll dices.',
             args: [
                 { name: "dados", desc: "Dados que devem ser criados botões, no máximo 25, separados por \"|\" e sem espaços", type: "STRING", required: true, autocomplete: false },
+            ],
+            argsEn: [
+                { name: "dices", desc: "Dices that should be created buttons, maximum 25, separated by \"|\" and without spaces", type: "STRING", required: true, autocomplete: false }
             ],
             options: [],
             type: 1,
@@ -45,7 +49,7 @@ module.exports = class button_roll {
         int.deferReply()
             .then(() => {
                 const args = client.utils.args(int)
-                const dados = args.get("dados").split("|")
+                const dados = args.get("dices").split("|")
                 var stop = false
 
                 if (dados.length > 25) {

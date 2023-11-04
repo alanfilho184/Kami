@@ -5,6 +5,7 @@ module.exports = class roll {
         return {
             ownerOnly: false,
             name: "roll",
+            nameEn: "roll",
             fName: "Roll",
             fNameEn: "Roll",
             desc: 'Rola um dado ou um atributo.',
@@ -12,6 +13,10 @@ module.exports = class roll {
             args: [
                 { name: "dado_ou_atributo", desc: "Dado ou atributo que deseja rolar.", type: "STRING", required: true, autocomplete: true },
                 { name: "nome_da_ficha", desc: "Nome da ficha onde o atributo está", type: "STRING", required: false, autocomplete: true },
+            ],
+            argsEn: [
+                { name: "dice_or_attribute", desc: "Dice or attribute you want to roll.", type: "STRING", required: true, autocomplete: true },
+                { name: "sheet_name", desc: "Name of the sheet where the attribute is", type: "STRING", required: false, autocomplete: true },
             ],
             options: [],
             type: 1,
@@ -76,7 +81,7 @@ module.exports = class roll {
 
                 const atributos = client.resources[int.lang].atributos
 
-                if (atributos.includes(client.utils.matchAtb(args.get("dado_ou_atributo").toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos))) {
+                if (atributos.includes(client.utils.matchAtb(args.get("dice_or_attribute").toLowerCase().normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos))) {
                     return this.rollAtb(client, int)
                 }
                 else {
@@ -88,9 +93,9 @@ module.exports = class roll {
         var roll = require("roll")
         roll = new roll()
         const args = client.utils.args(int)
-        var numberDice = args.get("dado_ou_atributo")
+        var numberDice = args.get("dice_or_attribute")
 
-        var segments = args.get("dado_ou_atributo").split(/[\+\-\*\/]/)
+        var segments = args.get("dice_or_attribute").split(/[\+\-\*\/]/)
 
         var rolled = ""
         var results = new Array()
@@ -336,8 +341,8 @@ module.exports = class roll {
         var roll = require("roll")
         roll = new roll()
 
-        var atb = args.get("dado_ou_atributo")
-        var nomerpg = args.get("nome_da_ficha")
+        var atb = args.get("dice_or_attribute")
+        var nomerpg = args.get("sheet_name")
 
         try { nomerpg = nomerpg.replace("'", '') } catch { }
 
@@ -469,7 +474,7 @@ module.exports = class roll {
         const atributosF = client.resources[int.lang].atributosF
 
         options.forEach(opt => {
-            if (opt.name == "dado_ou_atributo" && opt.focused) {
+            if (opt.name == "dice_or_attribute" && opt.focused) {
                 const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
                 const data = new Array()
 
@@ -485,7 +490,7 @@ module.exports = class roll {
                     int.respond(data)
                 }
             }
-            else if (opt.name == "nome_da_ficha" && opt.focused) {
+            else if (opt.name == "sheet_name" && opt.focused) {
                 const fichasUser = client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
