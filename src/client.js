@@ -43,8 +43,11 @@ module.exports = class MenuClient extends Discord.Client {
 
                     var info = new cmdFunction()
 
-                    if (info.name != "coletar") {
+                    if (info.name != "coletar" && info.ownerOnly == false) {
                         this.commands.set(info.nameEn, info)
+                    }
+                    else if (info.name != "coletar" && info.ownerOnly == true) {
+                        this.commands.set(info.name, info)
                     }
                 }
             })

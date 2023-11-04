@@ -20,7 +20,9 @@ module.exports = {
 
         if (!int.lang) { int.lang = "pt-" }
 
+        console.log(int.commandName)
         const cmd = client.commands.get(int.commandName)
+        console.log(client.commands)
 
         if (cmd.ownerOnly && int.user.id != process.env.OWNER) {
             return int.reply({ content: client.tl({ local: int.lang + "onMsg-cmdBarrado" }), ephemeral: true })
