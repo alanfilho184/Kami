@@ -64,7 +64,7 @@ module.exports = class config {
                         .setCustomId("fPadrao|" + uniqueID)
                         .setPlaceholder(userConfig.fPadrao ? userConfig.fPadrao : client.tl({ local: int.lang + "config-menuPH" }))
 
-                    const fichas = await client.commands.get("listar").api(client, int.user.id)
+                    const fichas = await client.commands.get("list").api(client, int.user.id)
 
                     fichas.forEach(f => {
                         if (f != userConfig.fPadrao) {
