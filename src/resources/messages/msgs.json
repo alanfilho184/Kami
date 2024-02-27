@@ -50,7 +50,8 @@
             "updtMultiErr": "Ok, adicionei \"$atributo$\" com os valores \"$valor$\" na ficha \"$nomerpg$\"\n\nOs seguintes atributos não puderam ser adicionados: \"$atb$\", pois, possuem caracteres inválidos ou outros erros",
             "allAtbErr": "Nenhum dos atributos pode ser adicionado, pois, possuem caracteres inválidos ou outros erros",
             "fPE": "Ok, agora você não tem mais uma ficha padrão definida",
-            "lFE": "Você está atualmente no limite de fichas criadas por usuário (10 fichas), não é possível criar uma nova ficha, você pode tentar apagar alguma ficha que já não use mais para dar lugar a uma nova"
+            "lFE": "Você está atualmente no limite de fichas criadas por usuário (10 fichas), não é possível criar uma nova ficha, você pode tentar apagar alguma ficha que já não use mais para dar lugar a uma nova",
+            "errMulti": "Atributo multi está no formato errado, verifique a forma correta em /ajuda > Ficha ou https://www.kamiapp.com.br/tutoriais/multi-atb"
         },
         "af": {
             "fApg": "Ficha \"$nomerpg$\" apagada",
@@ -70,7 +71,8 @@
             "fCE": "Tem um problema com essa ficha. Você ainda pode ver a ficha utilizando `/enviartxt`",
             "fE": "No campo \"$\", o c do campo é maior do que o Discord permite enviar (m caracteres)",
             "fE2": "Um das seções (embeds) da ficha, excede o limite total de caracteres do Discord (6000 caracteres por embed)",
-            "ephIRT": "As fichas IRT não podem ser enviadas se a função de `Comandos de Enviar Ficha secreto` estiver ativada, desative-a para utilizar esta função"
+            "ephIRT": "As fichas IRT não podem ser enviadas se a função de `Comandos de Enviar Ficha secreto` estiver ativada, desative-a para utilizar esta função",
+            "mMG": "Um campo da sua ficha é grande demais para que o Discord possa enviar"
         },
         "ea": {
             "embedTi": "Ficha: ",
@@ -341,7 +343,8 @@
             "fPS": "Ok, now your default sheet is: \"$nomerpg$\"",
             "cCNF": "Would you like to create a new sheet with the name \"$nomerpg$\"?",
             "fPE": "Ok, now you no longer have a standard sheet defined",
-            "lFE": "You are currently at the limit of sheets created per user (10 sheets), you cannot create a new token, you can try to delete any token you no longer use to make place for a new one"
+            "lFE": "You are currently at the limit of sheets created per user (10 sheets), you cannot create a new token, you can try to delete any token you no longer use to make place for a new one",
+            "errMulti": "Multi attribute is in the wrong format, check the correct form in /ajuda > Sheet or https://www.kamiapp.com.br/tutoriais/multi-atb (PT-BR Only)"
         },
         "af": {
             "fApg": "Sheet \"$nomerpg$\" deleted",
@@ -361,7 +364,8 @@
             "fCE": "There is a problem with this sheet. You can still view the sheet using `/enviartxt`",
             "fE": "In the field \"$\", the c of the field is larger than the Discord allows to send (m characters)",
             "fE2": "One of the sections (embeds) of the sheet, exceeds Discord's total character limit (6000 characters per embed)",
-            "ephIRT": "IRT sheets cannot be sent if the `Send Sheet Secret` function is enabled, turn it off to use this function"
+            "ephIRT": "IRT sheets cannot be sent if the `Send Sheet Secret` function is enabled, turn it off to use this function",
+            "mMG": "One field of your sheet is too big for Discord to send"
         },
         "ea": {
             "uSF": "I couldn't find any of your sheets to send a attribute, try create a new one now /ajuda > sheet",

@@ -287,6 +287,8 @@ module.exports = class Utils {
     }
 
     isDefaultAtb(atributo, atributos) {
+        if (!atributo) return false
+        
         var base = 0.295
 
         const result = stringSimilarity.findBestMatch(atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos)
