@@ -155,28 +155,33 @@ module.exports = class ficha {
 
                     valor = new Object()
 
-                    atbValor.forEach(atbVal => {
-                        if (atbVal != " " && atbVal != "") {
-                            var atb = atbVal.split(":")
+                    try {
+                        atbValor.forEach(atbVal => {
+                            if (atbVal != " " && atbVal != "") {
+                                var atb = atbVal.split(":")
 
-                            atb[0] = atb[0].trimStart().trimEnd()
-                            atb[1] = atb[1].trimStart().trimEnd()
+                                atb[0] = atb[0].trimStart().trimEnd()
+                                atb[1] = atb[1].trimStart().trimEnd()
 
-                            atb[0] = client.utils.matchAtb(atb[0], atributos)
+                                atb[0] = client.utils.matchAtb(atb[0], atributos)
 
-                            if (atb[0].match(/[^0-9a-záéíóúàèìòùâêîôûãõç_()-=+\[\]\{\}\*\|\.\s]+/gi) || atb[0].length > 150) {
-                                atbsErr.push(atb[0])
+                                if (atb[0].match(/[^0-9a-záéíóúàèìòùâêîôûãõç_()-=+\[\]\{\}\*\|\.\s]+/gi) || atb[0].length > 150) {
+                                    atbsErr.push(atb[0])
+                                }
+                                else if (atb[1] == "" || atb[1] == " " || atb[1] == "excluir" || atb[1] == "delete" || atb[1] == "-") {
+                                    atbsErr.push(atb[0])
+                                }
+                                else {
+                                    atbs.push(atb[0])
+                                    vals.push(atb[1])
+                                    valor[atb[0]] = atb[1]
+                                }
                             }
-                            else if (atb[1] == "" || atb[1] == " " || atb[1] == "excluir" || atb[1] == "delete" || atb[1] == "-") {
-                                atbsErr.push(atb[0])
-                            }
-                            else {
-                                atbs.push(atb[0])
-                                vals.push(atb[1])
-                                valor[atb[0]] = atb[1]
-                            }
-                        }
-                    })
+                        })
+                    }
+                    catch (err) {
+                        return int.editReply(client.tl({ local: int.lang + "cef-errMulti" }))
+                    }
                 }
 
                 if (!atb) { return client.commands.get("enviar").run(client, int) }

@@ -84,7 +84,6 @@ module.exports = class botinfo {
         botIEmbed.setTimestamp(Date.now())
         botIEmbed.setFooter({text: client.resources.footer(), iconURL: client.user.displayAvatarURL()})
 
-
         const bSup = new client.Discord.ButtonBuilder()
             .setStyle(5)
             .setLabel(client.tl({ local: int.lang + "botI-f2V" }))

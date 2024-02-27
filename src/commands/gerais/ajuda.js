@@ -91,10 +91,10 @@ module.exports = class ajuda {
                         if (cmd.name == choice) { return }
 
                         if (int.lang == "pt-") {
-                            menu.addOptions({ label: cmd.fName, value: cmd.name, description: cmd.desc })
+                            menu.addOptions({ label: cmd.fName, value: cmd.nameEn, description: cmd.desc })
                         }
                         else {
-                            menu.addOptions({ label: cmd.fNameEn, value: cmd.name, description: cmd.descEn })
+                            menu.addOptions({ label: cmd.fNameEn, value: cmd.nameEn, description: cmd.descEn })
                         }
                     }
                 }
@@ -106,10 +106,10 @@ module.exports = class ajuda {
                         if (cmd.name == choice) { return }
 
                         if (int.lang == "pt-") {
-                            menu.addOptions({ label: cmd.fName, value: cmd.name, description: cmd.desc })
+                            menu.addOptions({ label: cmd.fName, value: cmd.nameEn, description: cmd.desc })
                         }
                         else {
-                            menu.addOptions({ label: cmd.fNameEn, value: cmd.name, description: cmd.descEn })
+                            menu.addOptions({ label: cmd.fNameEn, value: cmd.nameEn, description: cmd.descEn })
                         }
                     }
                 }
@@ -127,6 +127,7 @@ module.exports = class ajuda {
 
                     if (toDo == "helpMenu") {
                         choice = interaction.values[0]
+
                         try {
                             const cmd = client.commands.get(interaction.values[0])
 
