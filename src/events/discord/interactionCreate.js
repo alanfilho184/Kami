@@ -36,25 +36,7 @@ module.exports = {
                 return int.reply({ embeds: [disableEmbed], ephemeral: true })
             }
             else {
-                try {
-                    cmd.run(client, int)
-                        .catch(err => {
-                            client.log.error(err, true)
-                            if (int.deferred) {
-                                if (int.replied) {
-                                    return
-                                }
-                                else {
-                                    return int.editReply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
-                                }
-                            }
-                            else {
-                                return int.reply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
-                            }
-                        })
-                }
-                catch (err) {
-                    client.log.error(err, true)
+                client.on("err", (err, logged) => {
                     if (int.deferred) {
                         if (int.replied) {
                             return
@@ -66,8 +48,9 @@ module.exports = {
                     else {
                         return int.reply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
                     }
-                }
+                })
 
+                cmd.run(client, int)
                 client.emit("cmd", int, cmd.name)
                 const args = client.utils.argsString(int)
                 client.log.info(`Comando: ${cmd.name} executado por ${int.user.tag}(${int.user.id}) ${args ? `- Args: ${args}` : ``}`)
