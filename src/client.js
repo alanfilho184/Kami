@@ -121,7 +121,7 @@ module.exports = class MenuClient extends Discord.Client {
                 logging: false,
                 dialect: "postgres",
             }
-        
+
             if (process.env.NODE_ENV == "production") {
                 conStr["dialectOptions"] = {
                     ssl: {
@@ -130,7 +130,7 @@ module.exports = class MenuClient extends Discord.Client {
                     }
                 }
             }
-        
+
             return conStr
         }
 
@@ -162,9 +162,7 @@ module.exports = class MenuClient extends Discord.Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
-            else if (err != "DiscordAPIError: Unknown interaction") {
-                this.emit("err", err, true)
-            }
+
             logs.log.error(err, true)
 
             errorStack++
@@ -179,9 +177,7 @@ module.exports = class MenuClient extends Discord.Client {
             if (err == "TypeError: Cannot read property 'send' of null") {
                 process.exit(1)
             }
-            else if (err != "DiscordAPIError: Unknown interaction") {
-                this.emit("err", err, true)
-            }
+
             logs.log.error(err, true)
 
             errorStack++
@@ -201,7 +197,6 @@ module.exports = class MenuClient extends Discord.Client {
             })
 
         })
-
     }
 
     setCache() {
@@ -264,7 +259,7 @@ module.exports = class MenuClient extends Discord.Client {
         }
     }
 
-    setWebSocket(){
+    setWebSocket() {
         const ws = require("./modules/websocket/server")
         new ws(this)
     }
