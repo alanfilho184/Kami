@@ -301,7 +301,7 @@ module.exports = class ficha {
                                                     if (atb == "multi") {
                                                         client.cache.updateFicha(int.user.id, nomerpg, valor, { query: "insert" })
                                                             .then(async r => {
-                                                                await client.cache.updateFichasUser(int.user.id, nomerpg)
+                                                                // await client.cache.updateFichasUser(int.user.id, nomerpg)
                                                                 var msgToSend = String()
                                                                 if (atbsErr[0]) {
                                                                     msgToSend = client.tl({ local: int.lang + "cef-updtMultiErr", nomerpg: nomerpg, atributo: atbs, valor: vals, atb: atbsErr })
@@ -328,7 +328,7 @@ module.exports = class ficha {
                                                                 if (client.utils.isDefaultAtb(atb, atributos)) {
                                                                     atb = atributosF[atributosPt.indexOf(atb)]
                                                                 }
-                                                                await client.cache.updateFichasUser(int.user.id, nomerpg)
+                                                                // await client.cache.updateFichasUser(int.user.id, nomerpg)
                                                                 return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomerpg: nomerpg, atributo: atb, valor: valor }), components: [] })
                                                                     .then(() => {
                                                                         client.emit("createFichaBot", int.user.id, nomerpg)
