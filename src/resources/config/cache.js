@@ -13,8 +13,6 @@ function replaceAll(string, search, replace) {
     return splited
 }
 
-const commandCount = new Object()
-
 // module.exports = class Cache {
 //     constructor(client) {
 //         this.client = client
@@ -527,6 +525,11 @@ const commandCount = new Object()
 
 // }
 
+const commandCount = new Object({
+    cmd: 0,
+    buttons: 0,
+})
+
 module.exports = class DirectDB {
     constructor(client) {
         this.client = client;
@@ -556,9 +559,9 @@ module.exports = class DirectDB {
         const result = await this.client.db.query("select commandcount, buttoncount from info");
         return {
             total: result[0][0].commandcount,
-            today: 0,
+            today: commandCount.cmd,
             buttonsTotal: result[0][0].buttoncount,
-            buttonsToday: 0,
+            buttonsToday: commandCount.buttons,
         };
     }
 
@@ -625,8 +628,10 @@ module.exports = class DirectDB {
 
     async updateCnt(type) {
         if (type === "cmd") {
+            commandCount.cmd = commandCount.cmd + 1;
             await this.client.db.query("update info set commandcount = commandcount + 1");
         } else if (type === "button") {
+            commandCount.buttons = commandCount.buttons + 1;
             await this.client.db.query("update info set buttoncount = buttoncount + 1");
         }
     }
