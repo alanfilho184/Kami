@@ -30,6 +30,10 @@ module.exports = {
         }
 
         client.on("varUpdate", info => {
+            if (typeof info == "string") {
+                info = JSON.parse(info)
+            }
+            
             if (info.presence.statusMsg == "actsPadrao") {
                 acts = actsPadrao
             }
