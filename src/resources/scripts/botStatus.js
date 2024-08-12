@@ -125,20 +125,20 @@ module.exports = class botStatus {
 
         if (client.user.id == '716053210179043409') {
             client.shard.broadcastEval(
-                async c => {
+                async (c, ctx) => {
                     const channel = c.channels.cache.get('772970777787236352');
 
                     if (channel) {
                         const message = await channel.messages.fetch('772971275903303721');
                         if (message) {
-                            message.edit({ embeds: [JSON.parse(JSON.stringify(info))] });
+                            message.edit({ embeds: [JSON.parse(ctx)] });
                         } else {
                             return null;
                         }
                     }
                 },
                 {
-                    context: JSON.stringify(info)
+                    context: JSON.stringify(botStatus)
                 }
             );
         } else {
