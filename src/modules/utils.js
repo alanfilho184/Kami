@@ -1,125 +1,123 @@
-const setLang = require("../resources/scripts/lang").setLang
+const setLang = require('../resources/scripts/lang').setLang;
 const stringSimilarity = require('string-similarity');
-const CryptoJS = require("crypto-js");
-const time = require("luxon").DateTime
-var roll = require("roll");
-roll = new roll()
+const CryptoJS = require('crypto-js');
+const time = require('luxon').DateTime;
+var roll = require('roll');
+roll = new roll();
 
 module.exports = class Utils {
-
     constructor(options = {}) {
-        this.options = options
-        this.client = options.client
-        this.formAskedChannels = new Set()
+        this.options = options;
+        this.client = options.client;
+        this.formAskedChannels = new Set();
     }
 
     args(int) {
-        const args = new Map()
+        const args = new Map();
         int.options._hoistedOptions.forEach(arg => {
-            args.set(arg.name, arg.value)
-        })
+            args.set(arg.name, arg.value);
+        });
 
-        return args
+        return args;
     }
 
     argsString(int) {
-        var args = ""
+        var args = '';
         for (var x in int.options._hoistedOptions) {
-            args += int.options._hoistedOptions[x].name + ": " + int.options._hoistedOptions[x].value
+            args += int.options._hoistedOptions[x].name + ': ' + int.options._hoistedOptions[x].value;
             if (x < int.options._hoistedOptions.length - 1) {
-                args += " | "
+                args += ' | ';
             }
         }
 
-        return args
+        return args;
     }
 
     async getLang(int) {
         if (int.inGuild()) {
-            var info = await this.client.cache.get(int.guildId)
+            var info = await this.client.cache.get(int.guildId);
 
-            if(info.lang){
-                info.lang = info.lang.replace(/\s/g, '')
-            }
-
-            try { var Lang = info.lang }
-            catch (err) {
-                if (err == "TypeError: Cannot read property 'lang' of undefined") {
-                    var Lang = undefined
+            try {
+                if (info.lang) {
+                    info.lang = info.lang.replace(/\s/g, '');
                 }
+
+                var Lang = info.lang;
+            } catch (err) {
+                var Lang = undefined;
             }
 
             if (!Lang) {
-                var Lang = setLang(this.client, int, "server")
-                return Lang
+                var Lang = await setLang(this.client, int, 'server');
+                return Lang;
             }
-            return Lang
-        }
-        else {
-            var info = await this.client.cache.get(int.user.id)
+            return Lang;
+        } else {
+            var info = await this.client.cache.get(int.user.id);
 
-            try { var Lang = info.lang }
-            catch (err) {
-                if (err == "TypeError: Cannot read property 'lang' of undefined") {
-                    var Lang = undefined
+            try {
+                if (info.lang) {
+                    info.lang = info.lang.replace(/\s/g, '');
                 }
+
+                var Lang = info.lang;
+            } catch (err) {
+                var Lang = undefined;
             }
 
             if (!Lang) {
-                return setLang(this.client, int, "user")
+                return await setLang(this.client, int, 'user');
             }
-            return Lang
+            return Lang;
         }
     }
 
     async userOnBlacklist(id) {
-        const info = await this.client.cache.getBl(id)
+        const info = await this.client.cache.getBl(id);
         try {
             if (info.banAtual != null) {
                 if (info.duracaoBan <= time.now().ts) {
-                    info.banAtual = null
-                    info.duracaoBan = null
-                    await this.client.cache.updateBl(id, { bans: info.bans, banAtual: null, duracaoBan: null })
+                    info.banAtual = null;
+                    info.duracaoBan = null;
+                    await this.client.cache.updateBl(id, { bans: info.bans, banAtual: null, duracaoBan: null });
 
-                    return false
+                    return false;
+                } else {
+                    return true;
                 }
-                else {
-                    return true
-                }
+            } else {
+                return false;
             }
-            else {
-                return false
-            }
-        }
-        catch (err) {
+        } catch (err) {
             if (err == "TypeError: Cannot read properties of undefined (reading 'banAtual')") {
-                return false
-            }
-            else {
-                this.client.log.error(err, true)
-                return false
+                return false;
+            } else {
+                this.client.log.error(err, true);
+                return false;
             }
         }
     }
 
     toRound(n) {
-        var n = n.toString()
-        n = n.split(".")
-        var nI = n[0]
-        var nP = n[1]
-        nI = Number.parseInt(nI)
-        nP = nP.slice(0, 1)
-        nP = Number.parseInt(nP)
+        var n = n.toString();
+        n = n.split('.');
+        var nI = n[0];
+        var nP = n[1];
+        nI = Number.parseInt(nI);
+        nP = nP.slice(0, 1);
+        nP = Number.parseInt(nP);
 
         if (nP > 5 || nP == 5) {
-            nI = nI + 1
+            nI = nI + 1;
         }
-        return nI
+        return nI;
     }
 
     objToMap(obj) {
-        const mp = new Map;
-        Object.keys(obj).forEach(k => { mp.set(k, obj[k]) });
+        const mp = new Map();
+        Object.keys(obj).forEach(k => {
+            mp.set(k, obj[k]);
+        });
         return mp;
     }
 
@@ -128,116 +126,127 @@ module.exports = class Utils {
     }
 
     dice(tdados) {
-        var number = 1
-        var dice = []
+        var number = 1;
+        var dice = [];
         while (number <= tdados) {
-            dice.push(number)
-            number += 1
+            dice.push(number);
+            number += 1;
         }
-        var result = this.randomChoice(dice)
-        return result
+        var result = this.randomChoice(dice);
+        return result;
     }
 
     matchAtb(atributo, atributos, customBase) {
-        var base = 0.295
+        var base = 0.295;
 
-        if (customBase) { base = customBase }
+        if (customBase) {
+            base = customBase;
+        }
 
-        const result = stringSimilarity.findBestMatch(atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos)
-        const target = result.bestMatch.target
-        const rating = result.bestMatch.rating
+        const result = stringSimilarity.findBestMatch(
+            atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''),
+            atributos
+        );
+        const target = result.bestMatch.target;
+        const rating = result.bestMatch.rating;
 
-        var x = 0
+        var x = 0;
 
         while (x < atributo.length) {
-            base += 0.045
-            x++
+            base += 0.045;
+            x++;
         }
 
         if (base > 0.75) {
-            base = 0.75
+            base = 0.75;
         }
 
         if (rating >= base) {
-            return target
-        }
-        else {
-            return atributo
+            return target;
+        } else {
+            return atributo;
         }
     }
 
     matchAtbAutocomplete(atributo, atributos, customBase) {
-        var base = 0.155
+        var base = 0.155;
 
-        var x = 0
+        var x = 0;
         while (x < atributo.length) {
-            base += 0.025
-            x++
+            base += 0.025;
+            x++;
         }
 
         if (base > 0.7) {
-            base = 0.7
+            base = 0.7;
         }
 
-        if (customBase) { base = customBase }
+        if (customBase) {
+            base = customBase;
+        }
 
-        const result = stringSimilarity.findBestMatch(atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos)
+        const result = stringSimilarity.findBestMatch(
+            atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''),
+            atributos
+        );
 
-        const matchs = new Array()
+        const matchs = new Array();
         result.ratings.forEach(match => {
             if (match.rating >= base) {
-                matchs.push(match)
+                matchs.push(match);
             }
-        })
+        });
 
         matchs.sort(function (a, b) {
-            return b.rating - a.rating
-        })
+            return b.rating - a.rating;
+        });
 
-        var x = 0
-        const find = new Array()
+        var x = 0;
+        const find = new Array();
         matchs.forEach(match => {
-            if (x >= 8) { return }
-            find.push(match.target)
-            x++
-        })
+            if (x >= 8) {
+                return;
+            }
+            find.push(match.target);
+            x++;
+        });
 
-        return find.length == 0 ? new Array(atributo) : find
+        return find.length == 0 ? new Array(atributo) : find;
     }
 
     matchNomeFicha(typing, fichas) {
-        var base = 0.0
+        var base = 0.0;
 
-        var x = 0
+        var x = 0;
 
         while (x < typing.length) {
-            base += 0.045
-            x++
+            base += 0.045;
+            x++;
         }
 
         if (base > 0.75) {
-            base = 0.75
+            base = 0.75;
         }
 
-        const result = stringSimilarity.findBestMatch(typing, fichas)
+        const result = stringSimilarity.findBestMatch(typing, fichas);
 
-        const matchs = new Array()
+        const matchs = new Array();
         result.ratings.forEach(match => {
             if (match.rating >= base) {
-                matchs.push(match)
+                matchs.push(match);
             }
-        })
+        });
 
         matchs.sort(function (a, b) {
-            return b.rating - a.rating
-        })
+            return b.rating - a.rating;
+        });
 
-        const find = new Array()
+        const find = new Array();
         matchs.forEach(match => {
-            find.push(match.target)
-        })
+            find.push(match.target);
+        });
 
-        return find.length == 0 ? fichas.sort() : find
+        return find.length == 0 ? fichas.sort() : find;
     }
 
     replaceAll(string, search, replace) {
@@ -245,44 +254,45 @@ module.exports = class Utils {
     }
 
     indexOf(arr, val) {
-        var indexes = [], i;
-        for (i = 0; i < arr.length; i++)
-            if (arr[i] === val)
-                indexes.push(i);
+        var indexes = [],
+            i;
+        for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
         return indexes;
     }
 
     gerarSenha() {
-        const senha = CryptoJS.AES.encrypt(Date.now().toString(), process.env.PASS_KEY)
-        return senha.toString().slice(33, 43)
+        const senha = CryptoJS.AES.encrypt(Date.now().toString(), process.env.PASS_KEY);
+        return senha.toString().slice(33, 43);
     }
 
     secret(userConfig, local) {
-        var secret
+        var secret;
 
         try {
-            if (userConfig[local] == "true") {
-                secret = true
+            if (userConfig[local] == 'true') {
+                secret = true;
             }
-            if (userConfig[local] == "false" || userConfig[local] == null) {
-                secret = false
+            if (userConfig[local] == 'false' || userConfig[local] == null) {
+                secret = false;
             }
-        }
-        catch (err) {
+        } catch (err) {
             if (err == `TypeError: Cannot read property '${local}' of undefined`) {
-                secret = false
+                secret = false;
             }
         }
 
-        return secret
+        return secret;
     }
 
     mention(msg) {
-        if (msg.mentions.users.size == 1 && msg.mentions.users.first().id == this.client.user.id && msg.content == `<@!${this.client.user.id}>`) {
-            return true
-        }
-        else {
-            return false
+        if (
+            msg.mentions.users.size == 1 &&
+            msg.mentions.users.first().id == this.client.user.id &&
+            msg.content == `<@!${this.client.user.id}>`
+        ) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -291,29 +301,31 @@ module.exports = class Utils {
     }
 
     isDefaultAtb(atributo, atributos) {
-        if (!atributo) return false
-        
-        var base = 0.295
+        if (!atributo) return false;
 
-        const result = stringSimilarity.findBestMatch(atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''), atributos)
-        const rating = result.bestMatch.rating
+        var base = 0.295;
 
-        var x = 0
+        const result = stringSimilarity.findBestMatch(
+            atributo.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''),
+            atributos
+        );
+        const rating = result.bestMatch.rating;
+
+        var x = 0;
 
         while (x < atributo.length) {
-            base += 0.045
-            x++
+            base += 0.045;
+            x++;
         }
 
         if (base > 0.75) {
-            base = 0.75
+            base = 0.75;
         }
 
         if (rating >= base) {
-            return true
-        }
-        else {
-            return false
+            return true;
+        } else {
+            return false;
         }
     }
-}
+};
