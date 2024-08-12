@@ -1,9 +1,9 @@
 const time = require("luxon").DateTime;
 
-const cmdConfig = new Object({
-    disableCmds: new Array(),
-    reason: new Object()
-})
+// const cmdConfig = new Object({
+//     disableCmds: new Array(),
+//     reason: new Object()
+// })
 
 module.exports = {
     name: "interactionCreate",
@@ -26,32 +26,32 @@ module.exports = {
             return int.reply({ content: client.tl({ local: int.lang + "onMsg-cmdBarrado" }), ephemeral: true })
         }
         else {
-            if (cmdConfig.disableCmds.includes(cmd.name)) {
-                const disableEmbed = new client.Discord.EmbedBuilder()
-                    .setTitle(client.tl({ local: int.lang + "onMsg-cmdDsbTi" }))
-                    .setColor(parseInt(process.env.EMBED_COLOR))
-                    .setDescription(client.tl({ local: int.lang + "onMsg-cmdDsbDesc", cmd: cmdConfig.reason[cmd.name][int.lang] }))
-                    .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
-                    .setTimestamp()
-                return int.reply({ embeds: [disableEmbed], ephemeral: true })
-            }
-            else {
+            // if (cmdConfig.disableCmds.includes(cmd.name)) {
+            //     const disableEmbed = new client.Discord.EmbedBuilder()
+            //         .setTitle(client.tl({ local: int.lang + "onMsg-cmdDsbTi" }))
+            //         .setColor(parseInt(process.env.EMBED_COLOR))
+            //         .setDescription(client.tl({ local: int.lang + "onMsg-cmdDsbDesc", cmd: cmdConfig.reason[cmd.name][int.lang] }))
+            //         .setFooter(client.resources[int.lang.replace("-", "")].footer(), client.user.displayAvatarURL())
+            //         .setTimestamp()
+            //     return int.reply({ embeds: [disableEmbed], ephemeral: true })
+            // }
+            // else {
                 try {
                     cmd.run(client, int)
-                        .catch(err => {
-                            client.log.error(err, true)
-                            if (int.deferred) {
-                                if (int.replied) {
-                                    return
-                                }
-                                else {
-                                    return int.editReply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
-                                }
-                            }
-                            else {
-                                return int.reply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
-                            }
-                        })
+                        // .catch(err => {
+                        //     client.log.error(err, true)
+                        //     if (int.deferred) {
+                        //         if (int.replied) {
+                        //             return
+                        //         }
+                        //         else {
+                        //             return int.editReply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
+                        //         }
+                        //     }
+                        //     else {
+                        //         return int.reply({ content: client.tl({ local: int.lang + "intCreate-onErr" }), ephemeral: true })
+                        //     }
+                        // })
                 }
                 catch (err) {
                     client.log.error(err, true)
@@ -71,11 +71,11 @@ module.exports = {
                 client.emit("cmd", int, cmd.name)
                 const args = client.utils.argsString(int)
                 client.log.info(`Comando: ${cmd.name} executado por ${int.user.tag}(${int.user.id}) ${args ? `- Args: ${args}` : ``}`)
-            }
+            // }
         }
     },
-    disableCmd: (client, info) => {
-        cmdConfig.disableCmds = info.disable.cmds
-        cmdConfig.reason = info.disable.reason
-    }
+    // disableCmd: (client, info) => {
+    //     cmdConfig.disableCmds = info.disable.cmds
+    //     cmdConfig.reason = info.disable.reason
+    // }
 }

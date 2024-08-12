@@ -164,6 +164,8 @@ module.exports = class WebSocket {
             }
         });
 
-        httpServer.listen(process.env.PORT || 3005);
+        if(client.shard.ids[0] == 0) {
+            httpServer.listen(process.env.PORT || 3005);
+        }
     }
 }

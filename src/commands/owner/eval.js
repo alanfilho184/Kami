@@ -37,8 +37,8 @@ module.exports = class evaluate {
                         var code = typeof r == "string" ? r : inspect(r, { depth: 99 })
                         var result = `\`\`\`js\n${String(code).slice(0, 4000) + (code.length >= 4000 ? '...' : '')}\n\`\`\``
 
-                        var settings = client.utils.objToMap(process.env)
-                        settings.forEach((s) => { result = client.utils.replaceAll(result, s, "*") })
+                        // var settings = client.utils.objToMap(process.env)
+                        // settings.forEach((s) => { result = client.utils.replaceAll(result, s, "*") })
 
                         evalEmbed
                             .setDescription(result)
