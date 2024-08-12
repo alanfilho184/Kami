@@ -55,8 +55,8 @@ module.exports = class enviar_txt {
 
         }
     }
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "enviar")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "enviar")
         int.deferReply({ ephemeral: secret })
             .then(async () => {
                 const args = client.utils.args(int)
@@ -72,13 +72,13 @@ module.exports = class enviar_txt {
 
                 if (!nomerpg) {
                     try {
-                        var fichasUser = client.cache.get(int.user.id).fPadrao
+                        var fichasUser = await client.cache.get(int.user.id).fPadrao
                         nomerpg = fichasUser
                     }
                     catch (err) { fichasUser = undefined }
 
                     if (!fichasUser) {
-                        const fichasUser = client.cache.getFichasUser(int.user.id)
+                        const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
                         else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
@@ -180,9 +180,9 @@ module.exports = class enviar_txt {
     autocomplete(client, int) {
         const options = int.options._hoistedOptions
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "sheet_name" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
                     const find = client.utils.matchNomeFicha(opt.value, fichasUser)

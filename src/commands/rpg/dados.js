@@ -72,8 +72,8 @@ module.exports = class roll {
 
         }
     }
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "roll")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "roll")
 
         int.deferReply({ ephemeral: secret })
             .then(() => {
@@ -350,7 +350,7 @@ module.exports = class roll {
 
         if (!nomerpg) {
             try {
-                var fichasUser = client.cache.get(int.user.id).fPadrao
+                var fichasUser = await client.cache.get(int.user.id).fPadrao
                 nomerpg = fichasUser
             }
             catch (err) { fichasUser = undefined }
@@ -371,7 +371,7 @@ module.exports = class roll {
         try { nomerpg = nomerpg.replace("'", '') } catch { }
 
 
-        client.cache.getFicha(int.user.id, nomerpg)
+        await client.cache.getFicha(int.user.id, nomerpg)
             .then(r => {
                 if (r != undefined) {  
                     if (int.lang == "en-") {
@@ -473,7 +473,7 @@ module.exports = class roll {
         const atributos = client.resources[int.lang].atributos
         const atributosF = client.resources[int.lang].atributosF
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "dice_or_attribute" && opt.focused) {
                 const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
                 const data = new Array()
@@ -491,7 +491,7 @@ module.exports = class roll {
                 }
             }
             else if (opt.name == "sheet_name" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
                     const find = client.utils.matchNomeFicha(opt.value, fichasUser)

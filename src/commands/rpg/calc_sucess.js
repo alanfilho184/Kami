@@ -40,8 +40,8 @@ module.exports = class sucesso {
             run: this.execute
         }
     }
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "ficha")
         int.deferReply({ephemeral: secret})
             .then(() => {
                 const args = client.utils.args(int)

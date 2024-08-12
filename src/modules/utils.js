@@ -34,9 +34,13 @@ module.exports = class Utils {
         return args
     }
 
-    getLang(int) {
+    async getLang(int) {
         if (int.inGuild()) {
-            var info = this.client.cache.get(int.guildId)
+            var info = await this.client.cache.get(int.guildId)
+
+            if(info.lang){
+                info.lang = info.lang.replace(/\s/g, '')
+            }
 
             try { var Lang = info.lang }
             catch (err) {
@@ -52,7 +56,7 @@ module.exports = class Utils {
             return Lang
         }
         else {
-            var info = this.client.cache.get(int.user.id)
+            var info = await this.client.cache.get(int.user.id)
 
             try { var Lang = info.lang }
             catch (err) {
@@ -68,14 +72,14 @@ module.exports = class Utils {
         }
     }
 
-    userOnBlacklist(id) {
-        const info = this.client.cache.getBl(id)
+    async userOnBlacklist(id) {
+        const info = await this.client.cache.getBl(id)
         try {
             if (info.banAtual != null) {
                 if (info.duracaoBan <= time.now().ts) {
                     info.banAtual = null
                     info.duracaoBan = null
-                    this.client.cache.updateBl(id, { bans: info.bans, banAtual: null, duracaoBan: null })
+                    await this.client.cache.updateBl(id, { bans: info.bans, banAtual: null, duracaoBan: null })
 
                     return false
                 }

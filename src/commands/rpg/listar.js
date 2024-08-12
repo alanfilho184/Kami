@@ -28,8 +28,8 @@ Ex: **${"/"}listar**`
             api: this.api
         }
     }
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "ficha")
         int.deferReply({ ephemeral: secret })
             .then(() => {
                 client.db.query(`select nomerpg from fichas where id = :id`, {

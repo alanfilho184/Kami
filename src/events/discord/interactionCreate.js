@@ -9,14 +9,14 @@ module.exports = {
     name: "interactionCreate",
     type: "djs",
     execute: async (client, int) => {
-        if (client.utils.userOnBlacklist(int.user.id)) { return }
+        if (await client.utils.userOnBlacklist(int.user.id)) { return }
         if (int.type == 4) { return client.emit("autocompleteHandler", int) }
         if (int.type == 3) { return client.emit("componentHandler", int) }
         if ((int.isContextMenuCommand())) { return client.emit("contextMenuHandler", int) }
         if (!int.isChatInputCommand()) { return }
 
         int.ping = time.now().ts - int.createdTimestamp
-        int.lang = client.utils.getLang(int)
+        int.lang = await client.utils.getLang(int)
 
         if (!int.lang) { int.lang = "pt-" }
 

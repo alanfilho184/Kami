@@ -60,10 +60,10 @@ Esse comando irá desativar e ativar os comandos de insanidade secreta`},
             run: this.execute
         }
     }
-    execute(client, int) {
+    async execute(client, int) {
         const args = client.utils.args(int)
 
-        const secret = client.utils.secret(client.cache.get(int.user.id), "insan")
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "insan")
 
         int.deferReply({ ephemeral: secret })
             .then(() => {

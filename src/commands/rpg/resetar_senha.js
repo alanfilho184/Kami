@@ -64,9 +64,9 @@ module.exports = class resetar_senha {
     autocomplete(client, int) {
         const options = int.options._hoistedOptions
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "sheet_name" && opt.focused) {
-                const find = client.utils.matchNomeFicha(opt.value, client.cache.getFichasUser(int.user.id))
+                const find = client.utils.matchNomeFicha(opt.value, await client.cache.getFichasUser(int.user.id))
                 const data = new Array()
 
                 find.forEach(f => {

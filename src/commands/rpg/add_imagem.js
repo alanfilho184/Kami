@@ -62,7 +62,7 @@ module.exports = class adicionar_imagem {
                     return
                 }
                 else {
-                    const fichas = client.cache.getFichasUser(int.user.id)
+                    const fichas = await client.cache.getFichasUser(int.user.id)
 
                     const uniqueID = `${Date.now()}`
                     const menu = new client.Discord.SelectMenuBuilder()
@@ -87,15 +87,15 @@ module.exports = class adicionar_imagem {
 
                     var filter = (interaction) => interaction.user.id === int.user.id && interaction.customId.split("|")[1] === uniqueID
                     botmsg.awaitMessageComponent({ filter, time: 60000 })
-                        .then((interaction) => {
+                        .then(async (interaction) => {
                             interaction.deferUpdate()
 
                             const nomerpg = interaction.values[0]
 
-                            client.cache.updateFicha(int.user.id, nomerpg, { imagem: attach.url }, { query: "update" })
+                            await client.cache.updateFicha(int.user.id, nomerpg, { imagem: attach.url }, { query: "update" })
                                 .then(async r => {
                                     client.emit("updateFichaBot", int.user.id, nomerpg)
-                                    var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
+                                    var infoUIRT = await await client.cache.getIrt(int.user.id, nomerpg)
 
                                     if (infoUIRT != "") {
                                         client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })

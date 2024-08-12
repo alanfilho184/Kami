@@ -26,8 +26,8 @@ module.exports = class invite {
         }
     }
 
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "geral")
         int.deferReply({ ephemeral: secret })
             .then(() => {
                 const inviteEmbed = new client.Discord.EmbedBuilder()

@@ -83,8 +83,8 @@ module.exports = class ficha {
         }
     }
 
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "ficha")
 
         int.deferReply({ ephemeral: secret })
             .then(async () => {
@@ -270,7 +270,7 @@ module.exports = class ficha {
                                 return int.editReply(client.tl({ local: int.lang + "cef-nFichaEn", nomerpg: nomerpg }))
                             }
                             else {
-                                const qFichas = client.cache.getFichasUser(int.user.id)
+                                const qFichas = await client.cache.getFichasUser(int.user.id)
                                 if (qFichas.length >= 10) {
                                     int.editReply({ content: client.tl({ local: int.lang + "cef-lFE" }) })
                                     return
@@ -300,8 +300,8 @@ module.exports = class ficha {
                                                 if (choice == "conf") {
                                                     if (atb == "multi") {
                                                         client.cache.updateFicha(int.user.id, nomerpg, valor, { query: "insert" })
-                                                            .then(r => {
-                                                                client.cache.updateFichasUser(int.user.id, nomerpg)
+                                                            .then(async r => {
+                                                                await client.cache.updateFichasUser(int.user.id, nomerpg)
                                                                 var msgToSend = String()
                                                                 if (atbsErr[0]) {
                                                                     msgToSend = client.tl({ local: int.lang + "cef-updtMultiErr", nomerpg: nomerpg, atributo: atbs, valor: vals, atb: atbsErr })
@@ -324,11 +324,11 @@ module.exports = class ficha {
                                                         data[`${atb}`] = valor
 
                                                         client.cache.updateFicha(int.user.id, nomerpg, data, { query: "insert", resetarSenha: senha })
-                                                            .then(r => {
+                                                            .then(async r => {
                                                                 if (client.utils.isDefaultAtb(atb, atributos)) {
                                                                     atb = atributosF[atributosPt.indexOf(atb)]
                                                                 }
-                                                                client.cache.updateFichasUser(int.user.id, nomerpg)
+                                                                await client.cache.updateFichasUser(int.user.id, nomerpg)
                                                                 return int.editReply({ content: client.tl({ local: int.lang + "cef-adcFicha", nomerpg: nomerpg, atributo: atb, valor: valor }), components: [] })
                                                                     .then(() => {
                                                                         client.emit("createFichaBot", int.user.id, nomerpg)
@@ -362,7 +362,7 @@ module.exports = class ficha {
         const atributos = client.resources[int.lang].atributos
         const atributosF = client.resources[int.lang].atributosF
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "attribute" && opt.focused) {
                 const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
                 const data = new Array()
@@ -380,7 +380,7 @@ module.exports = class ficha {
                 }
             }
             else if (opt.name == "sheet_name" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
                     const find = client.utils.matchNomeFicha(opt.value, fichasUser)

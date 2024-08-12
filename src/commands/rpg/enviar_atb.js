@@ -41,8 +41,8 @@ module.exports = class enviar_atb {
             autocomplete: this.autocomplete
         }
     }
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "enviar")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "enviar")
         int.deferReply({ ephemeral: secret })
             .then(async () => {
                 const args = client.utils.args(int)
@@ -60,13 +60,13 @@ module.exports = class enviar_atb {
 
                 if (!nomerpg) {
                     try {
-                        var fichasUser = client.cache.get(int.user.id).fPadrao
+                        var fichasUser = await client.cache.get(int.user.id).fPadrao
                         nomerpg = fichasUser
                     }
                     catch (err) { fichasUser = undefined }
 
                     if (!fichasUser) {
-                        const fichasUser = client.cache.getFichasUser(int.user.id)
+                        const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                         if (fichasUser.length > 1) { return int.editReply(client.tl({ local: int.lang + "eft-mFichas", fichasUser: fichasUser })) }
                         else if (fichasUser.length == 1) { nomerpg = fichasUser[0] }
@@ -74,7 +74,7 @@ module.exports = class enviar_atb {
                     }
                 }
 
-                const fichaUser = await client.cache.getFicha(int.user.id, nomerpg)
+                const fichaUser = await await client.cache.getFicha(int.user.id, nomerpg)
                 if (fichaUser) {
                     if (int.lang == "en-" && client.utils.isDefaultAtb(atb, atributos)) {
                         atb = atributosPt[atributos.indexOf(atb)]
@@ -123,7 +123,7 @@ module.exports = class enviar_atb {
         const atributos = client.resources[int.lang].atributos
         const atributosF = client.resources[int.lang].atributosF
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "attribute" && opt.focused) {
                 const find = client.utils.matchAtbAutocomplete(opt.value, atributos)
                 const data = new Array()
@@ -141,7 +141,7 @@ module.exports = class enviar_atb {
                 }
             }
             else if (opt.name == "sheet_name" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
                     const find = client.utils.matchNomeFicha(opt.value, fichasUser)

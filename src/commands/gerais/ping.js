@@ -27,9 +27,8 @@ module.exports = class ping {
             run: this.execute
         };
     }
-
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "geral")
         int.deferReply({ ephemeral: secret })
             .then(async () => {
 

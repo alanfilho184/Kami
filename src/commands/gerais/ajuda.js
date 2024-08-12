@@ -31,7 +31,7 @@ module.exports = class ajuda {
     }
 
     async execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "geral")
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "geral")
         await int.deferReply({ ephemeral: secret })
 
         const mainHelp = new client.Discord.EmbedBuilder()

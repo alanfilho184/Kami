@@ -100,7 +100,7 @@ module.exports = class WebSocket {
 
                 if (user.page == "jogador") {
                     socket.on("createFichaSite", (ficha) => {
-                        client.cache.updateFichasUser(ficha.id, ficha.nomerpg)
+                        // await client.cache.updateFichasUser(ficha.id, ficha.nomerpg)
 
                         connections.map.forEach(async (user, socketId) => {
                             user = JSON.parse(user)
@@ -133,7 +133,7 @@ module.exports = class WebSocket {
                     })
 
                     socket.on("deleteFichaSite", (ficha) => {
-                        client.cache.deleteFichaUser(ficha.id, ficha.nomerpg)
+                        // await client.cache.deleteFichaUser(ficha.id, ficha.nomerpg)
 
                         connections.map.forEach(async (user, socketId) => {
                             user = JSON.parse(user)
@@ -145,8 +145,8 @@ module.exports = class WebSocket {
                     })
 
                     socket.on("renameFichaSite", (ficha) => {
-                        client.cache.deleteFichaUser(ficha.id, ficha.nomerpg)
-                        client.cache.updateFichasUser(ficha.id, ficha.novonomerpg)
+                        // await client.cache.deleteFichaUser(ficha.id, ficha.nomerpg)
+                        // await client.cache.updateFichasUser(ficha.id, ficha.novonomerpg)
 
                         connections.map.forEach(async (user, socketId) => {
                             user = JSON.parse(user)

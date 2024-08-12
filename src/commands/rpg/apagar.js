@@ -67,8 +67,8 @@ Ex: **${"/"}apagar RPG_Kami irt**
             autocomplete: this.autocomplete
         }
     }
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "ficha")
         int.deferReply({ ephemeral: secret })
             .then(() => {
                 const args = client.utils.args(int)
@@ -89,10 +89,10 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                 client.db.query(`select * from irt where id = :id and nomerpg = :nomerpg`, {
                                     replacements: { id: int.user.id, nomerpg: nomerpg }
                                 })
-                                    .then(irt => {
+                                    .then(async irt => {
                                         if (irt[0][0]) {
 
-                                            client.cache.getIrt(int.user.id, nomerpg)
+                                            await client.cache.getIrt(int.user.id, nomerpg)
                                                 .then(async fichasIrt => {
                                                     for (var f of fichasIrt) {
                                                         const c = client.channels.cache.get(f.chid)
@@ -109,7 +109,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                 .then(r => {
                                                     return int.editReply(client.tl({ local: int.lang + "af-deacIrt", nomerpg: nomerpg }))
                                                 })
-                                            client.cache.deleteIrt(int.user.id, nomerpg)
+                                            await client.cache.deleteIrt(int.user.id, nomerpg)
                                         }
                                         else {
                                             return int.editReply(client.tl({ local: int.lang + "af-irtNF", nomerpg: nomerpg }))
@@ -143,23 +143,23 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                 client.db.query(`delete from fichas where id = :id and nomerpg = :nomerpg`, {
                                                     replacements: { id: int.user.id, nomerpg: nomerpg }
                                                 })
-                                                    .then(() => {
+                                                    .then(async () => {
                                                         client.emit("deleteFichaBot", int.user.id, nomerpg)
-                                                        client.cache.deleteFicha(int.user.id, nomerpg)
-                                                        client.cache.deleteFichaUser(int.user.id, nomerpg)
+                                                        await client.cache.deleteFicha(int.user.id, nomerpg)
+                                                        await client.cache.deleteFichaUser(int.user.id, nomerpg)
 
                                                         try {
-                                                            const fPadrao = client.cache.get(int.user.id).fPadrao
+                                                            const fPadrao = await client.cache.get(int.user.id).fPadrao
 
                                                             if (fPadrao == nomerpg) {
-                                                                client.cache.update(int.user.id, null, "fPadrao", false)
+                                                                await client.cache.update(int.user.id, null, "fPadrao", false)
                                                             }
                                                         }
                                                         catch (err) { }
 
                                                         int.editReply({ content: client.tl({ local: int.lang + "af-fApg", nomerpg: nomerpg }), components: [] })
                                                             .then(async function () {
-                                                                client.cache.getIrt(int.user.id, nomerpg)
+                                                                await client.cache.getIrt(int.user.id, nomerpg)
                                                                     .then(infoUIRT => {
                                                                         if (infoUIRT != "") {
                                                                             client.emit("apgFicha", { id: int.user.id, nomerpg: nomerpg })
@@ -191,9 +191,9 @@ Ex: **${"/"}apagar RPG_Kami irt**
     autocomplete(client, int) {
         const options = int.options._hoistedOptions
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "sheet_name" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
                     const find = client.utils.matchNomeFicha(opt.value, fichasUser)

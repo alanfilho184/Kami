@@ -4,7 +4,7 @@ module.exports = {
     name: "button",
     type: "bot",
     execute: async (client, comp, cmd) => {
-        client.cache.updateCnt("button")
+        await client.cache.updateCnt("button")
 
         let idioma
         try {
