@@ -20,7 +20,5 @@ jobs:
             cd Kami
             rm package-lock.json
             git pull
-            npm prune
             npm install
-            npm audit fix --force
-            pm2 reload bot
+            pm2 restart bot
