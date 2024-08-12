@@ -74,7 +74,7 @@ module.exports = class botStatus {
 
         const ram = stats.memory / 1024 / 1024;
 
-        const commands = client.cache.getCount();
+        const commands = await client.cache.getCount();
 
         info = {
             serverCount: results[0].reduce((acc, guildCount) => acc + guildCount, 0),
@@ -103,8 +103,8 @@ module.exports = class botStatus {
             .addRow('Ping', `API: ${Math.round(client.ws.ping)} ms - ` + `DB: ${Math.round(DBInfo.ping)} ms`)
             .addRow('Uso do DB', (dbSize / 1e6).toFixed(1) + ' MB')
             .addRow('Fichas Criadas', `${qFichas} Fichas`)
-            .addRow('Fichas no Cache', `${client.cache.evalSync('fichas.length()')}`)
-            .addRow('Fichas IRT no Cache', `${client.cache.evalSync('irt.length()')}`)
+            // .addRow('Fichas no Cache', `${client.cache.evalSync('fichas.length()')}`)
+            // .addRow('Fichas IRT no Cache', `${client.cache.evalSync('irt.length()')}`)
             .addRow('', '')
             .addRow(`Servidores`, `${info.serverCount}`)
             .addRow(`Usuários`, `${info.userCount}`)

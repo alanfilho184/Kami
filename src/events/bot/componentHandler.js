@@ -8,7 +8,7 @@ module.exports = {
         var func = comp.customId.match(regEx)
 
         comp.ping = time.now().ts - comp.createdTimestamp
-        comp.lang = client.utils.getLang(comp)
+        comp.lang = await client.utils.getLang(comp)
 
         if (!comp.lang) { int.lang = "pt-" }
 

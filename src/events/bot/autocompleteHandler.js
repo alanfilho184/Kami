@@ -12,7 +12,7 @@ module.exports = {
         if(int.deferred) return
 
         int.ping = time.now().ts - int.createdTimestamp
-        int.lang = client.utils.getLang(int)
+        int.lang = await client.utils.getLang(int)
 
         if (!int.lang) { int.lang = "pt-" }
 

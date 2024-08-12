@@ -39,8 +39,8 @@ module.exports = class renomear {
             autocomplete: this.autocomplete
         }
     }
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "ficha")
         int.deferReply({ ephemeral: secret })
             .then(() => {
                 const args = client.utils.args(int)
@@ -58,25 +58,25 @@ module.exports = class renomear {
                 client.db.query(`select * from fichas where id = :id and nomerpg = :nomerpg`, {
                     replacements: { id: int.user.id, nomerpg: nomerpgAtual },
                 })
-                    .then(result => {
+                    .then(async result => {
                         if (result[0] == "") { return int.editReply(client.tl({ local: int.lang + "rf-nFE", nomerpg: nomerpgAtual })) }
                         else {
-                            const fichasUser = client.cache.getFichasUser(int.user.id)
+                            const fichasUser = await client.cache.getFichasUser(int.user.id)
                             if (fichasUser.includes(nomerpgNovo)) { return int.editReply(client.tl({ local: int.lang + "rf-fE", nomerpg: nomerpgNovo })) }
                             else {
                                 client.db.query(`update fichas set nomerpg = :nomerpgnovo where id = :id and nomerpg = :nomerpg`, {
                                     replacements: { id: int.user.id, nomerpg: nomerpgAtual, nomerpgnovo: nomerpgNovo },
                                 })
-                                    .then(() => {
-                                        client.cache.deleteFichaUser(int.user.id, nomerpgAtual)
-                                        client.cache.updateFichasUser(int.user.id, nomerpgNovo)
+                                    .then(async() => {
+                                        // await client.cache.deleteFichaUser(int.user.id, nomerpgAtual)
+                                        // await client.cache.updateFichasUser(int.user.id, nomerpgNovo)
                                         return int.editReply(client.tl({ local: int.lang + "rf-fRenomeada", nomerpg: nomerpgAtual, novoNomeRpg: nomerpgNovo }))
                                             .then(async function () {
                                                 client.emit("renameFichaBot", int.user.id, nomerpgAtual, nomerpgNovo)
-                                                var infoUIRT = await client.cache.getIrt(int.user.id, nomerpgAtual)
+                                                var infoUIRT = await await client.cache.getIrt(int.user.id, nomerpgAtual)
 
                                                 if (infoUIRT != "") {
-                                                    client.cache.modifyIrt(nomerpgNovo, infoUIRT)
+                                                    await client.cache.modifyIrt(nomerpgNovo, infoUIRT)
                                                         .then((irt) => {
                                                             client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpgNovo, irt: irt })
                                                         })
@@ -93,9 +93,9 @@ module.exports = class renomear {
     autocomplete(client, int) {
         const options = int.options._hoistedOptions
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "current_sheet_name" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
                     const find = client.utils.matchNomeFicha(opt.value, fichasUser)

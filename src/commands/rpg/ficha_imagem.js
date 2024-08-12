@@ -43,8 +43,8 @@ module.exports = class ficha_imagem {
         }
     }
 
-    execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), "ficha")
+    async execute(client, int) {
+        const secret = client.utils.secret(await client.cache.get(int.user.id), "ficha")
         
         int.deferReply({ ephemeral: secret })
             .then(async () => {
@@ -62,12 +62,12 @@ module.exports = class ficha_imagem {
                 }
 
                 client.cache.getFicha(int.user.id, nomerpg)
-                    .then(r => {
+                    .then(async r => {
                         if (r) {
-                            client.cache.updateFicha(int.user.id, nomerpg, { imagem: imagem.url }, { query: "update" })
+                            await client.cache.updateFicha(int.user.id, nomerpg, { imagem: imagem.url }, { query: "update" })
                                 .then(async r => {
                                     client.emit("updateFichaBot", int.user.id, nomerpg)
-                                    var infoUIRT = await client.cache.getIrt(int.user.id, nomerpg)
+                                    var infoUIRT = await await client.cache.getIrt(int.user.id, nomerpg)
 
                                     if (infoUIRT != "") {
                                         client.emit("updtFicha", int, { id: int.user.id, nomerpg: nomerpg, irt: infoUIRT })
@@ -85,9 +85,9 @@ module.exports = class ficha_imagem {
     autocomplete(client, int) {
         const options = int.options._hoistedOptions
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "sheet_name" && opt.focused) {
-                const fichasUser = client.cache.getFichasUser(int.user.id)
+                const fichasUser = await client.cache.getFichasUser(int.user.id)
 
                 if (fichasUser.length >= 1) {
                     const find = client.utils.matchNomeFicha(opt.value, fichasUser)

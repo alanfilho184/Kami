@@ -4,7 +4,7 @@ module.exports = {
     name: "cmd",
     type: "bot",
     execute: async (client, int, cmd) => {
-        client.cache.updateCnt("cmd")
+        await client.cache.updateCnt("cmd")
 
         var Lang = int.lang
 

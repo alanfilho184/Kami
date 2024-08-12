@@ -34,7 +34,7 @@ module.exports = class botinfo {
     }
 
     async execute(client, int) {
-        const secret = client.utils.secret(client.cache.get(int.user.id), 'geral');
+        const secret = client.utils.secret(await client.cache.get(int.user.id), 'geral');
         await int.deferReply({ ephemeral: secret });
 
         const promises = [
@@ -57,7 +57,7 @@ module.exports = class botinfo {
 
         const ram = stats.memory / 1024 / 1024;
 
-        const commands = client.cache.getCount();
+        const commands = await client.cache.getCount();
 
         var uptime = process.uptime();
         var days = Math.floor((uptime % 31536000) / 86400);

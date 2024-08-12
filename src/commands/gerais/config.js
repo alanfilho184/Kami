@@ -33,7 +33,7 @@ module.exports = class config {
                 var botmsg
 
                 while (repeat) {
-                    const userConfig = client.cache.get(int.user.id) || {
+                    const userConfig = await client.cache.get(int.user.id) || {
                         lang: null,
                         fPadrao: null,
                         roll: null,
@@ -122,51 +122,51 @@ module.exports = class config {
 
                                 if (choice == "rollS") {
                                     if (userConfig.roll == "true") {
-                                        await client.cache.update(int.user.id, "false", "roll", false)
+                                        await await client.cache.update(int.user.id, "false", "roll", false)
                                         return
                                     }
                                     else {
-                                        await client.cache.update(int.user.id, "true", "roll", false)
+                                        await await client.cache.update(int.user.id, "true", "roll", false)
                                         return
                                     }
                                 }
                                 else if (choice == "insS") {
                                     if (userConfig.insan == "true") {
-                                        await client.cache.update(int.user.id, "false", "insan", false)
+                                        await await client.cache.update(int.user.id, "false", "insan", false)
                                         return
                                     }
                                     else {
-                                        await client.cache.update(int.user.id, "true", "insan", false)
+                                        await await client.cache.update(int.user.id, "true", "insan", false)
                                         return
                                     }
                                 }
                                 else if (choice == "geralS") {
                                     if (userConfig.geral == "true") {
-                                        await client.cache.update(int.user.id, "false", "geral", false)
+                                        await await client.cache.update(int.user.id, "false", "geral", false)
                                         return
                                     }
                                     else {
-                                        await client.cache.update(int.user.id, "true", "geral", false)
+                                        await await client.cache.update(int.user.id, "true", "geral", false)
                                         return
                                     }
                                 }
                                 else if (choice == "fichaS") {
                                     if (userConfig.ficha == "true") {
-                                        await client.cache.update(int.user.id, "false", "ficha", false)
+                                        await await client.cache.update(int.user.id, "false", "ficha", false)
                                         return
                                     }
                                     else {
-                                        await client.cache.update(int.user.id, "true", "ficha", false)
+                                        await await client.cache.update(int.user.id, "true", "ficha", false)
                                         return
                                     }
                                 }
                                 else if (choice == "enviarS") {
                                     if (userConfig.enviar == "true") {
-                                        await client.cache.update(int.user.id, "false", "enviar", false)
+                                        await await client.cache.update(int.user.id, "false", "enviar", false)
                                         return
                                     }
                                     else {
-                                        await client.cache.update(int.user.id, "true", "enviar", false)
+                                        await await client.cache.update(int.user.id, "true", "enviar", false)
                                         return
                                     }
                                 }
@@ -178,11 +178,11 @@ module.exports = class config {
                             }
                             else {
                                 if (interaction.values[0] == "excluir") {
-                                    await client.cache.update(int.user.id, null, "fPadrao", false)
+                                    await await client.cache.update(int.user.id, null, "fPadrao", false)
                                     return
                                 }
                                 else {
-                                    await client.cache.update(int.user.id, interaction.values[0], "fPadrao", false)
+                                    await await client.cache.update(int.user.id, interaction.values[0], "fPadrao", false)
                                     return
                                 }
                             }

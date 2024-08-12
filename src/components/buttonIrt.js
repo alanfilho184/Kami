@@ -27,7 +27,7 @@ module.exports = class buttonIrt {
             await comp.deferUpdate()
             client.emit("button", comp, "buttonIrt")
 
-            msg.lang = client.utils.getLang({
+            msg.lang = await client.utils.getLang({
                 guildId: comp.guildId,
                 user: {
                     id: comp.user.id
@@ -56,14 +56,14 @@ module.exports = class buttonIrt {
 
                     const filter = (int) => int.user.id === info.id && int.customId.split("|")[1] === uniqueID
                     botmsg.awaitMessageComponent({ filter, time: 30000 })
-                        .then(int => {
+                        .then(async int => {
                             const choice = int.customId.split("|")[0]
 
                             if (choice == "conf") {
                                 int.message.delete()
 
                                 client.db.query(`delete from irt where msgid = '${info.msgid}' and id = '${info.id}' and nomerpg = '${info.nomerpg}'`)
-                                client.cache.deleteIrt(info.id, info.nomerpg, info.msgid)
+                                await client.cache.deleteIrt(info.id, info.nomerpg, info.msgid)
                             }
                             else if (choice == "canc") {
                                 int.deferUpdate()
@@ -115,7 +115,7 @@ module.exports = class buttonIrt {
             await comp.deferUpdate()
             client.emit("button", comp, "buttonIrt")
 
-            msg.lang = client.utils.getLang({
+            msg.lang = await client.utils.getLang({
                 guildId: comp.guildId,
                 user: {
                     id: comp.user.id

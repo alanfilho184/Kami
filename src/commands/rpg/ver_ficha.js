@@ -83,10 +83,10 @@ module.exports = class ver_ficha {
     autocomplete(client, int) {
         const options = int.options._hoistedOptions
 
-        options.forEach(opt => {
+        options.forEach(async opt => {
             if (opt.name == "sheet_name" && opt.focused) {
                 try {
-                    const fichasUser = client.cache.getFichasUser(options[0].value)
+                    const fichasUser = await client.cache.getFichasUser(options[0].value)
 
                     if (fichasUser.length >= 1) {
                         const find = client.utils.matchNomeFicha(opt.value, fichasUser)

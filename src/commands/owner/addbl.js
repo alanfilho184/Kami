@@ -23,7 +23,7 @@ module.exports = class addbl {
 
     execute(client, int) {
         int.deferReply({ ephemeral: true })
-            .then(() => {
+            .then(async () => {
                 const args = client.utils.args(int)
 
                 const banid = args.get("id")
@@ -31,16 +31,16 @@ module.exports = class addbl {
                 const banAtual = args.get("banatual")
                 const duracaoBan = args.get("duracaoban")
 
-                client.cache.updateBl(banid, { bans: bans, banAtual: banAtual, duracaoBan: time.now().ts + toMs.parse(duracaoBan) })
+                await client.cache.updateBl(banid, { bans: bans, banAtual: banAtual, duracaoBan: time.now().ts + toMs.parse(duracaoBan) })
                     .then(bl => {
                         return int.editReply(bl)
                     })
             })
     }
 
-    autocomplete(client, int) {
+    async autocomplete(client, int) {
         const options = int.options._hoistedOptions
-        let BlUser = client.cache.getBl(options[0].value)
+        let BlUser = await client.cache.getBl(options[0].value)
 
         if (!BlUser) {
             BlUser = { id: options[0].value, bans: 0, banAtual: null, duracaoBan: null }
