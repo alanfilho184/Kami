@@ -146,7 +146,7 @@ Ex: **${"/"}apagar RPG_Kami irt**
                                                     .then(async () => {
                                                         client.emit("deleteFichaBot", int.user.id, nomerpg)
                                                         await client.cache.deleteFicha(int.user.id, nomerpg)
-                                                        await client.cache.deleteFichaUser(int.user.id, nomerpg)
+                                                        // await client.cache.deleteFichaUser(int.user.id, nomerpg)
 
                                                         try {
                                                             const fPadrao = await client.cache.get(int.user.id).fPadrao
