@@ -44,7 +44,7 @@ module.exports = class botinfo {
 
         const results = await Promise.all(promises);
 
-        const table = new ac('Kami Info');
+        const table = new ac(`Kami - Shard: ${client.shard.ids[0]}`);
 
         var dbPing = time.now().toMillis();
         await client.db.query('select 1').then(() => {

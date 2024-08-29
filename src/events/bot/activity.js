@@ -4,11 +4,11 @@ function replaceAll(string, search, replace) {
     return string.split(search).join(replace);
 }
 
-var actsPadrao = [`Quer ajuda? ${"$prefix$"}ajuda`, `Need help? ${"$prefix$"}help`, `Bug? ${"$prefix$"}bug`, `Alguma ideia? ${"$prefix$"}sugestão`, `Vote em mim, me ajuda muito ❤️ | ${"$prefix$"}votar`, "Me convide para outro servidor! $prefix$convite"]
-var acts = [`Quer ajuda? ${"$prefix$"}ajuda`, `Need help? ${"$prefix$"}help`, `Bug? ${"$prefix$"}bug`, `Alguma ideia? ${"$prefix$"}sugestão`, `Vote em mim, me ajuda muito ❤️ | ${"$prefix$"}votar`]
+var actsPadrao = ['teste']//["/ajuda", "/help", "kamiapp.com.br"]
+var acts = ['teste']//["/ajuda", "/help", "kamiapp.com.br"]
 var status = "online"
-var typeStatus = "WATCHING"
-var timeChange = 10000
+var typeStatus = "PLAYING"
+var timeChange = 30000
 var act = ""
 
 module.exports = {
