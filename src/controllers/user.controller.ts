@@ -1,0 +1,206 @@
+import db from '../configs/database';
+
+type PreparedUser = {
+    discord_id?: string;
+    username: string;
+    email: string | null;
+    avatar?: string;
+    password: string | null;
+};
+
+function toUser(user: any): User | (User & User_Config) | null {
+    try {
+        if (user.user_config && user.user_config.length > 0) {
+            return {
+                id: user.id,
+                discord_id: user.discord_id,
+                username: user.username,
+                avatar: user.avatar,
+                email: user.email,
+                password: user.password,
+                is_beta: user.is_beta,
+                is_premium: user.is_premium,
+                last_use: user.last_use,
+                default_sheet: user.user_config[0].default_sheet,
+                language: user.user_config[0].language,
+                secret_general: user.user_config[0].secret_general,
+                secret_insan: user.user_config[0].secret_insan,
+                secret_roll: user.user_config[0].secret_roll,
+                secret_send: user.user_config[0].secret_send,
+                secret_sheet: user.user_config[0].secret_sheet
+            };
+        } else {
+            return {
+                id: user.id,
+                discord_id: user.discord_id,
+                username: user.username,
+                avatar: user.avatar,
+                email: user.email,
+                password: user.password,
+                is_beta: user.is_beta,
+                is_premium: user.is_premium,
+                last_use: user.last_use
+            };
+        }
+    } catch (err) {
+        return null;
+    }
+}
+
+function toUserArray(users: any[]): User[] {
+    const usersArray: User[] = [];
+
+    users.forEach(prismaUser => {
+        const user = toUser(prismaUser);
+        if (user) {
+            usersArray.push(user);
+        }
+    });
+
+    return usersArray;
+}
+
+export default class UserController {
+    static async create(user: PreparedUser): Promise<User | null> {
+        return toUser(
+            await db.users.create({
+                data: {
+                    discord_id: user.discord_id,
+                    username: user.username,
+                    email: user.email,
+                    avatar: user.avatar,
+                    password: user.password
+                }
+            })
+        );
+    }
+
+    static async getById(id: number): Promise<User | null> {
+        return toUser(
+            await db.users.findUnique({
+                where: {
+                    id: id
+                },
+                include: {
+                    user_config: true
+                }
+            })
+        );
+    }
+
+    static async getByUsername(username: string): Promise<User | null> {
+        return toUser(
+            await db.users.findUnique({
+                where: {
+                    username: username
+                },
+                include: {
+                    user_config: true
+                }
+            })
+        );
+    }
+
+    static async getByEmail(email: string): Promise<User | null> {
+        return toUser(
+            await db.users.findUnique({
+                where: {
+                    email: email
+                },
+                include: {
+                    user_config: true
+                }
+            })
+        );
+    }
+
+    static async getByDiscordId(discordId: string): Promise<(User & User_Config) | null> {
+        return toUser(
+            await db.users.findUnique({
+                where: {
+                    discord_id: discordId
+                },
+                include: {
+                    user_config: true
+                }
+            })
+        ) as (User & User_Config) | null;
+    }
+
+    static async updateById(id: number, newUser: any): Promise<User | null> {
+        return toUser(
+            await db.users.update({
+                where: {
+                    id: id
+                },
+                data: newUser
+            })
+        );
+    }
+
+    static async updateLastUseById(id: number): Promise<User | null> {
+        return toUser(
+            await db.users.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    last_use: new Date()
+                }
+            })
+        );
+    }
+
+    // static async mergeByIdAndDiscordId(user: Express.Request['user'], discordUser: User) {
+    //     const newId = user.id
+    //     const oldId = discordUser.id
+
+    //     db.$transaction([
+    //         db.sheets.updateMany({
+    //             where: {
+    //                 user_id: oldId,
+    //             },
+    //             data: {
+    //                 user_id: newId,
+    //             }
+    //         }),
+    //         db.irt_sheets.updateMany({
+    //             where: {
+    //                 user_id: oldId,
+    //             },
+    //             data: {
+    //                 user_id: newId,
+    //             }
+    //         }),
+    //         db.users_config.updateMany({
+    //             where: {
+    //                 user_id: oldId,
+    //             },
+    //             data: {
+    //                 user_id: newId,
+    //             }
+    //         }),
+    //         db.blocked_users.updateMany({
+    //             where: {
+    //                 user_id: oldId,
+    //             },
+    //             data: {
+    //                 user_id: newId,
+    //             }
+    //         }),
+    //         db.users.delete({
+    //             where: {
+    //                 id: oldId,
+    //             }
+    //         }),
+    //         db.users.update({
+    //             where: {
+    //                 id: newId,
+    //             },
+    //             data: {
+    //                 discord_id: `${discordUser.discord_id}`,
+    //             }
+    //         })
+    //     ])
+    // }
+}

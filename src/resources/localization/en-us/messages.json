@@ -1,0 +1,5 @@
+{
+    "language": "en-us",
+    "localization|error": "Translation system error",
+    "cmd-interaction|owner-only": "You do not have permission to use this command"
+}

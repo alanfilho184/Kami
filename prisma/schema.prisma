@@ -1,0 +1,145 @@
+generator client {
+    provider   = "prisma-client-js"
+    engineType = "binary"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Ban_Type {
+    TEMPORARY
+    PERMANENT
+    UNBANNED
+}
+
+enum Available_Languages {
+    PT_BR
+    EN_US
+}
+
+enum Bot_Command_Type {
+    TEXT
+    BUTTON
+    CONTEXT
+}
+
+model users {
+    id            Int             @id @default(autoincrement())
+    discord_id    String?         @unique
+    username      String?         @unique
+    avatar        String?
+    email         String?         @unique
+    password      String?
+    is_beta       Boolean         @default(false)
+    is_premium    Boolean         @default(false)
+    last_use      DateTime        @default(now()) @updatedAt @db.Timestamptz
+    blocked_users blocked_users[]
+    irt_sheets    irt_sheets[]
+    sheets        sheets[]
+    user_config   users_config[]
+    macros        macros[]
+}
+
+model blocked_users {
+    id           Int      @id @default(autoincrement())
+    User         users    @relation(fields: [user_id], references: [id])
+    user_id      Int
+    ban_count    Int
+    actual_ban   Ban_Type
+    ban_duration DateTime @db.Timestamptz
+    last_use     DateTime @default(now()) @updatedAt @db.Timestamptz
+}
+
+model irt_sheets {
+    id         Int      @id @default(autoincrement())
+    User       users    @relation(fields: [user_id], references: [id])
+    user_id    Int
+    Sheet_Id   sheets   @relation(fields: [sheet_id], references: [id])
+    sheet_id   Int
+    msg_id     String
+    channel_id String
+    last_use   DateTime @default(now()) @updatedAt @db.Timestamptz
+}
+
+model servers_config {
+    id             Int                 @id @default(autoincrement())
+    server_id      String
+    language       Available_Languages
+    force_language Boolean             @default(false)
+    last_use       DateTime            @default(now()) @updatedAt @db.Timestamptz
+}
+
+model sheets {
+    id             Int            @id @default(autoincrement())
+    User           users          @relation(fields: [user_id], references: [id])
+    user_id        Int
+    sheet_name     String
+    sheet_password String
+    last_use       DateTime       @default(now()) @updatedAt @db.Timestamptz
+    attributes     Json
+    legacy         Boolean        @default(false)
+    is_public      Boolean        @default(false)
+    user_config    users_config[]
+    irt_sheets     irt_sheets[]
+}
+
+model macros {
+    id         Int      @id @default(autoincrement())
+    User       users    @relation(fields: [user_id], references: [id])
+    user_id    Int
+    macro_name String
+    macros     Json
+    last_use   DateTime @default(now()) @updatedAt @db.Timestamptz
+    is_public  Boolean  @default(false)
+}
+
+// model campaings {
+//     id          Int      @id @default(autoincrement())
+//     name        String   @unique
+//     description String
+//     thumbnail   String
+//     tags        String[]
+//     campaing    String
+// }
+
+model bot_commands_statistics {
+    id                Int              @id @default(autoincrement())
+    name              String           @unique
+    type              Bot_Command_Type
+    usage_total_count Int              @default(0)
+    usage_record      Json             @default("{}")
+}
+
+model users_config {
+    id             Int                 @id @default(autoincrement())
+    User           users               @relation(fields: [user_id], references: [id])
+    user_id        Int                 @unique
+    language       Available_Languages @default(PT_BR)
+    secret_roll    Boolean             @default(false)
+    secret_insan   Boolean             @default(false)
+    secret_general Boolean             @default(false)
+    secret_sheet   Boolean             @default(false)
+    secret_send    Boolean             @default(false)
+    Default_Sheet  sheets?             @relation(fields: [default_sheet], references: [id])
+    default_sheet  Int?
+    last_use       DateTime            @default(now()) @updatedAt @db.Timestamptz
+}
+
+model tutorials {
+    id          Int      @id @default(autoincrement())
+    link        String   @unique
+    title       String
+    description String
+    thumbnail   String
+    tags        String[]
+    tutorial    String
+}
+
+model resources {
+    id       Int                  @id @default(autoincrement())
+    name     String               @unique
+    data     Json
+    language Available_Languages?
+}
