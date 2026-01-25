@@ -18,6 +18,7 @@
     "bot-info|uptime": "Tempo online",
     "bot-info|support-button": "Servidor de suporte",
     "bot-info|invite-button": "Adicione o Kami",
+    "dice-roller|embed-result": "\n\nResultado: $result$",
     "roll|invalid-dice": "Dado inválido, siga o formato `1d6`",
     "roll|title": "$user$ rolou $dice$",
     "roll|rolled": "Rolou",
@@ -38,5 +39,16 @@
     "sheet-send|title-legacy": "Info 1 | Ficha: $sheet$. Criada por $username$",
     "sheet-send|title": "$section$ | Ficha: $sheet$. Criada por $username$",
     "sheet-send|description": "Descrição",
-    "sheet-send|link": "Clique aqui para ver a ficha no site do Kami"
+    "sheet-send|link": "Clique aqui para ver a ficha no site do Kami",
+    "sheet|attribute-name-size": "O nome de um atributo não pode ser maior que 256 caracteres e nem vazio",
+    "sheet|attribute-name-invalid": "O nome do atributo é inválido",
+    "sheet|value-value-size": "O valor do atributo não pode ser maior que 1024 caracteres e nem vazio",
+    "sheet|value-value-invalid": "O valor do atributo é inválido",
+    "sheet|section-section-size": "O nome de uma seção não pode ser maior que 256 caracteres e nem vazio",
+    "sheet|section-section-invalid": "O nome da seção é inválido",
+    "sheet|position-position-invalid": "O número da posição deve ser um número maior que 0",
+    "sheet|value-quantity-size": "O número com a quantidade de um item da lista não pode ter mais de 32 caracteres",
+    "sheet|attribute_type-invalid": "O tipo de atributo selecionado é inválido",
+    "sheet|single-validation-error": "Ocorreu um erro ao validar sua ficha:\n\n",
+    "sheet|multiple-validation-errors": "Ocorreram erros ao validar sua ficha:\n\n"
 }

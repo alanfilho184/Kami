@@ -11,6 +11,8 @@ import SheetController from '../../controllers/sheet.controller';
 import SheetServices from '../../services/sheet.services';
 import { inspect } from 'util';
 
+import commands from '../../commands';
+
 export default {
     ownerOnly: false,
     commandNames: {
@@ -192,18 +194,30 @@ export default {
             position
         );
 
-        // console.log(validatedSheet);
         if (validatedSheet instanceof Array) {
-            return int.reply({
-                content: inspect(validatedSheet, { depth: 10 })
-            });
-        } else {
-            // console.log(inspect(validatedSheet.attributes, { depth: 10 }));
-        }
+            const errors = new Set<string>();
+            for (let err of validatedSheet) {
+                errors.add(localization(language, `sheet|${err.field}-${err.code}`));
+            }
 
-        return int.reply({
-            content: 'Em desenvolvimento...'
-        });
+            if (errors.size < 2) {
+                return int.reply({
+                    content: localization(language, 'sheet|single-validation-error') + Array.from(errors).join('')
+                });
+            }
+            else {
+                return int.reply({
+                    content: localization(language, 'sheet|multiple-validation-errors') + Array.from(errors).join('\n')
+                });
+            }
+        } else {
+            await SheetController.updateById(sheet.id, validatedSheet);
+            commands.get('sheet_send')!.run(int, language);
+
+            // return await int.reply({
+            //     content: 'Ficha editada com sucesso!'
+            // });
+        }
     },
     async autocomplete(int: Interaction, language: Available_Languages) {
         let focused = int.data.options!.filter(arg => {
@@ -799,8 +813,96 @@ export default {
                 int.autocomplete([]);
             }
         } else if (focused.name === 'position') {
-            //TODO: mostrar o atributo antes e depois da posição, também mostrar o número da ultima posição
-            int.autocomplete([]);
+            if (int.getArgs().get('sheet_name')) {
+                const sheet = await SheetController.getByUserIdAndSheetName(
+                    int.kami_user?.id!,
+                    int.getArgs().get('sheet_name').value
+                );
+
+                if (!sheet) {
+                    return int.autocomplete([]);
+                } else {
+                    let section = sheet.attributes.sections.find(s => s.name === int.getArgs().get('section').value);
+
+                    console.log(section?.attributes);
+
+                    if (!section) {
+                        return int.autocomplete([]);
+                    } else {
+                        let attribute = section.attributes.find(a => a.name === int.getArgs().get('attribute').value);
+
+                        if (attribute) {
+                            if (focused.value == '') {
+                                let precedingAttribute = section.attributes.find(
+                                    a => a.position == attribute.position - 1
+                                );
+                                let nextAttribute = section.attributes.find(a => a.position == attribute.position + 1);
+
+                                let autocompleteItems: { name: string; value: string }[] = [];
+
+                                if (precedingAttribute) {
+                                    autocompleteItems.push({
+                                        name: `Antes: ${precedingAttribute.name} | ${precedingAttribute.position}`,
+                                        value: `${precedingAttribute.position}`
+                                    });
+                                }
+
+                                autocompleteItems.push({
+                                    name: `Atual: ${attribute.name} | ${attribute.position}`,
+                                    value: `${attribute.position}`
+                                });
+
+                                if (nextAttribute) {
+                                    autocompleteItems.push({
+                                        name: `Depois: ${nextAttribute.name} | ${nextAttribute.position}`,
+                                        value: `${nextAttribute.position}`
+                                    });
+                                }
+
+                                int.autocomplete(autocompleteItems);
+                            } else {
+                                let position = Number(int.getArgs().get('position').value);
+
+                                let precedingAttribute = section.attributes.find(a => a.position == position - 1);
+                                let atPositionAttribute = section.attributes.find(a => a.position == Number(position));
+                                let nextAttribute = section.attributes.find(a => a.position == position + 1);
+
+                                let autocompleteItems: { name: string; value: string }[] = [];
+
+                                autocompleteItems.push({
+                                    name: `Atual: ${attribute.name} | ${attribute.position}`,
+                                    value: `${attribute.position}`
+                                });
+
+                                if (precedingAttribute) {
+                                    autocompleteItems.push({
+                                        name: `Antes: ${precedingAttribute.name} | ${precedingAttribute.position}`,
+                                        value: `${precedingAttribute.position}`
+                                    });
+                                }
+
+                                if (atPositionAttribute) {
+                                    autocompleteItems.push({
+                                        name: `Na posição: ${atPositionAttribute.name} | ${atPositionAttribute.position}`,
+                                        value: `${atPositionAttribute.position}`
+                                    });
+                                }
+
+                                if (nextAttribute) {
+                                    autocompleteItems.push({
+                                        name: `Depois: ${nextAttribute.name} | ${nextAttribute.position}`,
+                                        value: `${nextAttribute.position}`
+                                    });
+                                }
+
+                                int.autocomplete(autocompleteItems);
+                            }
+                        }
+                    }
+                }
+            } else {
+                int.autocomplete([]);
+            }
         }
     }
 };

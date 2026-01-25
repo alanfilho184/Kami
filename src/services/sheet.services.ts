@@ -141,17 +141,16 @@ class SheetServices {
             //del: texto do item
 
             if (listItem.action === 'add') {
-                listItem.value = value.split('|')[0];
-                listItem.quantity = value.split('|')[1];
+                listItem.value = value.split('|')[1].trim();
+                listItem.quantity = value.split('|')[0];
+                listItem.quantity = listItem.quantity.replace('add:', '').trim();
             } else if (listItem.action.startsWith('del')) {
-                listItem.value = value.split(':')[1];
+                listItem.value = value.replace('del:', '').trim();
             } else if (listItem.action.startsWith('mod')) {
                 listItem.value = value.split('|')[1].trim();
                 listItem.item = parseInt(listItem.action.split('item')[1].split(':')[0].trim());
                 listItem.quantity = value.split('|')[0].split(':')[1].trim();
             }
-
-            console.log(listItem);
 
             if (attribute.length < 1 || attribute.length > 256) {
                 errors.push({ field: 'attribute', code: 'name-size' });
@@ -201,7 +200,7 @@ class SheetServices {
                     let sheet_attribute = sheet_section.attributes.find(a => a.name === attribute);
 
                     if (sheet_attribute) {
-                        if (sheet_attribute.type === Attribute_Type.LIST) {
+                        if (sheet_attribute.type == Attribute_Type.LIST) {
                             let list = (
                                 sheet_attribute.value as unknown as {
                                     items: Array<{ name: string; quantity: string | number }>;
@@ -228,8 +227,7 @@ class SheetServices {
                     //@ts-ignore
                     value = { items: [{ name: listItem.value, quantity: listItem.quantity }] };
                 }
-            }
-            else if (listItem.action.startsWith('del')){
+            } else if (listItem.action.startsWith('del')) {
                 if (sheet.attributes.sections.find(s => s.name === section)) {
                     let sheet_section = sheet.attributes.sections.find(s => s.name === section);
 
@@ -245,7 +243,7 @@ class SheetServices {
                     let sheet_attribute = sheet_section.attributes.find(a => a.name === attribute);
 
                     if (sheet_attribute) {
-                        if (sheet_attribute.type === Attribute_Type.LIST) {
+                        if (sheet_attribute.type == Attribute_Type.LIST) {
                             let list = (
                                 sheet_attribute.value as unknown as {
                                     items: Array<{ name: string; quantity: string | number }>;
@@ -254,7 +252,7 @@ class SheetServices {
 
                             if (Array.isArray(list)) {
                                 list = list.filter((item, index) => {
-                                    return item.name !== listItem.value;
+                                    return `${item.name}`.trim() !== listItem.value;
                                 });
                             }
 
@@ -263,53 +261,66 @@ class SheetServices {
                         }
                     }
                 }
-                else if (listItem.action.startsWith('mod')){
-                    if (sheet.attributes.sections.find(s => s.name === section)) {
-                        let sheet_section = sheet.attributes.sections.find(s => s.name === section);
+                //TODO: maybe add a else
+            } else if (listItem.action.startsWith('mod')) {
+                if (sheet.attributes.sections.find(s => s.name === section)) {
+                    let sheet_section = sheet.attributes.sections.find(s => s.name === section);
 
-                        if (!sheet_section) {
-                            sheet_section = {
-                                name: section,
-                                position: sheet.attributes.sections.length,
-                                attributes: [],
-                                type: 0
-                            };
-                        }
+                    if (!sheet_section) {
+                        sheet_section = {
+                            name: section,
+                            position: sheet.attributes.sections.length,
+                            attributes: [],
+                            type: 0
+                        };
+                    }
 
-                        let sheet_attribute = sheet_section.attributes.find(a => a.name === attribute);
+                    let sheet_attribute = sheet_section.attributes.find(a => a.name === attribute);
 
-                        if (sheet_attribute) {
-                            if (sheet_attribute.type === Attribute_Type.LIST) {
-                                let list = (
-                                    sheet_attribute.value as unknown as {
-                                        items: Array<{ name: string; quantity: string | number }>;
-                                    }
-                                ).items;
-
-                                if (Array.isArray(list)) {
-                                    list = list.map((item, index) => {
-                                        if (index === listItem.item) {
-                                            item.name = listItem.value;
-                                            item.quantity = listItem.quantity;
-                                        }
-
-                                        return item;
-                                    });
+                    if (sheet_attribute) {
+                        if (sheet_attribute.type == Attribute_Type.LIST) {
+                            let list = (
+                                sheet_attribute.value as unknown as {
+                                    items: Array<{ name: string; quantity: string | number }>;
                                 }
+                            ).items;
 
-                                //@ts-ignore
-                                value = { items: list };
+                            if (Array.isArray(list)) {
+                                list = list.map((item, index) => {
+                                    if (index + 1 === listItem.item) {
+                                        item.name = listItem.value;
+                                        item.quantity = listItem.quantity;
+                                    }
+
+                                    return item;
+                                });
                             }
+
+                            //@ts-ignore
+                            value = { items: list };
                         }
                     }
                 }
+                //TODO: maybe add a else
             }
         } else if (attribute_type == Attribute_Type.BAR) {
-            //TODO: implementar a conversão de texto pro atributo correto
             section = `${section}`;
             attribute = `${attribute}`;
             value = `${value}`;
             position = position ? parseInt(`${position}`) : undefined;
+
+            let barItem = {
+                action: value[0] == '+' ? 'add' : value[0] == '-' ? 'sub' : 'mod',
+                value: ''
+            };
+
+            if (barItem.action === 'add') {
+                barItem.value = value.replace('+', '').trim();
+            } else if (barItem.action === 'sub') {
+                barItem.value = value.replace('-', '').trim();
+            } else if (barItem.action === 'mod') {
+                barItem.value = value;
+            }
 
             if (attribute.length < 1 || attribute.length > 256) {
                 errors.push({ field: 'attribute', code: 'name-size' });
@@ -337,6 +348,120 @@ class SheetServices {
 
             if (position && position < 0) {
                 errors.push({ field: 'position', code: 'position-invalid' });
+            }
+
+            if (barItem.action === 'add') {
+                if (sheet.attributes.sections.find(s => s.name === section)) {
+                    let sheet_section = sheet.attributes.sections.find(s => s.name === section);
+
+                    if (!sheet_section) {
+                        errors.push({ field: 'section', code: 'section-not-found' });
+                    } else {
+                        let sheet_attribute = sheet_section.attributes.find(a => a.name === attribute);
+
+                        if (sheet_attribute) {
+                            if (sheet_attribute.type == Attribute_Type.BAR) {
+                                let bar = sheet_attribute.value as unknown as {
+                                    actual: number;
+                                    max: number;
+                                    min: number;
+                                    step: number;
+                                };
+
+                                if (bar) {
+                                    bar.actual += parseInt(barItem.value);
+
+                                    //@ts-ignore
+                                    value = bar;
+                                } else {
+                                    errors.push({ field: 'attribute', code: 'type-mismatch' });
+                                }
+                            } else {
+                                errors.push({ field: 'attribute', code: 'type-mismatch' });
+                            }
+                        } else {
+                            errors.push({ field: 'attribute', code: 'attribute-not-found' });
+                        }
+                    }
+                }
+            } else if (barItem.action === 'sub') {
+                if (sheet.attributes.sections.find(s => s.name === section)) {
+                    let sheet_section = sheet.attributes.sections.find(s => s.name === section);
+
+                    if (!sheet_section) {
+                        errors.push({ field: 'section', code: 'section-not-found' });
+                    } else {
+                        let sheet_attribute = sheet_section.attributes.find(a => a.name === attribute);
+
+                        if (sheet_attribute) {
+                            if (sheet_attribute.type == Attribute_Type.BAR) {
+                                let bar = sheet_attribute.value as unknown as {
+                                    actual: number;
+                                    max: number;
+                                    min: number;
+                                    step: number;
+                                };
+
+                                if (bar) {
+                                    bar.actual -= parseInt(barItem.value);
+
+                                    //@ts-ignore
+                                    value = bar;
+                                } else {
+                                    errors.push({ field: 'attribute', code: 'attribute-not-found' });
+                                }
+                            } else {
+                                errors.push({ field: 'attribute', code: 'type-mismatch' });
+                            }
+                        } else {
+                            errors.push({ field: 'attribute', code: 'attribute-not-found' });
+                        }
+                    }
+                }
+            } else if (barItem.action === 'mod') {
+                if (sheet.attributes.sections.find(s => s.name === section)) {
+                    let sheet_section = sheet.attributes.sections.find(s => s.name === section);
+
+                    if (!sheet_section) {
+                        errors.push({ field: 'section', code: 'section-not-found' });
+                    } else {
+                        let sheet_attribute = sheet_section.attributes.find(a => a.name === attribute);
+
+                        if (sheet_attribute) {
+                            if (sheet_attribute.type == Attribute_Type.BAR) {
+                                let bar = sheet_attribute.value as unknown as {
+                                    actual: number;
+                                    max: number;
+                                    min: number;
+                                    step: number;
+                                };
+
+                                if (bar) {
+                                    let barValue = barItem.value.split('/');
+                                    bar.actual = parseInt(barValue[0]);
+                                    bar.max = parseInt(barValue[1]);
+
+                                    //@ts-ignore
+                                    value = bar;
+                                } else {
+                                    let bar = {
+                                        actual: parseInt(barItem.value.split('/')[0]),
+                                        max: parseInt(barItem.value.split('/')[1]),
+                                        min: 0,
+                                        step: 1
+                                    };
+
+                                    //@ts-ignore
+                                    value = bar;
+                                }
+                            } else {
+                                errors.push({ field: 'attribute', code: 'type-mismatch' });
+                            }
+                        } else {
+                            errors.push({ field: 'attribute', code: 'attribute-not-found' });
+                        }
+                    }
+                }
             }
         } else {
             errors.push({ field: 'attribute_type', code: 'invalid' });
@@ -379,6 +504,7 @@ class SheetServices {
             }
 
             sheet.attributes.sections[section_index] = sheet_section;
+            sheet.last_use = new Date();
 
             return sheet;
         } else {

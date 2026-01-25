@@ -150,14 +150,14 @@ export default class SheetController {
         );
     }
 
-    static async updateById(id: number, newSheet: PreparedSheetUpdate): Promise<Sheet | null> {
+    static async updateById(id: number, newSheet: Sheet): Promise<Sheet | null> {
         return toSheet(
             await db.sheets.update({
                 where: {
                     id: id
                 },
                 data: {
-                    sheet_name: newSheet.sheet_name.sheet_name,
+                    sheet_name: newSheet.sheet_name,
                     attributes: newSheet.attributes,
                     is_public: newSheet.is_public,
                     legacy: false,

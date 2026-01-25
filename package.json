@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node dist/app.js",
-    "build": "tsc",
+    "build": "tsgo",
     "build-start": "npm run build && npm run start"
   },
   "keywords": [],
@@ -31,6 +31,8 @@
   "devDependencies": {
     "@types/luxon": "^3.4.2",
     "@types/ms": "^0.7.34",
-    "@types/node": "^22.9.0"
+    "@types/node": "^22.9.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260114.1",
+    "typescript": "^5.9.3"
   }
 }

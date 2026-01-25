@@ -15,8 +15,7 @@ export default function verifySignature(req: Request, res: Response, next: NextF
             Buffer.from(config.PUBLIC_KEY, 'hex')
         );
     } catch (err) {
-        logger.logText('WARN', 'Error verifying signature');
-        logger.logText('WARN', err);
+        return res.status(401).send({ error: 'Bad request signature' });
     }
 
     if (!isVerified) {

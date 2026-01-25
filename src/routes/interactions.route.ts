@@ -56,7 +56,14 @@ router.post('/interactions', async (req: Request, res: Response) => {
                 });
             } else {
                 //TODO: add category to use user.secret
-                await int.acknowledge();
+                let ephemeral = false;
+                if (command.fullNames['en_us'] === 'Sheet') {
+                    ephemeral = true;
+                }
+
+                console.log(command.fullNames['en_us'], ephemeral);
+
+                await int.acknowledge(ephemeral);
 
                 try {
                     await command.run(int, int.language);

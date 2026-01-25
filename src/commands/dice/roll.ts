@@ -1,5 +1,5 @@
 import { EmbedBuilder, ButtonBuilder } from '@discordjs/builders';
-import { diceRoller, formatDiceStringOutput, validateDiceString } from '../../resources/utils/dice-roller';
+import { diceRoller, formatDiceEmbedOutput, validateDiceString } from '../../resources/utils/dice-roller';
 import { d1_100 } from '../../resources/assets/assets';
 import { Interaction } from '../../resources/utils/interaction-handler';
 import { localization } from '../../resources/localization';
@@ -67,17 +67,16 @@ export default {
             return int.reply({ content: localization(language, 'roll|invalid-dice') });
         }
 
-        let result = formatDiceStringOutput(diceRoller(dice));
-        result = result.replace(/\*/g, '×');
+        const diceResult = diceRoller(dice)
+        let diceEmbed = formatDiceEmbedOutput(diceResult);
 
-        const diceEmbed = new EmbedBuilder();
         diceEmbed.setTitle(
             localization(language, 'roll|title', [
                 { replace: '$user$', value: int.user.preferred_nick },
                 { replace: '$dice$', value: dice }
             ])
         );
-        diceEmbed.setDescription(`**${result}**`);
+
         diceEmbed.setColor(parseInt(config.EMBED_COLOR));
         diceEmbed.setTimestamp(Date.now());
         diceEmbed.setFooter({
@@ -87,10 +86,10 @@ export default {
             ])
         });
 
-        const finalResult = result.split('=');
+        const finalResult = diceResult.final
 
-        if (parseInt(finalResult[finalResult.length - 1]) <= 100 && parseInt(finalResult[finalResult.length - 1]) > 0) {
-            diceEmbed.setThumbnail(d1_100[parseInt(finalResult[finalResult.length - 1])]);
+        if (finalResult <= 100 && finalResult > 0) {
+            diceEmbed.setThumbnail(d1_100[finalResult]);
         }
 
         const rollAgainButton = new ButtonBuilder();
