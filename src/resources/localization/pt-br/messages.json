@@ -40,6 +40,14 @@
     "sheet-send|title": "$section$ | Ficha: $sheet$. Criada por $username$",
     "sheet-send|description": "Descrição",
     "sheet-send|link": "Clique aqui para ver a ficha no site do Kami",
+    "sheet|not-sheet-owner": "Você não é o dono dessa ficha",
+    "sheet|create-new-sheet-button": "Confirmar",
+    "sheet|cancel-new-sheet-button": "Cancelar",
+    "sheet|confirm-new-sheet-message": "Tem certeza que deseja criar uma nova ficha com o nome \"$sheet$\"?",
+    "sheet|error-sheet-name-too-long": "O nome da ficha é muito grande, o limite é de 32 caracteres",
+    "sheet|error-sheet-name-invalid": "O nome da ficha possui caracteres inválidos",
+    "sheet|new-sheet-created": "Nova ficha criada com sucesso",
+    "sheet|new-sheet-cancelled": "Criação de nova ficha cancelada",
     "sheet|attribute-name-size": "O nome de um atributo não pode ser maior que 256 caracteres e nem vazio",
     "sheet|attribute-name-invalid": "O nome do atributo é inválido",
     "sheet|value-value-size": "O valor do atributo não pode ser maior que 1024 caracteres e nem vazio",
@@ -50,5 +58,8 @@
     "sheet|value-quantity-size": "O número com a quantidade de um item da lista não pode ter mais de 32 caracteres",
     "sheet|attribute_type-invalid": "O tipo de atributo selecionado é inválido",
     "sheet|single-validation-error": "Ocorreu um erro ao validar sua ficha:\n\n",
-    "sheet|multiple-validation-errors": "Ocorreram erros ao validar sua ficha:\n\n"
+    "sheet|multiple-validation-errors": "Ocorreram erros ao validar sua ficha:\n\n",
+    "list-sheets|no-sheets-found": "Você não possuí nenhuma ficha criada, utilize `/ficha` para criar uma nova",
+    "list-sheets|single-list-title": "Encontrei 1 ficha criada por você",
+    "list-sheets|multiple-list-title": "Encontrei $quantity$ fichas criadas por você"
 }

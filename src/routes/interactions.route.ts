@@ -12,6 +12,7 @@ import logger from '../configs/logger';
 import commandsStatistics from '../resources/utils/command-statistics';
 import { localization } from '../resources/localization';
 import { Available_Languages } from '../types/enums';
+import actionHandler from '../resources/utils/action-handler';
 
 const router = Router();
 
@@ -28,8 +29,6 @@ router.post('/interactions', async (req: Request, res: Response) => {
         }
     }
     await int.loadUser();
-
-    // console.log(int);
 
     if (int.type === InteractionType.PING) {
         res.json({
@@ -57,11 +56,9 @@ router.post('/interactions', async (req: Request, res: Response) => {
             } else {
                 //TODO: add category to use user.secret
                 let ephemeral = false;
-                if (command.fullNames['en_us'] === 'Sheet') {
-                    ephemeral = true;
-                }
-
-                console.log(command.fullNames['en_us'], ephemeral);
+                // if (command.fullNames['en_us'] === 'Sheet') {
+                //     ephemeral = true;
+                // }
 
                 await int.acknowledge(ephemeral);
 
@@ -77,37 +74,41 @@ router.post('/interactions', async (req: Request, res: Response) => {
             }
         }
     } else if (int.type === InteractionType.MESSAGE_COMPONENT) {
-        logger.logDiscord(int);
-        const component = components.get(int.component!.name);
-
-        if (!component) {
-            await int.acknowledge(true);
-            return await int.reply({
-                content: localization(int.language, 'cmd-interaction|command-not-found'),
-                flags: InteractionResponseFlags.EPHEMERAL
-            });
+        if (int.data.custom_id!.startsWith('$a$')) {
+            return actionHandler.executeAction(int.data.custom_id!, int);
         } else {
-            if (int.component!.type === MessageComponentTypes.BUTTON) {
-                commandsStatistics.sumComponent(component.name);
-            }
+            logger.logDiscord(int);
+            const component = components.get(int.component!.name);
 
-            if (component.ownerOnly && int.user.id !== process.env.OWNER_ID) {
+            if (!component) {
                 await int.acknowledge(true);
                 return await int.reply({
-                    content: localization(int.language, 'cmd-interaction|owner-only'),
+                    content: localization(int.language, 'cmd-interaction|command-not-found'),
                     flags: InteractionResponseFlags.EPHEMERAL
                 });
             } else {
-                await int.acknowledge();
+                if (int.component!.type === MessageComponentTypes.BUTTON) {
+                    commandsStatistics.sumComponent(component.name);
+                }
 
-                try {
-                    await component.run(int, int.language);
-                } catch (err) {
-                    logger.logText('ERROR', err);
-                    await int.reply({
-                        content: localization(int.language, 'cmd-interaction|command-error'),
+                if (component.ownerOnly && int.user.id !== process.env.OWNER_ID) {
+                    await int.acknowledge(true);
+                    return await int.reply({
+                        content: localization(int.language, 'cmd-interaction|owner-only'),
                         flags: InteractionResponseFlags.EPHEMERAL
                     });
+                } else {
+                    await int.acknowledge();
+
+                    try {
+                        await component.run(int, int.language);
+                    } catch (err) {
+                        logger.logText('ERROR', err);
+                        await int.reply({
+                            content: localization(int.language, 'cmd-interaction|command-error'),
+                            flags: InteractionResponseFlags.EPHEMERAL
+                        });
+                    }
                 }
             }
         }

@@ -1,4 +1,4 @@
-import { EmbedBuilder, ButtonBuilder } from '@discordjs/builders';
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder } from '@discordjs/builders';
 import db from '../../configs/database';
 import { Interaction } from '../../resources/utils/interaction-handler';
 import { localization } from '../../resources/localization';
@@ -9,9 +9,14 @@ import sheetNameCache from '../../resources/cache/sheet-name.cache';
 import stringSimilarity, { similaritySearch } from '../../resources/utils/string-similarity';
 import SheetController from '../../controllers/sheet.controller';
 import SheetServices from '../../services/sheet.services';
-import { inspect } from 'util';
-
+import rest from '../../configs/rest';
+import { Routes } from 'discord-api-types/rest/v10';
 import commands from '../../commands';
+import { randomUUID } from 'crypto';
+import actionHandler from '../../resources/utils/action-handler';
+import logger from '../../configs/logger';
+import { Sheet_Name } from '../../types/validations';
+import { ValidationError } from '../../types/errors';
 
 export default {
     ownerOnly: false,
@@ -168,20 +173,121 @@ export default {
         const value = int.getArgs().get('value').value;
         const position = int.getArgs().get('position')?.value;
 
-        console.log(int.getArgs());
-
-        const sheet = await SheetController.getByUserIdAndSheetName(int.kami_user?.id!, sheetName);
+        let sheet = await SheetController.getByUserIdAndSheetName(int.kami_user?.id!, sheetName);
 
         if (!sheet) {
-            // TODO: Create sheet
-            return int.reply({
-                content: 'Ficha não encontrada.'
+            const tempId = randomUUID();
+
+            const buttonConfirm = new ButtonBuilder()
+                .setCustomId(`$a$confirm-new-sheet|${tempId}`)
+                .setLabel(localization(language, 'sheet|create-new-sheet-button'))
+                .setStyle(ButtonStyle.Success);
+
+            const buttonCancel = new ButtonBuilder()
+                .setCustomId(`$a$cancel-new-sheet|${tempId}`)
+                .setLabel(localization(language, 'sheet|cancel-new-sheet-button'))
+                .setStyle(ButtonStyle.Danger);
+
+            const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(buttonConfirm, buttonCancel);
+
+            const msg = (await int.reply({
+                content: localization(language, 'sheet|confirm-new-sheet-message', [
+                    {
+                        replace: '$sheet$',
+                        value: sheetName
+                    }
+                ]),
+                components: [actionRow]
+            })) as { id: string; channel_id: string; webhook_id: string };
+
+            actionHandler.registerAction(`$a$confirm-new-sheet|${tempId}`, {
+                action: async (comp: Interaction) => {
+                    comp.acknowledge();
+
+                    let newSheetName = sheetName;
+
+                    try {
+                        newSheetName = new Sheet_Name(sheetName);
+                    } catch (err: any) {
+                        let errorMsg = '';
+                        if (err.code == 'Exceeded the maximum of 32 characters') {
+                            errorMsg = localization(language, 'sheet|error-sheet-name-too-long');
+                        } else if (err.code == 'Contains invalid characters') {
+                            errorMsg = localization(language, 'sheet|error-sheet-name-invalid');
+                        } else {
+                            errorMsg = localization(language, 'sheet|error-sheet-name-invalid');
+                            logger.logText('ERROR', `Unknown sheet name validation error: ${err}`);
+                        }
+
+                        rest.patch(Routes.webhookMessage(int.application_id, comp.token, msg.id), {
+                            body: {
+                                content: errorMsg,
+                                components: []
+                            },
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        return;
+                    }
+
+                    const newSheet = SheetServices.prepareNewSheet(`${newSheetName}`, int.kami_user?.id!);
+                    sheet = await SheetController.create(newSheet);
+
+                    sheetNameCache.add(int.kami_user?.id!, sheet.sheet_name);
+
+                    rest.patch(Routes.webhookMessage(int.application_id, comp.token, msg.id), {
+                        body: {
+                            content: localization(language, 'sheet|new-sheet-created'),
+                            components: []
+                        },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .catch(err => {
+                            logger.logText('ERROR', `Error updating cancel new sheet message: ${err}`);
+                        })
+                        .then(() => {
+                            commands.get('sheet')!.run(int, language);
+                        });
+                },
+                singleUse: true
             });
+
+            actionHandler.registerAction(`$a$cancel-new-sheet|${tempId}`, {
+                action: (comp: Interaction) => {
+                    comp.acknowledge();
+
+                    rest.patch(Routes.webhookMessage(int.application_id, comp.token, msg.id), {
+                        body: {
+                            content: localization(language, 'sheet|new-sheet-cancelled'),
+                            components: [
+                                {
+                                    type: 1,
+                                    components: [
+                                        buttonConfirm.setDisabled().toJSON(),
+                                        buttonCancel.setDisabled().toJSON()
+                                    ]
+                                }
+                            ]
+                        },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).catch(err => {
+                        logger.logText('ERROR', `Error updating cancel new sheet message: ${err}`);
+                    });
+                },
+                singleUse: true
+            });
+
+            return;
         }
 
         if (sheet.user_id !== int.kami_user?.id) {
             return int.reply({
-                content: 'Você não é o dono dessa ficha.'
+                content: localization(language, 'sheet|not-sheet-owner')
             });
         }
 
@@ -204,8 +310,7 @@ export default {
                 return int.reply({
                     content: localization(language, 'sheet|single-validation-error') + Array.from(errors).join('')
                 });
-            }
-            else {
+            } else {
                 return int.reply({
                     content: localization(language, 'sheet|multiple-validation-errors') + Array.from(errors).join('\n')
                 });
@@ -823,8 +928,6 @@ export default {
                     return int.autocomplete([]);
                 } else {
                     let section = sheet.attributes.sections.find(s => s.name === int.getArgs().get('section').value);
-
-                    console.log(section?.attributes);
 
                     if (!section) {
                         return int.autocomplete([]);

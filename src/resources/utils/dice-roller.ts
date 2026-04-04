@@ -527,28 +527,27 @@ function formatDiceEmbedOutput(unformattedDices: any, language?: Available_Langu
                     name += '\n';
                 }
 
-                name = name + `${dice} -> [ ${resolvedDice.results.join(', ')} ]`;
+                name = name + `${dice} `;
 
                 if (resolvedDice.has.advantage) {
-                    name += `v`;
-                    name += ` = ( ${resolvedDice.advantage} )`;
+                    name += `-> [ ${resolvedDice.results.join(', ')} ] = v( ${resolvedDice.advantage} )`;
                 } else if (resolvedDice.has.disadvantage) {
-                    name += `d`;
-                    name += ` = ( ${resolvedDice.disadvantage} )`;
+                    name += `-> [ ${resolvedDice.results.join(', ')} ] = d( ${resolvedDice.disadvantage} )`;
                 } else if (resolvedDice.has.greater) {
-                    name += ` > ${resolvedDice.diceString.split('>')[1]} => `;
+                    name += `-> [ ${resolvedDice.results.join(', ')} ] -> `;
                     name += `[ ${resolvedDice.greater.join(', ') || 0} ]`;
                     name += ` = ( ${resolvedDice.greaterSum} )`;
                 } else if (resolvedDice.has.less) {
-                    name += ` < ${resolvedDice.diceString.split('<')[1]} => `;
+                    name += `-> [ ${resolvedDice.results.join(', ')} ] -> `;
                     name += `[ ${resolvedDice.less.join(', ') || 0} ]`;
                     name += ` = ( ${resolvedDice.lessSum} )`;
                 } else {
                     if (resolvedDice.results.length > 1) {
-                        name += `[ ${resolvedDice.results.join(', ')} ] = `;
+                        name += `-> [ ${resolvedDice.results.join(', ')} ] = `;
+                        name += `( ${resolvedDice.sum} )`;
+                    } else {
+                        name += `= ( ${resolvedDice.sum} )`;
                     }
-
-                    name += `( ${resolvedDice.sum} )`;
                 }
             } else {
                 if (resolvedDice.match(/^\d+$/gi)) {
@@ -564,15 +563,17 @@ function formatDiceEmbedOutput(unformattedDices: any, language?: Available_Langu
         count++;
     }
 
-    if (language) {
-        diceString += localization(language, 'dice-roller|embed-result', [
-            {
-                replace: 'result',
-                value: unformattedDices.final
-            }
-        ]);
-    } else {
-        diceString += `\n\nResultado: ${unformattedDices.final}`;
+    if (unformattedDices.final) {
+        if (language) {
+            diceString += localization(language, 'dice-roller|embed-result', [
+                {
+                    replace: '$result$',
+                    value: unformattedDices.final
+                }
+            ]);
+        } else {
+            diceString += `\n\nResultado: ${unformattedDices.final}`;
+        }
     }
 
     diceString += '```';
@@ -670,11 +671,19 @@ function diceRoller(dice: string) {
 
             const finalResult = calculateOperation(finalOperations);
 
-            return {
-                diceArray,
-                resolvedDices: resolvedOperations,
-                final: finalResult
-            };
+            if (typeof finalResult === 'number' && !Number.isInteger(finalResult)) {
+                return {
+                    diceArray,
+                    resolvedDices: resolvedOperations,
+                    final: parseFloat(finalResult.toFixed(2))
+                };
+            } else {
+                return {
+                    diceArray,
+                    resolvedDices: resolvedOperations,
+                    final: finalResult
+                };
+            }
         }
     } else {
         throw new Error('Invalid dice string');

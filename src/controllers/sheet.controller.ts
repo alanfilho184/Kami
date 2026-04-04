@@ -1,15 +1,5 @@
 import db from '../configs/database';
 
-type PreparedSheet = {
-    sheet_name: Sheet_Name;
-    user_id: number;
-    sheet_password: string;
-    is_public: boolean;
-    attributes: {};
-    legacy: false;
-    last_use: Date;
-};
-
 type PreparedSheetUpdate = {
     sheet_name: Sheet_Name;
     is_public: boolean;
@@ -69,12 +59,12 @@ function toSheetHeadArray(sheets: any[]): Sheet_Head[] | null {
 }
 
 export default class SheetController {
-    static async create(sheet: PreparedSheet): Promise<Sheet | null> {
+    static async create(sheet: Prepared_Sheet): Promise<Sheet> {
         return toSheet(
             await db.sheets.create({
                 data: {
                     user_id: sheet.user_id,
-                    sheet_name: sheet.sheet_name.sheet_name,
+                    sheet_name: sheet.sheet_name,
                     sheet_password: sheet.sheet_password,
                     attributes: sheet.attributes,
                     is_public: sheet.is_public,
@@ -82,7 +72,7 @@ export default class SheetController {
                     last_use: sheet.last_use
                 }
             })
-        );
+        ) as Sheet;
     }
 
     static async getById(id: number): Promise<Sheet | null> {
@@ -148,6 +138,23 @@ export default class SheetController {
                 }
             })
         );
+    }
+
+    static async getAllSheetsNameByUserId(userId: number): Promise<string[]> {
+        const sheets = await db.sheets.findMany({
+            select: {
+                sheet_name: true
+            },
+            where: {
+                user_id: userId
+            }
+        });
+
+        try {
+            return sheets.map(sheet => sheet.sheet_name);
+        } catch (err) {
+            return [];
+        }
     }
 
     static async updateById(id: number, newSheet: Sheet): Promise<Sheet | null> {

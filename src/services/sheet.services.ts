@@ -11,6 +11,20 @@ class SheetServices {
     public static positiveNumberRegex: RegExp = /^([0-9]+)$/gim;
     public static imageRegex: RegExp = /https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp)/gi;
 
+    static prepareNewSheet(name: string, userId: number): Prepared_Sheet {
+        const newSheet: Prepared_Sheet = {
+            sheet_name: name,
+            user_id: userId,
+            sheet_password: Math.random().toString(36).slice(-8),
+            attributes: { sections: new Array() },
+            is_public: false,
+            legacy: false,
+            last_use: new Date()
+        };
+
+        return newSheet;
+    }
+
     static async validateModification(
         sheet: Sheet,
         attribute_type: Attribute_Type,

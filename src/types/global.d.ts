@@ -14,7 +14,6 @@ declare global {
         NODE_ENV: 'development' | 'production' | 'test';
         DATABASE_URL: string;
         PORT: number;
-
         BOT_TOKEN: string;
         PUBLIC_KEY: string;
         CLIENT_ID: Discord_Id;
@@ -201,6 +200,16 @@ declare global {
         legacy: boolean;
         last_use: Date;
     };
+
+    type Prepared_Sheet = {
+        sheet_name: string
+        user_id: number
+        sheet_password: string
+        is_public: boolean
+        attributes: {}
+        legacy: false
+        last_use: Date
+    }
 
     type Sheet_Head = {
         id: number;

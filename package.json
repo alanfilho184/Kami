@@ -14,10 +14,10 @@
   "dependencies": {
     "@alanfilho184/kami-lru-cache": "^1.2.0",
     "@discordjs/builders": "^1.9.0",
-    "@discordjs/rest": "^2.4.0",
+    "@discordjs/rest": "^0.4.1",
     "@prisma/client": "^5.22.0",
     "colors": "^1.4.0",
-    "discord-api-types": "^0.37.103",
+    "discord-api-types": "^0.37.120",
     "discord-interactions": "^4.1.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",

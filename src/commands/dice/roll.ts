@@ -68,6 +68,7 @@ export default {
         }
 
         const diceResult = diceRoller(dice)
+
         let diceEmbed = formatDiceEmbedOutput(diceResult);
 
         diceEmbed.setTitle(

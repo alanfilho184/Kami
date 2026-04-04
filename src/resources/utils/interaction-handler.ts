@@ -133,7 +133,7 @@ class Interaction {
                     preferred_nick: 'Unknown'
                 };
 
-                if (interaction.user.username === 'discord'){
+                if (interaction.user.username === 'discord') {
                     throw new Error('Unknown user');
                 }
             }
@@ -197,12 +197,18 @@ class Interaction {
 
     async acknowledge(ephemeral?: boolean) {
         if (!this.isAutocomplete()) {
-            await this.res.json({
-                type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
-                data: {
-                    flags: ephemeral ? InteractionResponseFlags.EPHEMERAL : undefined
-                }
-            });
+            if (this.data.custom_id && this.data.custom_id.startsWith('$a$')) {
+                await this.res.json({
+                    type: InteractionResponseType.DEFERRED_UPDATE_MESSAGE
+                });
+            } else {
+                await this.res.json({
+                    type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+                    data: {
+                        flags: ephemeral ? InteractionResponseFlags.EPHEMERAL : undefined
+                    }
+                });
+            }
         } else {
             throw new Error('This interaction is an autocomplete interaction.');
         }
