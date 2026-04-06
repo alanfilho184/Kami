@@ -75,5 +75,9 @@
     "rename-sheet|confirm-rename-sheet-message": "Tem certeza que deseja renomear a ficha \"$sheet$\" para \"$new-sheet$\"?",
     "rename-sheet|sheet-renamed": "Ficha renomeada de \"$sheet$\" para \"$new-sheet$\"",
     "rename-sheet|cancel-rename-sheet": "O nome da ficha não foi alterado",
-    "rename-sheet|same-name": "O nome da ficha atual é igual ao novo nome"
+    "rename-sheet|same-name": "O nome da ficha atual é igual ao novo nome",
+    "support|message-sent": "Mensagem enviada com sucesso, assim que possível sua mensagem será respondida, para mais ajuda entre em nosso servidor de suporte no link abaixo",
+    "support|support-button": "Servidor de suporte",
+    "answer|warning": "O Discord não permite leitura de mensagens sem um comando, caso queira responder ou tiver mais alguma dúvida use /suporte novamente ou entre no servidor de suporte no link abaixo",
+    "answer|message-sent": "Resposta enviada com sucesso"
 }

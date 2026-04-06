@@ -122,8 +122,8 @@ class Interaction {
             }
         } else {
             try {
-                // @ts-ignore
-                this.user = this.channel.recipients[0];
+                this.user = interaction.user;
+                this.user.preferred_nick = this.user.global_name || this.user.username;
             } catch (err) {
                 this.user = {
                     id: '0',
@@ -137,8 +137,6 @@ class Interaction {
                     throw new Error('Unknown user');
                 }
             }
-
-            this.user.preferred_nick = this.user.global_name;
         }
 
         if (this.type === InteractionType.MESSAGE_COMPONENT) {
