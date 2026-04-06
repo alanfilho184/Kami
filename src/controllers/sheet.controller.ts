@@ -174,6 +174,20 @@ export default class SheetController {
         );
     }
 
+    static async renameById(id: number, newSheetName: string): Promise<Sheet | null> {
+        return toSheet(
+            await db.sheets.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    sheet_name: newSheetName,
+                    last_use: new Date()
+                }
+            })
+        );
+    }
+
     static async deleteById(id: number): Promise<Sheet | null> {
         return toSheet(
             await db.sheets.delete({

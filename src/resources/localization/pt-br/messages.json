@@ -61,5 +61,19 @@
     "sheet|multiple-validation-errors": "Ocorreram erros ao validar sua ficha:\n\n",
     "list-sheets|no-sheets-found": "Você não possuí nenhuma ficha criada, utilize `/ficha` para criar uma nova",
     "list-sheets|single-list-title": "Encontrei 1 ficha criada por você",
-    "list-sheets|multiple-list-title": "Encontrei $quantity$ fichas criadas por você"
+    "list-sheets|multiple-list-title": "Encontrei $quantity$ fichas criadas por você",
+    "delete-sheet|sheet-not-found": "Não foi encontrada uma ficha com o nome \"$sheet$\"",
+    "delete-sheet|delete-sheet-button": "Confirmar",
+    "delete-sheet|cancel-delete-sheet-button": "Cancelar",
+    "delete-sheet|confirm-delete-sheet-message": "Tem certeza que deseja apagar a ficha \"$sheet$\"? Esta ação não pode ser desfeita",
+    "delete-sheet|sheet-deleted": "Ficha apagada com sucesso",
+    "delete-sheet|cancel-delete-sheet": "A ficha foi mantida",
+    "rename-sheet|sheet-not-found": "Não foi encontrada uma ficha com o nome \"$sheet$\"",
+    "rename-sheet|sheet-name-already-exists": "Já existe uma outra ficha com o nome \"$sheet$\"",
+    "rename-sheet|confirm-rename-sheet-button": "Confirmar",
+    "rename-sheet|cancel-rename-sheet-button": "Cancelar",
+    "rename-sheet|confirm-rename-sheet-message": "Tem certeza que deseja renomear a ficha \"$sheet$\" para \"$new-sheet$\"?",
+    "rename-sheet|sheet-renamed": "Ficha renomeada de \"$sheet$\" para \"$new-sheet$\"",
+    "rename-sheet|cancel-rename-sheet": "O nome da ficha não foi alterado",
+    "rename-sheet|same-name": "O nome da ficha atual é igual ao novo nome"
 }
