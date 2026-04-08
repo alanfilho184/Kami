@@ -62,6 +62,8 @@ class Interaction {
             id: Snowflake;
             public_flags: number;
             username: string;
+            system?: boolean;
+            bot?: boolean;
         };
         nick?: string;
     };
@@ -77,6 +79,8 @@ class Interaction {
         global_name: string;
         public_flags: number;
         preferred_nick: string;
+        system?: boolean;
+        bot?: boolean;
     };
     kami_user?: User & users_config;
     component?: {
@@ -133,9 +137,7 @@ class Interaction {
                     preferred_nick: 'Unknown'
                 };
 
-                if (interaction.user.username === 'discord') {
-                    throw new Error('Unknown user');
-                }
+                throw new Error('Unknown user');
             }
         }
 
@@ -173,7 +175,6 @@ class Interaction {
             is_beta: user.is_beta,
             is_premium: user.is_premium,
             last_use: user.last_use,
-            default_sheet: user.default_sheet || null,
             //@ts-ignore
             language: user.language || null,
             secret_general: user.secret_general || false,
@@ -271,9 +272,9 @@ class Interaction {
             let language: Available_Languages;
 
             if (this.inGuild() === true && this.guild_locale !== null) {
-                language = this.guild_locale.toLowerCase() as Available_Languages;
+                language = `${this.guild_locale}`.toLowerCase() as Available_Languages;
             } else {
-                language = this.locale.toLowerCase() as Available_Languages;
+                language = `${this.locale}`.toLowerCase() as Available_Languages;
             }
 
             if (
@@ -284,6 +285,7 @@ class Interaction {
 
             return language;
         } catch (err) {
+            console.log(this);
             logger.logText('ERROR', err);
             return Available_Languages.EN_US;
         }

@@ -29,7 +29,6 @@ async function getUserConfig(id: number | Discord_Id): Promise<User_Config> {
             id: 0,
             user_id: user ? user.id : parseInt(`${id}`),
             language: Available_Languages.EN_US,
-            default_sheet: null,
             secret_roll: false,
             secret_insan: false,
             secret_general: false,

@@ -253,7 +253,6 @@ declare global {
         id: number;
         user_id: number;
         language: Available_Languages | string;
-        default_sheet: number | null;
         secret_roll: boolean;
         secret_insan: boolean;
         secret_general: boolean;

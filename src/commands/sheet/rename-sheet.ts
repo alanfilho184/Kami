@@ -172,7 +172,8 @@ export default {
                             logger.logText('ERROR', `Error renaming sheet: ${err}`);
                         });
                 },
-                singleUse: true
+                singleUse: true,
+                respondOnlyToUserId: int.user.id
             });
 
             actionHandler.registerAction(`$a$cancel-rename-sheet|${tempId}`, {
@@ -199,7 +200,8 @@ export default {
                         logger.logText('ERROR', `Error updating cancel rename sheet message: ${err}`);
                     });
                 },
-                singleUse: true
+                singleUse: true,
+                respondOnlyToUserId: int.user.id
             });
 
             return;
@@ -211,10 +213,6 @@ export default {
         if (sheets) {
             let sheetNames: Set<string> = new Set();
             let sheetsNamesArray: { name: string; value: string }[] = [];
-
-            if (int.kami_user?.default_sheet) {
-                sheetNames.add(`${int.kami_user.default_sheet}`);
-            }
 
             let search = similaritySearch(int.getArgs().get('sheet_name').value, sheets);
 

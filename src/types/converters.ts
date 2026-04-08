@@ -13,7 +13,6 @@ function toUser_Config(data: any): User_Config {
         id: data.id,
         user_id: data.user_id,
         language: data.language,
-        default_sheet: data.default_sheet,
         secret_roll: data.secret_roll,
         secret_insan: data.secret_insan,
         secret_general: data.secret_general,

@@ -81,7 +81,6 @@ model sheets {
     attributes     Json
     legacy         Boolean        @default(false)
     is_public      Boolean        @default(false)
-    user_config    users_config[]
     irt_sheets     irt_sheets[]
 }
 
@@ -122,8 +121,6 @@ model users_config {
     secret_general Boolean             @default(false)
     secret_sheet   Boolean             @default(false)
     secret_send    Boolean             @default(false)
-    Default_Sheet  sheets?             @relation(fields: [default_sheet], references: [id])
-    default_sheet  Int?
     last_use       DateTime            @default(now()) @updatedAt @db.Timestamptz
 }
 

@@ -227,7 +227,7 @@ export default {
                             headers: {
                                 'Content-Type': 'application/json'
                             }
-                        })
+                        });
                         return;
                     }
 
@@ -252,7 +252,8 @@ export default {
                             commands.get('sheet')!.run(int, language);
                         });
                 },
-                singleUse: true
+                singleUse: true,
+                respondOnlyToUserId: int.user.id
             });
 
             actionHandler.registerAction(`$a$cancel-new-sheet|${tempId}`, {
@@ -279,7 +280,8 @@ export default {
                         logger.logText('ERROR', `Error updating cancel new sheet message: ${err}`);
                     });
                 },
-                singleUse: true
+                singleUse: true,
+                respondOnlyToUserId: int.user.id
             });
 
             return;
@@ -337,10 +339,6 @@ export default {
             if (sheets) {
                 let sheetNames: Set<string> = new Set();
                 let sheetsNamesArray: { name: string; value: string }[] = [];
-
-                if (int.kami_user?.default_sheet) {
-                    sheetNames.add(`${int.kami_user.default_sheet}`);
-                }
 
                 let search = similaritySearch(int.getArgs().get('sheet_name').value, sheets);
 

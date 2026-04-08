@@ -21,7 +21,6 @@ function toUser(user: any): User | (User & User_Config) | null {
                 is_beta: user.is_beta,
                 is_premium: user.is_premium,
                 last_use: user.last_use,
-                default_sheet: user.user_config[0].default_sheet,
                 language: user.user_config[0].language,
                 secret_general: user.user_config[0].secret_general,
                 secret_insan: user.user_config[0].secret_insan,
@@ -149,6 +148,59 @@ export default class UserController {
                 }
             })
         );
+    }
+
+    static async updateUserConfigById(
+        id: number,
+        newConfig: Partial<{
+            secret_general: boolean;
+            secret_insan: boolean;
+            secret_roll: boolean;
+            secret_send: boolean;
+            secret_sheet: boolean;
+            language: Available_Languages | null;
+        }>
+    ): Promise<void> {
+        const updateData: any = {};
+        const createData: any = { user_id: id };
+
+        if (newConfig.secret_general !== undefined) {
+            updateData.secret_general = newConfig.secret_general;
+            createData.secret_general = newConfig.secret_general;
+        }
+
+        if (newConfig.secret_insan !== undefined) {
+            updateData.secret_insan = newConfig.secret_insan;
+            createData.secret_insan = newConfig.secret_insan;
+        }
+
+        if (newConfig.secret_roll !== undefined) {
+            updateData.secret_roll = newConfig.secret_roll;
+            createData.secret_roll = newConfig.secret_roll;
+        }
+
+        if (newConfig.secret_send !== undefined) {
+            updateData.secret_send = newConfig.secret_send;
+            createData.secret_send = newConfig.secret_send;
+        }
+
+        if (newConfig.secret_sheet !== undefined) {
+            updateData.secret_sheet = newConfig.secret_sheet;
+            createData.secret_sheet = newConfig.secret_sheet;
+        }
+
+        if (newConfig.language !== undefined) {
+            updateData.language = `${newConfig.language}`.toUpperCase();
+            createData.language = `${newConfig.language}`.toUpperCase();
+        }
+
+        await db.users_config.upsert({
+            where: {
+                user_id: id
+            },
+            update: updateData,
+            create: createData
+        });
     }
 
     // static async mergeByIdAndDiscordId(user: Express.Request['user'], discordUser: User) {

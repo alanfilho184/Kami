@@ -236,10 +236,6 @@ export default {
             let sheetNames: Set<string> = new Set();
             let sheetsNamesArray: { name: string; value: string }[] = [];
 
-            if (int.kami_user?.default_sheet) {
-                sheetNames.add(`${int.kami_user.default_sheet}`);
-            }
-
             let search = similaritySearch(int.getArgs().get('sheet_name').value, sheets);
 
             for (let s = 0; s < 6; s++) {

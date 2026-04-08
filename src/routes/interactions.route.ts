@@ -28,6 +28,11 @@ router.post('/interactions', async (req: Request, res: Response) => {
             return logger.logText('ERROR', err);
         }
     }
+
+    if(int.user.system === true || int.user.bot === true) {
+        return res.end();
+    }
+
     await int.loadUser();
 
     if (int.type === InteractionType.PING) {
@@ -75,7 +80,7 @@ router.post('/interactions', async (req: Request, res: Response) => {
         }
     } else if (int.type === InteractionType.MESSAGE_COMPONENT) {
         if (int.data.custom_id!.startsWith('$a$')) {
-            return actionHandler.executeAction(int.data.custom_id!, int);
+            return actionHandler.executeAction(int.data.custom_id!, int.user.id, int);
         } else {
             logger.logDiscord(int);
             const component = components.get(int.component!.name);
