@@ -5,7 +5,7 @@ import config from '../../configs/config';
 import { DateTime } from 'luxon';
 import rest from '../../configs/rest';
 import { ButtonStyle, Routes } from 'discord-api-types/v10';
-import { Available_Languages } from '../../types/enums';
+import { Available_Languages, Command_Category } from '../../types/enums';
 import actionHandler from '../../resources/utils/action-handler';
 import { randomUUID } from 'crypto';
 import UserController from '../../controllers/user.controller';
@@ -13,22 +13,26 @@ import UserController from '../../controllers/user.controller';
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'config',
-        en_us: 'config'
+        'pt-br': 'config',
+        'en-us': 'config'
     },
     fullNames: {
-        pt_br: 'config',
-        en_us: 'config'
+        'pt-br': 'Config',
+        'en-us': 'Config'
     },
     descriptions: {
-        pt_br: 'Configurações de comandos do BOT.',
-        en_us: 'BOT command settings.'
+        'pt-br': 'Configurações de comandos do BOT.',
+        'en-us': 'BOT command settings.'
     },
     type: 1,
+    category: Command_Category.GENERAL,
+    doNotAcknowledge: true,
     run: async (int: Interaction, language: Available_Languages) => {
+        int.acknowledge(true);
+
         function createConfig(language: Available_Languages, preferences: Partial<User_Config>, tempId?: string) {
             if (preferences.language == null) {
-                preferences.language == language;
+                preferences.language = language;
             }
 
             const configEmbed = new EmbedBuilder()
@@ -37,15 +41,15 @@ export default {
 
             let currentLanguage = '';
 
-            switch (`${preferences.language}`.toLowerCase()) {
-                case 'en_us':
-                    currentLanguage = 'en_us';
+            switch (preferences.language) {
+                case 'en-us':
+                    currentLanguage = 'en-us';
                     break;
-                case 'pt_br':
-                    currentLanguage = 'pt_br';
+                case 'pt-br':
+                    currentLanguage = 'pt-br';
                     break;
                 default:
-                    currentLanguage = `${language}`.toLowerCase();
+                    currentLanguage = language;
             }
 
             configEmbed.addFields(
@@ -87,7 +91,7 @@ export default {
                 {
                     name: localization(language, 'cmd-config|language-title'),
                     value:
-                        currentLanguage == 'pt_br'
+                        currentLanguage == 'pt-br'
                             ? localization(language, 'cmd-config|language-pt-br')
                             : localization(language, 'cmd-config|language-en-us'),
                     inline: false
@@ -146,7 +150,7 @@ export default {
             const toggleLangButton = new ButtonBuilder()
                 .setCustomId(`$a$config-toggle-lang|${tempId}`)
                 .setLabel(
-                    currentLanguage == 'en_us'
+                    currentLanguage == 'en-us'
                         ? localization(language, 'cmd-config|button-language-pt-br')
                         : localization(language, 'cmd-config|button-language-en-us')
                 )
@@ -353,14 +357,14 @@ export default {
                 };
 
                 switch (`${comp.kami_user!.language}`.toLowerCase()) {
-                    case 'en_us':
-                        updatedConfig.language = Available_Languages.PT_BR;
+                    case 'en-us':
+                        updatedConfig.language = Available_Languages['pt-br'];
                         break;
-                    case 'pt_br':
-                        updatedConfig.language = Available_Languages.EN_US;
+                    case 'pt-br':
+                        updatedConfig.language = Available_Languages['en-us'];
                         break;
                     default:
-                        updatedConfig.language = Available_Languages.EN_US;
+                        updatedConfig.language = Available_Languages['en-us'];
                 }
 
                 await UserController.updateUserConfigById(comp.kami_user!.id, {

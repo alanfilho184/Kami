@@ -21,7 +21,7 @@ function toUser(user: any): User | (User & User_Config) | null {
                 is_beta: user.is_beta,
                 is_premium: user.is_premium,
                 last_use: user.last_use,
-                language: user.user_config[0].language,
+                language: `${user.user_config[0].language}`.toLowerCase().replace('_', '-') as Available_Languages,
                 secret_general: user.user_config[0].secret_general,
                 secret_insan: user.user_config[0].secret_insan,
                 secret_roll: user.user_config[0].secret_roll,
@@ -74,7 +74,7 @@ export default class UserController {
         );
     }
 
-    static async getById(id: number): Promise<User | null> {
+    static async getById(id: number): Promise<(User & User_Config) | null> {
         return toUser(
             await db.users.findUnique({
                 where: {
@@ -84,7 +84,7 @@ export default class UserController {
                     user_config: true
                 }
             })
-        );
+        ) as (User & User_Config) | null;
     }
 
     static async getByUsername(username: string): Promise<User | null> {
@@ -190,8 +190,8 @@ export default class UserController {
         }
 
         if (newConfig.language !== undefined) {
-            updateData.language = `${newConfig.language}`.toUpperCase();
-            createData.language = `${newConfig.language}`.toUpperCase();
+            updateData.language = `${newConfig.language}`.toUpperCase().replace('-', '_');
+            createData.language = `${newConfig.language}`.toUpperCase().replace('-', '_');
         }
 
         await db.users_config.upsert({

@@ -16,7 +16,7 @@ translations.forEach(async translationPathString => {
             fs.readFileSync(`./${translationPathString}`, 'utf-8')
         );
 
-        languages[translation['language']] = translation;
+        languages[translation['language']] = { ...languages[translation['language']], ...translation };
     }
 });
 
@@ -32,6 +32,10 @@ export function localization(
     try {
         let languageNormalized = language.toLowerCase().replace('_', '-');
         let translation = languages[languageNormalized][key];
+
+        if(Array.isArray(translation)) {
+            translation = translation.join('\n');
+        }
 
         if (replaces) {
             replaces.forEach(replace => {

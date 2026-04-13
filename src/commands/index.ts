@@ -11,7 +11,7 @@ for (const file of commandFiles) {
     const command: Command = require(`./${file.replace('dist\\commands', '')}`).default;
 
     if (command) {
-        commands.set(command.commandNames.en_us, command);
+        commands.set(command.commandNames['en-us'], command);
     }
 }
 

@@ -11,6 +11,7 @@ import { Locale, Routes } from 'discord-api-types/v10';
 import { Interaction } from '../../resources/utils/interaction-handler';
 import commandsBot from '..';
 import logger from '../../configs/logger';
+import { Command_Category } from '../../types/enums';
 
 function languageFilter(language: string | any) {
     language = language.replace('_', '-').split('-');
@@ -27,18 +28,19 @@ function languageFilter(language: string | any) {
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'reloadslashs',
-        en_us: 'reloadslashs'
+        'pt-br': 'reloadslashs',
+        'en-us': 'reloadslashs'
     },
     fullNames: {
-        pt_br: 'Reload Slashs',
-        en_us: 'Reload Slashs'
+        'pt-br': 'Reload Slashs',
+        'en-us': 'Reload Slashs'
     },
     descriptions: {
-        pt_br: 'Recarrega os comandos do bot',
-        en_us: 'Reloads the bot commands'
+        'pt-br': 'Recarrega os comandos do bot',
+        'en-us': 'Reloads the bot commands'
     },
     type: 1,
+    category: Command_Category.OWNER_ONLY,
     run: async (int: Interaction, language: Available_Languages) => {
         const slashs: any = await rest.get(Routes.applicationCommands(int.application_id));
 
@@ -50,7 +52,7 @@ export default {
                 const newCommand = new SlashCommandBuilder();
 
                 for (let s in slashs) {
-                    if (slashs[s].name == command.commandNames['en_us']) {
+                    if (slashs[s].name == command.commandNames['en-us']) {
                         //@ts-ignore
                         newCommand.id = slashs[s].id;
                     }
@@ -58,7 +60,7 @@ export default {
 
                 if (command.ownerOnly) {
                     newCommand.setDefaultMemberPermissions('0');
-                    newCommand.setName(command.commandNames['en_us']).setDescription(command.descriptions['en_us']);
+                    newCommand.setName(command.commandNames['en-us']).setDescription(command.descriptions['en-us']);
 
                     // Apply name/description localizations for ownerOnly commands
                     for (let language in command.commandNames) {
@@ -81,8 +83,8 @@ export default {
                         const localizedArgsNames: any = {};
                         const localizedArgsDescriptions: any = {};
 
-                        for (let i = 0; i < Object.keys(command.arguments['en_us']).length; i++) {
-                            const argEn = command.arguments['en_us'][i].name;
+                        for (let i = 0; i < Object.keys(command.arguments['en-us']).length; i++) {
+                            const argEn = command.arguments['en-us'][i].name;
 
                             for (let language of Object.keys(command.arguments)) {
                                 const arg = command.arguments[language][i];
@@ -101,22 +103,22 @@ export default {
                             }
                         }
 
-                        for (let a in command.arguments['en_us']) {
-                            if (command.arguments['en_us'][a].type == 'STRING') {
+                        for (let a in command.arguments['en-us']) {
+                            if (command.arguments['en-us'][a].type == 'STRING') {
                                 if (
-                                    command.arguments['en_us'][a].autocomplete &&
-                                    command.arguments!['en_us'][a].choices &&
-                                    command.arguments!['en_us'][a].choices.length > 0
+                                    command.arguments['en-us'][a].autocomplete &&
+                                    command.arguments!['en-us'][a].choices &&
+                                    command.arguments!['en-us'][a].choices.length > 0
                                 ) {
                                     throw new Error(
-                                        `Argument ${command.arguments['en_us'][a].name} has choices and autocomplete`
+                                        `Argument ${command.arguments['en-us'][a].name} has choices and autocomplete`
                                     );
                                 }
 
                                 const localizedOptionsChoicesNames: any = {};
-                                if (!command.arguments['en_us'][a].choices) {
-                                    for (let i = 0; i < Object.keys(command.arguments['en_us']).length; i++) {
-                                        const argEn = command.arguments['en_us'][i].name;
+                                if (!command.arguments['en-us'][a].choices) {
+                                    for (let i = 0; i < Object.keys(command.arguments['en-us']).length; i++) {
+                                        const argEn = command.arguments['en-us'][i].name;
 
                                         for (let language of Object.keys(command.arguments)) {
                                             const arg = command.arguments[language][i];
@@ -142,21 +144,21 @@ export default {
 
                                 newCommand.addStringOption((option: SlashCommandStringOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     if (
-                                        command.arguments!['en_us'][a].choices &&
-                                        command.arguments!['en_us'][a].choices.length > 0
+                                        command.arguments!['en-us'][a].choices &&
+                                        command.arguments!['en-us'][a].choices.length > 0
                                     ) {
-                                        if (command.arguments!['en_us'][a].choices) {
-                                            for (let c in command.arguments!['en_us'][a].choices) {
-                                                const choice = command.arguments!['en_us'][a].choices![c];
+                                        if (command.arguments!['en-us'][a].choices) {
+                                            for (let c in command.arguments!['en-us'][a].choices) {
+                                                const choice = command.arguments!['en-us'][a].choices![c];
 
                                                 const choiceNameLocalizations: any = {};
 
@@ -174,60 +176,60 @@ export default {
                                                 }
 
                                                 option.addChoices({
-                                                    name: command.arguments!['en_us'][a].choices![c].name,
-                                                    value: `${command.arguments!['en_us'][a].choices![c].return}`,
+                                                    name: command.arguments!['en-us'][a].choices![c].name,
+                                                    value: `${command.arguments!['en-us'][a].choices![c].return}`,
                                                     name_localizations: choiceNameLocalizations
                                                 });
                                             }
                                         }
-                                    } else if (command.arguments!['en_us'][a].autocomplete) {
-                                        option.setAutocomplete(command.arguments!['en_us'][a].autocomplete);
+                                    } else if (command.arguments!['en-us'][a].autocomplete) {
+                                        option.setAutocomplete(command.arguments!['en-us'][a].autocomplete);
                                     }
 
                                     return option;
                                 });
                             }
                             //@ts-ignore
-                            else if (command.arguments['en_us'][a].type == 'INTEGER') {
+                            else if (command.arguments['en-us'][a].type == 'INTEGER') {
                                 newCommand.addIntegerOption((option: SlashCommandIntegerOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setAutocomplete(command.arguments!['en_us'][a].autocomplete)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setAutocomplete(command.arguments!['en-us'][a].autocomplete)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     return option;
                                 });
                             }
                             //@ts-ignore
-                            else if (command.arguments['en_us'][a].type == 'USER') {
+                            else if (command.arguments['en-us'][a].type == 'USER') {
                                 newCommand.addUserOption((option: SlashCommandUserOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     return option;
                                 });
                             }
                             //@ts-ignore
-                            else if (command.arguments['en_us'][a].type == 'ATTACHMENT') {
+                            else if (command.arguments['en-us'][a].type == 'ATTACHMENT') {
                                 newCommand.addAttachmentOption((option: SlashCommandAttachmentOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     return option;
@@ -239,7 +241,7 @@ export default {
                     commandsOwnerOnly.push(newCommand);
                 } else {
                     newCommand.setDefaultMemberPermissions(null);
-                    newCommand.setName(command.commandNames['en_us']).setDescription(command.descriptions['en_us']);
+                    newCommand.setName(command.commandNames['en-us']).setDescription(command.descriptions['en-us']);
 
                     for (let language in command.commandNames) {
                         const name = command.commandNames[language];
@@ -261,8 +263,8 @@ export default {
                         const localizedArgsNames: any = {};
                         const localizedArgsDescriptions: any = {};
 
-                        for (let i = 0; i < Object.keys(command.arguments['en_us']).length; i++) {
-                            const argEn = command.arguments['en_us'][i].name;
+                        for (let i = 0; i < Object.keys(command.arguments['en-us']).length; i++) {
+                            const argEn = command.arguments['en-us'][i].name;
 
                             for (let language of Object.keys(command.arguments)) {
                                 const arg = command.arguments[language][i];
@@ -282,22 +284,22 @@ export default {
                             }
                         }
 
-                        for (let a in command.arguments['en_us']) {
-                            if (command.arguments['en_us'][a].type == 'STRING') {
+                        for (let a in command.arguments['en-us']) {
+                            if (command.arguments['en-us'][a].type == 'STRING') {
                                 if (
-                                    command.arguments['en_us'][a].autocomplete &&
-                                    command.arguments['en_us'][a].choices &&
-                                    command.arguments['en_us'][a].choices.length > 0
+                                    command.arguments['en-us'][a].autocomplete &&
+                                    command.arguments['en-us'][a].choices &&
+                                    command.arguments['en-us'][a].choices.length > 0
                                 ) {
                                     throw new Error(
-                                        `Argument ${command.arguments['en_us'][a].name} has choices and autocomplete`
+                                        `Argument ${command.arguments['en-us'][a].name} has choices and autocomplete`
                                     );
                                 }
 
                                 const localizedOptionsChoicesNames: any = {};
-                                if (!command.arguments['en_us'][a].choices) {
-                                    for (let i = 0; i < Object.keys(command.arguments['en_us']).length; i++) {
-                                        const argEn = command.arguments['en_us'][i].name;
+                                if (!command.arguments['en-us'][a].choices) {
+                                    for (let i = 0; i < Object.keys(command.arguments['en-us']).length; i++) {
+                                        const argEn = command.arguments['en-us'][i].name;
 
                                         for (let language of Object.keys(command.arguments)) {
                                             const arg = command.arguments[language][i];
@@ -323,21 +325,21 @@ export default {
 
                                 newCommand.addStringOption((option: SlashCommandStringOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     if (
-                                        command.arguments!['en_us'][a].choices &&
-                                        command.arguments!['en_us'][a].choices.length > 0
+                                        command.arguments!['en-us'][a].choices &&
+                                        command.arguments!['en-us'][a].choices.length > 0
                                     ) {
-                                        if (command.arguments!['en_us'][a].choices) {
-                                            for (let c in command.arguments!['en_us'][a].choices) {
-                                                const choice = command.arguments!['en_us'][a].choices![c];
+                                        if (command.arguments!['en-us'][a].choices) {
+                                            for (let c in command.arguments!['en-us'][a].choices) {
+                                                const choice = command.arguments!['en-us'][a].choices![c];
 
                                                 const choiceNameLocalizations = {};
 
@@ -355,60 +357,60 @@ export default {
                                                 }
 
                                                 option.addChoices({
-                                                    name: command.arguments!['en_us'][a].choices![c].name,
-                                                    value: `${command.arguments!['en_us'][a].choices![c].return}`,
+                                                    name: command.arguments!['en-us'][a].choices![c].name,
+                                                    value: `${command.arguments!['en-us'][a].choices![c].return}`,
                                                     name_localizations: choiceNameLocalizations
                                                 });
                                             }
                                         }
-                                    } else if (command.arguments!['en_us'][a].autocomplete) {
-                                        option.setAutocomplete(command.arguments!['en_us'][a].autocomplete);
+                                    } else if (command.arguments!['en-us'][a].autocomplete) {
+                                        option.setAutocomplete(command.arguments!['en-us'][a].autocomplete);
                                     }
 
                                     return option;
                                 });
                             }
                             //@ts-ignore
-                            else if (command.arguments['en_us'][a].type == 'INTEGER') {
+                            else if (command.arguments['en-us'][a].type == 'INTEGER') {
                                 newCommand.addIntegerOption((option: SlashCommandIntegerOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setAutocomplete(command.arguments!['en_us'][a].autocomplete)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setAutocomplete(command.arguments!['en-us'][a].autocomplete)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     return option;
                                 });
                             }
                             //@ts-ignore
-                            else if (command.arguments['en_us'][a].type == 'USER') {
+                            else if (command.arguments['en-us'][a].type == 'USER') {
                                 newCommand.addUserOption((option: SlashCommandUserOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     return option;
                                 });
                             }
                             //@ts-ignore
-                            else if (command.arguments['en_us'][a].type == 'ATTACHMENT') {
+                            else if (command.arguments['en-us'][a].type == 'ATTACHMENT') {
                                 newCommand.addAttachmentOption((option: SlashCommandAttachmentOption) => {
                                     option
-                                        .setName(command.arguments!['en_us'][a].name)
-                                        .setDescription(command.arguments!['en_us'][a].description)
-                                        .setRequired(command.arguments!['en_us'][a].required)
-                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en_us'][a].name])
+                                        .setName(command.arguments!['en-us'][a].name)
+                                        .setDescription(command.arguments!['en-us'][a].description)
+                                        .setRequired(command.arguments!['en-us'][a].required)
+                                        .setNameLocalizations(localizedArgsNames[command.arguments!['en-us'][a].name])
                                         .setDescriptionLocalizations(
-                                            localizedArgsDescriptions[command.arguments!['en_us'][a].name]
+                                            localizedArgsDescriptions[command.arguments!['en-us'][a].name]
                                         );
 
                                     return option;
@@ -421,8 +423,8 @@ export default {
                     //     const localizedOptionsNames: any = {};
                     //     const localizedOptionsDescriptions: any = {};
 
-                    //     for (let i = 0; i < Object.keys(command.options['en_us']).length; i++) {
-                    //         const argEn = command.options['en_us'][i].name;
+                    //     for (let i = 0; i < Object.keys(command.options['en-us']).length; i++) {
+                    //         const argEn = command.options['en-us'][i].name;
 
                     //         for (let language of Object.keys(command.options)) {
                     //             const arg = command.options[language][i];
@@ -444,8 +446,8 @@ export default {
 
                     //     const localizedOptionsChoicesNames: any = {};
 
-                    //     for (let i = 0; i < Object.keys(command.options['en_us']).length; i++) {
-                    //         const argEn = command.options['en_us'][i].name;
+                    //     for (let i = 0; i < Object.keys(command.options['en-us']).length; i++) {
+                    //         const argEn = command.options['en-us'][i].name;
 
                     //         for (let language of Object.keys(command.options)) {
                     //             const arg = command.options[language][i];
@@ -467,22 +469,22 @@ export default {
                     //         }
                     //     }
 
-                    //     for (let o in command.options['en_us']) {
-                    //         if (command.options['en_us'][o].type == 'STRING') {
+                    //     for (let o in command.options['en-us']) {
+                    //         if (command.options['en-us'][o].type == 'STRING') {
                     //             newCommand.addStringOption((option: SlashCommandStringOption) => {
                     //                 option
-                    //                     .setName(command.options!['en_us'][o].name)
-                    //                     .setDescription(command.options!['en_us'][o].description)
-                    //                     .setRequired(command.options!['en_us'][o].required)
-                    //                     .setNameLocalizations(localizedOptionsNames[command.options!['en_us'][o].name])
+                    //                     .setName(command.options!['en-us'][o].name)
+                    //                     .setDescription(command.options!['en-us'][o].description)
+                    //                     .setRequired(command.options!['en-us'][o].required)
+                    //                     .setNameLocalizations(localizedOptionsNames[command.options!['en-us'][o].name])
                     //                     .setDescriptionLocalizations(
-                    //                         localizedOptionsDescriptions[command.options!['en_us'][o].name]
+                    //                         localizedOptionsDescriptions[command.options!['en-us'][o].name]
                     //                     );
 
-                    //                 if (command.options!['en_us'][o].choices) {
-                    //                     for (let c in command.options!['en_us'][o].choices) {
-                    //                         const optionName = command.options!['en_us'][o].name;
-                    //                         const choice = command.options!['en_us'][o].choices[c];
+                    //                 if (command.options!['en-us'][o].choices) {
+                    //                     for (let c in command.options!['en-us'][o].choices) {
+                    //                         const optionName = command.options!['en-us'][o].name;
+                    //                         const choice = command.options!['en-us'][o].choices[c];
 
                     //                         const choiceNameLocalizations = {};
 
@@ -492,8 +494,8 @@ export default {
                     //                         }
 
                     //                         option.addChoices({
-                    //                             name: command.options!['en_us'][o].choices[c].name,
-                    //                             value: `${command.options!['en_us'][o].choices[c].return}`,
+                    //                             name: command.options!['en-us'][o].choices[c].name,
+                    //                             value: `${command.options!['en-us'][o].choices[c].return}`,
                     //                             name_localizations: choiceNameLocalizations
                     //                         });
                     //                     }
@@ -512,7 +514,7 @@ export default {
 
                 if (command.ownerOnly) {
                     newCommand.setDefaultMemberPermissions('0');
-                    newCommand.setName(command.commandNames['en_us']);
+                    newCommand.setName(command.commandNames['en-us']);
                     newCommand.setType(command.type);
 
                     // apply name localizations for ownerOnly context menu commands
@@ -531,7 +533,7 @@ export default {
                     commandsOwnerOnly.push(newCommand);
                 } else {
                     newCommand.setDefaultMemberPermissions(null);
-                    newCommand.setName(command.commandNames['en_us']);
+                    newCommand.setName(command.commandNames['en-us']);
                     newCommand.setType(command.type);
 
                     for (let language in command.commandNames) {

@@ -8,22 +8,24 @@ import { localization } from '../../resources/localization';
 import db from '../../configs/database';
 import { applicationInfo } from '../../resources/utils/application-info';
 import commandsStatistics from '../../resources/utils/command-statistics';
+import { Command_Category } from '../../types/enums';
 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'botinfo',
-        en_us: 'botinfo'
+        'pt-br': 'botinfo',
+        'en-us': 'botinfo'
     },
     fullNames: {
-        pt_br: 'Botinfo',
-        en_us: 'Botinfo'
+        'pt-br': 'Botinfo',
+        'en-us': 'Botinfo'
     },
     descriptions: {
-        pt_br: 'Mostra estatísticas sobre o bot.',
-        en_us: 'Shows statistics about the bot.'
+        'pt-br': 'Mostra estatísticas sobre o bot.',
+        'en-us': 'Shows statistics about the bot.'
     },
     type: 1,
+    category: Command_Category.GENERAL,
     run: async (int: Interaction, language: Available_Languages) => {
         const ping = new Date().getTime() - int.createdTimestamp;
 

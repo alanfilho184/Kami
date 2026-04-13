@@ -4,7 +4,7 @@ import { Interaction } from '../../resources/utils/interaction-handler';
 import { localization } from '../../resources/localization';
 import config from '../../configs/config';
 import { ButtonStyle } from 'discord-api-types/v10';
-import { Attribute_Type } from '../../types/enums';
+import { Attribute_Type, Command_Category } from '../../types/enums';
 import sheetNameCache from '../../resources/cache/sheet-name.cache';
 import stringSimilarity, { similaritySearch } from '../../resources/utils/string-similarity';
 import SheetController from '../../controllers/sheet.controller';
@@ -17,23 +17,25 @@ import actionHandler from '../../resources/utils/action-handler';
 import logger from '../../configs/logger';
 import { Sheet_Name } from '../../types/validations';
 import { ValidationError } from '../../types/errors';
+import { createSheetEmbed } from './sheet-send';
+import syncSheet from '../../resources/utils/sync-sheet';
 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'ficha',
-        en_us: 'sheet'
+        'pt-br': 'ficha',
+        'en-us': 'sheet'
     },
     fullNames: {
-        pt_br: 'Ficha',
-        en_us: 'Sheet'
+        'pt-br': 'Ficha',
+        'en-us': 'Sheet'
     },
     descriptions: {
-        pt_br: 'Cria/edita uma ficha.',
-        en_us: 'Create/edit a sheet.'
+        'pt-br': 'Cria/edita uma ficha.',
+        'en-us': 'Create/edit a sheet.'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'nome_da_ficha',
                 description: 'Nome da ficha que deseja criar/editar.',
@@ -98,7 +100,7 @@ export default {
                 autocomplete: true
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'sheet_name',
                 description: 'Sheet name you want to create/edit.',
@@ -165,6 +167,7 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.SHEET_ALTER,
     run: async (int: Interaction, language: Available_Languages) => {
         const sheetName = int.getArgs().get('sheet_name').value;
         const componentType = int.getArgs().get('component_type').value;
@@ -176,6 +179,14 @@ export default {
         let sheet = await SheetController.getByUserIdAndSheetName(int.kami_user?.id!, sheetName);
 
         if (!sheet) {
+            const sheetCount = await SheetController.countSheetsByUserId(int.kami_user?.id!);
+
+            if (sheetCount >= 5 && int.kami_user?.is_premium === false) {
+                return int.reply({
+                    content: localization(language, 'sheet|sheet-limit-reached')
+                });
+            }
+
             const tempId = randomUUID();
 
             const buttonConfirm = new ButtonBuilder()
@@ -319,11 +330,17 @@ export default {
             }
         } else {
             await SheetController.updateById(sheet.id, validatedSheet);
-            commands.get('sheet_send')!.run(int, language);
+            // commands.get('sheet_send')!.run(int, language);
 
-            // return await int.reply({
-            //     content: 'Ficha editada com sucesso!'
-            // });
+            syncSheet({
+                sheet: validatedSheet,
+                user: int.kami_user,
+                language: language
+            });
+
+            return await int.reply({
+                content: 'Ficha editada com sucesso!'
+            });
         }
     },
     async autocomplete(int: Interaction, language: Available_Languages) {

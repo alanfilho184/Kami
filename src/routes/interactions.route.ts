@@ -11,7 +11,7 @@ import components from '../components';
 import logger from '../configs/logger';
 import commandsStatistics from '../resources/utils/command-statistics';
 import { localization } from '../resources/localization';
-import { Available_Languages } from '../types/enums';
+import { Available_Languages, Command_Category } from '../types/enums';
 import actionHandler from '../resources/utils/action-handler';
 
 const router = Router();
@@ -29,7 +29,7 @@ router.post('/interactions', async (req: Request, res: Response) => {
         }
     }
 
-    if(int.user.system === true || int.user.bot === true) {
+    if (int.user.system === true || int.user.bot === true) {
         return res.end();
     }
 
@@ -50,7 +50,7 @@ router.post('/interactions', async (req: Request, res: Response) => {
                 flags: InteractionResponseFlags.EPHEMERAL
             });
         } else {
-            commandsStatistics.sumCommand(command.commandNames[Available_Languages.EN_US]);
+            commandsStatistics.sumCommand(command.commandNames[Available_Languages['en-us']]);
 
             if (command.ownerOnly && int.user.id !== process.env.OWNER_ID) {
                 await int.acknowledge(true);
@@ -59,13 +59,28 @@ router.post('/interactions', async (req: Request, res: Response) => {
                     flags: InteractionResponseFlags.EPHEMERAL
                 });
             } else {
-                //TODO: add category to use user.secret
-                let ephemeral = false;
-                // if (command.fullNames['en_us'] === 'Sheet') {
-                //     ephemeral = true;
-                // }
-
-                await int.acknowledge(ephemeral);
+                if (!command.doNotAcknowledge) {
+                    switch (command.category) {
+                        case Command_Category.GENERAL:
+                            await int.acknowledge(int.kami_user?.secret_general);
+                            break;
+                        case Command_Category.INSANITY:
+                            await int.acknowledge(int.kami_user?.secret_insan);
+                            break;
+                        case Command_Category.ROLL:
+                            await int.acknowledge(int.kami_user?.secret_roll);
+                            break;
+                        case Command_Category.SHEET_ALTER:
+                            await int.acknowledge(int.kami_user?.secret_sheet);
+                            break;
+                        case Command_Category.SHEET_SEND:
+                            await int.acknowledge(int.kami_user?.secret_sheet);
+                            break;
+                        default:
+                            await int.acknowledge();
+                            break;
+                    }
+                }
 
                 try {
                     await command.run(int, int.language);
@@ -103,7 +118,28 @@ router.post('/interactions', async (req: Request, res: Response) => {
                         flags: InteractionResponseFlags.EPHEMERAL
                     });
                 } else {
-                    await int.acknowledge();
+                    if (!component.doNotAcknowledge) {
+                        switch (component.category) {
+                            case Command_Category.GENERAL:
+                                await int.acknowledge(int.kami_user?.secret_general);
+                                break;
+                            case Command_Category.INSANITY:
+                                await int.acknowledge(int.kami_user?.secret_insan);
+                                break;
+                            case Command_Category.ROLL:
+                                await int.acknowledge(int.kami_user?.secret_roll);
+                                break;
+                            case Command_Category.SHEET_ALTER:
+                                await int.acknowledge(int.kami_user?.secret_sheet);
+                                break;
+                            case Command_Category.SHEET_SEND:
+                                await int.acknowledge(int.kami_user?.secret_sheet);
+                                break;
+                            default:
+                                await int.acknowledge();
+                                break;
+                        }
+                    }
 
                     try {
                         await component.run(int, int.language);
@@ -128,7 +164,7 @@ router.post('/interactions', async (req: Request, res: Response) => {
             } else {
                 return logger.logText(
                     'ERROR',
-                    `Command "${command.commandNames['en_us']}" does not have an autocomplete method`
+                    `Command "${command.commandNames[Available_Languages['en-us']]}" does not have an autocomplete method`
                 );
             }
         }

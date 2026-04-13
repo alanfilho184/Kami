@@ -9,23 +9,24 @@ import actionHandler from '../../resources/utils/action-handler';
 import { ButtonStyle, Routes } from 'discord-api-types/v10';
 import rest from '../../configs/rest';
 import logger from '../../configs/logger';
+import { Command_Category } from '../../types/enums';
 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'apagar_ficha',
-        en_us: 'delete_sheet'
+        'pt-br': 'apagar_ficha',
+        'en-us': 'delete_sheet'
     },
     fullNames: {
-        pt_br: 'Apagar Ficha',
-        en_us: 'Delete Sheet'
+        'pt-br': 'Apagar Ficha',
+        'en-us': 'Delete Sheet'
     },
     descriptions: {
-        pt_br: 'Apaga uma ficha criada por você.',
-        en_us: 'Deletes a sheet created by you.'
+        'pt-br': 'Apaga uma ficha criada por você.',
+        'en-us': 'Deletes a sheet created by you.'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'nome_da_ficha',
                 description: 'Nome da ficha que deseja apagar.',
@@ -34,7 +35,7 @@ export default {
                 autocomplete: true
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'sheet_name',
                 description: 'The name of the sheet you want to delete.',
@@ -45,6 +46,7 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.SHEET_ALTER,
     run: async (int: Interaction, language: Available_Languages) => {
         const sheetName = int.getArgs().get('sheet_name').value;
 
@@ -88,6 +90,25 @@ export default {
                     SheetController.deleteById(sheet.id)
                         .then(() => {
                             sheetNameCache.remove(int.kami_user!.id, sheetName);
+
+                            SheetController.getIrtSheetBySheetId(sheet.id).then(async irtSheets => {
+                                if (irtSheets && irtSheets?.length > 0) {
+                                    for (let irtSheet of irtSheets) {
+                                        await rest
+                                            .delete(
+                                                Routes.channelMessage(`${irtSheet.channel_id}`, `${irtSheet.msg_id}`)
+                                            )
+
+                                            .catch(err => {
+                                                logger.logText('ERROR', `Error deleting IRT sheet message: ${err}`);
+                                            });
+
+                                        await new Promise(r => setTimeout(r, 3000));
+                                    }
+
+                                    SheetController.deleteAllIrtSheetBySheetId(sheet.id);
+                                }
+                            });
 
                             rest.patch(Routes.webhookMessage(int.application_id, comp.token, msg.id), {
                                 body: {

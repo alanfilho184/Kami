@@ -38,6 +38,7 @@ class Interaction {
         }[];
         component_type?: number;
         custom_id?: string;
+        values?: string[];
     };
     guild: {
         id: Snowflake;
@@ -113,7 +114,7 @@ class Interaction {
         if (interaction.type !== InteractionType.PING) {
             this.language = this.getLanguage();
         } else {
-            this.language = Available_Languages.EN_US;
+            this.language = Available_Languages['en-us'];
         }
 
         if (this.inGuild()) {
@@ -280,14 +281,13 @@ class Interaction {
             if (
                 Object.values(Available_Languages).includes(language.replace('-', '_') as Available_Languages) === false
             ) {
-                language = Available_Languages.EN_US;
+                language = Available_Languages['en-us'];
             }
 
             return language;
         } catch (err) {
-            console.log(this);
             logger.logText('ERROR', err);
-            return Available_Languages.EN_US;
+            return Available_Languages['en-us'];
         }
     }
 

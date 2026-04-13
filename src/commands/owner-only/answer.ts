@@ -5,23 +5,24 @@ import config from '../../configs/config';
 import { DateTime } from 'luxon';
 import rest from '../../configs/rest';
 import { ButtonStyle, Routes } from 'discord-api-types/v10';
+import { Command_Category } from '../../types/enums';
 
 export default {
     ownerOnly: true,
     commandNames: {
-        pt_br: 'responder',
-        en_us: 'answer'
+        'pt-br': 'responder',
+        'en-us': 'answer'
     },
     fullNames: {
-        pt_br: 'Responder',
-        en_us: 'Answer'
+        'pt-br': 'Responder',
+        'en-us': 'Answer'
     },
     descriptions: {
-        pt_br: 'Responde um usuário que enviou uma mensagem para o suporte do Kami.',
-        en_us: 'Responds to a user who sent a message to Kami support.'
+        'pt-br': 'Responde um usuário que enviou uma mensagem para o suporte do Kami.',
+        'en-us': 'Responds to a user who sent a message to Kami support.'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'user_id',
                 description: 'O ID do usuário que você deseja responder.',
@@ -37,7 +38,7 @@ export default {
                 autocomplete: false
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'user_id',
                 description: 'The ID of the user you want to respond to.',
@@ -55,6 +56,7 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.OWNER_ONLY,
     run: async (int: Interaction, language: Available_Languages) => {
         const targetUserId = int.getArgs().get('user_id')?.value || int.user.id;
         const message = int.getArgs().get('message').value;

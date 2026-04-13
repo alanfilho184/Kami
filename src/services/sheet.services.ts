@@ -525,6 +525,171 @@ class SheetServices {
             return errors;
         }
     }
+
+    static async validateDeleteAttribute(
+        sheet: Sheet,
+        section: string,
+        attribute: string
+    ): Promise<Array<{ field: string; code: string }> | Sheet> {
+        const errors: Array<{ field: string; code: string }> = [];
+
+        section = `${section}`;
+        attribute = `${attribute}`;
+
+        const sectionIndex = sheet.attributes.sections.findIndex(s => s.name === section);
+
+        if (sectionIndex === -1) {
+            errors.push({ field: 'section', code: 'section-not-found' });
+            return errors;
+        }
+
+        const sheet_section = sheet.attributes.sections[sectionIndex];
+        const attributeIndex = sheet_section.attributes.findIndex(a => a.name === attribute);
+
+        if (attributeIndex === -1) {
+            errors.push({ field: 'attribute', code: 'attribute-not-found' });
+            return errors;
+        }
+
+        sheet_section.attributes.splice(attributeIndex, 1);
+
+        sheet_section.attributes.forEach((a, idx) => {
+            a.position = idx;
+        });
+
+        sheet.attributes.sections[sectionIndex] = sheet_section;
+        sheet.last_use = new Date();
+
+        return sheet;
+    }
+
+    static async validateDeleteSection(
+        sheet: Sheet,
+        section: string
+    ): Promise<Array<{ field: string; code: string }> | Sheet> {
+        const errors: Array<{ field: string; code: string }> = [];
+
+        section = `${section}`;
+
+        const sectionIndex = sheet.attributes.sections.findIndex(s => s.name === section);
+
+        if (sectionIndex === -1) {
+            errors.push({ field: 'section', code: 'section-not-found' });
+            return errors;
+        }
+
+        sheet.attributes.sections.splice(sectionIndex, 1);
+
+        sheet.attributes.sections.forEach((s, idx) => {
+            s.position = idx;
+            if (Array.isArray(s.attributes)) {
+                s.attributes.forEach((a, j) => {
+                    a.position = j;
+                });
+            }
+        });
+
+        sheet.last_use = new Date();
+
+        return sheet;
+    }
+
+    static async validateRenameAttribute(
+        sheet: Sheet,
+        section: string,
+        oldName: string,
+        newName: string
+    ): Promise<Array<{ field: string; code: string }> | Sheet> {
+        const errors: Array<{ field: string; code: string }> = [];
+
+        section = `${section}`;
+        oldName = `${oldName}`;
+        newName = `${newName}`;
+
+        if (newName.length < 1 || newName.length > 256) {
+            errors.push({ field: 'attribute', code: 'name-size' });
+        }
+
+        if (this.textRegex.test(newName)) {
+            errors.push({ field: 'attribute', code: 'name-invalid' });
+        }
+
+        if (this.textRegex.test(section)) {
+            errors.push({ field: 'section', code: 'section-invalid' });
+        }
+
+        if (errors.length > 0) {
+            return errors;
+        }
+
+        const sectionIndex = sheet.attributes.sections.findIndex(s => s.name === section);
+
+        if (sectionIndex === -1) {
+            errors.push({ field: 'section', code: 'section-not-found' });
+            return errors;
+        }
+
+        const sheet_section = sheet.attributes.sections[sectionIndex];
+        const attributeIndex = sheet_section.attributes.findIndex(a => a.name === oldName);
+
+        if (attributeIndex === -1) {
+            errors.push({ field: 'attribute', code: 'attribute-not-found' });
+            return errors;
+        }
+
+        const duplicate = sheet_section.attributes.find(a => a.name === newName);
+        if (duplicate) {
+            errors.push({ field: 'attribute', code: 'name-duplicate' });
+            return errors;
+        }
+
+        sheet_section.attributes[attributeIndex].name = newName;
+        sheet.attributes.sections[sectionIndex] = sheet_section;
+        sheet.last_use = new Date();
+
+        return sheet;
+    }
+
+    static async validateRenameSection(
+        sheet: Sheet,
+        oldName: string,
+        newName: string
+    ): Promise<Array<{ field: string; code: string }> | Sheet> {
+        const errors: Array<{ field: string; code: string }> = [];
+
+        oldName = `${oldName}`;
+        newName = `${newName}`;
+
+        if (newName.length < 1 || newName.length > 256) {
+            errors.push({ field: 'section', code: 'section-size' });
+        }
+
+        if (this.textRegex.test(newName)) {
+            errors.push({ field: 'section', code: 'section-invalid' });
+        }
+
+        if (errors.length > 0) {
+            return errors;
+        }
+
+        const sectionIndex = sheet.attributes.sections.findIndex(s => s.name === oldName);
+
+        if (sectionIndex === -1) {
+            errors.push({ field: 'section', code: 'section-not-found' });
+            return errors;
+        }
+
+        const duplicate = sheet.attributes.sections.find(s => s.name === newName);
+        if (duplicate) {
+            errors.push({ field: 'section', code: 'name-duplicate' });
+            return errors;
+        }
+
+        sheet.attributes.sections[sectionIndex].name = newName;
+        sheet.last_use = new Date();
+
+        return sheet;
+    }
 }
 
 export default SheetServices;

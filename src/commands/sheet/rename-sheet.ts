@@ -10,23 +10,25 @@ import { ButtonStyle, Routes } from 'discord-api-types/v10';
 import rest from '../../configs/rest';
 import logger from '../../configs/logger';
 import { Sheet_Name } from '../../types/validations';
+import syncSheet from '../../resources/utils/sync-sheet';
+import { Command_Category } from '../../types/enums';
 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'renomear_ficha',
-        en_us: 'rename_sheet'
+        'pt-br': 'renomear_ficha',
+        'en-us': 'rename_sheet'
     },
     fullNames: {
-        pt_br: 'Renomear Ficha',
-        en_us: 'Rename Sheet'
+        'pt-br': 'Renomear Ficha',
+        'en-us': 'Rename Sheet'
     },
     descriptions: {
-        pt_br: 'Renomeia uma ficha criada por você.',
-        en_us: 'Renames a sheet created by you.'
+        'pt-br': 'Renomeia uma ficha criada por você.',
+        'en-us': 'Renames a sheet created by you.'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'nome_da_ficha',
                 description: 'Nome da ficha que deseja renomear.',
@@ -42,7 +44,7 @@ export default {
                 autocomplete: false
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'sheet_name',
                 description: 'The name of the sheet you want to rename.',
@@ -60,6 +62,7 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.SHEET_ALTER,
     run: async (int: Interaction, language: Available_Languages) => {
         const sheetName = int.getArgs().get('sheet_name').value;
         let newSheetName = int.getArgs().get('new_sheet_name').value;
@@ -152,6 +155,12 @@ export default {
                         .then(() => {
                             sheetNameCache.remove(int.kami_user!.id, sheetName);
                             sheetNameCache.add(int.kami_user!.id, newSheetName);
+
+                            syncSheet({
+                                sheet: { ...sheet, sheet_name: newSheetName },
+                                language: language,
+                                user: int.kami_user as User & User_Config
+                            });
 
                             rest.patch(Routes.webhookMessage(int.application_id, comp.token, msg.id), {
                                 body: {

@@ -5,23 +5,24 @@ import config from '../../configs/config';
 import { DateTime } from 'luxon';
 import rest from '../../configs/rest';
 import { ButtonStyle, Routes } from 'discord-api-types/v10';
+import { Command_Category } from '../../types/enums';
 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'suporte',
-        en_us: 'support'
+        'pt-br': 'suporte',
+        'en-us': 'support'
     },
     fullNames: {
-        pt_br: 'Suporte',
-        en_us: 'Support'
+        'pt-br': 'Suporte',
+        'en-us': 'Support'
     },
     descriptions: {
-        pt_br: 'Envia uma mensagem para o suporte do Kami.',
-        en_us: 'Sends a message to Kami support.'
+        'pt-br': 'Envia uma mensagem para o suporte do Kami.',
+        'en-us': 'Sends a message to Kami support.'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'mensagem',
                 description: 'A mensagem que você deseja enviar para o suporte.',
@@ -30,7 +31,7 @@ export default {
                 autocomplete: false
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'message',
                 description: 'The message you want to send to support.',
@@ -41,7 +42,10 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.GENERAL,
+    doNotAcknowledge: true,
     run: async (int: Interaction, language: Available_Languages) => {
+        int.acknowledge(true);
         const message = int.getArgs().get('message').value;
 
         const supportEmbed = new EmbedBuilder()
@@ -67,7 +71,6 @@ export default {
         })) as { id: string };
 
         await rest.put(Routes.channelPin(config.LOG_CHANNEL_ID.channel_id, res.id));
-
 
         const supportButton = new ButtonBuilder()
             .setLabel(localization(language, 'support|support-button'))

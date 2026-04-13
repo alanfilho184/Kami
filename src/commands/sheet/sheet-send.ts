@@ -1,13 +1,15 @@
-import { EmbedBuilder, ButtonBuilder } from '@discordjs/builders';
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder } from '@discordjs/builders';
 import db from '../../configs/database';
 import { Interaction } from '../../resources/utils/interaction-handler';
 import { localization } from '../../resources/localization';
 import config from '../../configs/config';
-import { ButtonStyle } from 'discord-api-types/v10';
-import { Attribute_Type } from '../../types/enums';
+import { ButtonStyle, Routes } from 'discord-api-types/v10';
+import { Attribute_Type, Command_Category } from '../../types/enums';
 import sheetNameCache from '../../resources/cache/sheet-name.cache';
 import { similaritySearch } from '../../resources/utils/string-similarity';
 import SheetController from '../../controllers/sheet.controller';
+import rest from '../../configs/rest';
+import logger from '../../configs/logger';
 
 function toTextAttribute(attribute: { name: string; value: string; type: number; position: number }) {
     let name = `${attribute.name}`;
@@ -147,19 +149,19 @@ function toBarAttribute(attribute: { name: string; value: string; type: number; 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'ficha_enviar',
-        en_us: 'sheet_send'
+        'pt-br': 'ficha_enviar',
+        'en-us': 'sheet_send'
     },
     fullNames: {
-        pt_br: 'Enviar ficha',
-        en_us: 'Sheet send'
+        'pt-br': 'Enviar Ficha',
+        'en-us': 'Sheet Send'
     },
     descriptions: {
-        pt_br: 'Envia uma ficha já criada em forma de embed.',
-        en_us: "Sends a sheet already as a Discord's embed"
+        'pt-br': 'Envia uma ficha já criada em forma de embed.',
+        'en-us': "Sends a sheet already as a Discord's embed"
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'nome_da_ficha',
                 description: 'Nome da ficha que deseja enviar.',
@@ -180,7 +182,7 @@ export default {
                 ]
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'sheet_name',
                 description: 'The name of the sheet you want to send.',
@@ -203,8 +205,8 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.SHEET_SEND,
     run: async (int: Interaction, language: Available_Languages) => {
-        // TODO; Implementar a opção de sincronizar a mensagem com a ficha
         const sheetName = int.getArgs().get('sheet_name').value;
         const keepSync = int.getArgs().get('options')?.value === 'sync';
 
@@ -222,12 +224,46 @@ export default {
 
         const embeds = createSheetEmbed(sheet, language);
 
-        int.reply({
-            // @ts-ignore
-            embeds: embeds
-        });
+        if (keepSync) {
+            const irtSheetCount = await SheetController.countIrtSheetBySheetId(sheet.id);
 
-        return;
+            if (irtSheetCount >= 3 && int.kami_user?.is_premium === false) {
+                return int.reply({
+                    content: localization(language, 'sheet-send|irt-limit-reached')
+                });
+            } else {
+                const msg = (await int.reply({
+                    embeds: embeds
+                })) as { id: string; channel_id: string; webhook_id: string };
+
+                const deactivateIrtButton = new ButtonBuilder()
+                    .setCustomId(`deactivate-irt|${msg.id}`)
+                    .setLabel(localization(language, 'sheet-send|deactivate-irt-button'))
+                    .setStyle(ButtonStyle.Secondary);
+
+                const actionRow = new ActionRowBuilder();
+                actionRow.addComponents(deactivateIrtButton);
+
+                await SheetController.activeIrtSheet(int.kami_user?.id!, sheet.id, msg.id, msg.channel_id);
+
+                await rest
+                    .patch(Routes.channelMessage(msg.channel_id, msg.id), {
+                        body: {
+                            components: [actionRow]
+                        },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .catch(err => {
+                        logger.logText('ERROR', `Error adding deactivate IRT button: ${err}`);
+                    });
+            }
+        } else {
+            await int.reply({
+                embeds: embeds
+            });
+        }
     },
     autocomplete(int: Interaction, language: Available_Languages) {
         const sheets = sheetNameCache.get(int.kami_user?.id!);
@@ -423,3 +459,5 @@ function createSheetEmbed(sheet: Sheet, language: Available_Languages) {
 
     return embeds;
 }
+
+export { createSheetEmbed };

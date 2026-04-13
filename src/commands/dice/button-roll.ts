@@ -5,23 +5,24 @@ import { localization } from '../../resources/localization';
 import { ButtonStyleTypes } from 'discord-interactions';
 import { ButtonStyle } from 'discord-api-types/v10';
 import config from '../../configs/config';
+import { Command_Category } from '../../types/enums';
 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'buttonroll',
-        en_us: 'buttonroll'
+        'pt-br': 'buttonroll',
+        'en-us': 'buttonroll'
     },
     fullNames: {
-        pt_br: 'Button Roll',
-        en_us: 'Button Roll'
+        'pt-br': 'Button Roll',
+        'en-us': 'Button Roll'
     },
     descriptions: {
-        pt_br: 'Cria uma mensagem com botões para rolar dados.',
-        en_us: 'Create a message with custom buttons to roll dices.'
+        'pt-br': 'Cria uma mensagem com botões para rolar dados.',
+        'en-us': 'Create a message with custom buttons to roll dices.'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'dados',
                 description:
@@ -31,7 +32,7 @@ export default {
                 autocomplete: false
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'dices',
                 description:
@@ -43,6 +44,7 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.ROLL,
     run: async (int: Interaction, language: Available_Languages) => {
         const dices = int
             .getArgs()

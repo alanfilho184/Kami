@@ -1,17 +1,17 @@
 enum Ban_Type {
     TEMPORARY = 'TEMPORARY',
     PERMANENT = 'PERMANENT',
-    UNBANNED = 'UNBANNED',
+    UNBANNED = 'UNBANNED'
 }
 
 enum Available_Languages {
-    PT_BR = 'pt_br',
-    EN_US = 'en_us',
+    'pt-br' = 'pt-br',
+    'en-us' = 'en-us'
 }
 
 enum Section_Type {
     STANDARD = 0,
-    DESCRIPTION = 1,
+    DESCRIPTION = 1
 }
 
 enum Attribute_Type {
@@ -19,13 +19,13 @@ enum Attribute_Type {
     NUMBER = 1,
     IMAGE = 2,
     LIST = 3,
-    BAR = 4,
+    BAR = 4
 }
 
 enum Macro_Type {
     NORMAL = 0,
     MODIFIER_PLUS = 1,
-    MODIFIER_MINUS = 2,
+    MODIFIER_MINUS = 2
 }
 
 enum Bot_Command_Type {
@@ -34,11 +34,13 @@ enum Bot_Command_Type {
     CONTEXT = 'CONTEXT'
 }
 
-export {
-    Ban_Type,
-    Available_Languages,
-    Section_Type,
-    Attribute_Type,
-    Macro_Type,
-    Bot_Command_Type
+enum Command_Category {
+    GENERAL = 'GENERAL',
+    INSANITY = 'INSANITY',
+    ROLL = 'ROLL',
+    SHEET_ALTER = 'SHEET_ALTER',
+    SHEET_SEND = 'SHEET_SEND',
+    OWNER_ONLY = 'OWNER_ONLY'
 }
+
+export { Ban_Type, Available_Languages, Section_Type, Attribute_Type, Macro_Type, Bot_Command_Type, Command_Category };

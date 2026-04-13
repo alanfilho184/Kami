@@ -5,23 +5,24 @@ import { Interaction } from '../../resources/utils/interaction-handler';
 import { localization } from '../../resources/localization';
 import config from '../../configs/config';
 import { ButtonStyle } from 'discord-api-types/v10';
+import { Command_Category } from '../../types/enums';
 
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'roll',
-        en_us: 'roll'
+        'pt-br': 'roll',
+        'en-us': 'roll'
     },
     fullNames: {
-        pt_br: 'Roll',
-        en_us: 'Roll'
+        'pt-br': 'Roll',
+        'en-us': 'Roll'
     },
     descriptions: {
-        pt_br: 'Rola um dado (ex: 1d20).',
-        en_us: 'Rolls a dice (ex: 1d20).'
+        'pt-br': 'Rola um dado (ex: 1d20).',
+        'en-us': 'Rolls a dice (ex: 1d20).'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'dado',
                 description: 'O dado a ser rolado (ex: 3d6).',
@@ -30,7 +31,7 @@ export default {
                 autocomplete: false
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'dice',
                 description: 'The dice to be rolled (ex: 3d6).',
@@ -41,6 +42,7 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.ROLL,
     run: async (int: Interaction, language: Available_Languages) => {
         let dice: string | null = null;
 

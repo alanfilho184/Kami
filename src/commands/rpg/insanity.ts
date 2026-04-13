@@ -4,6 +4,7 @@ import { Interaction } from '../../resources/utils/interaction-handler';
 import { localization } from '../../resources/localization';
 import config from '../../configs/config';
 import { diceRoller } from '../../resources/utils/dice-roller';
+import { Command_Category } from '../../types/enums';
 
 function deDuplicateRolls(rolls: number[], diceSize: number): number[] {
     const uniqueRolls = new Set<number>();
@@ -22,19 +23,19 @@ function deDuplicateRolls(rolls: number[], diceSize: number): number[] {
 export default {
     ownerOnly: false,
     commandNames: {
-        pt_br: 'insanidade',
-        en_us: 'insanity'
+        'pt-br': 'insanidade',
+        'en-us': 'insanity'
     },
     fullNames: {
-        pt_br: 'Insanidade',
-        en_us: 'Insanity'
+        'pt-br': 'Insanidade',
+        'en-us': 'Insanity'
     },
     descriptions: {
-        pt_br: 'Envia uma insanidade para um personagem, temporaria ou permanente.',
-        en_us: 'Sends an insanity to a character, temporary or permanent.'
+        'pt-br': 'Envia uma insanidade para um personagem, temporaria ou permanente.',
+        'en-us': 'Sends an insanity to a character, temporary or permanent.'
     },
     arguments: {
-        pt_br: [
+        'pt-br': [
             {
                 name: 'tipo',
                 description: 'O tipo de insanidade (temporaria ou permanente).',
@@ -52,7 +53,7 @@ export default {
                 ]
             }
         ],
-        en_us: [
+        'en-us': [
             {
                 name: 'type',
                 description: 'The type of insanity (temporary or permanent).',
@@ -72,6 +73,7 @@ export default {
         ]
     },
     type: 1,
+    category: Command_Category.INSANITY,
     run: async (int: Interaction, language: Available_Languages) => {
         const type = int.getArgs().get('type').value;
 

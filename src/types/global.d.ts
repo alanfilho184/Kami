@@ -38,6 +38,15 @@ declare global {
 
     type Db = PrismaClient;
 
+    enum Command_Category {
+        GENERAL = 'GENERAL',
+        INSANITY = 'INSANITY',
+        ROLL = 'ROLL',
+        SHEET_ALTER = 'SHEET_ALTER',
+        SHEET_SEND = 'SHEET_SEND',
+        OWNER_ONLY = 'OWNER_ONLY'
+    }
+
     type Command = {
         ownerOnly: boolean;
         subCommandOf?: string;
@@ -63,6 +72,8 @@ declare global {
             ];
         };
         type: number;
+        category: Command_Category;
+        doNotAcknowledge?: boolean;
         run: (interaction: Interaction, language: Available_Languages) => Promise<void>;
         autocomplete?: (interaction: Interaction, language: Available_Languages) => Promise<void>;
     };
@@ -70,6 +81,8 @@ declare global {
     type Component = {
         name: string;
         ownerOnly: boolean;
+        category: Command_Category;
+        doNotAcknowledge?: boolean;
         run: (interaction: Interaction, language: Available_Languages) => Promise<void>;
     };
 
@@ -92,8 +105,8 @@ declare global {
     }
 
     enum Available_Languages {
-        PT_BR = 'pt_br',
-        EN_US = 'en_us'
+        'pt-br' = 'pt-br',
+        'en-us' = 'en-us'
     }
 
     enum Section_Type {
@@ -145,10 +158,9 @@ declare global {
     type Irt_Sheet = {
         id: number;
         user_id: number;
-        sheet_name: Sheet_Name;
+        sheet_id: number;
         msg_id: Msg_Id;
         channel_id: Channel_Id;
-        server_id: Server_Id;
     };
 
     type Server_Config = {
@@ -182,7 +194,7 @@ declare global {
             username: string;
             avatar?: string;
             is_beta: boolean;
-            is_premium: boolean
+            is_premium: boolean;
         };
         sheet_name: string;
         sheet_password: string;
@@ -202,14 +214,14 @@ declare global {
     };
 
     type Prepared_Sheet = {
-        sheet_name: string
-        user_id: number
-        sheet_password: string
-        is_public: boolean
-        attributes: {}
-        legacy: false
-        last_use: Date
-    }
+        sheet_name: string;
+        user_id: number;
+        sheet_password: string;
+        is_public: boolean;
+        attributes: {};
+        legacy: false;
+        last_use: Date;
+    };
 
     type Sheet_Head = {
         id: number;

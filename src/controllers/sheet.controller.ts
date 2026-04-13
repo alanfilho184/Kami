@@ -44,6 +44,36 @@ function toSheetArray(sheets: any[]): Sheet[] | null {
     }
 }
 
+function toIrtSheet(irtSheet: any): Irt_Sheet | null {
+    try {
+        return {
+            id: irtSheet.id,
+            sheet_id: irtSheet.sheet_id,
+            user_id: irtSheet.user_id,
+            msg_id: irtSheet.msg_id,
+            channel_id: irtSheet.channel_id
+        };
+    } catch (err) {
+        return null;
+    }
+}
+
+function toIrtSheetArray(irtSheets: any[]): Irt_Sheet[] | null {
+    try {
+        return irtSheets.map(irtSheet => {
+            return {
+                id: irtSheet.id,
+                sheet_id: irtSheet.sheet_id,
+                user_id: irtSheet.user_id,
+                msg_id: irtSheet.msg_id,
+                channel_id: irtSheet.channel_id
+            };
+        });
+    } catch (err) {
+        return null;
+    }
+}
+
 function toSheetHeadArray(sheets: any[]): Sheet_Head[] | null {
     try {
         return sheets.map(sheet => {
@@ -157,6 +187,14 @@ export default class SheetController {
         }
     }
 
+    static async countSheetsByUserId(userId: number): Promise<number> {
+        return await db.sheets.count({
+            where: {
+                user_id: userId
+            }
+        });
+    }
+
     static async updateById(id: number, newSheet: Sheet): Promise<Sheet | null> {
         return toSheet(
             await db.sheets.update({
@@ -196,5 +234,73 @@ export default class SheetController {
                 }
             })
         );
+    }
+
+    static async activeIrtSheet(
+        userId: number,
+        sheetId: number,
+        msgId: string,
+        channelId: string
+    ): Promise<Sheet | null> {
+        const sheet = await this.getById(sheetId);
+
+        if (sheet) {
+            return toSheet(
+                await db.irt_sheets.create({
+                    data: {
+                        user_id: userId,
+                        sheet_id: sheetId,
+                        msg_id: msgId,
+                        channel_id: channelId
+                    }
+                })
+            );
+        } else {
+            throw new Error('Sheet not found');
+        }
+    }
+
+    static async getIrtSheetBySheetId(sheetId: number): Promise<Irt_Sheet[] | null> {
+        return toIrtSheetArray(
+            await db.irt_sheets.findMany({
+                where: {
+                    sheet_id: sheetId
+                }
+            })
+        );
+    }
+
+    static async countIrtSheetBySheetId(sheetId: number): Promise<number> {
+        return await db.irt_sheets.count({
+            where: {
+                sheet_id: sheetId
+            }
+        });
+    }
+
+    static async getIrtSheetByMsgId(msgId: string): Promise<Irt_Sheet | null> {
+        return toIrtSheet(
+            await db.irt_sheets.findFirst({
+                where: {
+                    msg_id: msgId
+                }
+            })
+        );
+    }
+
+    static async deleteIrtSheetByMsgId(msgId: string): Promise<void> {
+        await db.irt_sheets.deleteMany({
+            where: {
+                msg_id: msgId
+            }
+        });
+    }
+
+    static async deleteAllIrtSheetBySheetId(sheetId: number): Promise<void> {
+        await db.irt_sheets.deleteMany({
+            where: {
+                sheet_id: sheetId
+            }
+        });
     }
 }
