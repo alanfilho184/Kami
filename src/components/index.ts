@@ -8,7 +8,7 @@ componentFiles = componentFiles.filter(file => {
 });
 
 for (const file of componentFiles) {
-    const component: Component = require(`./${file.replace('dist\\components', '')}`).default;
+    const component: Component = require(`./${file.replace(/^dist[\\/]components[\\/]/, '')}`).default;
 
     if (component) {
         components.set(component.name, component);

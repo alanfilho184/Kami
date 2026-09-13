@@ -8,7 +8,7 @@ commandFiles = commandFiles.filter(file => {
 });
 
 for (const file of commandFiles) {
-    const command: Command = require(`./${file.replace('dist\\commands', '')}`).default;
+    const command: Command = require(`./${file.replace(/^dist[\\/]commands[\\/]/, '')}`).default;
 
     if (command) {
         commands.set(command.commandNames['en-us'], command);
