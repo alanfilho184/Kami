@@ -253,7 +253,7 @@ export default class Logger {
         const date = DateTime.now().setZone('America/Fortaleza').toFormat('dd-LL-yyyy');
 
         if (path.join(__dirname, `log-${date}.kami`) == this.logFile) {
-            const executionDate = DateTime.fromMillis(int.createdTimestamp).setZone('America/Fortaleza')
+            const executionDate = DateTime.fromMillis(int.createdTimestamp).setZone('America/Fortaleza');
 
             let log = {
                 type: 'DISCORD',

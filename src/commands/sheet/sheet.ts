@@ -1,12 +1,10 @@
-import { EmbedBuilder, ButtonBuilder, ActionRowBuilder } from '@discordjs/builders';
-import db from '../../configs/database';
+import { ButtonBuilder, ActionRowBuilder } from '@discordjs/builders';
 import { Interaction } from '../../resources/utils/interaction-handler';
 import { localization } from '../../resources/localization';
-import config from '../../configs/config';
 import { ButtonStyle } from 'discord-api-types/v10';
 import { Attribute_Type, Command_Category } from '../../types/enums';
 import sheetNameCache from '../../resources/cache/sheet-name.cache';
-import stringSimilarity, { similaritySearch } from '../../resources/utils/string-similarity';
+import { similaritySearch } from '../../resources/utils/string-similarity';
 import SheetController from '../../controllers/sheet.controller';
 import SheetServices from '../../services/sheet.services';
 import rest from '../../configs/rest';
@@ -16,8 +14,6 @@ import { randomUUID } from 'crypto';
 import actionHandler from '../../resources/utils/action-handler';
 import logger from '../../configs/logger';
 import { Sheet_Name } from '../../types/validations';
-import { ValidationError } from '../../types/errors';
-import { createSheetEmbed } from './sheet-send';
 import syncSheet from '../../resources/utils/sync-sheet';
 
 export default {

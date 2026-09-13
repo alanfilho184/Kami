@@ -11,12 +11,14 @@ for (const entries of globSync('src/resources/localization/**/*.json')) {
 }
 
 translations.forEach(async translationPathString => {
-    if (translationPathString.startsWith('src\\resources\\localization\\')) {
+    const normalizedPath = translationPathString.replace(/\\/g, '/');
+    if (normalizedPath.startsWith('src/resources/localization/')) {
         const translation: { [key: string]: string } = JSON.parse(
             fs.readFileSync(`./${translationPathString}`, 'utf-8')
         );
 
-        languages[translation['language']] = { ...languages[translation['language']], ...translation };
+        const langKey = `${translation['language']}`.toLowerCase().replace('_', '-');
+        languages[langKey] = { ...languages[langKey], ...translation };
     }
 });
 
@@ -33,7 +35,7 @@ export function localization(
         let languageNormalized = language.toLowerCase().replace('_', '-');
         let translation = languages[languageNormalized][key];
 
-        if(Array.isArray(translation)) {
+        if (Array.isArray(translation)) {
             translation = translation.join('\n');
         }
 

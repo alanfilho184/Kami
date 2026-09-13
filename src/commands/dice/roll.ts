@@ -69,7 +69,7 @@ export default {
             return int.reply({ content: localization(language, 'roll|invalid-dice') });
         }
 
-        const diceResult = diceRoller(dice)
+        const diceResult = diceRoller(dice);
 
         let diceEmbed = formatDiceEmbedOutput(diceResult);
 
@@ -89,7 +89,7 @@ export default {
             ])
         });
 
-        const finalResult = diceResult.final
+        const finalResult = diceResult.final;
 
         if (finalResult <= 100 && finalResult > 0) {
             diceEmbed.setThumbnail(d1_100[finalResult]);

@@ -51,8 +51,18 @@ export default {
             .setCustomId(`$a$help-select-menu|${tempId}`)
             .setPlaceholder('Selecione um comando');
 
-        for (let command of commands.values()) {
-            if (!command.ownerOnly) {
+        let sortedCommands = Array.from(commands.values()).sort((a, b) => {
+            if (a.fullNames[language] < b.fullNames[language]) {
+                return -1;
+            }
+            if (a.fullNames[language] > b.fullNames[language]) {
+                return 1;
+            }
+            return 0;
+        });
+
+        for (let command of sortedCommands) {
+            if (command.ownerOnly === false) {
                 selectMenu.addOptions(
                     new SelectMenuOptionBuilder()
                         .setLabel(command.fullNames[language])

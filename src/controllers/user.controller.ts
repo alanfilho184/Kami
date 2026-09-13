@@ -126,6 +126,22 @@ export default class UserController {
         ) as (User & User_Config) | null;
     }
 
+    static async searchByUsername(username: string): Promise<User | null> {
+        return toUser(
+            await db.users.findFirst({
+                where: {
+                    username: {
+                        contains: username,
+                        mode: 'insensitive'
+                    }
+                },
+                include: {
+                    user_config: true
+                }
+            })
+        );
+    }
+
     static async updateById(id: number, newUser: any): Promise<User | null> {
         return toUser(
             await db.users.update({

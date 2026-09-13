@@ -35,6 +35,8 @@ async function getUserConfig(id: number | Discord_Id): Promise<User_Config> {
             secret_sheet: false,
             secret_send: false
         };
+    } else {
+        user_config.language = `${user_config.language}`.toLowerCase().replace('_', '-') as Available_Languages;
     }
 
     return user_config;

@@ -10,6 +10,9 @@ import { applicationInfo } from '../../resources/utils/application-info';
 import commandsStatistics from '../../resources/utils/command-statistics';
 import { Command_Category } from '../../types/enums';
 
+import rest from '../../configs/rest';
+import { Routes } from 'discord-api-types/v10';
+
 export default {
     ownerOnly: false,
     commandNames: {
@@ -53,11 +56,11 @@ export default {
 
         let uptimeString = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-        const totalTextCommands = commandsStatistics.getTotalCount('TEXT' as Bot_Command_Type);
-        const totalButtonCommands = commandsStatistics.getTotalCount('BUTTON' as Bot_Command_Type);
+        const totalTextCommands = await commandsStatistics.getTotalCount('COMMAND');
+        const totalButtonCommands = await commandsStatistics.getTotalCount('COMPONENT');
 
-        const totalTextCommandsSince = commandsStatistics.getTotalCountSince(undefined, undefined, 'TEXT' as Bot_Command_Type);
-        const totalButtonCommandsSince = commandsStatistics.getTotalCountSince(undefined, undefined, 'BUTTON' as Bot_Command_Type);
+        const totalTextCommandsSince = await commandsStatistics.getTotalCountSince(undefined, undefined, 'COMMAND');
+        const totalButtonCommandsSince = await commandsStatistics.getTotalCountSince(undefined, undefined, 'COMPONENT');
 
         botInfoEmbed.addFields([
             { name: localization(language, 'bot-info|cpu-usage'), value: `\`${cpuUsage} %\``, inline: true },
@@ -72,8 +75,22 @@ export default {
                 value: `\`BOT: ${ping} ms - DB: ${Math.round(dbPing)} ms\``,
                 inline: false
             },
-            { name:localization(language, 'bot-info|command-count'), value: `\`${localization(language, 'bot-info|command-count-value', [{ replace: '$slash$', value: totalTextCommands }, { replace: '$button$', value: totalButtonCommands }])}\``, inline: false },
-            { name:localization(language, 'bot-info|command-count-last-24-hours'), value: `\`${localization(language, 'bot-info|command-count-value', [{ replace: '$slash$', value: totalTextCommandsSince! }, { replace: '$button$', value: totalButtonCommandsSince! }])}\``, inline: false },
+            {
+                name: localization(language, 'bot-info|command-count'),
+                value: `\`${localization(language, 'bot-info|command-count-value', [
+                    { replace: '$slash$', value: totalTextCommands },
+                    { replace: '$button$', value: totalButtonCommands }
+                ])}\``,
+                inline: false
+            },
+            {
+                name: localization(language, 'bot-info|command-count-last-24-hours'),
+                value: `\`${localization(language, 'bot-info|command-count-value', [
+                    { replace: '$slash$', value: totalTextCommandsSince! },
+                    { replace: '$button$', value: totalButtonCommandsSince! }
+                ])}\``,
+                inline: false
+            },
             { name: localization(language, 'bot-info|server-count'), value: `\`${serverCount}\``, inline: true },
             { name: localization(language, 'bot-info|uptime'), value: `\`${uptimeString}\``, inline: true }
         ]);

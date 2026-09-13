@@ -24,6 +24,8 @@ declare global {
         COMMAND_WEBHOOK_TOKEN: string;
         LOG_WEBHOOK_ID: Discord_Id;
         LOG_WEBHOOK_TOKEN: string;
+        BOT_STATUS_CHANNEL_ID: Channel_Id;
+        BOT_STATUS_MESSAGE_ID: Msg_Id;
         EMBED_COLOR: string;
         VERSION: string;
     };
@@ -92,12 +94,6 @@ declare global {
         replaces?: { replace: string; value: string | number }[]
     ) => string;
 
-    enum Bot_Command_Type {
-        TEXT = 'TEXT',
-        BUTTON = 'BUTTON',
-        CONTEXT = 'CONTEXT'
-    }
-
     enum Ban_Type {
         TEMPORARY = 'TEMPORARY',
         PERMANENT = 'PERMANENT',
@@ -126,6 +122,12 @@ declare global {
         NORMAL = 0,
         MODIFIER_PLUS = 1,
         MODIFIER_MINUS = 2
+    }
+
+    enum Announcement_Mode {
+        ALWAYS = 'ALWAYS',
+        ONCE = 'ONCE',
+        INTERVAL = 'INTERVAL'
     }
 
     type Discord_Id = validations.Discord_Id;
@@ -166,8 +168,8 @@ declare global {
     type Server_Config = {
         id: number;
         server_id: Server_Id;
-        languague: Available_Languages;
-        force_languague: boolean;
+        language: Available_Languages;
+        force_language: boolean;
     };
 
     type Attribute = {
@@ -281,17 +283,41 @@ declare global {
         tutorial: string;
     };
 
-    type Bot_Command_Statistic = {
+    type Log = {
         id: number;
-        name: string;
-        type: Bot_Command_Type;
-        usage_total_count: number;
-        usage_record: {
-            [day: string]: {
-                count: number;
-                uses: Date[];
-            };
+        user_id?: number;
+        action_type: string;
+        action_target: string;
+        timestamp: Date;
+        status: ActivityStatus;
+        source_system?: string;
+    };
+
+    type Announcement_Content = {
+        [language: string]: {
+            title: string;
+            description: string;
+            link?: string;
         };
+    };
+
+    type Announcement = {
+        id: number;
+        title?: string | null;
+        content: Announcement_Content;
+        mode: Announcement_Mode;
+        repeat_interval_hours?: number | null;
+        priority: number;
+        is_active: boolean;
+        created_at: Date;
+        updated_at: Date;
+    };
+
+    type Announcement_Seen = {
+        id: number;
+        user_id: number;
+        announcement_id: number;
+        last_seen_date: Date;
     };
 
     namespace Express {

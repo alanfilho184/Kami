@@ -129,7 +129,7 @@ export default {
                 try {
                     await SheetController.updateById(sheet.id, modifiedSheet);
 
-                    syncSheet({ sheet: modifiedSheet,  language: language, user: int.kami_user as User & User_Config });
+                    syncSheet({ sheet: modifiedSheet, language: language, user: int.kami_user as User & User_Config });
 
                     await rest.patch(Routes.webhookMessage(int.application_id, comp.token, msg.id), {
                         body: {

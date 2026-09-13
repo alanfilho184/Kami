@@ -25,8 +25,14 @@ function levenshteinDistance(str1: string, str2: string): number {
 }
 
 function stringSimilarity(str1: string, str2: string): number {
-    str1 = str1.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    str2 = str2.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    str1 = str1
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    str2 = str2
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
 
     const distance = levenshteinDistance(str1, str2);
     return distance;

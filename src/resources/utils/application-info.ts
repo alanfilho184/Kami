@@ -36,9 +36,12 @@ getApplicationInfo().then(info => {
     applicationInfo = info;
 });
 
-setInterval(async () => {
-    // @ts-ignore
-    applicationInfo = await getApplicationInfo();
-}, 1000 * 60 * 60 * 12);
+setInterval(
+    async () => {
+        // @ts-ignore
+        applicationInfo = await getApplicationInfo();
+    },
+    1000 * 60 * 60 * 12
+);
 
 export { applicationInfo };

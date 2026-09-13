@@ -1,5 +1,5 @@
-import LogHandler from '../logs/index'
+import LogHandler from '../logs/index';
 
-const logger: Logger = new LogHandler()
+const logger: Logger = new LogHandler();
 
-export default logger
+export default logger;

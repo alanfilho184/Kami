@@ -28,10 +28,10 @@ enum Macro_Type {
     MODIFIER_MINUS = 2
 }
 
-enum Bot_Command_Type {
-    TEXT = 'TEXT',
-    BUTTON = 'BUTTON',
-    CONTEXT = 'CONTEXT'
+enum Announcement_Mode {
+    ALWAYS = 'ALWAYS',
+    ONCE = 'ONCE',
+    INTERVAL = 'INTERVAL'
 }
 
 enum Command_Category {
@@ -43,4 +43,4 @@ enum Command_Category {
     OWNER_ONLY = 'OWNER_ONLY'
 }
 
-export { Ban_Type, Available_Languages, Section_Type, Attribute_Type, Macro_Type, Bot_Command_Type, Command_Category };
+export { Ban_Type, Available_Languages, Section_Type, Attribute_Type, Macro_Type, Command_Category, Announcement_Mode };

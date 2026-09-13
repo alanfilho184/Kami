@@ -356,7 +356,7 @@ export default {
                     language: language
                 };
 
-                switch (`${comp.kami_user!.language}`.toLowerCase()) {
+                switch (`${comp.kami_user!.language}`.toLowerCase().replace('_', '-')) {
                     case 'en-us':
                         updatedConfig.language = Available_Languages['pt-br'];
                         break;

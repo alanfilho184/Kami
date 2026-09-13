@@ -436,10 +436,23 @@ function createSheetEmbed(sheet: Sheet, language: Available_Languages) {
             embeds.push(descricaoEmbed);
         }
 
+        let username = '';
+
+        if (sheet.user?.username != null) {
+            username = sheet.user.username;
+        }
+        //@ts-ignore
+        else if (sheet.user?.discord_id != null) {
+            // @ts-ignore
+            username = `ID: ${sheet.user.discord_id}`;
+        } else {
+            username = localization(language, 'sheet-send|unknown-user');
+        }
+
         embeds[0].setTitle(
             localization(language, 'sheet-send|title-legacy', [
                 { replace: '$sheet$', value: sheet.sheet_name },
-                { replace: '$username$', value: sheet.user!.username }
+                { replace: '$username$', value: username }
             ])
         );
     } else {

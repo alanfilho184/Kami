@@ -187,7 +187,7 @@ class Interaction {
 
         if (this.kami_user?.language) {
             //@ts-ignore
-            this.language = this.kami_user.language;
+            this.language = `${this.kami_user.language}`.toLowerCase().replace('_', '-') as Available_Languages;
         } else {
             this.language = this.getLanguage();
         }
@@ -217,6 +217,23 @@ class Interaction {
     async reply(data: Message_Data) {
         if (!this.isAutocomplete()) {
             const msg = await rest.patch(Routes.webhookMessage(this.application_id, this.token, '@original'), {
+                body: {
+                    ...data
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            return msg;
+        } else {
+            throw new Error('This interaction is an autocomplete interaction.');
+        }
+    }
+
+    async followUp(data: Message_Data) {
+        if (!this.isAutocomplete()) {
+            const msg = await rest.post(`/webhooks/${this.application_id}/${this.token}`, {
                 body: {
                     ...data
                 },
@@ -270,21 +287,16 @@ class Interaction {
 
     private getLanguage() {
         try {
-            let language: Available_Languages;
+            let languageStr =
+                this.inGuild() === true && this.guild_locale !== null
+                    ? `${this.guild_locale}`.toLowerCase().replace('_', '-')
+                    : `${this.locale}`.toLowerCase().replace('_', '-');
 
-            if (this.inGuild() === true && this.guild_locale !== null) {
-                language = `${this.guild_locale}`.toLowerCase() as Available_Languages;
-            } else {
-                language = `${this.locale}`.toLowerCase() as Available_Languages;
+            if (Object.values(Available_Languages).includes(languageStr as Available_Languages)) {
+                return languageStr as Available_Languages;
             }
 
-            if (
-                Object.values(Available_Languages).includes(language.replace('-', '_') as Available_Languages) === false
-            ) {
-                language = Available_Languages['en-us'];
-            }
-
-            return language;
+            return Available_Languages['en-us'];
         } catch (err) {
             logger.logText('ERROR', err);
             return Available_Languages['en-us'];

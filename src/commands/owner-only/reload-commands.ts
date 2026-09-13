@@ -26,7 +26,7 @@ function languageFilter(language: string | any) {
 }
 
 export default {
-    ownerOnly: false,
+    ownerOnly: true,
     commandNames: {
         'pt-br': 'reloadslashs',
         'en-us': 'reloadslashs'
@@ -50,13 +50,6 @@ export default {
         commandsBot.forEach(command => {
             if (command.type == 1) {
                 const newCommand = new SlashCommandBuilder();
-
-                for (let s in slashs) {
-                    if (slashs[s].name == command.commandNames['en-us']) {
-                        //@ts-ignore
-                        newCommand.id = slashs[s].id;
-                    }
-                }
 
                 if (command.ownerOnly) {
                     newCommand.setDefaultMemberPermissions('0');

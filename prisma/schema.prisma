@@ -15,31 +15,40 @@ enum Ban_Type {
 }
 
 enum Available_Languages {
-    PT_BR
-    EN_US
+    PT_BR @map("pt-br")
+    EN_US @map("en-us")
 }
 
-enum Bot_Command_Type {
-    TEXT
-    BUTTON
-    CONTEXT
+enum ActivityStatus {
+    SUCCESS
+    FAILED
+}
+
+enum AnnouncementMode {
+    ALWAYS
+    ONCE
+    INTERVAL
 }
 
 model users {
-    id            Int             @id @default(autoincrement())
-    discord_id    String?         @unique
-    username      String?         @unique
-    avatar        String?
-    email         String?         @unique
-    password      String?
-    is_beta       Boolean         @default(false)
-    is_premium    Boolean         @default(false)
-    last_use      DateTime        @default(now()) @updatedAt @db.Timestamptz
-    blocked_users blocked_users[]
-    irt_sheets    irt_sheets[]
-    sheets        sheets[]
-    user_config   users_config[]
-    macros        macros[]
+    id         Int      @id @default(autoincrement())
+    discord_id String?  @unique
+    username   String?  @unique
+    avatar     String?
+    email      String?  @unique
+    password   String?
+    is_beta    Boolean  @default(false)
+    is_premium Boolean  @default(false)
+    last_use   DateTime @default(now()) @updatedAt @db.Timestamptz
+
+    blocked_users      blocked_users[]
+    irt_sheets         irt_sheets[]
+    sheets             sheets[]
+    user_config        users_config[]
+    macros             macros[]
+    announcementsSeens announcements_seen[]
+
+    @@index([last_use])
 }
 
 model blocked_users {
@@ -61,6 +70,10 @@ model irt_sheets {
     msg_id     String
     channel_id String
     last_use   DateTime @default(now()) @updatedAt @db.Timestamptz
+
+    @@index([sheet_id])
+    @@index([msg_id])
+    @@index([user_id])
 }
 
 model servers_config {
@@ -72,16 +85,19 @@ model servers_config {
 }
 
 model sheets {
-    id             Int            @id @default(autoincrement())
-    User           users          @relation(fields: [user_id], references: [id])
+    id             Int          @id @default(autoincrement())
+    User           users        @relation(fields: [user_id], references: [id])
     user_id        Int
     sheet_name     String
-    sheet_password String
-    last_use       DateTime       @default(now()) @updatedAt @db.Timestamptz
+    sheet_password String?
+    last_use       DateTime     @default(now()) @updatedAt @db.Timestamptz
     attributes     Json
-    legacy         Boolean        @default(false)
-    is_public      Boolean        @default(false)
+    legacy         Boolean      @default(false)
+    is_public      Boolean      @default(false)
     irt_sheets     irt_sheets[]
+
+    @@index([user_id])
+    @@index([user_id, sheet_name], name: "idx_sheets_user_sheet_name")
 }
 
 model macros {
@@ -103,12 +119,16 @@ model macros {
 //     campaing    String
 // }
 
-model bot_commands_statistics {
-    id                Int              @id @default(autoincrement())
-    name              String           @unique
-    type              Bot_Command_Type
-    usage_total_count Int              @default(0)
-    usage_record      Json             @default("{}")
+model logs {
+    id            Int            @id @default(autoincrement())
+    user_id       Int?
+    action_type   String
+    action_target String
+    timestamp     DateTime       @default(now())
+    status        ActivityStatus
+    source_system String?
+
+    @@index([action_type, timestamp])
 }
 
 model users_config {
@@ -139,4 +159,36 @@ model resources {
     name     String               @unique
     data     Json
     language Available_Languages?
+}
+
+// ----------------------------------------
+// 1. ANNOUNCEMENTS (Anúncios)
+// ----------------------------------------
+model announcement {
+    id                    Int                  @id @default(autoincrement())
+    content               Json
+    title                 String?
+    mode                  AnnouncementMode     @default(ONCE)
+    repeat_interval_hours Int?
+    priority              Int                  @default(0) // Maior = exibido primeiro
+    is_active             Boolean              @default(true)
+    created_at            DateTime             @default(now())
+    seen_by               announcements_seen[]
+
+    @@index([is_active, priority])
+}
+
+// ----------------------------------------
+// 2. ANNOUNCEMENTS_SEEN (Tabela de Junção / Registro de Visualização)
+// ----------------------------------------
+model announcements_seen {
+    id              Int          @id @default(autoincrement())
+    user_id         Int
+    announcement_id Int
+    user            users        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    announcement    announcement @relation(fields: [announcement_id], references: [id], onDelete: Cascade)
+    last_seen_date  DateTime     @default(now()) @updatedAt @db.Timestamptz
+
+    @@unique([user_id, announcement_id]) // Garante a unicidade do par
+    @@index([user_id, last_seen_date])
 }

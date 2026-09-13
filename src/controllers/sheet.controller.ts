@@ -212,6 +212,43 @@ export default class SheetController {
         );
     }
 
+    static async updatePrivacyById(id: number, is_public: boolean): Promise<Sheet | null> {
+        const updateData: any = {};
+
+        if (is_public !== undefined) {
+            updateData.is_public = is_public;
+        }
+
+        updateData.last_use = new Date();
+
+        return toSheet(
+            await db.sheets.update({
+                where: {
+                    id: id
+                },
+                data: updateData
+            })
+        );
+    }
+
+    static async updatePasswordById(id: number, sheet_password: string | null): Promise<Sheet | null> {
+        const updateData: any = {};
+        if (sheet_password !== undefined) {
+            updateData.sheet_password = sheet_password;
+        }
+
+        updateData.last_use = new Date();
+
+        return toSheet(
+            await db.sheets.update({
+                where: {
+                    id: id
+                },
+                data: updateData
+            })
+        );
+    }
+
     static async renameById(id: number, newSheetName: string): Promise<Sheet | null> {
         return toSheet(
             await db.sheets.update({

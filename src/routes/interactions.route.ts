@@ -1,10 +1,5 @@
 import { Router, Request, Response } from 'express';
-import {
-    InteractionResponseType,
-    InteractionType,
-    InteractionResponseFlags,
-    MessageComponentTypes
-} from 'discord-interactions';
+import { InteractionResponseType, InteractionType } from 'discord-interactions';
 import { Interaction } from '../resources/utils/interaction-handler';
 import commands from '../commands';
 import components from '../components';
@@ -13,6 +8,7 @@ import commandsStatistics from '../resources/utils/command-statistics';
 import { localization } from '../resources/localization';
 import { Available_Languages, Command_Category } from '../types/enums';
 import actionHandler from '../resources/utils/action-handler';
+import announcements from '../modules/announcements';
 
 const router = Router();
 
@@ -22,7 +18,7 @@ router.post('/interactions', async (req: Request, res: Response) => {
         int = new Interaction(req.body, res);
     } catch (err) {
         //@ts-ignore
-        if ((err.message = 'Unknown user')) {
+        if (err.message == 'Unknown user') {
             return;
         } else {
             return logger.logText('ERROR', err);
@@ -46,17 +42,13 @@ router.post('/interactions', async (req: Request, res: Response) => {
         if (!command) {
             await int.acknowledge(true);
             return await int.reply({
-                content: localization(int.language, 'cmd-interaction|command-not-found'),
-                flags: InteractionResponseFlags.EPHEMERAL
+                content: localization(int.language, 'cmd-interaction|command-not-found')
             });
         } else {
-            commandsStatistics.sumCommand(command.commandNames[Available_Languages['en-us']]);
-
             if (command.ownerOnly && int.user.id !== process.env.OWNER_ID) {
                 await int.acknowledge(true);
                 return await int.reply({
-                    content: localization(int.language, 'cmd-interaction|owner-only'),
-                    flags: InteractionResponseFlags.EPHEMERAL
+                    content: localization(int.language, 'cmd-interaction|owner-only')
                 });
             } else {
                 if (!command.doNotAcknowledge) {
@@ -84,11 +76,24 @@ router.post('/interactions', async (req: Request, res: Response) => {
 
                 try {
                     await command.run(int, int.language);
+                    commandsStatistics.logCommand({
+                        commandName: command.commandNames[Available_Languages['en-us']],
+                        userId: int.kami_user?.id || 0,
+                        status: 'SUCCESS',
+                        source_system: 'INTERACTION_API'
+                    });
+
+                    await announcements.announce(int);
                 } catch (err) {
                     logger.logText('ERROR', err);
+                    commandsStatistics.logCommand({
+                        commandName: command.commandNames[Available_Languages['en-us']],
+                        userId: int.kami_user?.id || 0,
+                        status: 'FAILED',
+                        source_system: 'INTERACTION_API'
+                    });
                     await int.reply({
-                        content: localization(int.language, 'cmd-interaction|command-error'),
-                        flags: InteractionResponseFlags.EPHEMERAL
+                        content: localization(int.language, 'cmd-interaction|command-error')
                     });
                 }
             }
@@ -103,19 +108,13 @@ router.post('/interactions', async (req: Request, res: Response) => {
             if (!component) {
                 await int.acknowledge(true);
                 return await int.reply({
-                    content: localization(int.language, 'cmd-interaction|command-not-found'),
-                    flags: InteractionResponseFlags.EPHEMERAL
+                    content: localization(int.language, 'cmd-interaction|command-not-found')
                 });
             } else {
-                if (int.component!.type === MessageComponentTypes.BUTTON) {
-                    commandsStatistics.sumComponent(component.name);
-                }
-
                 if (component.ownerOnly && int.user.id !== process.env.OWNER_ID) {
                     await int.acknowledge(true);
                     return await int.reply({
-                        content: localization(int.language, 'cmd-interaction|owner-only'),
-                        flags: InteractionResponseFlags.EPHEMERAL
+                        content: localization(int.language, 'cmd-interaction|owner-only')
                     });
                 } else {
                     if (!component.doNotAcknowledge) {
@@ -143,15 +142,36 @@ router.post('/interactions', async (req: Request, res: Response) => {
 
                     try {
                         await component.run(int, int.language);
+                        commandsStatistics.logComponent({
+                            componentName: component.name,
+                            userId: int.kami_user?.id || 0,
+                            status: 'SUCCESS',
+                            source_system: 'INTERACTION_API'
+                        });
+
+                        await announcements.announce(int);
                     } catch (err) {
                         logger.logText('ERROR', err);
+                        commandsStatistics.logComponent({
+                            componentName: component.name,
+                            userId: int.kami_user?.id || 0,
+                            status: 'FAILED',
+                            source_system: 'INTERACTION_API'
+                        });
                         await int.reply({
-                            content: localization(int.language, 'cmd-interaction|command-error'),
-                            flags: InteractionResponseFlags.EPHEMERAL
+                            content: localization(int.language, 'cmd-interaction|command-error')
                         });
                     }
                 }
             }
+        }
+    } else if (int.type === InteractionType.MODAL_SUBMIT) {
+        if (int.data.custom_id && int.data.custom_id.startsWith('$a$')) {
+            return actionHandler.executeAction(int.data.custom_id, int.user.id, int);
+        } else {
+            //TODO: handle modals with custom_id that does not start with $a$
+            logger.logText('WARN', 'Modal without registered action not implemented');
+            return;
         }
     } else if (int.type === InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE) {
         const command = commands.get(int.data.name);

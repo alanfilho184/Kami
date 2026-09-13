@@ -1,5 +1,6 @@
 import db from '../configs/database';
 import SheetController from '../controllers/sheet.controller';
+import { hashPassword, verifyPassword } from '../resources/utils/crypto';
 import { Sheet_Name } from '../types/validations';
 import { Attribute_Type } from '../types/enums';
 
@@ -523,6 +524,30 @@ class SheetServices {
             return sheet;
         } else {
             return errors;
+        }
+    }
+
+    static async hashPasswordValue(password: string): Promise<string> {
+        return await hashPassword(password);
+    }
+
+    static async verifySheetPassword(sheet: Sheet, password: string): Promise<boolean> {
+        try {
+            if (!password) return false;
+
+            const stored = (sheet as any).sheet_password;
+
+            // bcrypt hashes usually start with $2a$ or $2b$ or $2y$
+            const bcryptRegex = /^\$2[aby]\$/;
+
+            if (typeof stored === 'string' && bcryptRegex.test(stored)) {
+                return await verifyPassword(stored, password);
+            }
+
+            // fallback to plaintext comparison for non-hashed entries
+            return stored === password;
+        } catch (err) {
+            return false;
         }
     }
 

@@ -4,6 +4,7 @@ import routes from './routes';
 import config from './configs/config';
 import { sendStartupWebhook } from './logs/discord-logger';
 import sheetNameCache from './resources/cache/sheet-name.cache';
+import botStatus from './modules/bot-status';
 
 const app = express();
 
@@ -17,6 +18,7 @@ async function startup() {
     app.listen(config.PORT, () => {
         console.log(`Server is running on port ${config.PORT}`);
         sendStartupWebhook();
+        botStatus.updateStatusMessage();
     });
 }
 
