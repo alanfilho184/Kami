@@ -1,0 +1,8 @@
+# Ignore all HTML files:
+**/*.html
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/dist
+coverage

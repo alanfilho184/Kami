@@ -1,0 +1,37 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "lsp": true,
+    "permission": {
+        "bash": {
+            "*": "ask",
+            "npm run build": "allow",
+            "npm run build *": "allow",
+            "npm run build-test": "allow",
+            "npm run test": "allow",
+            "npm run test *": "allow",
+            "npm run actions-test": "allow",
+            "npm run actions-test *": "allow",
+            "npx jest": "allow",
+            "npx jest *": "allow",
+            "npx tsc": "allow",
+            "npx tsc *": "allow",
+            "npx prisma migrate dev --create-only --name *": "allow",
+            "npx prisma generate": "allow",
+            "npx prisma validate": "allow",
+            "npx prisma migrate status": "allow",
+            "npx prisma migrate diff *": "allow",
+            "npx prettier --check .": "allow",
+            "git status": "allow",
+            "git diff": "allow",
+            "git diff *": "allow",
+            "git log": "allow",
+            "git log *": "allow"
+        },
+        "read": {
+            "*": "allow",
+            "*.env": "deny",
+            "*.env.*": "deny",
+            "*.env.template": "allow"
+        }
+    }
+}
