@@ -25,7 +25,7 @@ router.post('/interactions', async (req: Request, res: Response) => {
         }
     }
 
-    if (int.user.system === true || int.user.bot === true) {
+    if ((int.user.system === true || int.user.bot === true) && int.type != 1) {
         return res.end();
     }
 
