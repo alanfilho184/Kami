@@ -27,7 +27,7 @@ const config: EnvVars = {
     BOT_STATUS_CHANNEL_ID: new Channel_Id(process.env.BOT_STATUS_CHANNEL_ID as string),
     BOT_STATUS_MESSAGE_ID: new Msg_Id(process.env.BOT_STATUS_MESSAGE_ID as string),
     EMBED_COLOR: process.env.EMBED_COLOR as string,
-    VERSION: process.env.npm_package_version as string
+    VERSION: process.env.npm_package_version || process.env.version as string
 };
 
 export default config;

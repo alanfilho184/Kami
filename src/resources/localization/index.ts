@@ -1,24 +1,30 @@
 import { globSync } from 'glob';
 import logger from '../../configs/logger';
 import fs from 'node:fs';
+import path from 'node:path';
 import { Available_Languages } from '../../types/enums';
 
 const languages: { [language: string]: { [key: string]: string } } = {};
 
-const translations: string[] = [];
-for (const entries of globSync('src/resources/localization/**/*.json')) {
-    translations.push(entries);
-}
+const cwdNormalized = process.cwd().replace(/\\/g, '/');
+const searchPatterns = [
+    `${cwdNormalized}/src/resources/localization/**/*.json`,
+    `${cwdNormalized}/dist/resources/localization/**/*.json`
+];
 
-translations.forEach(async translationPathString => {
+const translationFiles = globSync(searchPatterns);
+
+translationFiles.forEach(translationPathString => {
     const normalizedPath = translationPathString.replace(/\\/g, '/');
-    if (normalizedPath.startsWith('src/resources/localization/')) {
+    try {
         const translation: { [key: string]: string } = JSON.parse(
-            fs.readFileSync(`./${translationPathString}`, 'utf-8')
+            fs.readFileSync(normalizedPath, 'utf-8')
         );
 
         const langKey = `${translation['language']}`.toLowerCase().replace('_', '-');
         languages[langKey] = { ...languages[langKey], ...translation };
+    } catch (err) {
+        logger.logText('ERROR', `Failed to load localization file: ${normalizedPath} - ${err}`);
     }
 });
 
