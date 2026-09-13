@@ -26,6 +26,64 @@ class SheetServices {
         return newSheet;
     }
 
+    static readonly LEGACY_SECTION_SIZE = 25;
+
+    static convertLegacySheet(sheet: Sheet): Sheet {
+        if (sheet.legacy != true) {
+            return sheet;
+        }
+
+        const raw = sheet.attributes as unknown as Record<string, unknown> | null | undefined;
+
+        if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+            sheet.attributes = { sections: [] } as unknown as Sheet['attributes'];
+            sheet.legacy = false;
+            return sheet;
+        }
+
+        if ('sections' in raw && Array.isArray((raw as { sections?: unknown }).sections)) {
+            sheet.legacy = false;
+            return sheet;
+        }
+
+        const keys = Object.keys(raw);
+        const sectionCount = Math.ceil(keys.length / SheetServices.LEGACY_SECTION_SIZE);
+        const sections: Array<{
+            name: string;
+            position: number;
+            type: number;
+            attributes: Array<{ name: string; value: string | number; type: Attribute_Type; position: number }>;
+        }> = [];
+
+        let absolutePosition = 0;
+        for (let s = 0; s < sectionCount; s++) {
+            const sectionAttributes = keys
+                .slice(
+                    s * SheetServices.LEGACY_SECTION_SIZE,
+                    s * SheetServices.LEGACY_SECTION_SIZE + SheetServices.LEGACY_SECTION_SIZE
+                )
+                .map(key => ({
+                    name: key,
+                    value: (raw as Record<string, unknown>)[key] as unknown as string | number,
+                    type: isNaN(Number((raw as Record<string, unknown>)[key]))
+                        ? Attribute_Type.TEXT
+                        : Attribute_Type.NUMBER,
+                    position: absolutePosition++
+                }));
+
+            sections.push({
+                name: `Info ${s + 1}`,
+                position: s,
+                type: 0,
+                attributes: sectionAttributes
+            });
+        }
+
+        sheet.attributes = { sections } as unknown as Sheet['attributes'];
+        sheet.legacy = false;
+        return sheet;
+    }
+
     static async validateModification(
         sheet: Sheet,
         attribute_type: Attribute_Type,
@@ -35,6 +93,8 @@ class SheetServices {
         position?: number
     ): Promise<Array<{ field: string; code: string }> | Sheet> {
         const errors: Array<{ field: string; code: string }> = [];
+
+        SheetServices.convertLegacySheet(sheet);
 
         if (attribute_type == Attribute_Type.TEXT) {
             section = `${section}`;
@@ -558,6 +618,8 @@ class SheetServices {
     ): Promise<Array<{ field: string; code: string }> | Sheet> {
         const errors: Array<{ field: string; code: string }> = [];
 
+        SheetServices.convertLegacySheet(sheet);
+
         section = `${section}`;
         attribute = `${attribute}`;
 
@@ -594,6 +656,8 @@ class SheetServices {
     ): Promise<Array<{ field: string; code: string }> | Sheet> {
         const errors: Array<{ field: string; code: string }> = [];
 
+        SheetServices.convertLegacySheet(sheet);
+
         section = `${section}`;
 
         const sectionIndex = sheet.attributes.sections.findIndex(s => s.name === section);
@@ -626,6 +690,8 @@ class SheetServices {
         newName: string
     ): Promise<Array<{ field: string; code: string }> | Sheet> {
         const errors: Array<{ field: string; code: string }> = [];
+
+        SheetServices.convertLegacySheet(sheet);
 
         section = `${section}`;
         oldName = `${oldName}`;
@@ -681,6 +747,8 @@ class SheetServices {
         newName: string
     ): Promise<Array<{ field: string; code: string }> | Sheet> {
         const errors: Array<{ field: string; code: string }> = [];
+
+        SheetServices.convertLegacySheet(sheet);
 
         oldName = `${oldName}`;
         newName = `${newName}`;

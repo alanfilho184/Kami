@@ -15,6 +15,7 @@ import actionHandler from '../../resources/utils/action-handler';
 import logger from '../../configs/logger';
 import { Sheet_Name } from '../../types/validations';
 import syncSheet from '../../resources/utils/sync-sheet';
+import migrateLegacySheet from '../../resources/utils/migrate-legacy-sheet';
 
 export default {
     ownerOnly: false,
@@ -300,6 +301,10 @@ export default {
             });
         }
 
+        if (sheet.legacy == true) {
+            sheet = (await migrateLegacySheet(sheet)) ?? sheet;
+        }
+
         let validatedSheet = await SheetServices.validateModification(
             sheet,
             componentType,
@@ -374,7 +379,7 @@ export default {
             }
         } else if (focused.name === 'section') {
             if (int.getArgs().get('sheet_name')) {
-                const sheet = await SheetController.getByUserIdAndSheetName(
+                let sheet = await SheetController.getByUserIdAndSheetName(
                     int.kami_user?.id!,
                     int.getArgs().get('sheet_name').value
                 );
@@ -382,6 +387,10 @@ export default {
                 if (!sheet) {
                     return int.autocomplete([]);
                 } else {
+                    if (sheet.legacy == true) {
+                        sheet = (await migrateLegacySheet(sheet)) ?? sheet;
+                    }
+
                     let sections: Set<string> = new Set();
                     let sectionsArray: { name: string; value: string }[] = [];
 
@@ -407,7 +416,7 @@ export default {
             }
         } else if (focused.name === 'attribute') {
             if (int.getArgs().get('sheet_name')) {
-                const sheet = await SheetController.getByUserIdAndSheetName(
+                let sheet = await SheetController.getByUserIdAndSheetName(
                     int.kami_user?.id!,
                     int.getArgs().get('sheet_name').value
                 );
@@ -415,6 +424,10 @@ export default {
                 if (!sheet) {
                     return int.autocomplete([]);
                 } else {
+                    if (sheet.legacy == true) {
+                        sheet = (await migrateLegacySheet(sheet)) ?? sheet;
+                    }
+
                     let attributes: Set<string> = new Set();
                     let attributesArray: { name: string; value: string }[] = [];
                     let section = sheet.attributes.sections.find(s => s.name === int.getArgs().get('section').value);
@@ -445,7 +458,7 @@ export default {
             }
         } else if (focused.name === 'value') {
             if (int.getArgs().get('sheet_name')) {
-                const sheet = await SheetController.getByUserIdAndSheetName(
+                let sheet = await SheetController.getByUserIdAndSheetName(
                     int.kami_user?.id!,
                     int.getArgs().get('sheet_name').value
                 );
@@ -522,6 +535,10 @@ export default {
                         }
                     }
                 } else {
+                    if (sheet.legacy == true) {
+                        sheet = (await migrateLegacySheet(sheet)) ?? sheet;
+                    }
+
                     let focusedAttribute = sheet.attributes.sections
                         .find(s => s.name === int.getArgs().get('section').value)
                         ?.attributes.find(a => a.name === int.getArgs().get('attribute').value);
@@ -930,7 +947,7 @@ export default {
             }
         } else if (focused.name === 'position') {
             if (int.getArgs().get('sheet_name')) {
-                const sheet = await SheetController.getByUserIdAndSheetName(
+                let sheet = await SheetController.getByUserIdAndSheetName(
                     int.kami_user?.id!,
                     int.getArgs().get('sheet_name').value
                 );
@@ -938,6 +955,10 @@ export default {
                 if (!sheet) {
                     return int.autocomplete([]);
                 } else {
+                    if (sheet.legacy == true) {
+                        sheet = (await migrateLegacySheet(sheet)) ?? sheet;
+                    }
+
                     let section = sheet.attributes.sections.find(s => s.name === int.getArgs().get('section').value);
 
                     if (!section) {

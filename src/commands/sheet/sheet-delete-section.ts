@@ -13,6 +13,7 @@ import actionHandler from '../../resources/utils/action-handler';
 import logger from '../../configs/logger';
 import { createSheetEmbed } from './sheet-send';
 import syncSheet from '../../resources/utils/sync-sheet';
+import migrateLegacySheet from '../../resources/utils/migrate-legacy-sheet';
 import { Command_Category } from '../../types/enums';
 
 export default {
@@ -77,6 +78,10 @@ export default {
 
         if (sheet.user_id !== int.kami_user?.id) {
             return int.reply({ content: localization(language, 'sheet|not-sheet-owner') });
+        }
+
+        if (sheet.legacy == true) {
+            sheet = (await migrateLegacySheet(sheet)) ?? sheet;
         }
 
         const validated = await SheetServices.validateDeleteSection(sheet, section);
@@ -197,7 +202,7 @@ export default {
             }
         } else if (focused.name === 'section' || focused.name === 'secao') {
             if (int.getArgs().get('sheet_name')) {
-                const sheet = await SheetController.getByUserIdAndSheetName(
+                let sheet = await SheetController.getByUserIdAndSheetName(
                     int.kami_user?.id!,
                     int.getArgs().get('sheet_name').value
                 );
@@ -205,6 +210,9 @@ export default {
                 if (!sheet) {
                     return int.autocomplete([]);
                 } else {
+                    if (sheet.legacy == true) {
+                        sheet = (await migrateLegacySheet(sheet)) ?? sheet;
+                    }
                     let sections: Set<string> = new Set();
                     let sectionsArray: { name: string; value: string }[] = [];
 

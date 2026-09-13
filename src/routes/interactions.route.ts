@@ -66,7 +66,7 @@ router.post('/interactions', async (req: Request, res: Response) => {
                             await int.acknowledge(int.kami_user?.secret_sheet);
                             break;
                         case Command_Category.SHEET_SEND:
-                            await int.acknowledge(int.kami_user?.secret_sheet);
+                            await int.acknowledge(int.kami_user?.secret_send);
                             break;
                         default:
                             await int.acknowledge();

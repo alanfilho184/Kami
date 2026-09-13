@@ -206,9 +206,16 @@ export default {
     },
     type: 1,
     category: Command_Category.SHEET_SEND,
+    doNotAcknowledge: true,
     run: async (int: Interaction, language: Available_Languages) => {
         const sheetName = int.getArgs().get('sheet_name').value;
         const keepSync = int.getArgs().get('options')?.value === 'sync';
+
+        if (keepSync) {
+            await int.acknowledge();
+        } else {
+            await int.acknowledge(int.kami_user?.secret_send);
+        }
 
         const sheet = await SheetController.getByUserIdAndSheetName(int.kami_user?.id!, sheetName);
 
@@ -465,10 +472,11 @@ function createSheetEmbed(sheet: Sheet, language: Available_Languages) {
         );
     }
 
-    embeds[0].setAuthor({
-        name: localization(language, 'sheet-send|link'),
-        url: `https://kamiapp.com.br/ficha/${sheet.user!.id}/${sheet.sheet_name}`
-    });
+    //Desativado até o site existir
+    // embeds[0].setAuthor({
+    //     name: localization(language, 'sheet-send|link'),
+    //     url: `https://kamiapp.com.br/ficha/${sheet.user!.id}/${sheet.sheet_name}`
+    // });
 
     return embeds;
 }
