@@ -130,8 +130,8 @@ class BotStatus {
             totalUsers: data.total_users,
             totalActiveUsers: data.total_active_users,
             totalSheetsCreated: data.total_sheets_created,
-            totalCommands: data.total_commands,
-            totalComponents: data.total_components,
+            totalCommands: Number(data.total_commands) + 803_410, //O BOT antigo só mantinha contagem simples de comandos
+            totalComponents: Number(data.total_components) + 120_647, //O BOT antigo só mantinha contagem simples de componentes
             totalCommandsToday: data.total_commands_today,
             totalComponentsToday: data.total_components_today,
             totalCommandsMonth: data.total_commands_month,
@@ -250,7 +250,7 @@ class BotStatus {
         tableFooter.addRow('Versão do Kami', `v${config.VERSION}`);
         tableFooter.addRow('Node.js', `${process.version}`);
         tableFooter.addRow('', '');
-        tableFooter.addRow('Tempo de Online', botuptime);
+        tableFooter.addRow('Tempo Online', botuptime);
 
         let tableGeneralString = tableGeneral.toString() as string;
         let tableGeneralArray = tableGeneralString.split('\n');

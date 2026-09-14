@@ -40,6 +40,7 @@ model users {
     is_beta    Boolean  @default(false)
     is_premium Boolean  @default(false)
     last_use   DateTime @default(now()) @updatedAt @db.Timestamptz
+    created_at DateTime @default(now())
 
     blocked_users      blocked_users[]
     irt_sheets         irt_sheets[]
@@ -56,9 +57,10 @@ model blocked_users {
     User         users    @relation(fields: [user_id], references: [id])
     user_id      Int
     ban_count    Int
-    actual_ban   Ban_Type
+    current_ban  Ban_Type
     ban_duration DateTime @db.Timestamptz
     last_use     DateTime @default(now()) @updatedAt @db.Timestamptz
+    created_at   DateTime @default(now())
 }
 
 model irt_sheets {
@@ -70,6 +72,7 @@ model irt_sheets {
     msg_id     String
     channel_id String
     last_use   DateTime @default(now()) @updatedAt @db.Timestamptz
+    created_at DateTime @default(now())
 
     @@index([sheet_id])
     @@index([msg_id])
@@ -82,6 +85,7 @@ model servers_config {
     language       Available_Languages
     force_language Boolean             @default(false)
     last_use       DateTime            @default(now()) @updatedAt @db.Timestamptz
+    created_at     DateTime            @default(now())
 }
 
 model sheets {
@@ -94,6 +98,7 @@ model sheets {
     attributes     Json
     legacy         Boolean      @default(false)
     is_public      Boolean      @default(false)
+    created_at     DateTime     @default(now())
     irt_sheets     irt_sheets[]
 
     @@index([user_id])
@@ -108,6 +113,7 @@ model macros {
     macros     Json
     last_use   DateTime @default(now()) @updatedAt @db.Timestamptz
     is_public  Boolean  @default(false)
+    created_at DateTime @default(now())
 }
 
 // model campaings {
@@ -142,6 +148,7 @@ model users_config {
     secret_sheet   Boolean             @default(false)
     secret_send    Boolean             @default(false)
     last_use       DateTime            @default(now()) @updatedAt @db.Timestamptz
+    created_at     DateTime            @default(now())
 }
 
 model tutorials {
@@ -161,9 +168,6 @@ model resources {
     language Available_Languages?
 }
 
-// ----------------------------------------
-// 1. ANNOUNCEMENTS (Anúncios)
-// ----------------------------------------
 model announcement {
     id                    Int                  @id @default(autoincrement())
     content               Json
@@ -178,15 +182,13 @@ model announcement {
     @@index([is_active, priority])
 }
 
-// ----------------------------------------
-// 2. ANNOUNCEMENTS_SEEN (Tabela de Junção / Registro de Visualização)
-// ----------------------------------------
 model announcements_seen {
     id              Int          @id @default(autoincrement())
     user_id         Int
     announcement_id Int
     user            users        @relation(fields: [user_id], references: [id], onDelete: Cascade)
     announcement    announcement @relation(fields: [announcement_id], references: [id], onDelete: Cascade)
+    first_seen      DateTime     @default(now())
     last_seen_date  DateTime     @default(now()) @updatedAt @db.Timestamptz
 
     @@unique([user_id, announcement_id]) // Garante a unicidade do par

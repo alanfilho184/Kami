@@ -1,32 +1,43 @@
 {
     "name": "kami-bot-http",
-    "version": "5.0.4",
+    "version": "5.0.5",
     "main": "server.js",
     "scripts": {
         "start": "node dist/app.js",
         "format": "npx prettier --write .",
-        "build": "tsgo",
+        "build": "tsc",
         "build-start": "npm run build && npm run start"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "keywords": [
+        "rpg",
+        "discord",
+        "bot",
+        "fichas",
+        "dados",
+        "online",
+        "ajudante",
+        "gratuito",
+        "portugues",
+        "english"
+    ],
+    "author": "alanfilho184",
+    "license": "CC BY-NC-ND 4.0",
     "description": "",
     "dependencies": {
         "@alanfilho184/kami-lru-cache": "^1.2.0",
         "@discordjs/builders": "^1.14.1",
-        "@discordjs/rest": "^0.4.1",
+        "@discordjs/rest": "^2.6.3",
         "@prisma/client": "^6.2.1",
         "ascii-table": "^0.0.9",
         "bcrypt": "^6.0.0",
         "colors": "^1.4.0",
-        "discord-api-types": "^0.37.120",
-        "discord-interactions": "^4.1.0",
+        "discord-api-types": "^0.38.55",
+        "discord-interactions": "^4.4.0",
         "discord.js": "^14.27.0",
         "dotenv": "^16.4.5",
-        "express": "^4.21.1",
-        "glob": "^11.0.0",
-        "luxon": "^3.5.0",
+        "express": "^5.2.1",
+        "glob": "^13.0.6",
+        "luxon": "^3.7.2",
         "os-utils": "^0.0.14",
         "pidusage": "^4.0.1",
         "prisma": "^6.2.1",
@@ -36,7 +47,6 @@
         "@types/luxon": "^3.4.2",
         "@types/ms": "^0.7.34",
         "@types/node": "^22.9.0",
-        "@typescript/native-preview": "^7.0.0-dev.20260114.1",
-        "typescript": "^5.9.3"
+        "typescript": "^7.0.2"
     }
 }
