@@ -1,6 +1,6 @@
 {
     "name": "kami-bot-http",
-    "version": "5.0.5",
+    "version": "5.0.6",
     "main": "server.js",
     "scripts": {
         "start": "node dist/app.js",
@@ -39,11 +39,11 @@
         "glob": "^13.0.6",
         "luxon": "^3.7.2",
         "os-utils": "^0.0.14",
-        "pidusage": "^4.0.1",
         "prisma": "^6.2.1",
         "tweetnacl": "^1.0.3"
     },
     "devDependencies": {
+        "@types/express": "^5.0.6",
         "@types/luxon": "^3.4.2",
         "@types/ms": "^0.7.34",
         "@types/node": "^22.9.0",

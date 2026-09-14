@@ -28,7 +28,7 @@ class BotPresence {
         rest.get(Routes.gatewayBot()).then(gateway => {
             this.client = new Client({
                 intents: [],
-                makeCache: () => new LimitedCollection({ maxSize: 0 }),
+                // makeCache: () => new LimitedCollection({ maxSize: 0 }),
                 //@ts-ignore
                 shardCount: Number(gateway.shards),
                 presence

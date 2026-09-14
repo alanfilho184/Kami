@@ -89,7 +89,7 @@ class Interaction {
         name: string;
         args: string;
     };
-    res: Response;
+    res: Pick<Response, 'json'>;
     constructor(interaction: Interaction, res: Response) {
         this.app_permissions = interaction.app_permissions;
         this.application_id = interaction.application_id;

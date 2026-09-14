@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import { Discord_Id, Channel_Id, Msg_Id } from '../types/validations';
 import process from 'node:process';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 if (process.env.NODE_ENV === 'production') {
     dotenv.config({ path: 'prod.env' });
@@ -9,6 +11,8 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     dotenv.config({ path: '.env' });
 }
+
+const packageJson = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), { encoding: 'utf-8' }));
 
 const config: EnvVars = {
     NODE_ENV: process.env.NODE_ENV as 'development' | 'production' | 'test',
@@ -27,7 +31,7 @@ const config: EnvVars = {
     BOT_STATUS_CHANNEL_ID: new Channel_Id(process.env.BOT_STATUS_CHANNEL_ID as string),
     BOT_STATUS_MESSAGE_ID: new Msg_Id(process.env.BOT_STATUS_MESSAGE_ID as string),
     EMBED_COLOR: process.env.EMBED_COLOR as string,
-    VERSION: process.env.npm_package_version || process.env.version as string
+    VERSION: packageJson.version || (process.env.version as string)
 };
 
 export default config;

@@ -4,23 +4,27 @@ import nacl from 'tweetnacl';
 import logger from '../configs/logger';
 
 export default function verifySignature(req: Request, res: Response, next: NextFunction) {
-    const signature = req.get('x-signature-ed25519');
-    const timestamp = req.get('x-signature-timestamp');
-
-    let isVerified = false;
-    try {
-        isVerified = nacl.sign.detached.verify(
-            Buffer.from(timestamp + req.rawBody),
-            Buffer.from(signature, 'hex'),
-            Buffer.from(config.PUBLIC_KEY, 'hex')
-        );
-    } catch (err) {
-        return res.status(401).send({ error: 'Bad request signature' });
-    }
-
-    if (!isVerified) {
-        return res.status(401).send({ error: 'Bad request signature' });
-    } else {
+    if (`${req.method}|${req.baseUrl}${req.path}` == 'GET|/health/ping') {
         next();
+    } else {
+        const signature = req.get('x-signature-ed25519')!;
+        const timestamp = req.get('x-signature-timestamp')!;
+
+        let isVerified = false;
+        try {
+            isVerified = nacl.sign.detached.verify(
+                Buffer.from(timestamp + req.rawBody),
+                Buffer.from(signature, 'hex'),
+                Buffer.from(config.PUBLIC_KEY, 'hex')
+            );
+        } catch (err) {
+            return res.status(401).send({ error: 'Bad request signature' });
+        }
+
+        if (!isVerified) {
+            return res.status(401).send({ error: 'Bad request signature' });
+        } else {
+            next();
+        }
     }
 }

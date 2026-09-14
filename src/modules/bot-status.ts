@@ -6,11 +6,11 @@ import ms from 'ms';
 import rest from '../configs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { EmbedBuilder } from '@discordjs/builders';
-import pidusage from 'pidusage';
 import os from 'os-utils';
 import logger from '../configs/logger';
 import { localization } from '../resources/localization';
 import { Available_Languages } from '../types/enums';
+import { performance } from 'node:perf_hooks';
 
 class BotStatus {
     statusMessageId: string | null = null;
@@ -34,6 +34,24 @@ class BotStatus {
                 this.updateStatusMessage();
             }, ms('1m'));
         }, ms('1m'));
+    }
+
+    private lastCpuUsage: NodeJS.CpuUsage = process.cpuUsage();
+    private lastSampleTime: number = performance.now();
+
+    public getProcessStats(): { memory: number; cpu: string } {
+        const cpu = process.cpuUsage();
+        const now = performance.now();
+        const deltaUs = cpu.user - this.lastCpuUsage.user + (cpu.system - this.lastCpuUsage.system);
+        const deltaMs = now - this.lastSampleTime;
+        this.lastCpuUsage = cpu;
+        this.lastSampleTime = now;
+
+        const percent = Math.min(deltaMs > 0 ? (deltaUs / (1000 * deltaMs)) * 100 : 0, 100);
+        return {
+            memory: process.memoryUsage().rss / (1024 * 1024), // MB
+            cpu: percent.toFixed(2)
+        };
     }
 
     async getDbData() {
@@ -171,10 +189,10 @@ class BotStatus {
             (hours > 0 ? (hours == 1 ? hours + ' hora ' : hours + ' horas ') : '') +
             (minutes > 0 ? (minutes == 1 ? minutes + ' minuto ' : minutes + ' minutos ') : '');
 
-        const stats = await pidusage(process.pid);
 
-        const ram = stats.memory / 1024 / 1024;
-        const cpu = stats.cpu.toFixed(2);
+        const stats = this.getProcessStats();
+        const ram = stats.memory.toFixed(2);
+        const cpu = stats.cpu;
 
         const totalInteractionsMonth = parseInt(this.dbData?.totalCommandsMonth + this.dbData?.totalComponentsMonth);
         const totalInteractionsPrevMonth = parseInt(
@@ -196,7 +214,7 @@ class BotStatus {
         }
 
         tableGeneral.addRow('Uso de CPU', `${cpu} %`);
-        tableGeneral.addRow('Uso de RAM', `${ram.toFixed(2)} MB`);
+        tableGeneral.addRow('Uso de RAM', `${ram} MB`);
         tableGeneral.addRow(
             'Ram Total',
             `${(os.totalmem() / 1024 - os.freemem() / 1024).toFixed(1)} GB / ${(os.totalmem() / 1024).toFixed(1)} GB`

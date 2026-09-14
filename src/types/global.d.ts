@@ -335,6 +335,7 @@ declare global {
                 is_premium: boolean;
             };
             interaction: Interaction;
+            rawBody: Buffer
         }
     }
 
